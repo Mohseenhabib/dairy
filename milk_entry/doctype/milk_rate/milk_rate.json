@@ -1,0 +1,103 @@
+{
+ "autoname": "field:milk_rate_name",
+ "creation": "2019-11-05 16:52:51.592859",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "milk_rate_name",
+  "sb2",
+  "milk_type",
+  "effective_date",
+  "cl1",
+  "dsc_name",
+  "sb1",
+  "milk_rate_chart",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "default": "Cow",
+   "fieldname": "milk_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Milk Type",
+   "options": "Cow\nBuffalow\nMix",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cl1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_bulk_edit": 1,
+   "fieldname": "milk_rate_chart",
+   "fieldtype": "Table",
+   "label": "Rate Chart",
+   "options": "Milk Rate Chart"
+  },
+  {
+   "fieldname": "sb1",
+   "fieldtype": "Section Break"
+  },
+  {
+   "description": "Enter your Name",
+   "fieldname": "milk_rate_name",
+   "fieldtype": "Data",
+   "label": "Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "sb2",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "dsc_name",
+   "fieldtype": "Table MultiSelect",
+   "label": "DCS",
+   "options": "Warehouse Child",
+   "reqd": 1
+  },
+  {
+   "fieldname": "effective_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Effective Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Milk Rate",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "is_submittable": 1,
+ "modified": "2019-12-11 16:45:04.937178",
+ "modified_by": "Administrator",
+ "module": "Milk Entry",
+ "name": "Milk Rate",
+ "name_case": "Title Case",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Dairy",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "search_fields": "milk_type,effective_date",
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
