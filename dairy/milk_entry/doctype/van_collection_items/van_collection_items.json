@@ -1,0 +1,169 @@
+{
+ "autoname": "naming_series:",
+ "creation": "2020-01-23 13:36:53.798464",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "sb1",
+  "dcs",
+  "sb2",
+  "cow_milk_vol",
+  "cb1",
+  "buf_milk_vol",
+  "cb2",
+  "mix_milk_vol",
+  "sb3",
+  "cow_milk_cans",
+  "cb3",
+  "buf_milk_cans",
+  "cb4",
+  "mix_milk_cans",
+  "sb4",
+  "cow_milk_sam",
+  "cb5",
+  "buf_milk_sam",
+  "cb6",
+  "mix_milk_sam",
+  "sb5",
+  "gate_pass",
+  "sb6",
+  "time"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Name",
+   "options": "COLI-.DD.-.MM.-",
+   "reqd": 1
+  },
+  {
+   "fieldname": "dcs",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "DCS",
+   "options": "Warehouse",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cow_milk_vol",
+   "fieldtype": "Float",
+   "label": "Cow Milk Volume"
+  },
+  {
+   "fieldname": "buf_milk_vol",
+   "fieldtype": "Float",
+   "label": "Buffalow Milk Volume"
+  },
+  {
+   "fieldname": "mix_milk_vol",
+   "fieldtype": "Float",
+   "label": "Mix Milk Volume"
+  },
+  {
+   "fieldname": "cow_milk_cans",
+   "fieldtype": "Float",
+   "label": "Cow Milk Cans"
+  },
+  {
+   "fieldname": "buf_milk_cans",
+   "fieldtype": "Float",
+   "label": "Buffalow Milk Cans"
+  },
+  {
+   "fieldname": "mix_milk_cans",
+   "fieldtype": "Float",
+   "label": "Mix Milk Cans"
+  },
+  {
+   "fieldname": "cow_milk_sam",
+   "fieldtype": "Link",
+   "label": "Cow Sample Number",
+   "options": "Raw Milk Sample"
+  },
+  {
+   "fieldname": "buf_milk_sam",
+   "fieldtype": "Link",
+   "label": "Buffalow Sample Number",
+   "options": "Raw Milk Sample"
+  },
+  {
+   "fieldname": "mix_milk_sam",
+   "fieldtype": "Link",
+   "label": "Mix Sample Number",
+   "options": "Raw Milk Sample"
+  },
+  {
+   "fieldname": "gate_pass",
+   "fieldtype": "Link",
+   "label": "Gate Pass",
+   "options": "Purchase Receipt"
+  },
+  {
+   "fieldname": "time",
+   "fieldtype": "Time",
+   "label": "Time"
+  },
+  {
+   "fieldname": "sb1",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "sb2",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "sb3",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "sb4",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "sb5",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "cb1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sb6",
+   "fieldtype": "Section Break"
+  }
+ ],
+ "istable": 1,
+ "modified": "2020-02-04 11:06:23.135862",
+ "modified_by": "Administrator",
+ "module": "Milk Entry",
+ "name": "Van Collection Items",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

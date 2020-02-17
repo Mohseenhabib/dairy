@@ -1,0 +1,5 @@
+{
+  "js/milk_entry_quick.min.js": [
+        "public/js/utils/milk_entry_quick_entry.js"
+        ]
+}
