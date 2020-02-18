@@ -27,6 +27,21 @@ def get_data():
                 "description": _("Raw Milk Sample"),
                 "onboard": 1,
             },
+            {
+                "type": "doctype",
+                "name": "Route Master",
+                "label": _("Route Master"),
+                "description": _("Route Master"),
+                "onboard": 1,
+            },
+            {
+                "type": "doctype",
+                "name": "Van Collection",
+                "label": _("Van Collection"),
+                "description": _("Van Collection"),
+                "onboard": 1,
+            },
+
           ]
       },
 
@@ -60,8 +75,14 @@ def get_data():
                 "label": _("Sales Order"),
                 "description": _("Sales Order."),
                 "onboard": 1,
-            }
-            
+            },
+            {
+                "type": "doctype",
+                "name": "Quotation",
+                "label": _("Quotation"),
+                "description": _("Quotation"),
+                "onboard": 1,
+            },
           ]
       },
 
