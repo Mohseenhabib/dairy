@@ -41,7 +41,7 @@ def get_data():
                 "description": _("Van Collection"),
                 "onboard": 1,
             },
-
+            
           ]
       },
 
@@ -86,25 +86,6 @@ def get_data():
           ]
       },
 
-      {
-        "label":_("Payroll"),
-        "items": [
-           	{
-             	  "type": "doctype",
-              	"name": "Payroll Entry",
-                "label": _("Payroll Entry"),
-                "description": _("Payroll Entry."),
-                "onboard": 1,
-            },
-            {
-                "type": "doctype",
-                "name": "Salary Slip",
-                "label": _("Salary Slip"),
-                "description": _("Salary Slip."),
-                "onboard": 1,
-            },
-          ]
-      },
 
             {
                   "label": _("Settings"),
