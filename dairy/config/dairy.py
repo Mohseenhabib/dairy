@@ -98,10 +98,10 @@ def get_data():
                     	"onboard": 1,
                       },
                       {
-                   	"type": "doctype",
+                   	  "type": "doctype",
                     	"name": "Member Master",
                     	"label": _("Member Master"),
-                   	"description": _("Member Master"),
+                   	  "description": _("Member Master"),
                     	"onboard": 1,
                       },
                       {
@@ -120,6 +120,6 @@ def get_data():
                       },
 
                   ]
-          },
+            }
 
     ]
