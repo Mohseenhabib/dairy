@@ -53,36 +53,33 @@ frappe.ui.form.on("Sales Order", {
             }
         });
     },
-
-    refresh: function(frm, dt, dn) {
-
-        if (frm.doc.docstatus==0) {
-            frm.add_custom_button(__('Quotation'),
-                function() {
-                    erpnext.utils.map_current_doc({
-						method: "erpnext.selling.doctype.quotation.quotation.make_sales_order",
-						source_doctype: "Quotation",
-						target: me.frm,
-						setters: [
-                            {
-                                label: "Customer",
-								fieldname: "party_name",
-								fieldtype: "Link",
-								options: "Customer",
-								default: me.frm.doc.customer || undefined
-                            }
-                        ],
-                        get_query_filters: {
-							company: me.frm.doc.company,
-							docstatus: 1,
-                            status: ["!=", "Lost"],
-                            delivery_shift:me.frm.doc.delivery_shift
-                        }
-                    })
-                }, __("Get items from"));
-        }
-        
-    }
-
-
 });
+    // refresh: function(frm, dt, dn) {
+
+    //     if (frm.doc.docstatus==0) {
+    //         frm.add_custom_button(__('Quotation'),
+    //             function() {
+    //                 erpnext.utils.map_current_doc({
+	// 					method: "erpnext.selling.doctype.quotation.quotation.make_sales_order",
+	// 					source_doctype: "Quotation",
+	// 					target: me.frm,
+	// 					setters: [
+    //                         {
+    //                             label: "Customer",
+	// 							fieldname: "party_name",
+	// 							fieldtype: "Link",
+	// 							options: "Customer",
+	// 							default: me.frm.doc.customer || undefined
+    //                         }
+    //                     ],
+    //                     get_query_filters: {
+	// 						company: me.frm.doc.company,
+	// 						docstatus: 1,
+    //                         status: ["!=", "Lost"],
+    //                         delivery_shift:me.frm.doc.delivery_shift
+    //                     }
+    //                 })
+    //             }, __("Get items from"));
+    //     }
+        
+    // },

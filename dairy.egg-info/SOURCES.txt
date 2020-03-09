@@ -26,10 +26,14 @@ dairy/field_order/doctype/field_order/field_order.json
 dairy/field_order/doctype/field_order/field_order.py
 dairy/field_order/doctype/field_order/test_field_order.py
 dairy/milk_entry/__init__.py
+dairy/milk_entry/custom/address.json
 dairy/milk_entry/custom/payment_entry.json
+dairy/milk_entry/custom/pricing_rule.json
 dairy/milk_entry/custom/purchase_invoice.json
 dairy/milk_entry/custom/purchase_receipt.json
 dairy/milk_entry/custom/purchase_receipt_item.json
+dairy/milk_entry/custom/sales_order.json
+dairy/milk_entry/custom/sales_order_item.json
 dairy/milk_entry/custom/supplier.json
 dairy/milk_entry/custom/warehouse.json
 dairy/milk_entry/doctype/__init__.py
@@ -102,6 +106,9 @@ dairy/milk_entry/report/milk_entry_trends/milk_entry_trends.js
 dairy/milk_entry/report/milk_entry_trends/milk_entry_trends.json
 dairy/milk_entry/report/milk_entry_trends/milk_entry_trends.py
 dairy/order_book/__init__.py
+dairy/order_book/custom/address.json
+dairy/order_book/custom/quotation.json
+dairy/order_book/custom/quotation_item.json
 dairy/order_book/custom/sales_order.json
 dairy/order_book/custom/sales_order_item.json
 dairy/order_book/doctype/__init__.py
@@ -115,8 +122,12 @@ dairy/order_book/doctype/order_book_line/__init__.py
 dairy/order_book/doctype/order_book_line/order_book_line.json
 dairy/order_book/doctype/order_book_line/order_book_line.py
 dairy/public/build.json
+dairy/public/js/payroll_entry.js
+dairy/public/js/pricing_rule.js
+dairy/public/js/quotation.js
 dairy/public/js/sales_order.js
 dairy/public/js/utils/milk_entry_quick_entry.js
 dairy/public/js/utils/warehouse.js
+dairy/public/py/pricing_rule.py
 dairy/templates/__init__.py
 dairy/templates/pages/__init__.py

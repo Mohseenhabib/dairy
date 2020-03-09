@@ -43,7 +43,6 @@ doctype_js= {
 doctype_js = {
     "Sales Order" : "public/js/sales_order.js",
     "Quotation" : "public/js/quotation.js",
-    "Pricing Rule" : "public/js/pricing_rule.js",
     }
 
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}

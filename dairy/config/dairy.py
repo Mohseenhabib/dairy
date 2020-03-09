@@ -15,23 +15,9 @@ def get_data():
             },
             {
                 "type": "doctype",
-                "name": "Milk Rate",
-                "label": _("Milk Rate"),
-                "description": _("Milk Rate"),
-                "onboard": 1,
-            },
-            {
-                "type": "doctype",
                 "name": "Raw Milk Sample",
                 "label": _("Raw Milk Sample"),
                 "description": _("Raw Milk Sample"),
-                "onboard": 1,
-            },
-            {
-                "type": "doctype",
-                "name": "Route Master",
-                "label": _("Route Master"),
-                "description": _("Route Master"),
                 "onboard": 1,
             },
             {
@@ -87,39 +73,47 @@ def get_data():
       },
 
 
+      {
+        "label": _("Raw Milk Reception Dock"),
+        "items": [
             {
-                  "label": _("Settings"),
-                  "items": [
-                      {
-                    	"type": "doctype",
-                    	"name": "Dairy Settings",
-                    	"label": _("Dairy Settings"),
-                    	"description": _("Dairy Settings"),
-                    	"onboard": 1,
-                      },
-                      {
-                   	  "type": "doctype",
-                    	"name": "Member Master",
-                    	"label": _("Member Master"),
-                   	  "description": _("Member Master"),
-                    	"onboard": 1,
-                      },
-                      {
-                    	"type": "doctype",
-                    	"name": "Society Master",
-                    	"label": _("Society Master"),
-                    	"description": _("Society Master"),
-                    	"onboard": 1,
-                      },
-                      {
-                    	"type": "doctype",
-                    	"name": "Member Category",
-                    	"label": _("Member Category"),
-                    	"description": _("Member Category"),
-                    	"onboard": 1,
-                      },
+               "type": "doctype",
+                "name": "RMRD",
+                "label": _("RMRD"),
+                "description": _("RMRD"),
+                "onboard": 1,
+            },
+        ]
+      },
 
-                  ]
-            }
+
+      {
+        "label": _("Settings"),
+        "items": [
+            {
+                "type": "doctype",
+                "name": "Dairy Settings",
+              	"label": _("Dairy Settings"),
+              	"description": _("Dairy Settings"),
+              	"onboard": 1,
+            },
+            {
+                "type": "doctype",
+                "name": "Route Master",
+                "label": _("Route Master"),
+                "description": _("Route Master"),
+                "onboard": 1,
+            },
+            {
+                "type": "doctype",
+                "name": "Milk Rate",
+                "label": _("Milk Rate"),
+                "description": _("Milk Rate"),
+                "onboard": 1,
+            },
+            
+
+        ]
+      }
 
     ]

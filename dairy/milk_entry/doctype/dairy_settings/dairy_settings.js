@@ -2,15 +2,16 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Dairy Settings', {
-	// refresh: function(frm) {
-
-	// }
 	
 	
-// 	validate: function(frm) {
-// 	 
-// 	 
-// 	},
+	validate: function(frm) {
+		if(frm.doc.max_allowed > frm.doc.can_volume)
+		{
+			frappe.throw(__(" 'Max Allowed Capacity' should be equal to or less than 'Can Volume' "));
+		}
+	 
+	 
+	},
 	
 	
 });
