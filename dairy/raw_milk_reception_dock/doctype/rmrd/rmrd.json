@@ -15,6 +15,7 @@
   "arrival",
   "column_break_10",
   "schedule",
+  "section_break_12",
   "milk_type"
  ],
  "fields": [
@@ -80,9 +81,13 @@
   {
    "fieldname": "column_break_10",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_12",
+   "fieldtype": "Section Break"
   }
  ],
- "modified": "2020-03-06 18:40:31.295141",
+ "modified": "2020-03-11 11:22:38.988787",
  "modified_by": "Administrator",
  "module": "Raw Milk Reception Dock",
  "name": "RMRD",
