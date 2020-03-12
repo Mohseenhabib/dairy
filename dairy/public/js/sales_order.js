@@ -36,10 +36,10 @@ frappe.ui.form.on("Sales Order", {
 
         frappe.model.get_value('Dairy Settings', {'name': 'Dairy Settings'}, 'evening_locking_time', function(e)
         {
-            
-            
-            var ote = e.evening_locking_time;  
-            
+
+
+            var ote = e.evening_locking_time;
+
             if(frm.doc.delivery_shift == 'Evening')
             {
                 if(frm.doc.delivery_date == frappe.datetime.get_today())

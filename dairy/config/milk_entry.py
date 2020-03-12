@@ -13,6 +13,7 @@ def get_data():
                     "name": "Milk Entry Detail",
                     "reference_doctype": "Milk Entry",
                     "onboard": 1
-                }]
+                }
+            ]
         }
     ]
