@@ -396,8 +396,8 @@
   }
  ],
  "issingle": 1,
- "modified": "2020-02-13 18:49:50.975643",
- "modified_by": "Administrator",
+ "modified": "2020-03-12 13:12:02.986436",
+ "modified_by": "asingh@dexciss.com",
  "module": "Milk Entry",
  "name": "Dairy Settings",
  "owner": "Administrator",
@@ -407,6 +407,16 @@
    "delete": 1,
    "read": 1,
    "role": "Dairy",
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Administrator",
+   "share": 1,
    "write": 1
   }
  ],

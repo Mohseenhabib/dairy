@@ -37,6 +37,7 @@ dairy/milk_entry/custom/sales_order.json
 dairy/milk_entry/custom/sales_order_item.json
 dairy/milk_entry/custom/supplier.json
 dairy/milk_entry/custom/warehouse.json
+dairy/milk_entry/desk_page/dairy/dairy.json
 dairy/milk_entry/doctype/__init__.py
 dairy/milk_entry/doctype/dairy_settings/__init__.py
 dairy/milk_entry/doctype/dairy_settings/dairy_settings.js

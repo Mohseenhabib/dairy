@@ -111,8 +111,15 @@ def get_data():
                 "description": _("Milk Rate"),
                 "onboard": 1,
             },
+            {
+                "type": "doctype",
+                "name": "Address",
+                "label": _("Route"),
+                "description": _("Address"),
+                "onboard": 1,
+            },
             
-
+            
         ]
       }
 
