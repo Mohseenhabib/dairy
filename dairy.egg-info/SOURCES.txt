@@ -31,6 +31,8 @@ dairy/milk_entry/custom/payment_entry.json
 dairy/milk_entry/custom/purchase_invoice.json
 dairy/milk_entry/custom/purchase_receipt.json
 dairy/milk_entry/custom/purchase_receipt_item.json
+dairy/milk_entry/custom/quotation.json
+dairy/milk_entry/custom/quotation_item.json
 dairy/milk_entry/custom/sales_invoice.json
 dairy/milk_entry/custom/sales_invoice_item.json
 dairy/milk_entry/custom/sales_order.json
