@@ -25,6 +25,7 @@ dairy/field_order/doctype/field_order/field_order.js
 dairy/field_order/doctype/field_order/field_order.json
 dairy/field_order/doctype/field_order/field_order.py
 dairy/field_order/doctype/field_order/test_field_order.py
+dairy/fixtures/custom_field.json
 dairy/milk_entry/__init__.py
 dairy/milk_entry/custom/address.json
 dairy/milk_entry/custom/payment_entry.json
