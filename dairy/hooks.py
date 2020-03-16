@@ -12,7 +12,7 @@ app_email = "dexciss"
 app_license = "Dexciss"
 
 
-# fixtures = ["Custom Field"]
+fixtures = ["Custom Field"]
 
 doctype_js= {
                 "Warehouse":"public/js/utils/warehouse.js",
