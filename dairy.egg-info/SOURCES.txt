@@ -27,14 +27,12 @@ dairy/field_order/doctype/field_order/field_order.py
 dairy/field_order/doctype/field_order/test_field_order.py
 dairy/fixtures/custom_field.json
 dairy/milk_entry/__init__.py
-dairy/milk_entry/custom/address.json
 dairy/milk_entry/custom/payment_entry.json
 dairy/milk_entry/custom/purchase_invoice.json
 dairy/milk_entry/custom/purchase_receipt.json
 dairy/milk_entry/custom/purchase_receipt_item.json
 dairy/milk_entry/custom/quotation.json
 dairy/milk_entry/custom/quotation_item.json
-dairy/milk_entry/custom/sales_invoice.json
 dairy/milk_entry/custom/sales_invoice_item.json
 dairy/milk_entry/custom/sales_order.json
 dairy/milk_entry/custom/sales_order_item.json

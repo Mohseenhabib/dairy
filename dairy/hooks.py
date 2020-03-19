@@ -12,11 +12,7 @@ app_email = "dexciss"
 app_license = "Dexciss"
 
 
-fixtures = ["Custom Field"]
-
-doctype_js= {
-                "Warehouse":"public/js/utils/warehouse.js",
-            }
+# fixtures = ["Custom Field"]
 
 # Includes in <head>
 # ------------------
@@ -41,6 +37,7 @@ doctype_js= {
 
 # include js in doctype views
 doctype_js = {
+    "Warehouse": "public/js/utils/warehouse.js",
     "Sales Order" : "public/js/sales_order.js",
     "Quotation" : "public/js/quotation.js",
     }

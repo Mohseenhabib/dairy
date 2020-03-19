@@ -1,5 +1,8 @@
 
 frappe.ui.form.on('Quotation', {
+    setup: function(frm) {
+		frm.add_fetch("route", "price_list", "selling_price_list");
+	},
 	validate: function(frm) {
         var today = new Date();
         var time = today.getHours() + ":" + today.getMinutes();

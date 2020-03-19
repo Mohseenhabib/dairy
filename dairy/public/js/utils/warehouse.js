@@ -4,10 +4,10 @@ frappe.ui.form.on('Warehouse', {
             return {
                 filters: {
                     "company":doc.company,
-                    "dest_warehouse":["!=",doc.name]
+//                    "dest_warehouse":["!=",doc.name],
+                    "route_type":"Buying"
                 }
             };
         });
-
     },
 })
