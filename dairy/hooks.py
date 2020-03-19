@@ -13,6 +13,13 @@ app_license = "Dexciss"
 
 
 # fixtures = ["Custom Field"]
+<<<<<<< HEAD
+=======
+
+doctype_js= {
+                "Warehouse":"public/js/utils/warehouse.js",
+            }
+>>>>>>> 199ff31481864752e9b897a4fa1fddb869ae6f27
 
 # Includes in <head>
 # ------------------
