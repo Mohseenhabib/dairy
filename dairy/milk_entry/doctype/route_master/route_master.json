@@ -117,8 +117,7 @@
    "fieldname": "price_list",
    "fieldtype": "Link",
    "label": "Price List",
-   "options": "Price List",
-   "reqd": 1
+   "options": "Price List"
   },
   {
    "fieldname": "source_warehouse",
@@ -130,13 +129,12 @@
    "fieldname": "customer",
    "fieldtype": "Link",
    "label": "Customer",
-   "options": "Customer",
-   "reqd": 1
+   "options": "Customer"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-03-19 20:25:06.410187",
+ "modified": "2020-03-20 13:38:42.773144",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Route Master",

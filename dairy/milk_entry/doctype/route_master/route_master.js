@@ -43,6 +43,12 @@ frappe.ui.form.on('Route Master', {
 
             frm.set_df_property("source_warehouse", "reqd", 0);
             frm.set_df_property("source_warehouse", "hidden",1);
+
+            frm.set_df_property("price_list", "reqd", 0);
+            frm.set_df_property("price_list", "hidden",1);
+
+            frm.set_df_property("customer", "reqd", 0);
+            frm.set_df_property("customer", "hidden",1);
          }
          else
          {
@@ -51,6 +57,12 @@ frappe.ui.form.on('Route Master', {
 
             frm.set_df_property("source_warehouse", "reqd", 1);
             frm.set_df_property("source_warehouse", "hidden",0);
+
+            frm.set_df_property("price_list", "reqd", 1);
+            frm.set_df_property("price_list", "hidden",0);
+
+            frm.set_df_property("customer", "reqd", 1);
+            frm.set_df_property("customer", "hidden",0);
          }
     },
     route_type :function(frm){

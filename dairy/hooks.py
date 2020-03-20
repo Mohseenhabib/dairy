@@ -37,8 +37,9 @@ app_license = "Dexciss"
 # include js in doctype views
 doctype_js = {
     "Warehouse": "public/js/utils/warehouse.js",
-    "Sales Order" : "public/js/sales_order.js",
-    "Quotation" : "public/js/quotation.js",
+    "Sales Order": "public/js/sales_order.js",
+    "Quotation": "public/js/quotation.js",
+    "Delivery Note": "public/js/delivery_note.js"
     }
 
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
@@ -93,13 +94,11 @@ doctype_js = {
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-#	}
-# }
+doc_events = {
+	"Delivery Note": {
+		"after_insert": "dairy.milk_entry.custom_delivery_note.calculate_crate_after_insert",
+	}
+}
 
 # doc_events={
 #     "Milk Entry": {

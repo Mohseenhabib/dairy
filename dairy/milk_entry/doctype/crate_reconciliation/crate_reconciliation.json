@@ -1,0 +1,156 @@
+{
+ "actions": [],
+ "autoname": "naming_series:",
+ "creation": "2020-03-20 15:17:25.940298",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "customer",
+  "route",
+  "column_break_4",
+  "date",
+  "user",
+  "comapny",
+  "delivery_information_section",
+  "delivery_info",
+  "sb2",
+  "total_outgoing",
+  "column_break_12",
+  "total_incoming",
+  "column_break_14",
+  "total_damaged",
+  "column_break_16",
+  "difference"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Name",
+   "options": "CR -.YYYY./"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Customer",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "route",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Route",
+   "options": "Route Master",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Date",
+   "reqd": 1
+  },
+  {
+   "default": "user",
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "User",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "comapny",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "delivery_information_section",
+   "fieldtype": "Section Break",
+   "label": "Delivery Information"
+  },
+  {
+   "fieldname": "delivery_info",
+   "fieldtype": "Table",
+   "label": "Delivery Information",
+   "options": "Crate Reconciliation Child"
+  },
+  {
+   "fieldname": "sb2",
+   "fieldtype": "Section Break",
+   "label": "Settlement"
+  },
+  {
+   "fieldname": "total_outgoing",
+   "fieldtype": "Float",
+   "in_standard_filter": 1,
+   "label": "Total Outgoing ",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_incoming",
+   "fieldtype": "Float",
+   "label": "Total Incoming",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_14",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_damaged",
+   "fieldtype": "Float",
+   "label": "Total Damaged",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_16",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "difference",
+   "fieldtype": "Float",
+   "label": "Difference",
+   "read_only": 1
+  }
+ ],
+ "links": [],
+ "modified": "2020-03-20 16:37:18.942063",
+ "modified_by": "Administrator",
+ "module": "Milk Entry",
+ "name": "Crate Reconciliation",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Dairy",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

@@ -13,8 +13,12 @@
    "title": "Order Book"
   },
   {
-   "links": "[\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Dairy Settings\",\n        \"label\": \"Dairy Settings\",\n        \"description\": \"Dairy Settings\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Route Master\",\n        \"label\": \"Route Master\",\n        \"description\": \"Route Master\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Milk Rate\",\n        \"label\": \"Milk Rate\",\n        \"description\": \"Milk Rate\",\n        \"onboard\": 1\n    }           \n]",
+   "links": "[\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Dairy Settings\",\n        \"label\": \"Dairy Settings\",\n        \"description\": \"Dairy Settings\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Route Master\",\n        \"label\": \"Route Master\",\n        \"description\": \"Route Master\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Milk Rate\",\n        \"label\": \"Milk Rate\",\n        \"description\": \"Milk Rate\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Crate Type\",\n        \"label\": \"Crate Type\",\n        \"description\": \"Crate Type\",\n        \"onboard\": 1\n    }\n]",
    "title": "Settings"
+  },
+  {
+   "links": "[\n    \n    {\n        \"type\": \"doctype\",\n        \"name\": \"Crate Reconciliation\",\n        \"label\": \"Crate Reconciliation\",\n        \"description\": \"Crate Reconciliation\",\n        \"onboard\": 1\n    }\n]",
+   "title": "Crate Management"
   },
   {
    "links": "[\n    {\n        \"type\": \"report\",\n        \"is_query_report\": 1,\n        \"name\": \"Milk Entry Detail\",\n        \"reference_doctype\": \"Milk Entry\",\n        \"onboard\": 1\n    }\n]",
@@ -32,7 +36,7 @@
  "idx": 0,
  "is_standard": 1,
  "label": "Dairy",
- "modified": "2020-03-19 17:24:16.684477",
+ "modified": "2020-03-20 15:38:29.102129",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy",
