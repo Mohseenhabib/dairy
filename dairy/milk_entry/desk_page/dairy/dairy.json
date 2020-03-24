@@ -21,8 +21,8 @@
    "title": "Crate Management"
   },
   {
-   "links": "[\n    {\n        \"type\": \"report\",\n        \"is_query_report\": 1,\n        \"name\": \"Milk Entry Detail\",\n        \"reference_doctype\": \"Milk Entry\",\n        \"onboard\": 1\n    }\n]",
-   "title": "Key Reports"
+   "links": "[\n    {\n        \"type\": \"report\",\n        \"is_query_report\": 1,\n        \"name\": \"Milk Entry Detail\",\n        \"reference_doctype\": \"Milk Entry\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"report\",\n        \"is_query_report\": 1,\n        \"name\": \"Vehicle Wise Crate Summary\",\n        \"reference_doctype\": \"Delivery Note\",\n        \"onboard\": 1\n    }\n]",
+   "title": "Reports"
   }
  ],
  "category": "Modules",
@@ -36,7 +36,7 @@
  "idx": 0,
  "is_standard": 1,
  "label": "Dairy",
- "modified": "2020-03-20 15:38:29.102129",
+ "modified": "2020-03-24 17:32:02.730774",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy",

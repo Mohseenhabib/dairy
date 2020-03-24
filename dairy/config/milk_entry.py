@@ -4,7 +4,7 @@ from frappe import _
 def get_data():
 	return [
         {
-          "label": _("Key Reports"),
+          "label": _("Reports"),
             "icon": "fa fa-table",
             "items": [
                 {
@@ -12,6 +12,13 @@ def get_data():
                     "is_query_report": True,
                     "name": "Milk Entry Detail",
                     "reference_doctype": "Milk Entry",
+                    "onboard": 1
+                },
+                {
+                    "type": "report",
+                    "is_query_report": True,
+                    "name": "Vehicle Wise Crate Summary",
+                    "reference_doctype": "Delivery Note",
                     "onboard": 1
                 }
             ]
