@@ -12,7 +12,7 @@
   "column_break_4",
   "date",
   "user",
-  "comapny",
+  "company",
   "delivery_information_section",
   "delivery_info",
   "sb2",
@@ -22,7 +22,11 @@
   "column_break_14",
   "total_damaged",
   "column_break_16",
-  "difference"
+  "difference",
+  "crate_type_summary_section",
+  "crate_type_summary",
+  "section_break_20",
+  "amended_from"
  ],
  "fields": [
   {
@@ -70,13 +74,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "comapny",
-   "fieldtype": "Link",
-   "label": "Company",
-   "options": "Company",
-   "reqd": 1
-  },
-  {
    "fieldname": "delivery_information_section",
    "fieldtype": "Section Break",
    "label": "Delivery Information"
@@ -106,6 +103,7 @@
   {
    "fieldname": "total_incoming",
    "fieldtype": "Float",
+   "in_standard_filter": 1,
    "label": "Total Incoming",
    "read_only": 1
   },
@@ -116,6 +114,7 @@
   {
    "fieldname": "total_damaged",
    "fieldtype": "Float",
+   "in_standard_filter": 1,
    "label": "Total Damaged",
    "read_only": 1
   },
@@ -126,15 +125,53 @@
   {
    "fieldname": "difference",
    "fieldtype": "Float",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Difference",
    "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Crate Reconciliation",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "crate_type_summary_section",
+   "fieldtype": "Section Break",
+   "label": "Crate Type Summary"
+  },
+  {
+   "fieldname": "crate_type_summary",
+   "fieldtype": "Table",
+   "label": "Crate Type Summary",
+   "options": "Crate Type Summary Child",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_20",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
   }
  ],
+ "is_submittable": 1,
  "links": [],
- "modified": "2020-03-20 16:37:18.942063",
+ "modified": "2020-03-24 16:20:52.490236",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Crate Reconciliation",
+ "name_case": "Title Case",
  "owner": "Administrator",
  "permissions": [
   {

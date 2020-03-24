@@ -284,14 +284,14 @@
    "_comments": null,
    "_liked_by": null,
    "_user_tags": null,
-   "creation": "2020-01-15 19:43:52.910106",
+   "creation": "2020-03-23 10:40:05.152410",
    "default_value": null,
    "doc_type": "Sales Invoice Item",
    "docstatus": 0,
    "doctype_or_field": "DocField",
    "field_name": "barcode",
    "idx": 0,
-   "modified": "2020-01-15 19:43:52.910106",
+   "modified": "2020-03-23 10:40:05.152410",
    "modified_by": "Administrator",
    "name": "Sales Invoice Item-barcode-hidden",
    "owner": "Administrator",
@@ -300,7 +300,7 @@
    "parenttype": null,
    "property": "hidden",
    "property_type": "Check",
-   "value": "1"
+   "value": "0"
   }
  ],
  "sync_on_migrate": 1

@@ -95,9 +95,19 @@ doctype_js = {
 # Hook on document methods and events
 
 doc_events = {
-	"Delivery Note": {
-		"after_insert": "dairy.milk_entry.custom_delivery_note.calculate_crate_after_insert",
-	}
+    "Delivery Note": {
+        "after_insert": "dairy.milk_entry.custom_delivery_note.calculate_crate_after_insert",
+        "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
+    },
+    "Sales Order": {
+        "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
+    },
+    "Quotation": {
+        "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
+    },
+    "Sales Invoice": {
+        "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
+    }
 }
 
 # doc_events={
@@ -137,7 +147,7 @@ doc_events = {
 # ------------------------------
 #
 # override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "dairy.event.get_events"
+# 	"erpnext.selling.doctype.quotation.quotation.make_sales_order": "dairy.milk_entry.custom_delivery_note.make_sales_order"
 # }
 #
 # each overriding function accepts a `data` argument;
