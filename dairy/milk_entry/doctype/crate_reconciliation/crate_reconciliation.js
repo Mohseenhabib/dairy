@@ -54,7 +54,8 @@ frappe.ui.form.on('Crate Reconciliation', {
             doc: frm.doc,
             method: 'calculate_crate_type_summary',
             callback: function(r) {
-                frm.reload_doc();
+//                frm.refresh_field('crate_type_summary_section');
+//                frm.refresh_field('crate_type_summary');
             }
         });
      }

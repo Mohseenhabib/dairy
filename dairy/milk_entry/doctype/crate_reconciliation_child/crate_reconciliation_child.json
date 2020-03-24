@@ -56,16 +56,19 @@
    "options": "Route Master"
   },
   {
+   "default": "0.0",
    "fieldname": "outgoing",
    "fieldtype": "Float",
    "label": "Outgoing"
   },
   {
+   "default": "0.0",
    "fieldname": "incoming",
    "fieldtype": "Float",
    "label": "Incoming"
   },
   {
+   "default": "0.0",
    "fieldname": "damaged",
    "fieldtype": "Float",
    "label": "Damaged"
@@ -91,7 +94,7 @@
  ],
  "istable": 1,
  "links": [],
- "modified": "2020-03-23 12:42:21.191174",
+ "modified": "2020-03-24 19:27:28.269921",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Crate Reconciliation Child",

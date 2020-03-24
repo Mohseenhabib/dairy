@@ -60,6 +60,7 @@ def add_crate_count_item_line(doc):
                 overage = crate_count.crate_overage
 
             qty = round((itm.qty / (crate_count.crate_quantity * (1 + overage / 100))),2)
+            print("------------------", qty, overage, crate_count.crate_quantity)
             itm.crate_count = float(((str(qty) + ".").split("."))[0])
             itm.crate_type = crate_count.crate_type
             itm.db_update()
