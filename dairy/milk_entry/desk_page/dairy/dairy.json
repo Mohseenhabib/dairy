@@ -26,7 +26,19 @@
   }
  ],
  "category": "Modules",
- "charts": [],
+ "charts": [
+  {
+   "chart_name": "Milk Entry",
+   "label": "Milk Entry By Week",
+   "size": "Half"
+  },
+  {
+   "chart_name": "milk entry by dcs",
+   "label": "milk entry by dcs",
+   "size": "Half"
+  }
+ ],
+ "charts_label": "DASHBOARDS",
  "creation": "2020-03-12 10:36:30.921482",
  "developer_mode_only": 0,
  "disable_user_customization": 0,
@@ -36,7 +48,7 @@
  "idx": 0,
  "is_standard": 1,
  "label": "Dairy",
- "modified": "2020-03-24 17:32:02.730774",
+ "modified": "2020-03-25 13:33:48.844814",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy",
