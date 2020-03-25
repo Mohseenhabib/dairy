@@ -34,7 +34,7 @@
   },
   {
    "chart_name": "milk entry by dcs",
-   "label": "milk entry by dcs",
+   "label": "Milk Entry By DCS",
    "size": "Half"
   }
  ],
@@ -48,7 +48,7 @@
  "idx": 0,
  "is_standard": 1,
  "label": "Dairy",
- "modified": "2020-03-25 13:33:48.844814",
+ "modified": "2020-03-25 16:48:09.666650",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy",
