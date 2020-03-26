@@ -21,7 +21,9 @@
   "cb1",
   "driver",
   "amended_from",
-  "company"
+  "company",
+  "section_break_17",
+  "vehicle_html"
  ],
  "fields": [
   {
@@ -130,11 +132,20 @@
    "fieldtype": "Link",
    "label": "Customer",
    "options": "Customer"
+  },
+  {
+   "fieldname": "section_break_17",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "vehicle_html",
+   "fieldtype": "HTML",
+   "label": "Vehicle"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-03-20 13:38:42.773144",
+ "modified": "2020-03-26 13:25:15.389958",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Route Master",

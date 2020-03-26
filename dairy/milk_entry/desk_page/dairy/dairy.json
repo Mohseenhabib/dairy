@@ -1,7 +1,7 @@
 {
  "cards": [
   {
-   "links": "[\n    \n    {\n        \"type\": \"doctype\",\n        \"name\": \"Raw Milk Sample\",\n        \"label\": \"Raw Milk Sample\",\n        \"description\": \"Raw Milk Sample\",\n        \"onboard\": 1\n    }\n]",
+   "links": "[\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Raw Milk Sample\",\n        \"label\": \"Raw Milk Sample\",\n        \"description\": \"Raw Milk Sample\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Van Collection Items\",\n        \"label\": \"Van Collection Items\",\n        \"description\": \"Van Collection Items\",\n        \"onboard\": 1\n    }\n]",
    "title": "Dairy"
   },
   {
@@ -48,7 +48,7 @@
  "idx": 0,
  "is_standard": 1,
  "label": "Dairy",
- "modified": "2020-03-25 16:48:09.666650",
+ "modified": "2020-03-26 16:50:59.022895",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy",

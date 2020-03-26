@@ -27,6 +27,13 @@ def get_data():
                 "description": _("Van Collection"),
                 "onboard": 1,
             },
+            {
+                "type": "doctype",
+                "name": "Van Collection Items",
+                "label": _("Van Collection Items"),
+                "description": "Van Collection Items",
+                "onboard": 1
+            }
             
           ]
       },

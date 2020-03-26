@@ -50,21 +50,13 @@ frappe.ui.form.on('Van Collection', {
             frm.refresh_field('status');
         });
     },
-    
-//     validate: function(frm) {
-//         var van_colle = frappe.db.get_value("Van Collection",{
-//                             "route": frm.doc.route,
-//                             "date":frappe.datetime.get_today(),
-//                             "shift":frm.doc.shift,
-//                             "vehicle":frm.doc.vehicle,
-//                             "status":["!=","Cancelled"]
-//                             })
-//         console.log("van_colle",van_colle)
-//         if (van_colle){
-//             frappe.throw(__("Already vehicle has been scheduled in this period."))
-//             }
-//         frm.call('check_van_collections').then(() => {
-//             frm.refresh_field('status');
-//         });
-//     }
+    onload: function(frm){
+        frm.set_query('route', function(doc) {
+            return {
+                filters: {
+                    "route_type":"Buying"
+                }
+            };
+        });
+    },
 });

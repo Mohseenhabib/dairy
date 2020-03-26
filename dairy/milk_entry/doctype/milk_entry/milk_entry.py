@@ -32,7 +32,7 @@ class MilkEntry(Document):
 					where milk_rate.milk_type = '{0}' and ware.warehouse_id = '{1}' 
 					and milk_rate.docstatus = 1 and milk_rate.effective_date <= '{2}' limit 1  """.format(self.milk_type,self.dcs_id,self.date))
         if not pricelist_name:
-            frappe.throw(_("Pricelist not found."))
+            frappe.throw(_("Milk Rate not found."))
 			
         frappe.db.set(self,'milk_rate', pricelist_name[0][0])
         print("======self==pricelist_name",self.milk_rate)
