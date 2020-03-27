@@ -107,6 +107,9 @@ doc_events = {
     },
     "Sales Invoice": {
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
+    },
+    "Stock Entry":{
+        "after_insert": "dairy.milk_entry.doctype.van_collection.van_collection.change_van_collection_status"
     }
 }
 

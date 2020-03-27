@@ -36,7 +36,8 @@
   "sb5",
   "gate_pass",
   "sb6",
-  "time"
+  "time",
+  "van_collection"
  ],
  "fields": [
   {
@@ -51,6 +52,7 @@
    "fieldname": "dcs",
    "fieldtype": "Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "DCS",
    "options": "Warehouse",
    "reqd": 1
@@ -229,10 +231,18 @@
    "allow_in_quick_entry": 1,
    "fieldname": "section_break_22",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "van_collection",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Van Collection",
+   "options": "Van Collection",
+   "read_only": 1
   }
  ],
  "links": [],
- "modified": "2020-03-26 19:40:12.346462",
+ "modified": "2020-03-27 10:17:50.402526",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Van Collection Items",
