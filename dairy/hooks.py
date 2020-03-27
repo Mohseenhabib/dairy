@@ -22,7 +22,7 @@ app_license = "Dexciss"
 
 
 # -----------------------quick entry temporay removed  -sid----------------------
-# app_include_js = "/assets/js/milk_entry_quick.min.js"
+app_include_js = "/assets/js/vehicle.min.js"
 
 
 
@@ -39,7 +39,9 @@ doctype_js = {
     "Warehouse": "public/js/utils/warehouse.js",
     "Sales Order": "public/js/sales_order.js",
     "Quotation": "public/js/quotation.js",
-    "Delivery Note": "public/js/delivery_note.js"
+    "Delivery Note": "public/js/delivery_note.js",
+    "Vehicle": "public/js/vehicle.js",
+    "Customer": "public/js/customer.js"
     }
 
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
@@ -111,6 +113,16 @@ doc_events = {
     "Stock Entry":{
         "after_insert": "dairy.milk_entry.doctype.van_collection.van_collection.change_van_collection_status"
     }
+}
+
+permission_query_conditions = {
+    "Vehicle": "dairy.vehicle_dynamic_link.get_permission_query_conditions_for_vehicle",
+    "Customer": "dairy.vehicle_dynamic_link.get_permission_query_conditions_for_customer",
+}
+
+has_permission = {
+    "Vehicle": "dairy.vehicle_dynamic_link.has_permission",
+    "Customer": "dairy.vehicle_dynamic_link.has_permission",
 }
 
 # doc_events={

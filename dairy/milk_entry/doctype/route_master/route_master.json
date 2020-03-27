@@ -23,7 +23,9 @@
   "amended_from",
   "company",
   "section_break_17",
-  "vehicle_html"
+  "vehicle_html",
+  "column_break_19",
+  "customer_html"
  ],
  "fields": [
   {
@@ -135,17 +137,27 @@
   },
   {
    "fieldname": "section_break_17",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Vehicle and Customer"
   },
   {
    "fieldname": "vehicle_html",
    "fieldtype": "HTML",
    "label": "Vehicle"
+  },
+  {
+   "fieldname": "column_break_19",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "customer_html",
+   "fieldtype": "HTML",
+   "label": "Customer"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-03-26 13:25:15.389958",
+ "modified": "2020-03-27 15:18:07.630370",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Route Master",

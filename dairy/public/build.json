@@ -1,5 +1,7 @@
 {
-  "js/milk_entry_quick.min.js": [
-        "public/js/utils/milk_entry_quick_entry.js"
+  "js/vehicle.min.js": [
+        "public/js/templates/vehicle_list.html",
+        "public/js/templates/customer_list.html",
+        "public/js/utils/vehicle_dynamic_link.js"
         ]
 }

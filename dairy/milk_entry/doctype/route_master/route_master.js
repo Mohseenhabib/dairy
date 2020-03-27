@@ -2,18 +2,18 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Route Master', {
-//	 refresh: function(frm){
-//	    frappe.dynamic_link = {doc: frm.doc, fieldname: 'name', doctype: 'Route Master'};
-//	    frm.toggle_display(['vehicle_html'], !frm.doc.__islocal);
-//		if(!frm.doc.__islocal)
-//		{
-//			dynamic_vehicle_link.vehicle_dynamic_link.render_vehicle_html(frm);
-//		}
-//		else
-//		{
-//			dynamic_vehicle_link.vehicle_dynamic_link.clear_vehicle_html(frm);
-//		}
-//	 },
+	 refresh: function(frm){
+	    frappe.dynamic_link = {doc: frm.doc, fieldname: 'name', doctype: 'Route Master'};
+	    frm.toggle_display(['vehicle_html','customer_html'], !frm.doc.__islocal);
+		if(!frm.doc.__islocal)
+		{
+			dairy.vehicle_dynamic_link.render_vehicle_and_customer(frm);
+		}
+		else
+		{
+			dairy.vehicle_dynamic_link.clear_vehicle_and_customer(frm);
+		}
+	 },
 	 onload: function(frm){
         frm.set_query('dest_warehouse', function(doc) {
             return {
