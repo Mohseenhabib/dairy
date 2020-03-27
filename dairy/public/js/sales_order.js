@@ -59,5 +59,22 @@ frappe.ui.form.on("Sales Order", {
         {
              frm.set_value("delivery_date",frappe.datetime.get_today());
         }
+    },
+    customer:function(frm){
+        return cur_frm.call({
+            method:"dairy.milk_entry.custom_delivery_note.get_route_price_list",
+            args: {
+                    doc_name: cur_frm.doc.customer
+                  },
+            callback: function(r)
+                {
+                   if(r.message)
+                   {
+                    frm.set_value("route",r.message.route);
+                    frm.set_value("selling_price_list",r.message.p_list);
+                    frm.set_value("set_warehouse",r.message.warehouse);
+                   }
+                }
+        });
     }
 });

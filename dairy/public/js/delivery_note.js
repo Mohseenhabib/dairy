@@ -1,6 +1,7 @@
 frappe.ui.form.on("Delivery Note", {
     setup: function(frm) {
 		frm.add_fetch("route", "source_warehouse", "set_warehouse");
+		frm.add_fetch("route", "price_list", "selling_price_list");
 	},
 	calculate_crate: function(frm){
 	    cur_frm.cscript.calculate_crate()
@@ -16,20 +17,23 @@ frappe.ui.form.on("Delivery Note", {
 	onload: function(frm){
 	    frm.trigger('set_property');
 	},
-//	set_property: function(frm) {
-//         if(!frm.doc.__islocal && frm.doc.docstatus == 0)
-//         {
-//            frm.set_df_property("calculate_crate", "hidden",0);
-//         }
-//         else
-//         {
-//            frm.set_df_property("calculate_crate", "hidden",1);
-//         }
-//    },
-//    docstatus:function(frm)
-//    {
-//        frm.trigger('set_property');
-//    }
+	customer:function(frm){
+        return cur_frm.call({
+            method:"dairy.milk_entry.custom_delivery_note.get_route_price_list",
+            args: {
+                    doc_name: cur_frm.doc.customer
+                  },
+            callback: function(r)
+                {
+                   if(r.message)
+                   {
+                    frm.set_value("route",r.message.route);
+                     frm.set_value("selling_price_list",r.message.p_list);
+                     frm.set_value("set_warehouse",r.message.warehouse);
+                   }
+                }
+        });
+    }
 });
 
 cur_frm.cscript.calculate_crate = function(){

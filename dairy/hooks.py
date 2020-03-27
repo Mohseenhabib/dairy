@@ -41,7 +41,8 @@ doctype_js = {
     "Quotation": "public/js/quotation.js",
     "Delivery Note": "public/js/delivery_note.js",
     "Vehicle": "public/js/vehicle.js",
-    "Customer": "public/js/customer.js"
+    "Customer": "public/js/customer.js",
+    "Sales Invoice": "public/js/sales_invoice.js"
     }
 
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}

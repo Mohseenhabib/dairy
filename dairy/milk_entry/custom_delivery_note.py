@@ -61,7 +61,6 @@ def add_crate_count_item_line(doc):
 
             # qty = round((itm.qty / (crate_count.crate_quantity * (1 + overage / 100))),2)
             qty = round((itm.qty / (crate_count.crate_quantity)),2)
-            print("------------------", qty, overage, crate_count.crate_quantity)
             if 0 < qty < 1:
                 qty =1.0
             itm.crate_count = float(((str(qty) + ".").split("."))[0])
@@ -84,3 +83,19 @@ def route_validation(obj, method):
     result = frappe.db.sql(query)
     if result and not doc.route:
         frappe.throw(_("Please select route is Mandatory"))
+
+@frappe.whitelist()
+def get_route_price_list(doc_name=None):
+    if doc_name:
+        route_name = frappe.db.sql("""select link_name from `tabDynamic Link` 
+                                where parenttype ='Customer'  
+                                and link_doctype ='Route Master' 
+                                and parent =%s limit 1""",(doc_name))
+        if route_name:
+            dic ={}
+            doc = frappe.get_doc("Route Master",route_name[0][0])
+            dic['route'] = doc.name
+            dic['p_list'] = doc.price_list
+            dic['warehouse'] = doc.source_warehouse
+            return dic
+        return  False
