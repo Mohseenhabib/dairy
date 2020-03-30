@@ -113,6 +113,9 @@ doc_events = {
     },
     "Stock Entry":{
         "after_insert": "dairy.milk_entry.doctype.van_collection.van_collection.change_van_collection_status"
+    },
+    "Purchase Receipt":{
+        "after_insert": "dairy.milk_entry.custom_purchase_receipt.change_milk_entry_status"
     }
 }
 

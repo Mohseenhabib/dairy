@@ -8,6 +8,11 @@
  "field_order": [
   "naming_series",
   "sb1",
+  "van_collection",
+  "route",
+  "shift",
+  "date",
+  "column_break_4",
   "dcs",
   "sb2",
   "cow_milk_vol",
@@ -36,8 +41,7 @@
   "sb5",
   "gate_pass",
   "sb6",
-  "time",
-  "van_collection"
+  "time"
  ],
  "fields": [
   {
@@ -59,6 +63,7 @@
   },
   {
    "allow_in_quick_entry": 1,
+   "default": "0",
    "fieldname": "cow_milk_vol",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -66,6 +71,7 @@
   },
   {
    "allow_in_quick_entry": 1,
+   "default": "0",
    "fieldname": "buf_milk_vol",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -73,6 +79,7 @@
   },
   {
    "allow_in_quick_entry": 1,
+   "default": "0",
    "fieldname": "mix_milk_vol",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -80,6 +87,7 @@
   },
   {
    "allow_in_quick_entry": 1,
+   "default": "0",
    "fieldname": "cow_milk_cans",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -87,6 +95,7 @@
   },
   {
    "allow_in_quick_entry": 1,
+   "default": "0",
    "fieldname": "buf_milk_cans",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -94,6 +103,7 @@
   },
   {
    "allow_in_quick_entry": 1,
+   "default": "0",
    "fieldname": "mix_milk_cans",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -102,26 +112,23 @@
   {
    "allow_in_quick_entry": 1,
    "fieldname": "cow_milk_sam",
-   "fieldtype": "Link",
-   "in_list_view": 1,
+   "fieldtype": "Table MultiSelect",
    "label": "Cow Sample Number",
-   "options": "Raw Milk Sample"
+   "options": "Multi Row Milk Sample"
   },
   {
    "allow_in_quick_entry": 1,
    "fieldname": "buf_milk_sam",
-   "fieldtype": "Link",
-   "in_list_view": 1,
+   "fieldtype": "Table MultiSelect",
    "label": "Buffalow Sample Number",
-   "options": "Raw Milk Sample"
+   "options": "Multi Row Milk Sample"
   },
   {
    "allow_in_quick_entry": 1,
    "fieldname": "mix_milk_sam",
-   "fieldtype": "Link",
-   "in_list_view": 1,
+   "fieldtype": "Table MultiSelect",
    "label": "Mix Sample Number",
-   "options": "Raw Milk Sample"
+   "options": "Multi Row Milk Sample"
   },
   {
    "allow_in_quick_entry": 1,
@@ -129,7 +136,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Gate Pass",
-   "options": "Purchase Receipt"
+   "options": "Stock Entry"
   },
   {
    "fieldname": "time",
@@ -194,10 +201,11 @@
   },
   {
    "fieldname": "sb6",
-   "fieldtype": "Section Break"
+   "fieldtype": "Column Break"
   },
   {
    "allow_in_quick_entry": 1,
+   "default": "0",
    "fieldname": "cow_milk_collected",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -205,6 +213,7 @@
   },
   {
    "allow_in_quick_entry": 1,
+   "default": "0",
    "fieldname": "buffalow_milk_collected",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -217,6 +226,7 @@
   },
   {
    "allow_in_quick_entry": 1,
+   "default": "0",
    "fieldname": "mix_milk_collected",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -238,11 +248,41 @@
    "in_standard_filter": 1,
    "label": "Van Collection",
    "options": "Van Collection",
+   "reqd": 1
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "van_collection.route",
+   "fieldname": "route",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Route",
+   "options": "Route Master",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "van_collection.shift",
+   "fieldname": "shift",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Shift",
+   "options": "Morning\nEvening"
+  },
+  {
+   "fetch_from": "van_collection.date",
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "hidden": 1,
+   "label": "Date",
    "read_only": 1
   }
  ],
  "links": [],
- "modified": "2020-03-27 10:17:50.402526",
+ "modified": "2020-03-30 19:33:10.049358",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Van Collection Items",
@@ -261,7 +301,6 @@
    "write": 1
   }
  ],
- "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
  "track_changes": 1

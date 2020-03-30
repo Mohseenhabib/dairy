@@ -5,8 +5,17 @@
 from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
+from frappe.model.mapper import get_mapped_doc
 
 class VanCollectionItems(Document):
+
+	def validate(self):
+		if self.get('__islocal'):
+			result = frappe.db.sql("""select * from `tabVan Collection Items` where dcs =%s and shift =%s
+							and date=%s""",(self.dcs,self.shift,self.date))
+			if result:
+				frappe.throw("You can not create duplicate entry on same date and same DCS")
+
 	def calculate_milk_cans(self):
 		allow_max_capacity = frappe.db.get_single_value("Dairy Settings", "max_allowed")
 
@@ -25,3 +34,83 @@ class VanCollectionItems(Document):
 			self.mix_milk_cans = self.mix_milk_collected / allow_max_capacity
 			self.db_update()
 		return True
+
+	def make_stock_entry(self):
+		van_collection = frappe.get_doc("Van Collection", self.van_collection)
+		stock_entry = frappe.new_doc("Stock Entry")
+		stock_entry.purpose = "Material Transfer"
+		stock_entry.stock_entry_type = "Material Transfer"
+		stock_entry.company = van_collection.company
+		stock_entry.van_collection = van_collection.name
+		stock_entry.van_collection_item = self.name
+
+		route = frappe.get_doc("Route Master", van_collection.route)
+
+		cost_center = frappe.get_cached_value('Company', van_collection.company, 'cost_center')
+		perpetual_inventory = frappe.get_cached_value('Company', van_collection.company, 'enable_perpetual_inventory')
+		expense_account = frappe.get_cached_value('Company', van_collection.company, 'stock_adjustment_account')
+
+		cow_item = frappe.db.get_single_value("Dairy Settings", "cow_pro")
+		buf_item = frappe.db.get_single_value("Dairy Settings", "buf_pro")
+		mix_item = frappe.db.get_single_value("Dairy Settings", "mix_pro")
+
+		doc = frappe.get_doc("Van Collection Items", self.name)
+
+		if doc.cow_milk_collected > 0:
+			self.set_value_depend_milk_type(cow_item, stock_entry, doc, doc.cow_milk_collected, route, cost_center, expense_account, perpetual_inventory)
+
+		if doc.buffalow_milk_collected > 0:
+			self.set_value_depend_milk_type(buf_item, stock_entry, doc, doc.buffalow_milk_collected, route, cost_center, expense_account, perpetual_inventory)
+
+		if doc.mix_milk_collected > 0:
+			self.set_value_depend_milk_type(mix_item, stock_entry,doc,doc.mix_milk_collected, route, cost_center, expense_account,perpetual_inventory)
+
+		return stock_entry
+
+	def set_value_depend_milk_type(self, item_name, stock_entry, doc, milk_collected, route, cost_center, expense_account, perpetual_inventory=None):
+		item = frappe.get_doc("Item", item_name)
+		se_child = stock_entry.append('items')
+		se_child.item_code = item.item_code
+		se_child.item_name = item.item_name
+		se_child.uom = item.stock_uom
+		se_child.stock_uom = item.stock_uom
+		se_child.qty = milk_collected
+		se_child.s_warehouse = doc.dcs
+		se_child.t_warehouse = route.dest_warehouse
+		# in stock uom
+		se_child.transfer_qty = doc.cow_milk_collected
+		se_child.cost_center = cost_center
+		se_child.expense_account = expense_account if perpetual_inventory else None
+
+
+@frappe.whitelist()
+def get_milk_entry(source_name, target_doc=None, ignore_permissions=False):
+	def get_milk_entry_data(source, target):
+		if source.milk_type == 'Cow':
+			target.cow_milk_vol += source.volume
+			result = frappe.db.sql("""Select name from `tabSample lines` where milk_entry =%s""",(source.name))
+			if result:
+				target.append("cow_milk_sam",{
+					'sample_lines':result[0][0]
+				})
+		if source.milk_type == 'Buffalow':
+			target.buf_milk_vol += source.volume
+			result = frappe.db.sql("""Select name from `tabSample lines` where milk_entry =%s""", (source.name))
+			if result:
+				target.append("cow_milk_sam", {
+					'sample_lines': result[0][0]
+				})
+		if source.milk_type == 'Mix':
+			target.mix_milk_vol += source.volume
+			result = frappe.db.sql("""Select name from `tabSample lines` where milk_entry =%s""", (source.name))
+			if result:
+				target.append("cow_milk_sam", {
+					'sample_lines': result[0][0]
+				})
+		target.db_update()
+	doclist = get_mapped_doc("Milk Entry", source_name, {
+		"Milk Entry": {
+			"doctype": "Van Collection Items",
+		}
+	}, target_doc, get_milk_entry_data)
+	return doclist

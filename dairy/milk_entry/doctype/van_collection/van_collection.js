@@ -21,17 +21,6 @@ frappe.ui.form.on('Van Collection', {
                 frappe.route_options = {"van_collection": frm.doc.name};
                 frappe.set_route("Report", "Van Collection Items");
             });
-
-            frm.add_custom_button(__('Make Stock Entry'),function() {
-                return frappe.call({
-                    doc: frm.doc,
-                    method: 'make_stock_entry',
-                    callback: function(r) {
-                        var doc = frappe.model.sync(r.message);
-                        frappe.set_route("Form", doc[0].doctype, doc[0].name);
-                    }
-                });
-            }).addClass('btn-primary');
         }
     },
     before_submit: function(frm) {

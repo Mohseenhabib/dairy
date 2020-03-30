@@ -51,72 +51,7 @@ class VanCollection(Document):
             self.save(ignore_permissions=True)
         return True
 
-    def make_stock_entry(self):
-        stock_entry = frappe.new_doc("Stock Entry")
-        stock_entry.purpose = "Material Transfer"
-        stock_entry.stock_entry_type = "Material Transfer"
-        stock_entry.company = self.company
-        stock_entry.van_collection = self.name
 
-        route = frappe.get_doc("Route Master",self.route)
-        coll_items = frappe.db.get_all("Van Collection Items", {"van_collection": self.name})
-
-        cost_center = frappe.get_cached_value('Company', self.company, 'cost_center')
-        perpetual_inventory = frappe.get_cached_value('Company', self.company, 'enable_perpetual_inventory')
-        expense_account = frappe.get_cached_value('Company', self.company, 'stock_adjustment_account')
-
-        cow_item = frappe.db.get_single_value("Dairy Settings", "cow_pro")
-        buf_item = frappe.db.get_single_value("Dairy Settings", "buf_pro")
-        mix_item = frappe.db.get_single_value("Dairy Settings", "mix_pro")
-
-        for res in coll_items:
-            doc = frappe.get_doc("Van Collection Items",res.name)
-            if doc.cow_milk_collected > 0:
-                item = frappe.get_doc("Item",cow_item)
-                se_child = stock_entry.append('items')
-                se_child.item_code = item.item_code
-                se_child.item_name = item.item_name
-                se_child.uom = item.stock_uom
-                se_child.stock_uom = item.stock_uom
-                se_child.qty = doc.cow_milk_collected
-                se_child.s_warehouse = doc.dcs
-                se_child.t_warehouse = route.dest_warehouse
-                # in stock uom
-                se_child.transfer_qty = doc.cow_milk_collected
-                se_child.cost_center = cost_center
-                se_child.expense_account = expense_account if perpetual_inventory else None
-
-            if doc.buffalow_milk_collected > 0:
-                item = frappe.get_doc("Item",buf_item)
-                se_child = stock_entry.append('items')
-                se_child.item_code = item.item_code
-                se_child.item_name = item.item_name
-                se_child.uom = item.stock_uom
-                se_child.stock_uom = item.stock_uom
-                se_child.qty = doc.buffalow_milk_collected
-                se_child.s_warehouse = doc.dcs
-                se_child.t_warehouse = route.dest_warehouse
-                # in stock uom
-                se_child.transfer_qty = doc.buffalow_milk_collected
-                se_child.cost_center = cost_center
-                se_child.expense_account = expense_account if perpetual_inventory else None
-
-            if doc.mix_milk_collected > 0:
-                item = frappe.get_doc("Item",mix_item)
-                se_child = stock_entry.append('items')
-                se_child.item_code = item.item_code
-                se_child.item_name = item.item_name
-                se_child.uom = item.stock_uom
-                se_child.stock_uom = item.stock_uom
-                se_child.qty = doc.mix_milk_collected
-                se_child.s_warehouse = doc.dcs
-                se_child.t_warehouse = route.dest_warehouse
-                # in stock uom
-                se_child.transfer_qty = doc.mix_milk_collected
-                se_child.cost_center = cost_center
-                se_child.expense_account = expense_account if perpetual_inventory else None
-
-        return stock_entry
 
 #---------------------stock entry method---------------
 
