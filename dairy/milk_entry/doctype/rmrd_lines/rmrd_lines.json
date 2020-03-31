@@ -1,0 +1,89 @@
+{
+ "actions": [],
+ "creation": "2020-03-31 16:18:50.836739",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "cow_milk_collected",
+  "buffalow_milk_collected",
+  "mix_milk_collected",
+  "column_break_4",
+  "cow_milk_cans",
+  "buf_milk_cans",
+  "mix_milk_cans",
+  "section_break_8",
+  "van_collection"
+ ],
+ "fields": [
+  {
+   "fieldname": "cow_milk_collected",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Cow Milk Collected",
+   "reqd": 1
+  },
+  {
+   "fieldname": "buffalow_milk_collected",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Buffalow Milk Collected",
+   "reqd": 1
+  },
+  {
+   "fieldname": "mix_milk_collected",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Mix Milk Collected",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cow_milk_cans",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Cow Milk Cans",
+   "reqd": 1
+  },
+  {
+   "fieldname": "buf_milk_cans",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Buffalow Milk Cans",
+   "reqd": 1
+  },
+  {
+   "fieldname": "mix_milk_cans",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Mix Milk Cans",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_8",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "van_collection",
+   "fieldtype": "Link",
+   "label": "Van Collection",
+   "options": "Van Collection",
+   "read_only": 1
+  }
+ ],
+ "istable": 1,
+ "links": [],
+ "modified": "2020-03-31 17:08:28.249889",
+ "modified_by": "Administrator",
+ "module": "Milk Entry",
+ "name": "RMRD Lines",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

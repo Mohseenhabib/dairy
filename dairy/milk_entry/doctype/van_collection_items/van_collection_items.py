@@ -29,9 +29,9 @@ class VanCollectionItems(Document):
 			frappe.throw("Can not allow Mix Milk Collected greater then the Mix Milk Entry")
 
 		if allow_max_capacity > 0:
-			self.cow_milk_cans = self.cow_milk_collected / allow_max_capacity
-			self.buf_milk_cans = self.buffalow_milk_collected / allow_max_capacity
-			self.mix_milk_cans = self.mix_milk_collected / allow_max_capacity
+			self.cow_milk_cans = int(self.cow_milk_collected / allow_max_capacity)
+			self.buf_milk_cans = int(self.buffalow_milk_collected / allow_max_capacity)
+			self.mix_milk_cans = int(self.mix_milk_collected / allow_max_capacity)
 			self.db_update()
 		return True
 

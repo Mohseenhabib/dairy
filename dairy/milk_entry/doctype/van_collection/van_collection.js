@@ -16,11 +16,20 @@ frappe.ui.form.on('Van Collection', {
             }).addClass("btn-primary");
         }
         if (frm.doc.status=='In-Progress'){
-
             frm.add_custom_button(__('Add / Edit Collection'), function () {
                 frappe.route_options = {"van_collection": frm.doc.name};
                 frappe.set_route("Report", "Van Collection Items");
             });
+
+            frm.add_custom_button(__('Complete'), function () {
+                 return frappe.call({
+                    doc: frm.doc,
+                    method: 'change_status_complete',
+                    callback: function(r) {
+                        frm.refresh();
+                    }
+                });
+            }).addClass("btn-primary");
         }
     },
     before_submit: function(frm) {

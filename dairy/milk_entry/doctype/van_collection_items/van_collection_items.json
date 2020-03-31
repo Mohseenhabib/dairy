@@ -7,7 +7,6 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "sb1",
   "van_collection",
   "route",
   "shift",
@@ -149,11 +148,6 @@
   },
   {
    "allow_in_quick_entry": 1,
-   "fieldname": "sb1",
-   "fieldtype": "Section Break"
-  },
-  {
-   "allow_in_quick_entry": 1,
    "fieldname": "sb2",
    "fieldtype": "Section Break"
   },
@@ -285,7 +279,7 @@
   }
  ],
  "links": [],
- "modified": "2020-03-31 12:54:35.441950",
+ "modified": "2020-03-31 15:30:01.691096",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Van Collection Items",
