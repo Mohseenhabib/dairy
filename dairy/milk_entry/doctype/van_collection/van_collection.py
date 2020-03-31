@@ -56,7 +56,7 @@ class VanCollection(Document):
 #---------------------stock entry method---------------
 
 def change_van_collection_status(st,method):
-    if st.van_collection:
-        doc = frappe.get_doc("Van Collection", st.van_collection)
-        doc.status ="Completed"
+    if st.van_collection_item:
+        doc = frappe.get_doc("Van Collection Items", st.van_collection_item)
+        doc.gate_pass =st.name
         doc.db_update()

@@ -17,7 +17,7 @@ class VanCollectionItems(Document):
 				frappe.throw("You can not create duplicate entry on same date and same DCS")
 
 	def calculate_milk_cans(self):
-		allow_max_capacity = frappe.db.get_single_value("Dairy Settings", "max_allowed")
+		allow_max_capacity = float(frappe.db.get_single_value("Dairy Settings", "max_allowed"))
 
 		if self.cow_milk_vol < self.cow_milk_collected:
 			frappe.throw("Can not allow Cow Milk Collected greater then the Cow Milk Entry")

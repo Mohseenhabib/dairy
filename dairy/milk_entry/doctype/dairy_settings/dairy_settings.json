@@ -81,21 +81,21 @@
   },
   {
    "fieldname": "def_buf_milk_rate",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Default Buffalow Milk Rate",
    "reqd": 1
   },
   {
    "fieldname": "def_cow_milk_rate",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Default Cow Milk Rate",
    "reqd": 1
   },
   {
    "fieldname": "def_mix_milk_rate",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Default Mix Milk Rate",
    "reqd": 1
@@ -106,13 +106,13 @@
   },
   {
    "fieldname": "can_volume",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "label": "Can Volume",
    "reqd": 1
   },
   {
    "fieldname": "max_allowed",
-   "fieldtype": "Percent",
+   "fieldtype": "Data",
    "label": "Max Allowed Capacity",
    "reqd": 1
   },
@@ -203,32 +203,32 @@
   },
   {
    "fieldname": "fat_min_cow_milk",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "reqd": 1
   },
   {
    "fieldname": "fat_min_buf_milk",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "reqd": 1
   },
   {
    "fieldname": "fat_min_mix_milk",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "reqd": 1
   },
   {
    "fieldname": "fat_max_cow_milk",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "reqd": 1
   },
   {
    "fieldname": "fat_max_mix_milk",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "reqd": 1
   },
   {
    "fieldname": "fat_max_buf_milk",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "reqd": 1
   },
   {
@@ -238,17 +238,17 @@
   },
   {
    "fieldname": "fat_interval_cow_milk",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "reqd": 1
   },
   {
    "fieldname": "fat_interval_buf_milk",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "reqd": 1
   },
   {
    "fieldname": "fat_interval_mix_milk",
-   "fieldtype": "Float",
+   "fieldtype": "Data",
    "reqd": 1
   },
   {
@@ -268,15 +268,18 @@
   },
   {
    "fieldname": "snf_min_cow_milk",
-   "fieldtype": "Float"
+   "fieldtype": "Data",
+   "reqd": 1
   },
   {
    "fieldname": "snf_min_buf_milk",
-   "fieldtype": "Float"
+   "fieldtype": "Data",
+   "reqd": 1
   },
   {
    "fieldname": "snf_min_mix_milk",
-   "fieldtype": "Float"
+   "fieldtype": "Data",
+   "reqd": 1
   },
   {
    "fieldname": "cb16",
@@ -289,15 +292,18 @@
   },
   {
    "fieldname": "snf_max_cow_milk",
-   "fieldtype": "Float"
+   "fieldtype": "Data",
+   "reqd": 1
   },
   {
    "fieldname": "snf_max_buf_milk",
-   "fieldtype": "Float"
+   "fieldtype": "Data",
+   "reqd": 1
   },
   {
    "fieldname": "snf_max_mix_milk",
-   "fieldtype": "Float"
+   "fieldtype": "Data",
+   "reqd": 1
   },
   {
    "fieldname": "cb17",
@@ -310,33 +316,39 @@
   },
   {
    "fieldname": "snf_interval_cow_milk",
-   "fieldtype": "Float"
+   "fieldtype": "Data",
+   "reqd": 1
   },
   {
    "fieldname": "snf_interval_buf_milk",
-   "fieldtype": "Float"
+   "fieldtype": "Data",
+   "reqd": 1
   },
   {
    "fieldname": "snf_interval_mix_milk",
-   "fieldtype": "Float"
+   "fieldtype": "Data",
+   "reqd": 1
   },
   {
    "default": "Cow Milk",
    "fieldname": "cow_1",
    "fieldtype": "Data",
-   "read_only": 1
+   "read_only": 1,
+   "reqd": 1
   },
   {
    "default": "Buffalow Milk",
    "fieldname": "data_52",
    "fieldtype": "Data",
-   "read_only": 1
+   "read_only": 1,
+   "reqd": 1
   },
   {
    "default": "Mix Milk",
    "fieldname": "date_53",
    "fieldtype": "Data",
-   "read_only": 1
+   "read_only": 1,
+   "reqd": 1
   },
   {
    "fieldname": "cb11",
@@ -398,7 +410,7 @@
  ],
  "issingle": 1,
  "links": [],
- "modified": "2020-03-26 17:29:37.473801",
+ "modified": "2020-03-31 12:45:59.647371",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",

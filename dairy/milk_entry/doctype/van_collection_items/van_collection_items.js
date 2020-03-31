@@ -15,7 +15,7 @@ frappe.ui.form.on('Van Collection Items', {
 	     cur_frm.cscript.calculate_milk_cans()
 	 },
      refresh: function(frm, dt, dn) {
-        if(!frm.doc.__islocal)
+        if(!frm.doc.__islocal && !frm.doc.gate_pass)
         {
 
             frm.add_custom_button(__('Milk Entry'),function() {

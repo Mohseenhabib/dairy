@@ -67,7 +67,8 @@
    "fieldname": "cow_milk_vol",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Cow Milk Entry"
+   "label": "Cow Milk Entry",
+   "read_only": 1
   },
   {
    "allow_in_quick_entry": 1,
@@ -75,7 +76,8 @@
    "fieldname": "buf_milk_vol",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Buffalow Milk Entry"
+   "label": "Buffalow Milk Entry",
+   "read_only": 1
   },
   {
    "allow_in_quick_entry": 1,
@@ -83,7 +85,8 @@
    "fieldname": "mix_milk_vol",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Mix Milk Entry"
+   "label": "Mix Milk Entry",
+   "read_only": 1
   },
   {
    "allow_in_quick_entry": 1,
@@ -282,7 +285,7 @@
   }
  ],
  "links": [],
- "modified": "2020-03-30 19:33:10.049358",
+ "modified": "2020-03-31 12:54:35.441950",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Van Collection Items",
