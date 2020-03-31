@@ -3,7 +3,10 @@
 
 frappe.ui.form.on('Van Collection Items', {
 	 after_save: function(frm) {
-	     cur_frm.cscript.calculate_milk_cans()
+	    if(frm.doc.__islocal)
+	    {
+	         cur_frm.cscript.calculate_milk_cans()
+	    }
 	 },
 	 cow_milk_collected: function(frm) {
 	     cur_frm.cscript.calculate_milk_cans()
