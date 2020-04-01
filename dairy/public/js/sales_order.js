@@ -4,6 +4,16 @@ frappe.ui.form.on("Sales Order", {
 		frm.add_fetch("route", "source_warehouse", "set_warehouse");
 		frm.add_fetch("route", "price_list", "selling_price_list");
 	},
+	onload: function(frm){
+        frm.set_query('route', function(doc) {
+            return {
+                filters: {
+                    "company":doc.company,
+                    "route_type":"Selling"
+                }
+            };
+        });
+    },
 	validate: function(frm) {
         // var otm = frappe.model.get_value("Dairy Settings","Dairy Settings","morning_locking_time");
         var today = new Date();

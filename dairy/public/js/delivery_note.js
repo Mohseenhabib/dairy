@@ -16,6 +16,14 @@ frappe.ui.form.on("Delivery Note", {
 	},
 	onload: function(frm){
 	    frm.trigger('set_property');
+	    frm.set_query('route', function(doc) {
+            return {
+                filters: {
+                    "company":doc.company,
+                    "route_type":"Selling"
+                }
+            };
+        });
 	},
 	customer:function(frm){
         return cur_frm.call({

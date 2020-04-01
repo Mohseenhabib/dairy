@@ -15,19 +15,14 @@
   "total_cow_can",
   "total_cow_milk_sample",
   "total_cow_weight",
-  "cow_milk_deposit",
   "cb_10",
   "total_buf_can",
   "total_buf_milk_sample",
   "total_buf_weight",
-  "buf_milk_deposit",
   "cb_11",
   "total_mix_can",
   "total_mix_milk_sample",
   "total_mix_weight",
-  "mix_milk_deposit",
-  "section_break_12",
-  "rmrd_lines",
   "section_break_23",
   "amended_from"
  ],
@@ -65,11 +60,6 @@
    "fieldname": "section_break_7",
    "fieldtype": "Section Break",
    "label": "Summary"
-  },
-  {
-   "fieldname": "section_break_12",
-   "fieldtype": "Section Break",
-   "label": "Line"
   },
   {
    "fieldname": "naming_series",
@@ -158,34 +148,13 @@
    "read_only": 1
   },
   {
-   "fieldname": "cow_milk_deposit",
-   "fieldtype": "Float",
-   "label": "Cow Milk Deposit"
-  },
-  {
-   "fieldname": "buf_milk_deposit",
-   "fieldtype": "Float",
-   "label": "Buffalow Milk Deposit"
-  },
-  {
-   "fieldname": "mix_milk_deposit",
-   "fieldtype": "Float",
-   "label": "Mix Milk Deposite"
-  },
-  {
-   "fieldname": "rmrd_lines",
-   "fieldtype": "Table",
-   "label": "Data",
-   "options": "RMRD Lines"
-  },
-  {
    "fieldname": "section_break_23",
    "fieldtype": "Section Break"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-03-31 19:23:52.780168",
+ "modified": "2020-04-01 18:32:58.560988",
  "modified_by": "Administrator",
  "module": "Raw Milk Reception Dock",
  "name": "RMRD",
@@ -228,7 +197,6 @@
    "write": 1
   }
  ],
- "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
  "track_changes": 1

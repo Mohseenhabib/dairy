@@ -101,9 +101,6 @@ frappe.ui.form.on('Milk Entry', {
     },
     before_submit: function(frm) {
         return frm.call('get_pricelist').then(() => {
-//            frm.refresh_field('milk_rate');
-//            frm.refresh_field('unit_price');
-//            frm.refresh_field('total');
             frm.refresh();
 
         });

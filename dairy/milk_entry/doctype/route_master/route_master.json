@@ -13,7 +13,6 @@
   "price_list",
   "cb2",
   "route_type",
-  "customer",
   "source_warehouse",
   "dest_warehouse",
   "sb2",
@@ -25,7 +24,7 @@
   "section_break_17",
   "vehicle_html",
   "column_break_19",
-  "customer_html"
+  "address_html"
  ],
  "fields": [
   {
@@ -118,27 +117,15 @@
    "options": "Territory"
   },
   {
-   "fieldname": "price_list",
-   "fieldtype": "Link",
-   "label": "Price List",
-   "options": "Price List"
-  },
-  {
    "fieldname": "source_warehouse",
    "fieldtype": "Link",
    "label": "Source Warehouse",
    "options": "Warehouse"
   },
   {
-   "fieldname": "customer",
-   "fieldtype": "Link",
-   "label": "Customer",
-   "options": "Customer"
-  },
-  {
    "fieldname": "section_break_17",
    "fieldtype": "Section Break",
-   "label": "Vehicle and Customer"
+   "label": "Vehicle and Address"
   },
   {
    "fieldname": "vehicle_html",
@@ -150,14 +137,20 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "customer_html",
+   "fieldname": "address_html",
    "fieldtype": "HTML",
-   "label": "Customer"
+   "label": "Address"
+  },
+  {
+   "fieldname": "price_list",
+   "fieldtype": "Link",
+   "label": "Price List",
+   "options": "Price List"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-03-27 15:18:07.630370",
+ "modified": "2020-04-01 14:54:13.399253",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Route Master",

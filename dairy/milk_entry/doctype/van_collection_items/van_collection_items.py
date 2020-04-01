@@ -57,17 +57,17 @@ class VanCollectionItems(Document):
 		doc = frappe.get_doc("Van Collection Items", self.name)
 
 		if doc.cow_milk_collected > 0:
-			self.set_value_depend_milk_type(cow_item, stock_entry, doc, doc.cow_milk_collected, route, cost_center, expense_account, perpetual_inventory)
+			self.set_value_depend_milk_type(cow_item, stock_entry, doc, doc.cow_milk_collected, doc.cow_milk_fat, doc.cow_milk_clr, route, cost_center, expense_account, perpetual_inventory)
 
 		if doc.buffalow_milk_collected > 0:
-			self.set_value_depend_milk_type(buf_item, stock_entry, doc, doc.buffalow_milk_collected, route, cost_center, expense_account, perpetual_inventory)
+			self.set_value_depend_milk_type(buf_item, stock_entry, doc, doc.buffalow_milk_collected, doc.buf_milk_fat, doc.buf_milk_clr, route, cost_center, expense_account, perpetual_inventory)
 
 		if doc.mix_milk_collected > 0:
-			self.set_value_depend_milk_type(mix_item, stock_entry,doc,doc.mix_milk_collected, route, cost_center, expense_account,perpetual_inventory)
+			self.set_value_depend_milk_type(mix_item, stock_entry,doc,doc.mix_milk_collected, doc.mix_milk_fat, doc.mix_milk_clr, route, cost_center, expense_account,perpetual_inventory)
 
 		return stock_entry
 
-	def set_value_depend_milk_type(self, item_name, stock_entry, doc, milk_collected, route, cost_center, expense_account, perpetual_inventory=None):
+	def set_value_depend_milk_type(self, item_name, stock_entry, doc, milk_collected,fat,clr, route, cost_center, expense_account, perpetual_inventory=None):
 		item = frappe.get_doc("Item", item_name)
 		se_child = stock_entry.append('items')
 		se_child.item_code = item.item_code
@@ -75,6 +75,8 @@ class VanCollectionItems(Document):
 		se_child.uom = item.stock_uom
 		se_child.stock_uom = item.stock_uom
 		se_child.qty = milk_collected
+		se_child.fat = fat
+		se_child.clr = clr
 		se_child.s_warehouse = doc.dcs
 		se_child.t_warehouse = route.dest_warehouse
 		# in stock uom
@@ -88,6 +90,8 @@ def get_milk_entry(source_name, target_doc=None, ignore_permissions=False):
 	def get_milk_entry_data(source, target):
 		if source.milk_type == 'Cow':
 			target.cow_milk_vol += source.volume
+			target.cow_milk_fat += source.fat_kg
+			target.cow_milk_clr += source.snf_kg
 			result = frappe.db.sql("""Select name from `tabSample lines` where milk_entry =%s""",(source.name))
 			if result:
 				target.append("cow_milk_sam",{
@@ -95,16 +99,20 @@ def get_milk_entry(source_name, target_doc=None, ignore_permissions=False):
 				})
 		if source.milk_type == 'Buffalow':
 			target.buf_milk_vol += source.volume
+			target.buf_milk_fat += source.fat_kg
+			target.buf_milk_clr += source.snf_kg
 			result = frappe.db.sql("""Select name from `tabSample lines` where milk_entry =%s""", (source.name))
 			if result:
-				target.append("cow_milk_sam", {
+				target.append("buf_milk_sam", {
 					'sample_lines': result[0][0]
 				})
 		if source.milk_type == 'Mix':
 			target.mix_milk_vol += source.volume
+			target.mix_milk_fat += source.fat_kg
+			target.mix_milk_clr += source.snf_kg
 			result = frappe.db.sql("""Select name from `tabSample lines` where milk_entry =%s""", (source.name))
 			if result:
-				target.append("cow_milk_sam", {
+				target.append("mix_milk_sam", {
 					'sample_lines': result[0][0]
 				})
 		target.db_update()

@@ -29,6 +29,11 @@ class MilkEntry(Document):
         frappe.db.set(self, 'total',(self.volume *self.unit_price))
         frappe.db.set(self, 'status','Submitted')
 
+        fat_kg = (self.volume * self.fat)/100
+        frappe.db.set(self, 'fat_kg', fat_kg)
+
+        snf_kg = self.clr/4 + 0.21*(self.fat/100) + 0.36
+        frappe.db.set(self, 'snf_kg', snf_kg)
     def create_purchase_receipt(self):
         purchase_receipts = frappe.db.sql("""select count(name) from `tabPurchase Receipt` 
                                             where status not in ('Cancelled') and milk_entry= %s""",(self.name))[0][0]
@@ -60,8 +65,8 @@ class MilkEntry(Document):
             'stock_uom': item_code.stock_uom,
             'rate': self.unit_price,
             'warehouse': self.dcs_id,
-            'fat': self.fat,
-            'clr': self.clr
+            'fat': self.fat_kg,
+            'clr': self.snf_kg
         })
         return doc
 
@@ -86,8 +91,8 @@ def create_raw_sample(source_name, target_doc=None):
             'milk_entry': obj.name,
             'member_id': obj.member,
             'milk_type': obj.milk_type,
-            'fat': obj.fat,
-            'clr': obj.clr})
+            'fat': obj.fat_kg,
+            'clr': obj.snf_kg})
 
     fields = {
         "Milk Entry": {

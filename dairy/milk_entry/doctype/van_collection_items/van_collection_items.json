@@ -38,6 +38,14 @@
   "cb6",
   "mix_milk_sam",
   "sb5",
+  "cow_milk_fat",
+  "buf_milk_fat",
+  "mix_milk_fat",
+  "column_break_36",
+  "cow_milk_clr",
+  "buf_milk_clr",
+  "mix_milk_clr",
+  "section_break_40",
   "gate_pass",
   "sb6",
   "time"
@@ -276,10 +284,60 @@
    "hidden": 1,
    "label": "Date",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "cow_milk_fat",
+   "fieldtype": "Float",
+   "label": "Cow Milk FAT",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "buf_milk_fat",
+   "fieldtype": "Float",
+   "label": "Buffalow Milk FAT",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "mix_milk_fat",
+   "fieldtype": "Float",
+   "label": "Mix Milk FAT",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_36",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "cow_milk_clr",
+   "fieldtype": "Float",
+   "label": "Cow Milk SNF",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "buf_milk_clr",
+   "fieldtype": "Float",
+   "label": "Buffalow Milk SNF",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "mix_milk_clr",
+   "fieldtype": "Float",
+   "label": "Mix Milk SNF",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_40",
+   "fieldtype": "Section Break"
   }
  ],
  "links": [],
- "modified": "2020-03-31 15:30:01.691096",
+ "modified": "2020-04-01 17:32:06.409267",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Van Collection Items",

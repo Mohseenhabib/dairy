@@ -18,7 +18,7 @@ class RMRD(Document):
 										sum(mix_milk_collected) as mix_collected,
 										sum(cow_milk_cans) as cow_m_cans,
 										sum(buf_milk_cans) as buf_m_cans,
-										sum(mix_milk_cans) as mix_m_cans
+										sum(mix_milk_cans) as mix_m_cans,
 										from `tabVan Collection Items` 
 										where route =%s and shift =%s and date =%s and gate_pass is not null
 										""", (self.route, self.shift, self.date), as_dict=True)
@@ -48,41 +48,41 @@ class RMRD(Document):
 										sum(cow_milk_cans) as cow_m_cans,
 										sum(buf_milk_cans) as buf_m_cans,
 										sum(mix_milk_cans) as mix_m_cans,
-										van_collection 
+										dcs 
 										from `tabVan Collection Items` 
 										where route =%s and shift =%s and date =%s and gate_pass is not null
-										group by van_collection
+										group by dcs
 										""", (self.route, self.shift, self.date), as_dict=True)
 		for res in result3:
 			self.append("rmrd_lines", {
-				"cow_milk_collected":res.get('cow_collected'),
-				"buffalow_milk_collected":res.get('buf_collected'),
-				"mix_milk_collected":res.get('mix_collected'),
-				"cow_milk_cans":res.get('cow_m_cans'),
-				"buf_milk_cans":res.get('buf_m_cans'),
-				"mix_milk_cans":res.get('mix_m_cans'),
-				"van_collection":res.get('van_collection')
+				"g_cow_milk":res.get('cow_collected'),
+				"g_buf_milk":res.get('buf_collected'),
+				"g_mix_milk":res.get('mix_collected'),
+				"g_cow_milk_can":res.get('cow_m_cans'),
+				"g_buf_milk_can":res.get('buf_m_cans'),
+				"g_mix_milk_can":res.get('mix_m_cans'),
+				"dcs":res.get('dcs')
 			})
 		self.save(ignore_permissions=True)
 
-	def before_save(self):
-		if not self.get('__islocal'):
-			cow_collected=0
-			buf_collected=0
-			mix_collected=0
-			cow_cans=0
-			buf_cans=0
-			mix_cans=0
-			for i in self.rmrd_lines:
-				cow_collected += i.cow_milk_collected
-				buf_collected += i.buffalow_milk_collected
-				mix_collected += i.mix_milk_collected
-				cow_cans += i.cow_milk_cans
-				buf_cans += i.buf_milk_cans
-				mix_cans += i.mix_milk_cans
-			self.total_cow_weight = cow_collected
-			self.total_buf_weight = buf_collected
-			self.total_mix_weight = mix_collected
-			self.total_cow_can = cow_cans
-			self.total_buf_can = buf_cans
-			self.total_mix_can = mix_cans
+	# def before_save(self):
+	# 	if not self.get('__islocal'):
+	# 		cow_collected=0
+	# 		buf_collected=0
+	# 		mix_collected=0
+	# 		cow_cans=0
+	# 		buf_cans=0
+	# 		mix_cans=0
+	# 		for i in self.rmrd_lines:
+	# 			cow_collected += i.cow_milk_collected
+	# 			buf_collected += i.buffalow_milk_collected
+	# 			mix_collected += i.mix_milk_collected
+	# 			cow_cans += i.cow_milk_cans
+	# 			buf_cans += i.buf_milk_cans
+	# 			mix_cans += i.mix_milk_cans
+	# 		self.total_cow_weight = cow_collected
+	# 		self.total_buf_weight = buf_collected
+	# 		self.total_mix_weight = mix_collected
+	# 		self.total_cow_can = cow_cans
+	# 		self.total_buf_can = buf_cans
+	# 		self.total_mix_can = mix_cans

@@ -24,31 +24,31 @@ def load_vehicle_dynamic_link(doc, key=None):
 		key = functools.cmp_to_key(lambda a, b:
 			(1 if a.modified - b.modified else 0)), reverse=True)
 
-	doc.set_onload('addr_list', address_list)
+	doc.set_onload('vehicle_list', address_list)
 
-	filters = [
-		["Dynamic Link", "link_doctype", "=", doc.doctype],
-		["Dynamic Link", "link_name", "=", doc.name],
-		["Dynamic Link", "parenttype", "=", "Customer"],
-	]
-	customer_list = frappe.get_all("Customer", filters=filters, fields=["*"])
+	# filters = [
+	# 	["Dynamic Link", "link_doctype", "=", doc.doctype],
+	# 	["Dynamic Link", "link_name", "=", doc.name],
+	# 	["Dynamic Link", "parenttype", "=", "Customer"],
+	# ]
+	# customer_list = frappe.get_all("Customer", filters=filters, fields=["*"])
+	#
+	# customer_list = [a.update({"display": get_customer_display(a)})
+	# 				for a in customer_list]
+	#
+	# customer_list = sorted(customer_list,
+	# 					key=functools.cmp_to_key(lambda a, b:
+	# 					(1 if a.modified - b.modified else 0)), reverse=True)
+	#
+	# doc.set_onload('customer_list', customer_list)
 
-	customer_list = [a.update({"display": get_customer_display(a)})
-					for a in customer_list]
 
-	customer_list = sorted(customer_list,
-						key=functools.cmp_to_key(lambda a, b:
-						(1 if a.modified - b.modified else 0)), reverse=True)
-
-	doc.set_onload('customer_list', customer_list)
-
-
-def get_customer_display(customer_list):
-	if not customer_list:
-		return
-	template = """{{customer_type}}<br>{{customer_group}}<br/> {{territory}} """
-
-	return frappe.render_template(template, customer_list)
+# def get_customer_display(customer_list):
+# 	if not customer_list:
+# 		return
+# 	template = """{{customer_type}}<br>{{customer_group}}<br/> {{territory}} """
+#
+# 	return frappe.render_template(template, customer_list)
 
 def get_vehicle_display(address_dict):
 	if not address_dict:
@@ -81,8 +81,8 @@ def has_permission(doc, ptype, user):
 def get_permission_query_conditions_for_vehicle(user):
 	return get_permission_query_conditions("Vehicle")
 
-def get_permission_query_conditions_for_customer(user):
-	return get_permission_query_conditions("Customer")
+# def get_permission_query_conditions_for_customer(user):
+# 	return get_permission_query_conditions("Customer")
 
 def get_permission_query_conditions(doctype):
 	links = get_permitted_and_not_permitted_links(doctype)

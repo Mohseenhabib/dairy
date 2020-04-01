@@ -3,6 +3,16 @@ frappe.ui.form.on('Quotation', {
     setup: function(frm) {
 		frm.add_fetch("route", "price_list", "selling_price_list");
 	},
+	onload: function(frm){
+        frm.set_query('route', function(doc) {
+            return {
+                filters: {
+                    "company":doc.company,
+                    "route_type":"Selling"
+                }
+            };
+        });
+    },
 	validate: function(frm) {
         var today = new Date();
         var time = today.getHours() + ":" + today.getMinutes();

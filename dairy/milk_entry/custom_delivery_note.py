@@ -60,7 +60,9 @@ def add_crate_count_item_line(doc):
                 overage = crate_count.crate_overage
 
             # qty = round((itm.qty / (crate_count.crate_quantity * (1 + overage / 100))),2)
-            qty = round((itm.qty / (crate_count.crate_quantity)),2)
+            qty = 0
+            if crate_count.crate_quantity:
+                qty = round((itm.qty / (crate_count.crate_quantity)),2)
             if 0 < qty < 1:
                 qty =1.0
             itm.crate_count = float(((str(qty) + ".").split("."))[0])

@@ -42,7 +42,8 @@ doctype_js = {
     "Delivery Note": "public/js/delivery_note.js",
     "Vehicle": "public/js/vehicle.js",
     "Customer": "public/js/customer.js",
-    "Sales Invoice": "public/js/sales_invoice.js"
+    "Sales Invoice": "public/js/sales_invoice.js",
+    "Supplier": "public/js/supplier.js"
     }
 
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
@@ -121,12 +122,12 @@ doc_events = {
 
 permission_query_conditions = {
     "Vehicle": "dairy.vehicle_dynamic_link.get_permission_query_conditions_for_vehicle",
-    "Customer": "dairy.vehicle_dynamic_link.get_permission_query_conditions_for_customer",
+    # "Customer": "dairy.vehicle_dynamic_link.get_permission_query_conditions_for_customer",
 }
 
 has_permission = {
     "Vehicle": "dairy.vehicle_dynamic_link.has_permission",
-    "Customer": "dairy.vehicle_dynamic_link.has_permission",
+    # "Customer": "dairy.vehicle_dynamic_link.has_permission",
 }
 
 # doc_events={

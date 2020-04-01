@@ -1,8 +1,12 @@
 {
  "cards": [
   {
-   "links": "[\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Raw Milk Sample\",\n        \"label\": \"Raw Milk Sample\",\n        \"description\": \"Raw Milk Sample\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Van Collection Items\",\n        \"label\": \"Van Collection Items\",\n        \"description\": \"Van Collection Items\",\n        \"onboard\": 1\n    }\n]",
+   "links": "[\n     {\n        \"type\": \"doctype\",\n        \"name\": \"Milk Entry\",\n        \"label\": \"Milk Entry\",\n        \"description\": \"Milk Entry\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Raw Milk Sample\",\n        \"label\": \"Raw Milk Sample\",\n        \"description\": \"Raw Milk Sample\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Van Collection\",\n        \"label\": \"Van Collection\",\n        \"description\": \"Van Collection\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Van Collection Items\",\n        \"label\": \"Van Collection Items\",\n        \"description\": \"Van Collection Items\",\n        \"onboard\": 1\n    }\n]",
    "title": "Dairy"
+  },
+  {
+   "links": "[\n    {\n       \"type\": \"doctype\",\n        \"name\": \"RMRD\",\n        \"label\":\"RMRD\",\n        \"description\":\"RMRD\",\n        \"onboard\": 1\n    },\n    {\n       \"type\": \"doctype\",\n        \"name\": \"RMRD Lines\",\n        \"label\":\"RMRD Lines\",\n        \"description\":\"RMRD Lines\",\n        \"onboard\": 1\n    }\n]",
+   "title": "Raw Milk Reception Dock"
   },
   {
    "links": "[\n    {\n        \"type\": \"doctype\",\n      \t\"name\": \"Field Order\",\n        \"label\":\"Field Order\",\n        \"description\":\"Field Order.\",\n        \"onboard\": 1\n    }\n]",
@@ -29,13 +33,11 @@
  "charts": [
   {
    "chart_name": "Milk Entry",
-   "label": "Milk Entry By Week",
-   "size": "Half"
+   "label": "Milk Entry By Week"
   },
   {
    "chart_name": "milk entry by dcs",
-   "label": "Milk Entry By DCS",
-   "size": "Half"
+   "label": "Milk Entry By DCS"
   }
  ],
  "charts_label": "DASHBOARDS",
@@ -48,7 +50,7 @@
  "idx": 0,
  "is_standard": 1,
  "label": "Dairy",
- "modified": "2020-03-26 16:50:59.022895",
+ "modified": "2020-04-01 18:32:13.753061",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy",

@@ -4,14 +4,17 @@
 frappe.ui.form.on('Route Master', {
 	 refresh: function(frm){
 	    frappe.dynamic_link = {doc: frm.doc, fieldname: 'name', doctype: 'Route Master'};
-	    frm.toggle_display(['vehicle_html','customer_html'], !frm.doc.__islocal);
+	    frm.toggle_display(['vehicle_html','address_html'], !frm.doc.__islocal);
 		if(!frm.doc.__islocal)
 		{
 			dairy.vehicle_dynamic_link.render_vehicle_and_customer(frm);
+			frappe.contacts.render_address_and_contact(frm);
+
 		}
 		else
 		{
 			dairy.vehicle_dynamic_link.clear_vehicle_and_customer(frm);
+			frappe.contacts.clear_address_and_contact(frm);
 		}
 	 },
 	 onload: function(frm){

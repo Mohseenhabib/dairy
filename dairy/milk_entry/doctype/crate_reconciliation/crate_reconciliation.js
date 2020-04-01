@@ -42,7 +42,6 @@ frappe.ui.form.on('Crate Reconciliation', {
         frm.set_query('route', function(doc) {
             return {
                 filters: {
-                    "customer":frm.doc.customer,
                     "company":frappe.defaults.get_user_default("Company"),
                 }
             };

@@ -3,8 +3,7 @@ frappe.ui.form.on('Warehouse', {
         frm.set_query('route', function(doc) {
             return {
                 filters: {
-                    "company":doc.company,
-//                    "dest_warehouse":["!=",doc.name],
+                    "company":doc.company
                     "route_type":"Buying"
                 }
             };

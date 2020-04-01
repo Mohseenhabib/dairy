@@ -43,7 +43,7 @@ frappe.ui.form.on('Van Collection Items', {
                 })
             }, __("Get items from"));
 
-            frm.add_custom_button(__('Make Stock Entry'),function() {
+            frm.add_custom_button(__('Make Gate pass'),function() {
                 return frappe.call({
                     doc: frm.doc,
                     method: 'make_stock_entry',

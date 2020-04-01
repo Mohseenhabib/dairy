@@ -20,6 +20,10 @@
   "volume",
   "fat",
   "clr",
+  "section_break_7",
+  "fat_kg",
+  "column_break_9",
+  "snf_kg",
   "sb4",
   "milk_rate",
   "cb5",
@@ -34,6 +38,7 @@
   "status",
   "amended_from",
   "column_break_28",
+  "company",
   "sample_created"
  ],
  "fields": [
@@ -210,7 +215,7 @@
    "in_standard_filter": 1,
    "label": "Status",
    "no_copy": 1,
-   "options": "Draft\nSubmitted\nTo Bill\nCompleted\nCancelled\nClosed",
+   "options": "Draft\nSubmitted\nTo Bill\nCompleted\nCancelled\nClosed\nTo Post and Sample\nTo Sample\nTo Post\nPosted",
    "read_only": 1,
    "reqd": 1,
    "search_index": 1
@@ -238,12 +243,38 @@
   {
    "fieldname": "column_break_28",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "fat_kg",
+   "fieldtype": "Float",
+   "label": "Fat In Kg",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_7",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "snf_kg",
+   "fieldtype": "Float",
+   "label": "SNF In kg",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2020-03-30 16:00:49.530154",
+ "modified": "2020-04-01 17:17:58.320352",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Milk Entry",

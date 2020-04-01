@@ -77,7 +77,7 @@
    "fieldname": "van_collection_item",
    "fieldtype": "Link",
    "hidden": 1,
-   "idx": 70,
+   "idx": 71,
    "ignore_user_permissions": 0,
    "ignore_xss_filter": 0,
    "in_global_search": 0,
