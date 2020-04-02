@@ -81,8 +81,8 @@ def has_permission(doc, ptype, user):
 def get_permission_query_conditions_for_vehicle(user):
 	return get_permission_query_conditions("Vehicle")
 
-# def get_permission_query_conditions_for_customer(user):
-# 	return get_permission_query_conditions("Customer")
+def get_permission_query_conditions_for_customer(user):
+	return get_permission_query_conditions("Customer")
 
 def get_permission_query_conditions(doctype):
 	links = get_permitted_and_not_permitted_links(doctype)

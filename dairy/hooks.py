@@ -121,13 +121,11 @@ doc_events = {
 }
 
 permission_query_conditions = {
-    "Vehicle": "dairy.vehicle_dynamic_link.get_permission_query_conditions_for_vehicle",
-    # "Customer": "dairy.vehicle_dynamic_link.get_permission_query_conditions_for_customer",
+    "Vehicle": "dairy.vehicle_dynamic_link.get_permission_query_conditions_for_vehicle"
 }
 
 has_permission = {
     "Vehicle": "dairy.vehicle_dynamic_link.has_permission",
-    # "Customer": "dairy.vehicle_dynamic_link.has_permission",
 }
 
 # doc_events={

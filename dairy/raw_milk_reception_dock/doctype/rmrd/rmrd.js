@@ -21,7 +21,7 @@ frappe.ui.form.on('RMRD', {
                     doc: frm.doc,
                     method: 'start_rmrd',
                     callback: function(r) {
-                        frm.refresh();
+//                        frm.refresh();
                     }
                 });
             }).addClass("btn-primary");
