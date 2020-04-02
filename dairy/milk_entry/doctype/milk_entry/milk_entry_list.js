@@ -13,5 +13,21 @@
  		{
  			return [__("Closed"), "green", "status,=,Closed"];
  		}
+ 		else if (doc.status === "To Post and Sample")
+ 		{
+ 			return [__("To Post and Sample"), "green", "status,=,To Post and Sample"];
+ 		}
+ 		else if (doc.status === "To Sample")
+ 		{
+ 			return [__("To Sample"), "green", "status,=,To Sample"];
+ 		}
+ 		else if (doc.status === "To Post")
+ 		{
+ 			return [__("To Post"), "green", "status,=,To Post"];
+ 		}
+ 		else if (doc.status === "Posted")
+ 		{
+ 			return [__("Posted"), "green", "status,=,Posted"];
+ 		}
  	}
  };

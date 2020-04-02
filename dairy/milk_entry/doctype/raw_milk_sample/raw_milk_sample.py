@@ -3,16 +3,53 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
-# import frappe
+import frappe
 from frappe.model.document import Document
 
 class RawMilkSample(Document):
-	pass
-	
+	def validate(self):
+		if self.milk_entry:
+			doc = frappe.get_doc("Milk Entry", self.milk_entry)
+			res = frappe.db.sql("""select docstatus from `tabPurchase Receipt` where milk_entry =%s limit 1""",
+								(doc.name))
+			if res:
+				if res[0][0] == 1 and doc.sample_created:
+					doc.status = "To Sample"
+				elif res[0][0] ==0 and not doc.sample_created:
+					doc.status = "To Post"
+				elif res[0][0] ==1 and not doc.sample_created:
+					doc.status = "Posted"
+				elif res[0][0] == 0 and doc.sample_created:
+					doc.status = "To Post and Sample"
+				else:
+					doc.status = "To Post and Sample"
+			else:
+				doc.status = "To Post and Sample"
+			doc.db_update()
+
+	def on_submit(self):
+		if self.milk_entry:
+			doc = frappe.get_doc("Milk Entry", self.milk_entry)
+			res = frappe.db.sql("""select docstatus from `tabPurchase Receipt` where milk_entry =%s limit 1""",
+								(doc.name))
+			if res:
+				if res[0][0] == 0 and doc.sample_created:
+					doc.status = "To Post"
+				elif res[0][0] == 0 and not doc.sample_created:
+					doc.status = "To Post"
+				elif res[0][0] == 1 and not doc.sample_created:
+					doc.status = "Posted"
+				else:
+					doc.status = "To Post"
+			else:
+				doc.status = "To Post"
+			doc.db_update()
+
 
 
 class Samplelines(Document):
 	pass
+
 
 
 	# def get_milk_entry_data(self):

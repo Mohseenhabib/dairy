@@ -40,7 +40,7 @@
   "sample_no_section",
   "cow_milk_sam",
   "column_break_34",
-  "bud_milk_sam",
+  "buf_milk_sam",
   "column_break_36",
   "mix_milk_sam",
   "total_section",
@@ -246,12 +246,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "bud_milk_sam",
-   "fieldtype": "Int",
-   "in_list_view": 1,
-   "label": "Buffalow Milk Sample"
-  },
-  {
    "fieldname": "column_break_36",
    "fieldtype": "Column Break"
   },
@@ -264,27 +258,37 @@
   {
    "fieldname": "total_section",
    "fieldtype": "Section Break",
-   "label": "Total"
+   "label": "Total by DCS"
   },
   {
+   "default": "0",
    "fieldname": "total_milk_can",
    "fieldtype": "Int",
    "in_list_view": 1,
-   "label": "Total Milk Can"
+   "label": "Total Milk Can",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_40",
    "fieldtype": "Column Break"
   },
   {
+   "default": "0",
    "fieldname": "total_milk_wt",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Total Milk Weight",
+   "read_only": 1
+  },
+  {
+   "fieldname": "buf_milk_sam",
    "fieldtype": "Int",
    "in_list_view": 1,
-   "label": "Total Milk Weight"
+   "label": "Buffalow Milk Sample"
   }
  ],
  "links": [],
- "modified": "2020-04-02 13:22:13.956251",
+ "modified": "2020-04-02 13:59:00.113986",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "RMRD Lines",
