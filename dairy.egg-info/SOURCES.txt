@@ -100,8 +100,10 @@ dairy/milk_entry/doctype/raw_milk_sample/raw_milk_sample.json
 dairy/milk_entry/doctype/raw_milk_sample/raw_milk_sample.py
 dairy/milk_entry/doctype/raw_milk_sample/test_raw_milk_sample.py
 dairy/milk_entry/doctype/rmrd_lines/__init__.py
+dairy/milk_entry/doctype/rmrd_lines/rmrd_lines.js
 dairy/milk_entry/doctype/rmrd_lines/rmrd_lines.json
 dairy/milk_entry/doctype/rmrd_lines/rmrd_lines.py
+dairy/milk_entry/doctype/rmrd_lines/test_rmrd_lines.py
 dairy/milk_entry/doctype/route_master/__init__.py
 dairy/milk_entry/doctype/route_master/route_master.js
 dairy/milk_entry/doctype/route_master/route_master.json
@@ -177,6 +179,7 @@ dairy/public/js/delivery_note.js
 dairy/public/js/quotation.js
 dairy/public/js/sales_invoice.js
 dairy/public/js/sales_order.js
+dairy/public/js/supplier.js
 dairy/public/js/vehicle.js
 dairy/public/js/templates/customer_list.html
 dairy/public/js/templates/vehicle_list.html

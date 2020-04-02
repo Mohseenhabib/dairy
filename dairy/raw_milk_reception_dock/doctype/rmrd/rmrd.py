@@ -82,12 +82,12 @@ class RMRD(Document):
 		for res in result3:
 			print("-----------",res.get('cow_collected'),type(res.get('cow_collected')))
 			doc = frappe.new_doc("RMRD Lines")
-			doc.g_cow_milk = res.get('cow_collected'),
-			doc.g_buf_milk = res.get('buf_collected'),
-			doc.g_mix_milk = res.get('mix_collected'),
-			doc.g_cow_milk_can = res.get('cow_m_cans'),
-			doc.g_buf_milk_can = res.get('buf_m_cans'),
-			doc.g_mix_milk_can = res.get('mix_m_cans'),
+			doc.g_cow_milk = res.get('cow_collected')
+			doc.g_buf_milk = res.get('buf_collected')
+			doc.g_mix_milk = res.get('mix_collected')
+			doc.g_cow_milk_can = res.get('cow_m_cans')
+			doc.g_buf_milk_can = res.get('buf_m_cans')
+			doc.g_mix_milk_can = res.get('mix_m_cans')
 			doc.dcs = res.get('dcs')
 			doc.rmrd = self.name
 			print("---------------------doc.g_cow_milk",doc.g_cow_milk)
