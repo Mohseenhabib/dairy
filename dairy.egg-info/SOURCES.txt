@@ -192,6 +192,7 @@ dairy/raw_milk_reception_dock/doctype/rmrd/__init__.py
 dairy/raw_milk_reception_dock/doctype/rmrd/rmrd.js
 dairy/raw_milk_reception_dock/doctype/rmrd/rmrd.json
 dairy/raw_milk_reception_dock/doctype/rmrd/rmrd.py
+dairy/raw_milk_reception_dock/doctype/rmrd/rmrd_dashboard.py
 dairy/raw_milk_reception_dock/doctype/rmrd/test_rmrd.py
 dairy/raw_milk_reception_dock/report/__init__.py
 dairy/raw_milk_reception_dock/report/rmrd_item_details/__init__.py
