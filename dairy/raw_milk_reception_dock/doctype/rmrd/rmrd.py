@@ -38,6 +38,12 @@ class RMRD(Document):
 								sum(cow_milk_cans) as cow_m_cans,
 								sum(buf_milk_cans) as buf_m_cans,
 								sum(mix_milk_cans) as mix_m_cans,
+								sum(cow_milk_fat) as cow_milk_fat,
+								sum(buf_milk_fat) as buf_milk_fat,
+								sum(mix_milk_fat) as mix_milk_fat,
+								sum(cow_milk_clr) as cow_milk_clr,
+								sum(buf_milk_clr) as buf_milk_clr,
+								sum(mix_milk_clr) as mix_milk_clr,
 								dcs 
 								from `tabVan Collection Items` 
 								where route =%s and shift =%s and date =%s and gate_pass is not null
@@ -51,6 +57,15 @@ class RMRD(Document):
 			doc.g_cow_milk_can = res.get('cow_m_cans')
 			doc.g_buf_milk_can = res.get('buf_m_cans')
 			doc.g_mix_milk_can = res.get('mix_m_cans')
+
+			doc.cow_milk_fat = res.get('cow_milk_fat')
+			doc.buf_milk_fat = res.get('buf_milk_fat')
+			doc.mix_milk_fat = res.get('mix_milk_fat')
+
+			doc.cow_milk_clr = res.get('cow_milk_clr')
+			doc.buf_milk_clr = res.get('buf_milk_clr')
+			doc.mix_milk_clr = res.get('mix_milk_clr')
+
 			doc.dcs = res.get('dcs')
 			doc.rmrd = self.name
 
@@ -66,26 +81,5 @@ class RMRD(Document):
 				if res.get('milk_type') == 'Mix':
 					doc.mix_milk_sam = res.get('sam_count')
 			doc.insert(ignore_permissions=True)
+			doc.calculate_total_cans_wt()
 
-
-	# def before_save(self):
-	# 	if not self.get('__islocal'):
-	# 		cow_collected=0
-	# 		buf_collected=0
-	# 		mix_collected=0
-	# 		cow_cans=0
-	# 		buf_cans=0
-	# 		mix_cans=0
-	# 		for i in self.rmrd_lines:
-	# 			cow_collected += i.cow_milk_collected
-	# 			buf_collected += i.buffalow_milk_collected
-	# 			mix_collected += i.mix_milk_collected
-	# 			cow_cans += i.cow_milk_cans
-	# 			buf_cans += i.buf_milk_cans
-	# 			mix_cans += i.mix_milk_cans
-	# 		self.total_cow_weight = cow_collected
-	# 		self.total_buf_weight = buf_collected
-	# 		self.total_mix_weight = mix_collected
-	# 		self.total_cow_can = cow_cans
-	# 		self.total_buf_can = buf_cans
-	# 		self.total_mix_can = mix_cans

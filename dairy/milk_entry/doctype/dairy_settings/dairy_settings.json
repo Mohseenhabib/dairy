@@ -15,9 +15,22 @@
   "max_allowed",
   "section_break_8",
   "cow_pro",
+  "cb21",
   "buf_pro",
   "cb6",
   "mix_pro",
+  "sb21",
+  "s_cow_milk",
+  "cb22",
+  "s_buf_milk",
+  "cb23",
+  "s_mix_milk",
+  "sb22",
+  "c_cow_milk",
+  "cb25",
+  "c_buf_milk",
+  "cb26",
+  "c_mix_milk",
   "section_break_14",
   "pricelist_settings",
   "section_break_11",
@@ -119,7 +132,7 @@
   {
    "fieldname": "section_break_8",
    "fieldtype": "Section Break",
-   "label": "Product Settings"
+   "label": "Good Milk Item"
   },
   {
    "fieldname": "pricelist_settings",
@@ -357,14 +370,14 @@
   {
    "fieldname": "cow_pro",
    "fieldtype": "Link",
-   "label": "Cow Milk",
+   "label": "Good Cow Milk",
    "options": "Item",
    "reqd": 1
   },
   {
    "fieldname": "buf_pro",
    "fieldtype": "Link",
-   "label": "Buffalow Milk",
+   "label": "Good Buffalow Milk",
    "options": "Item",
    "reqd": 1
   },
@@ -375,7 +388,7 @@
   {
    "fieldname": "mix_pro",
    "fieldtype": "Link",
-   "label": "Mix Milk",
+   "label": " Good Mix Milk",
    "options": "Item",
    "reqd": 1
   },
@@ -406,11 +419,83 @@
    "fieldname": "order_locking_time",
    "fieldtype": "Heading",
    "label": "Order Locking Time"
+  },
+  {
+   "fieldname": "cb21",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sb21",
+   "fieldtype": "Section Break",
+   "label": "Sour Milk Item"
+  },
+  {
+   "fieldname": "s_cow_milk",
+   "fieldtype": "Link",
+   "label": "Sour Cow Milk",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb22",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "s_buf_milk",
+   "fieldtype": "Link",
+   "label": "Sour Buffalow Milk",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb23",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "s_mix_milk",
+   "fieldtype": "Link",
+   "label": "Sour Mix Milk",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sb22",
+   "fieldtype": "Section Break",
+   "label": "Curd Milk Item"
+  },
+  {
+   "fieldname": "c_cow_milk",
+   "fieldtype": "Link",
+   "label": "Curd Cow Milk",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb25",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "c_buf_milk",
+   "fieldtype": "Link",
+   "label": "Curd Buffalow Milk",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb26",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "c_mix_milk",
+   "fieldtype": "Link",
+   "label": "Curd Mix Milk",
+   "options": "Item",
+   "reqd": 1
   }
  ],
  "issingle": 1,
  "links": [],
- "modified": "2020-03-31 12:45:59.647371",
+ "modified": "2020-04-02 17:15:25.983688",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",

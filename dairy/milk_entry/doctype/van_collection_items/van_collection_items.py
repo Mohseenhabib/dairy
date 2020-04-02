@@ -75,8 +75,8 @@ class VanCollectionItems(Document):
 		se_child.uom = item.stock_uom
 		se_child.stock_uom = item.stock_uom
 		se_child.qty = milk_collected
-		se_child.fat = fat
-		se_child.clr = clr
+		se_child.fat = (milk_collected * fat)/100
+		se_child.clr = clr/4 + 0.21*(fat/100) + 0.36
 		se_child.s_warehouse = doc.dcs
 		se_child.t_warehouse = route.dest_warehouse
 		# in stock uom
@@ -90,8 +90,8 @@ def get_milk_entry(source_name, target_doc=None, ignore_permissions=False):
 	def get_milk_entry_data(source, target):
 		if source.milk_type == 'Cow':
 			target.cow_milk_vol += source.volume
-			target.cow_milk_fat += source.fat_kg
-			target.cow_milk_clr += source.snf_kg
+			target.cow_milk_fat += source.fat
+			target.cow_milk_clr += source.clr
 			result = frappe.db.sql("""Select name from `tabSample lines` where milk_entry =%s""",(source.name))
 			if result:
 				target.append("cow_milk_sam",{
@@ -99,8 +99,8 @@ def get_milk_entry(source_name, target_doc=None, ignore_permissions=False):
 				})
 		if source.milk_type == 'Buffalow':
 			target.buf_milk_vol += source.volume
-			target.buf_milk_fat += source.fat_kg
-			target.buf_milk_clr += source.snf_kg
+			target.buf_milk_fat += source.fat
+			target.buf_milk_clr += source.clr
 			result = frappe.db.sql("""Select name from `tabSample lines` where milk_entry =%s""", (source.name))
 			if result:
 				target.append("buf_milk_sam", {
@@ -108,8 +108,8 @@ def get_milk_entry(source_name, target_doc=None, ignore_permissions=False):
 				})
 		if source.milk_type == 'Mix':
 			target.mix_milk_vol += source.volume
-			target.mix_milk_fat += source.fat_kg
-			target.mix_milk_clr += source.snf_kg
+			target.mix_milk_fat += source.fat
+			target.mix_milk_clr += source.clr
 			result = frappe.db.sql("""Select name from `tabSample lines` where milk_entry =%s""", (source.name))
 			if result:
 				target.append("mix_milk_sam", {

@@ -37,6 +37,14 @@
   "column_break_26",
   "c_mix_milk",
   "c_mix_milk_can",
+  "sb45",
+  "cow_milk_fat",
+  "buf_milk_fat",
+  "mix_milk_fat",
+  "cb45",
+  "cow_milk_clr",
+  "buf_milk_clr",
+  "mix_milk_clr",
   "sample_no_section",
   "cow_milk_sam",
   "column_break_34",
@@ -240,7 +248,8 @@
    "fieldname": "cow_milk_sam",
    "fieldtype": "Int",
    "in_list_view": 1,
-   "label": "Cow Milk Sample"
+   "label": "Cow Milk Sample",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_34",
@@ -254,7 +263,8 @@
    "fieldname": "mix_milk_sam",
    "fieldtype": "Int",
    "in_list_view": 1,
-   "label": "Mix Milk Sample"
+   "label": "Mix Milk Sample",
+   "read_only": 1
   },
   {
    "fieldname": "total_section",
@@ -285,7 +295,8 @@
    "fieldname": "buf_milk_sam",
    "fieldtype": "Int",
    "in_list_view": 1,
-   "label": "Buffalow Milk Sample"
+   "label": "Buffalow Milk Sample",
+   "read_only": 1
   },
   {
    "fieldname": "amended_from",
@@ -295,11 +306,49 @@
    "options": "RMRD Lines",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "sb45",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "cow_milk_fat",
+   "fieldtype": "Float",
+   "label": "Cow Milk FAT"
+  },
+  {
+   "fieldname": "buf_milk_fat",
+   "fieldtype": "Float",
+   "label": "Buffalow Milk FAT"
+  },
+  {
+   "fieldname": "mix_milk_fat",
+   "fieldtype": "Float",
+   "label": "Mix Milk FAT"
+  },
+  {
+   "fieldname": "cb45",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cow_milk_clr",
+   "fieldtype": "Float",
+   "label": "Cow Milk CLR"
+  },
+  {
+   "fieldname": "buf_milk_clr",
+   "fieldtype": "Float",
+   "label": "Buffalow Milk CLR"
+  },
+  {
+   "fieldname": "mix_milk_clr",
+   "fieldtype": "Float",
+   "label": "Mix Milk CLR"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-02 16:26:08.017618",
+ "modified": "2020-04-02 18:09:05.679816",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "RMRD Lines",

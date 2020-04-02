@@ -26,7 +26,7 @@ class VanCollection(Document):
             if not warehouse:
                 frappe.throw(_("No Warehouse present in this Route"))
             for res in warehouse:
-                result = frappe.db.sql("""select dcs_id,milk_type,sum(volume) as total_volume,sum(fat_kg) as fat,sum(snf_kg) as snf 
+                result = frappe.db.sql("""select dcs_id,milk_type,sum(volume) as total_volume,sum(fat) as fat,sum(clr) as clr 
                                     from `tabMilk Entry` 
                                     where docstatus =1 and dcs_id = %s and shift = %s and date = %s 
                                     group by milk_type""",(res.name,self.shift,self.date), as_dict =True)
@@ -41,17 +41,17 @@ class VanCollection(Document):
                     if i.get('milk_type') == 'Cow':
                         cow_volume = i.get('total_volume')
                         cow_milk_fat = i.get('fat')
-                        cow_milk_clr = i.get('snf')
+                        cow_milk_clr = i.get('clr')
 
                     if i.get('milk_type') == 'Buffalow':
                         buffalow_volume = i.get('total_volume')
                         buf_milk_fat = i.get('fat')
-                        buf_milk_clr = i.get('snf')
+                        buf_milk_clr = i.get('clr')
 
                     if i.get('milk_type') == 'Mix':
                         mix_volume =i.get('total_volume')
                         mix_milk_fat = i.get('fat')
-                        mix_milk_clr = i.get('snf')
+                        mix_milk_clr = i.get('clr')
 
                 if cow_volume > 0 or buffalow_volume > 0 or mix_volume > 0:
                     van_collection = frappe.new_doc("Van Collection Items")

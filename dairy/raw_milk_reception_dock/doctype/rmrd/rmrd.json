@@ -12,18 +12,42 @@
   "date",
   "shift",
   "section_break_7",
-  "total_cow_can",
-  "total_cow_milk_sample",
-  "total_cow_weight",
+  "t_g_cow_can",
+  "t_g_cow_sam",
+  "t_g_cow_wt",
   "cb_10",
-  "total_buf_can",
-  "total_buf_milk_sample",
-  "total_buf_weight",
+  "t_g_buf_can",
+  "t_g_buf_sam",
+  "t_g_buf_wt",
   "cb_11",
-  "total_mix_can",
-  "total_mix_milk_sample",
-  "total_mix_weight",
+  "t_g_mix_can",
+  "t_g_mix_sam",
+  "t_g_mix_wt",
   "section_break_23",
+  "t_s_cow_can",
+  "t_s_cow_sam",
+  "t_s_cow_wt",
+  "column_break_23",
+  "t_s_buf_can",
+  "t_s_buf_sam",
+  "t_s_buf_wt",
+  "column_break_27",
+  "t_s_mix_can",
+  "t_s_mix_sam",
+  "t_s_mix_wt",
+  "curd_milk_summary_section",
+  "t_c_cow_can",
+  "t_c_cow_sam",
+  "t_c_cow_wt",
+  "column_break_35",
+  "t_c_buf_can",
+  "t_c_buf_sam",
+  "t_c_buf_wt",
+  "column_break_38",
+  "t_c_mix_can",
+  "t_c_mix_sam",
+  "t_c_mix_wf",
+  "section_break_42",
   "amended_from"
  ],
  "fields": [
@@ -57,9 +81,10 @@
    "fieldtype": "Column Break"
   },
   {
+   "depends_on": "eval:doc.docstatus ==1",
    "fieldname": "section_break_7",
    "fieldtype": "Section Break",
-   "label": "Summary"
+   "label": "Good Milk Summary"
   },
   {
    "fieldname": "naming_series",
@@ -68,75 +93,12 @@
    "options": "RMRD -.DD./.MM./.YYYY.-"
   },
   {
-   "default": "0",
-   "fieldname": "total_cow_milk_sample",
-   "fieldtype": "Int",
-   "label": "Total Cow Milk Sample",
-   "read_only": 1
-  },
-  {
    "fieldname": "cb_10",
    "fieldtype": "Column Break"
   },
   {
    "fieldname": "cb_11",
    "fieldtype": "Column Break"
-  },
-  {
-   "default": "0",
-   "fieldname": "total_mix_milk_sample",
-   "fieldtype": "Int",
-   "label": "Total Mix Milk Sample",
-   "read_only": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "total_cow_can",
-   "fieldtype": "Int",
-   "label": "Total Cow Milk Can",
-   "read_only": 1
-  },
-  {
-   "default": "0.0",
-   "fieldname": "total_cow_weight",
-   "fieldtype": "Float",
-   "label": "Total Cow Milk Weight",
-   "read_only": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "total_buf_can",
-   "fieldtype": "Int",
-   "label": "Total Buffalow Milk Can",
-   "read_only": 1
-  },
-  {
-   "default": "0.0",
-   "fieldname": "total_buf_weight",
-   "fieldtype": "Float",
-   "label": "Total Buffalow Milk Weight",
-   "read_only": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "total_buf_milk_sample",
-   "fieldtype": "Int",
-   "label": "Total Buffalow Milk Sample",
-   "read_only": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "total_mix_can",
-   "fieldtype": "Int",
-   "label": "Total Mix Milk Can",
-   "read_only": 1
-  },
-  {
-   "default": "0.0",
-   "fieldname": "total_mix_weight",
-   "fieldtype": "Float",
-   "label": "Total Mix Milk Weight",
-   "read_only": 1
   },
   {
    "fieldname": "amended_from",
@@ -148,13 +110,194 @@
    "read_only": 1
   },
   {
+   "depends_on": "eval:doc.docstatus ==1",
    "fieldname": "section_break_23",
+   "fieldtype": "Section Break",
+   "label": "Sour Milk Summary"
+  },
+  {
+   "default": "0",
+   "fieldname": "t_g_cow_can",
+   "fieldtype": "Int",
+   "label": "Total Good Cow Milk Can",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "t_g_cow_sam",
+   "fieldtype": "Int",
+   "label": "Total Good Cow Milk Sample",
+   "read_only": 1
+  },
+  {
+   "default": "0.0",
+   "fieldname": "t_g_cow_wt",
+   "fieldtype": "Float",
+   "label": "Total Good Cow Milk Weight",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "t_g_buf_can",
+   "fieldtype": "Int",
+   "label": "Total Good Buffalow Milk Can",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "t_g_buf_sam",
+   "fieldtype": "Int",
+   "label": "Total Good Buffalow Milk Sample",
+   "read_only": 1
+  },
+  {
+   "default": "0.0",
+   "fieldname": "t_g_buf_wt",
+   "fieldtype": "Float",
+   "label": "Total Good Buffalow Milk Weight",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "t_g_mix_can",
+   "fieldtype": "Int",
+   "label": "Total Good Mix Milk Can",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "t_g_mix_sam",
+   "fieldtype": "Int",
+   "label": "Total  Good Mix Milk Sample",
+   "read_only": 1
+  },
+  {
+   "default": "0.0",
+   "fieldname": "t_g_mix_wt",
+   "fieldtype": "Float",
+   "label": "Total  Good Mix Milk Weight",
+   "read_only": 1
+  },
+  {
+   "fieldname": "t_s_cow_can",
+   "fieldtype": "Int",
+   "label": "Total Sour Cow Milk Can"
+  },
+  {
+   "fieldname": "t_s_cow_sam",
+   "fieldtype": "Int",
+   "label": "Total Sour Cow Milk Sample"
+  },
+  {
+   "fieldname": "t_s_cow_wt",
+   "fieldtype": "Float",
+   "label": "Total  Sour Cow Milk Weight"
+  },
+  {
+   "fieldname": "column_break_23",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "t_s_buf_can",
+   "fieldtype": "Int",
+   "label": "Total Sour Buffalow Milk Can"
+  },
+  {
+   "fieldname": "t_s_buf_sam",
+   "fieldtype": "Int",
+   "label": "Total Sour Buffalow Milk Sample"
+  },
+  {
+   "fieldname": "t_s_buf_wt",
+   "fieldtype": "Float",
+   "label": "Total  Sour Buffalow Milk Weight"
+  },
+  {
+   "fieldname": "column_break_27",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "t_s_mix_can",
+   "fieldtype": "Int",
+   "label": "Total Sour Mix Milk Can"
+  },
+  {
+   "fieldname": "t_s_mix_wt",
+   "fieldtype": "Float",
+   "label": "Total  Sour Mix Milk Weight"
+  },
+  {
+   "depends_on": "eval:doc.docstatus ==1",
+   "fieldname": "curd_milk_summary_section",
+   "fieldtype": "Section Break",
+   "label": "Curd Milk Summary"
+  },
+  {
+   "fieldname": "t_c_cow_can",
+   "fieldtype": "Int",
+   "label": "Total Curd Cow Milk Can"
+  },
+  {
+   "fieldname": "t_c_cow_sam",
+   "fieldtype": "Int",
+   "label": "Total Curd Cow Milk Sample"
+  },
+  {
+   "fieldname": "t_c_cow_wt",
+   "fieldtype": "Float",
+   "label": "Total  Curd Cow Milk Weight"
+  },
+  {
+   "fieldname": "column_break_35",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "t_c_buf_can",
+   "fieldtype": "Int",
+   "label": "Total Curd Buffalow Milk Can"
+  },
+  {
+   "fieldname": "t_c_buf_sam",
+   "fieldtype": "Int",
+   "label": "Total Curd Buffalow Milk Sample"
+  },
+  {
+   "fieldname": "t_c_buf_wt",
+   "fieldtype": "Float",
+   "label": "Total  Curd Buffalow Milk Weight"
+  },
+  {
+   "fieldname": "t_s_mix_sam",
+   "fieldtype": "Int",
+   "label": "Total Sour Mix Milk Sample"
+  },
+  {
+   "fieldname": "column_break_38",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "t_c_mix_can",
+   "fieldtype": "Int",
+   "label": "Total Curd Mix Milk Can"
+  },
+  {
+   "fieldname": "t_c_mix_sam",
+   "fieldtype": "Int",
+   "label": "Total Curd Mix Milk Sample"
+  },
+  {
+   "fieldname": "t_c_mix_wf",
+   "fieldtype": "Float",
+   "label": "Total  Curd Mix Milk Weight"
+  },
+  {
+   "fieldname": "section_break_42",
    "fieldtype": "Section Break"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-01 18:32:58.560988",
+ "modified": "2020-04-02 19:10:27.602730",
  "modified_by": "Administrator",
  "module": "Raw Milk Reception Dock",
  "name": "RMRD",

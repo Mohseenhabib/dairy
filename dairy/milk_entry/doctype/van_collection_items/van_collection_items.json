@@ -314,21 +314,21 @@
    "default": "0",
    "fieldname": "cow_milk_clr",
    "fieldtype": "Float",
-   "label": "Cow Milk SNF",
+   "label": "Cow Milk CLR",
    "read_only": 1
   },
   {
    "default": "0",
    "fieldname": "buf_milk_clr",
    "fieldtype": "Float",
-   "label": "Buffalow Milk SNF",
+   "label": "Buffalow Milk CLR",
    "read_only": 1
   },
   {
    "default": "0",
    "fieldname": "mix_milk_clr",
    "fieldtype": "Float",
-   "label": "Mix Milk SNF",
+   "label": "Mix Milk CLR",
    "read_only": 1
   },
   {
@@ -337,7 +337,7 @@
   }
  ],
  "links": [],
- "modified": "2020-04-01 17:32:06.409267",
+ "modified": "2020-04-02 17:24:18.800301",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Van Collection Items",
