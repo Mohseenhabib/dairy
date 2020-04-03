@@ -9,5 +9,9 @@ def get_data():
                 'label': _('RMRD Lines'),
                 'items': ['RMRD Lines']
             },
+            {
+                'label': _('Stock Entry'),
+                'items': ['Stock Entry']
+            },
         ]
     }

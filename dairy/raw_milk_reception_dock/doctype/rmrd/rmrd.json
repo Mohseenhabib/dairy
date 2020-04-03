@@ -8,47 +8,56 @@
  "field_order": [
   "naming_series",
   "route",
+  "company",
   "column_break_3",
   "date",
   "shift",
   "section_break_7",
   "t_g_cow_can",
-  "t_g_cow_sam",
   "t_g_cow_wt",
   "cb_10",
   "t_g_buf_can",
-  "t_g_buf_sam",
   "t_g_buf_wt",
   "cb_11",
   "t_g_mix_can",
-  "t_g_mix_sam",
   "t_g_mix_wt",
   "section_break_23",
   "t_s_cow_can",
-  "t_s_cow_sam",
   "t_s_cow_wt",
   "column_break_23",
   "t_s_buf_can",
-  "t_s_buf_sam",
   "t_s_buf_wt",
   "column_break_27",
   "t_s_mix_can",
-  "t_s_mix_sam",
   "t_s_mix_wt",
   "curd_milk_summary_section",
   "t_c_cow_can",
-  "t_c_cow_sam",
   "t_c_cow_wt",
   "column_break_35",
   "t_c_buf_can",
-  "t_c_buf_sam",
   "t_c_buf_wt",
   "column_break_38",
   "t_c_mix_can",
-  "t_c_mix_sam",
-  "t_c_mix_wf",
+  "t_c_mix_wt",
+  "total_sample_section",
+  "t_cow_sam",
+  "cb34",
+  "t_buf_sam",
+  "cb35",
+  "t_mix_sam",
+  "section_break_46",
+  "t_cow_m_fat",
+  "t_buf_m_fat",
+  "t_mix_m_fat",
+  "column_break_50",
+  "t_cow_m_clr",
+  "t_buf_m_clr",
+  "t_mix_m_clr",
   "section_break_42",
-  "amended_from"
+  "amended_from",
+  "cb50",
+  "stock_entry",
+  "hide_start_rmrd_button"
  ],
  "fields": [
   {
@@ -90,7 +99,7 @@
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "label": "Name",
-   "options": "RMRD -.DD./.MM./.YYYY.-"
+   "options": "RMRD -.YYYY./"
   },
   {
    "fieldname": "cb_10",
@@ -123,13 +132,6 @@
    "read_only": 1
   },
   {
-   "default": "0",
-   "fieldname": "t_g_cow_sam",
-   "fieldtype": "Int",
-   "label": "Total Good Cow Milk Sample",
-   "read_only": 1
-  },
-  {
    "default": "0.0",
    "fieldname": "t_g_cow_wt",
    "fieldtype": "Float",
@@ -141,13 +143,6 @@
    "fieldname": "t_g_buf_can",
    "fieldtype": "Int",
    "label": "Total Good Buffalow Milk Can",
-   "read_only": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "t_g_buf_sam",
-   "fieldtype": "Int",
-   "label": "Total Good Buffalow Milk Sample",
    "read_only": 1
   },
   {
@@ -165,13 +160,6 @@
    "read_only": 1
   },
   {
-   "default": "0",
-   "fieldname": "t_g_mix_sam",
-   "fieldtype": "Int",
-   "label": "Total  Good Mix Milk Sample",
-   "read_only": 1
-  },
-  {
    "default": "0.0",
    "fieldname": "t_g_mix_wt",
    "fieldtype": "Float",
@@ -182,11 +170,6 @@
    "fieldname": "t_s_cow_can",
    "fieldtype": "Int",
    "label": "Total Sour Cow Milk Can"
-  },
-  {
-   "fieldname": "t_s_cow_sam",
-   "fieldtype": "Int",
-   "label": "Total Sour Cow Milk Sample"
   },
   {
    "fieldname": "t_s_cow_wt",
@@ -201,11 +184,6 @@
    "fieldname": "t_s_buf_can",
    "fieldtype": "Int",
    "label": "Total Sour Buffalow Milk Can"
-  },
-  {
-   "fieldname": "t_s_buf_sam",
-   "fieldtype": "Int",
-   "label": "Total Sour Buffalow Milk Sample"
   },
   {
    "fieldname": "t_s_buf_wt",
@@ -238,11 +216,6 @@
    "label": "Total Curd Cow Milk Can"
   },
   {
-   "fieldname": "t_c_cow_sam",
-   "fieldtype": "Int",
-   "label": "Total Curd Cow Milk Sample"
-  },
-  {
    "fieldname": "t_c_cow_wt",
    "fieldtype": "Float",
    "label": "Total  Curd Cow Milk Weight"
@@ -257,19 +230,9 @@
    "label": "Total Curd Buffalow Milk Can"
   },
   {
-   "fieldname": "t_c_buf_sam",
-   "fieldtype": "Int",
-   "label": "Total Curd Buffalow Milk Sample"
-  },
-  {
    "fieldname": "t_c_buf_wt",
    "fieldtype": "Float",
    "label": "Total  Curd Buffalow Milk Weight"
-  },
-  {
-   "fieldname": "t_s_mix_sam",
-   "fieldtype": "Int",
-   "label": "Total Sour Mix Milk Sample"
   },
   {
    "fieldname": "column_break_38",
@@ -281,23 +244,112 @@
    "label": "Total Curd Mix Milk Can"
   },
   {
-   "fieldname": "t_c_mix_sam",
-   "fieldtype": "Int",
-   "label": "Total Curd Mix Milk Sample"
+   "fieldname": "section_break_42",
+   "fieldtype": "Section Break"
   },
   {
-   "fieldname": "t_c_mix_wf",
+   "default": "0",
+   "fieldname": "hide_start_rmrd_button",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Hidden Star RMRD Button",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.docstatus ==1",
+   "fieldname": "section_break_46",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "t_cow_m_fat",
+   "fieldtype": "Float",
+   "label": "Total Cow Milk Fat"
+  },
+  {
+   "fieldname": "t_buf_m_fat",
+   "fieldtype": "Float",
+   "label": "Total Buffalow Milk Fat"
+  },
+  {
+   "fieldname": "t_mix_m_fat",
+   "fieldtype": "Float",
+   "label": "Total Mix Milk Fat"
+  },
+  {
+   "fieldname": "column_break_50",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "t_cow_m_clr",
+   "fieldtype": "Float",
+   "label": "Total Cow Milk CLR"
+  },
+  {
+   "fieldname": "t_buf_m_clr",
+   "fieldtype": "Float",
+   "label": "Total Buffalow Milk CLR"
+  },
+  {
+   "fieldname": "t_mix_m_clr",
+   "fieldtype": "Float",
+   "label": "Total Mix Milk CLR"
+  },
+  {
+   "depends_on": "eval:doc.docstatus ==1",
+   "fieldname": "total_sample_section",
+   "fieldtype": "Section Break",
+   "label": "Total Sample"
+  },
+  {
+   "fieldname": "t_cow_sam",
+   "fieldtype": "Int",
+   "label": "Total Cow Milk Sample"
+  },
+  {
+   "fieldname": "cb34",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "t_buf_sam",
+   "fieldtype": "Int",
+   "label": "Total Buffalow Milk Sample"
+  },
+  {
+   "fieldname": "cb35",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "t_mix_sam",
+   "fieldtype": "Int",
+   "label": "Total Mix Milk Sample"
+  },
+  {
+   "fieldname": "t_c_mix_wt",
    "fieldtype": "Float",
    "label": "Total  Curd Mix Milk Weight"
   },
   {
-   "fieldname": "section_break_42",
-   "fieldtype": "Section Break"
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "stock_entry",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Stock Entry",
+   "options": "Stock Entry"
+  },
+  {
+   "fieldname": "cb50",
+   "fieldtype": "Column Break"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-02 19:10:27.602730",
+ "modified": "2020-04-03 12:24:31.136070",
  "modified_by": "Administrator",
  "module": "Raw Milk Reception Dock",
  "name": "RMRD",

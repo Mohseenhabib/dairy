@@ -104,3 +104,7 @@ def change_van_collection_status(st,method):
         doc = frappe.get_doc("Van Collection Items", st.van_collection_item)
         doc.gate_pass =st.name
         doc.db_update()
+    if st.rmrd:
+        doc = frappe.get_doc("RMRD", st.rmrd)
+        doc.stock_entry = st.name
+        doc.db_update()
