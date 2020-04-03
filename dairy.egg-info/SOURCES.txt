@@ -5,6 +5,7 @@ requirements.txt
 setup.py
 dairy/__init__.py
 dairy/hooks.py
+dairy/install.py
 dairy/modules.txt
 dairy/patches.txt
 dairy/vehicle_dynamic_link.py
@@ -131,6 +132,9 @@ dairy/milk_entry/page/__init__.py
 dairy/milk_entry/page/dairy_page/__init__.py
 dairy/milk_entry/page/dairy_page/dairy_page.js
 dairy/milk_entry/page/dairy_page/dairy_page.json
+dairy/milk_entry/print_format/__init__.py
+dairy/milk_entry/print_format/milk_entry_invoice/__init__.py
+dairy/milk_entry/print_format/milk_entry_invoice/milk_entry_invoice.json
 dairy/milk_entry/report/__init__.py
 dairy/milk_entry/report/collection_item_details/__init__.py
 dairy/milk_entry/report/collection_item_details/collection_item_details.js
