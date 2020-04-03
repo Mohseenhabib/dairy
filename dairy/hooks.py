@@ -74,7 +74,7 @@ doctype_js = {
 # ------------
 
 # before_install = "dairy.install.before_install"
-# after_install = "dairy.install.after_install"
+after_install = "dairy.install.after_install"
 
 # Desk Notifications
 # ------------------
