@@ -3,6 +3,6 @@ import frappe
 
 def after_install():
     print("@@@@@@@@@@@@@@@@@@@@2------------------@@@@@@@@@@@@@@@@@")
-    res = frappe.db.sql("""INSERT INTO `tabDomain` (domain) VALUES ('Dairy')""")
+    res = frappe.db.sql("""INSERT INTO `tabDomain` (name,domain) VALUES ('Dairy','Dairy')""")
     print("@@@@@@@@@@@@@@@@@@@@2------------------@@@@@@@@@@@@@@@@@",res)
     res.db_update()
