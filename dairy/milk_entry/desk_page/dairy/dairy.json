@@ -29,7 +29,7 @@
    "title": "Reports"
   }
  ],
- "category": "Modules",
+ "category": "Domains",
  "charts": [
   {
    "chart_name": "Milk Entry",
@@ -40,7 +40,7 @@
    "label": "Milk Entry By DCS"
   }
  ],
- "charts_label": "DASHBOARDS",
+ "charts_label": "",
  "creation": "2020-03-12 10:36:30.921482",
  "developer_mode_only": 0,
  "disable_user_customization": 0,
@@ -50,13 +50,14 @@
  "idx": 0,
  "is_standard": 1,
  "label": "Dairy",
- "modified": "2020-04-01 18:32:13.753061",
+ "modified": "2020-04-03 13:28:50.648121",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy",
  "owner": "Administrator",
  "pin_to_bottom": 0,
  "pin_to_top": 0,
+ "restrict_to_domain": "Dairy",
  "shortcuts": [
   {
    "is_query_report": 0,
