@@ -1,4 +1,5 @@
 {
+ "actions": [],
  "creation": "2019-11-05 17:10:28.434108",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -14,7 +15,7 @@
    "fieldtype": "Float",
    "in_filter": 1,
    "in_list_view": 1,
-   "label": "SNF/CLR",
+   "label": "CLR%",
    "read_only": 1
   },
   {
@@ -22,7 +23,7 @@
    "fieldtype": "Float",
    "in_filter": 1,
    "in_list_view": 1,
-   "label": "FAT",
+   "label": "FAT%",
    "read_only": 1
   },
   {
@@ -33,7 +34,8 @@
   }
  ],
  "istable": 1,
- "modified": "2019-12-06 17:39:24.482504",
+ "links": [],
+ "modified": "2020-04-04 11:23:01.027117",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Milk Rate Chart",

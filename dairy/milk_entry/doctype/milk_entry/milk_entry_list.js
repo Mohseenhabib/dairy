@@ -29,5 +29,10 @@
  		{
  			return [__("Posted"), "green", "status,=,Posted"];
  		}
+ 	},
+ 	onload: function(frm){
+ 	    frappe.route_options = {
+			"date":frappe.datetime.get_today()
+		};
  	}
  };

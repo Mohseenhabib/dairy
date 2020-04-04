@@ -47,15 +47,7 @@
    "fieldname": "fat",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "FAT",
-   "read_only": 1
-  },
-  {
-   "fetch_from": "milk_entry.clr",
-   "fieldname": "clr",
-   "fieldtype": "Float",
-   "in_list_view": 1,
-   "label": "SNF",
+   "label": "FAT in Kg ",
    "read_only": 1
   },
   {
@@ -103,11 +95,19 @@
    "label": "Milk Entry",
    "options": "Milk Entry",
    "reqd": 1
+  },
+  {
+   "fetch_from": "milk_entry.clr",
+   "fieldname": "clr",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "SNF in Kg ",
+   "read_only": 1
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2020-04-01 17:41:14.187529",
+ "modified": "2020-04-04 12:24:16.411841",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Sample lines",

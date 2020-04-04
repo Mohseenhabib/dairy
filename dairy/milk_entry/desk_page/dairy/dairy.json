@@ -1,7 +1,7 @@
 {
  "cards": [
   {
-   "links": "[\n     {\n        \"type\": \"doctype\",\n        \"name\": \"Milk Entry\",\n        \"label\": \"Milk Entry\",\n        \"description\": \"Milk Entry\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Raw Milk Sample\",\n        \"label\": \"Raw Milk Sample\",\n        \"description\": \"Raw Milk Sample\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Van Collection\",\n        \"label\": \"Van Collection\",\n        \"description\": \"Van Collection\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Van Collection Items\",\n        \"label\": \"Van Collection Items\",\n        \"description\": \"Van Collection Items\",\n        \"onboard\": 1\n    }\n]",
+   "links": "[\n     {\n        \"type\": \"doctype\",\n        \"name\": \"Milk Entry\",\n        \"label\": \"Milk Entry\",\n        \"description\": \"Milk Entry\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Raw Milk Sample\",\n        \"label\": \"Raw Milk Sample\",\n        \"description\": \"Raw Milk Sample\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Van Collection\",\n        \"label\": \"Van Collection\",\n        \"description\": \"Van Collection\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Van Collection Items\",\n        \"label\": \"Van Collection Items\",\n        \"description\": \"Van Collection Items\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Warehouse\",\n        \"label\": \"DCS\",\n        \"description\": \"DCS\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Supplier\",\n        \"label\": \"Member\",\n        \"description\": \"Member\",\n        \"onboard\": 1\n    }\n]",
    "title": "Dairy"
   },
   {
@@ -25,7 +25,7 @@
    "title": "Crate Management"
   },
   {
-   "links": "[\n    {\n        \"type\": \"report\",\n        \"is_query_report\": 1,\n        \"name\": \"Milk Entry Detail\",\n        \"reference_doctype\": \"Milk Entry\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"report\",\n        \"is_query_report\": 1,\n        \"name\": \"Vehicle Wise Crate Summary\",\n        \"reference_doctype\": \"Delivery Note\",\n        \"onboard\": 1\n    }\n]",
+   "links": "[\n    {\n        \"type\": \"report\",\n        \"is_query_report\": 1,\n        \"name\": \"Stock Ledger\",\n        \"reference_doctype\": \"Stock Ledger Entry\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"report\",\n        \"is_query_report\": 1,\n        \"name\": \"Received Items To Be Billed\",\n        \"reference_doctype\": \"Purchase Invoice\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"report\",\n        \"is_query_report\": 1,\n        \"name\": \"Milk Entry Trends\",\n        \"reference_doctype\": \"Milk Entry\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"report\",\n        \"is_query_report\": 1,\n        \"name\": \"Milk Entry Detail\",\n        \"reference_doctype\": \"Milk Entry\",\n        \"onboard\": 1\n    },\n    {\n        \"type\": \"report\",\n        \"is_query_report\": 1,\n        \"name\": \"Vehicle Wise Crate Summary\",\n        \"reference_doctype\": \"Delivery Note\",\n        \"onboard\": 1\n    }\n]",
    "title": "Reports"
   }
  ],
@@ -50,7 +50,7 @@
  "idx": 0,
  "is_standard": 1,
  "label": "Dairy",
- "modified": "2020-04-03 13:28:50.648121",
+ "modified": "2020-04-04 15:58:13.049074",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy",

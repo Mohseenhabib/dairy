@@ -72,7 +72,7 @@ frappe.ui.form.on('Milk Entry', {
 			}, __("View"));
 
          }
-        if (frm.doc.status=="Submitted") {
+        if (frm.doc.status=="Submitted" || frm.doc.status=="To Sample"|| frm.doc.status=="To Post and Sample") {
             frappe.model.with_doc("Warehouse",frm.doc.dcs_id, () => {
                 let dcs = frappe.model.get_doc("Warehouse",frm.doc.dcs_id);
                 let is_collector = dcs.sample_collector
@@ -85,16 +85,16 @@ frappe.ui.form.on('Milk Entry', {
                     }, __('Create'));
                 }
             });
-            frm.add_custom_button(__('Purchase Receipt'),function() {
-                return frappe.call({
-                    doc: frm.doc,
-                    method: 'create_purchase_receipt',
-                    callback: function(r) {
-                        var doc = frappe.model.sync(r.message);
-                        frappe.set_route("Form", doc[0].doctype, doc[0].name);
-                    }
-                });
-            },__('Create'));
+//            frm.add_custom_button(__('Purchase Receipt'),function() {
+//                return frappe.call({
+//                    doc: frm.doc,
+//                    method: 'create_purchase_receipt',
+//                    callback: function(r) {
+//                        var doc = frappe.model.sync(r.message);
+//                        frappe.set_route("Form", doc[0].doctype, doc[0].name);
+//                    }
+//                });
+//            },__('Create'));
             frm.page.set_inner_btn_group_as_primary(__('Create'));
         }
 
@@ -105,4 +105,13 @@ frappe.ui.form.on('Milk Entry', {
 
         });
     },
+    on_submit: function(frm){
+        return frappe.call({
+            doc: frm.doc,
+            method: 'create_purchase_receipt',
+            callback: function(r) {
+                frm.refresh();
+            }
+        });
+    }
 });

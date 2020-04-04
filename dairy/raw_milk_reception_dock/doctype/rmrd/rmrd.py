@@ -144,6 +144,9 @@ class RMRD(Document):
 			if doc:
 				doc.submit()
 
+	def on_submit(self):
+		self.make_stock_entry()
+		self.create_materail_receipt()
 
 	def make_stock_entry(self):
 		stock_entry = frappe.new_doc("Stock Entry")
@@ -162,6 +165,36 @@ class RMRD(Document):
 		g_buf_item = frappe.db.get_single_value("Dairy Settings", "buf_pro")
 		g_mix_item = frappe.db.get_single_value("Dairy Settings", "mix_pro")
 
+		if self.t_g_cow_wt > 0:
+			self.set_value_depend_milk_type(g_cow_item, stock_entry, self.t_g_cow_wt, self.t_cow_m_fat,
+											self.t_cow_m_clr, route, self.target_warehouse, cost_center, expense_account, perpetual_inventory)
+
+		if self.t_g_buf_wt > 0:
+			self.set_value_depend_milk_type(g_buf_item, stock_entry, self.t_g_buf_wt, self.t_buf_m_fat,
+											self.t_buf_m_clr, route, self.target_warehouse, cost_center, expense_account, perpetual_inventory)
+
+		if self.t_g_mix_wt > 0:
+			self.set_value_depend_milk_type(g_mix_item, stock_entry, self.t_g_mix_wt, self.t_mix_m_fat,
+											self.t_mix_m_clr, route, self.target_warehouse, cost_center, expense_account, perpetual_inventory)
+
+		stock_entry.insert()
+		if not self.inspection_required:
+			stock_entry.submit()
+
+
+	def create_materail_receipt(self):
+		stock_entry = frappe.new_doc("Stock Entry")
+		stock_entry.purpose = "Material Receipt"
+		stock_entry.stock_entry_type = "Material Receipt"
+		stock_entry.company = self.company
+		stock_entry.rmrd = self.name
+
+		route = frappe.get_doc("Route Master", self.route)
+
+		cost_center = frappe.get_cached_value('Company', self.company, 'cost_center')
+		perpetual_inventory = frappe.get_cached_value('Company', self.company, 'enable_perpetual_inventory')
+		expense_account = frappe.get_cached_value('Company', self.company, 'stock_adjustment_account')
+
 		s_cow_item = frappe.db.get_single_value("Dairy Settings", "s_cow_milk")
 		s_buf_item = frappe.db.get_single_value("Dairy Settings", "s_buf_milk")
 		s_mix_item = frappe.db.get_single_value("Dairy Settings", "s_mix_milk")
@@ -170,45 +203,35 @@ class RMRD(Document):
 		c_buf_item = frappe.db.get_single_value("Dairy Settings", "c_buf_milk")
 		c_mix_item = frappe.db.get_single_value("Dairy Settings", "c_buf_milk")
 
-		if self.t_g_cow_wt > 0:
-			self.set_value_depend_milk_type(g_cow_item, stock_entry, self.t_g_cow_wt, self.t_cow_m_fat,
-											self.t_cow_m_clr, route, cost_center, expense_account, perpetual_inventory)
-
-		if self.t_g_buf_wt > 0:
-			self.set_value_depend_milk_type(g_buf_item, stock_entry, self.t_g_buf_wt, self.t_buf_m_fat,
-											self.t_buf_m_clr, route, cost_center, expense_account, perpetual_inventory)
-
-		if self.t_g_mix_wt > 0:
-			self.set_value_depend_milk_type(g_mix_item, stock_entry, self.t_g_mix_wt, self.t_mix_m_fat,
-											self.t_mix_m_clr, route, cost_center, expense_account, perpetual_inventory)
-
 		if self.t_s_cow_wt > 0:
 			self.set_value_depend_milk_type(s_cow_item, stock_entry, self.t_s_cow_wt, self.t_cow_m_fat,
-											self.t_cow_m_clr, route, cost_center, expense_account, perpetual_inventory)
+											self.t_cow_m_clr, route, self.target_warehouse, cost_center, expense_account, perpetual_inventory)
 
 		if self.t_s_buf_wt > 0:
 			self.set_value_depend_milk_type(s_buf_item, stock_entry, self.t_s_buf_wt, self.t_buf_m_fat,
-											self.t_buf_m_clr, route, cost_center, expense_account, perpetual_inventory)
+											self.t_buf_m_clr, route, self.target_warehouse, cost_center, expense_account, perpetual_inventory)
 
 		if self.t_s_mix_wt > 0:
 			self.set_value_depend_milk_type(s_mix_item, stock_entry, self.t_s_mix_wt, self.t_mix_m_fat,
-											self.t_mix_m_clr, route, cost_center, expense_account, perpetual_inventory)
+											self.t_mix_m_clr, route, self.target_warehouse, cost_center, expense_account, perpetual_inventory)
 
 		if self.t_c_cow_wt > 0:
 			self.set_value_depend_milk_type(c_cow_item, stock_entry, self.t_c_cow_wt, self.t_cow_m_fat,
-											self.t_cow_m_clr, route, cost_center, expense_account, perpetual_inventory)
+											self.t_cow_m_clr, route, self.target_warehouse, cost_center, expense_account, perpetual_inventory)
 
 		if self.t_c_buf_wt > 0:
 			self.set_value_depend_milk_type(c_buf_item, stock_entry, self.t_c_buf_wt, self.t_buf_m_fat,
-											self.t_buf_m_clr, route, cost_center, expense_account, perpetual_inventory)
+											self.t_buf_m_clr, route, self.target_warehouse, cost_center, expense_account, perpetual_inventory)
 
 		if self.t_c_mix_wt > 0:
 			self.set_value_depend_milk_type(c_mix_item, stock_entry, self.t_c_mix_wt, self.t_mix_m_fat,
-											self.t_mix_m_clr, route, cost_center, expense_account, perpetual_inventory)
+											self.t_mix_m_clr, route, self.target_warehouse, cost_center, expense_account, perpetual_inventory)
 
-		return stock_entry
+		stock_entry.insert()
+		if not self.inspection_required:
+			stock_entry.submit()
 
-	def set_value_depend_milk_type(self, item_name, stock_entry, milk_collected, fat, clr, route, cost_center, expense_account, perpetual_inventory=None):
+	def set_value_depend_milk_type(self, item_name, stock_entry, milk_collected, fat, clr, route, target_warehouse, cost_center, expense_account, perpetual_inventory=None):
 		item = frappe.get_doc("Item", item_name)
 		se_child = stock_entry.append('items')
 		se_child.item_code = item.item_code
@@ -218,7 +241,9 @@ class RMRD(Document):
 		se_child.qty = milk_collected
 		se_child.fat = (milk_collected * fat) / 100
 		se_child.clr = clr / 4 + 0.21 * (fat / 100) + 0.36
-		se_child.s_warehouse = route.dest_warehouse
+		if stock_entry.purpose == "Material Transfer":
+			se_child.s_warehouse = route.dest_warehouse
+		se_child.t_warehouse = target_warehouse
 		# in stock uom
 		se_child.transfer_qty = milk_collected
 		se_child.cost_center = cost_center

@@ -20,19 +20,19 @@ frappe.ui.form.on('RMRD', {
             frappe.set_route("Report", "RMRD Lines");
         });
 
-        if(frm.doc.docstatus == 1 && !frm.doc.stock_entry)
-        {
-            frm.add_custom_button(__('Make Stock Entry'),function() {
-                return frappe.call({
-                    doc: frm.doc,
-                    method: 'make_stock_entry',
-                    callback: function(r) {
-                        var doc = frappe.model.sync(r.message);
-                        frappe.set_route("Form", doc[0].doctype, doc[0].name);
-                    }
-                });
-            }).addClass('btn-primary');
-        }
+//        if(frm.doc.docstatus == 1 && !frm.doc.stock_entry)
+//        {
+//            frm.add_custom_button(__('Make Stock Entry'),function() {
+//                return frappe.call({
+//                    doc: frm.doc,
+//                    method: 'make_stock_entry',
+//                    callback: function(r) {
+//                        var doc = frappe.model.sync(r.message);
+//                        frappe.set_route("Form", doc[0].doctype, doc[0].name);
+//                    }
+//                });
+//            }).addClass('btn-primary');
+//        }
 	 },
 	 onload: function(frm){
         frm.set_query('route', function(doc) {
@@ -42,6 +42,15 @@ frappe.ui.form.on('RMRD', {
                 }
             };
         });
+        frm.set_query('target_warehouse', function(doc) {
+            return {
+                filters: {
+//                    "is_dcs":0,
+                    "is_group":0,
+                    "company":frappe.defaults.get_user_default("Company"),
+                    "disabled":0
+                }
+            };
+        });
     },
-
 });

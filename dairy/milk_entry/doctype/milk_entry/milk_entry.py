@@ -34,6 +34,7 @@ class MilkEntry(Document):
 
         snf_kg = self.clr/4 + 0.21*(self.fat/100) + 0.36
         frappe.db.set(self, 'snf_kg', snf_kg)
+
     def create_purchase_receipt(self):
         purchase_receipts = frappe.db.sql("""select count(name) from `tabPurchase Receipt` 
                                             where status not in ('Cancelled') and milk_entry= %s""",(self.name))[0][0]
@@ -68,6 +69,8 @@ class MilkEntry(Document):
             'fat': self.fat_kg,
             'clr': self.snf_kg
         })
+        doc.insert()
+        doc.submit()
         return doc
 
 def _get_product(milk_type):
