@@ -7,6 +7,11 @@ import frappe
 from frappe.model.document import Document
 
 class RMRD(Document):
+	def validate(self):
+		result = frappe.db.sql("select * from `tabRMRD` where route =%s and date =%s and shift =%s",(self.route,self.date,self.shift))
+		if result:
+			frappe.throw("you can not create duplicate entry with same DCS,Date and Shift.")
+
 	def start_rmrd(self):
 		result1 = frappe.db.sql("""select sum(cow_milk_collected) as cow_collected,
 								sum(buffalow_milk_collected) as buf_collected,
