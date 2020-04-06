@@ -10,6 +10,7 @@
   "route",
   "target_warehouse",
   "company",
+  "vehicle",
   "column_break_3",
   "date",
   "shift",
@@ -362,11 +363,19 @@
    "fieldname": "inspection_required",
    "fieldtype": "Check",
    "label": "Inspection Required"
+  },
+  {
+   "fetch_from": "route.vehicle",
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Vehicle",
+   "options": "Vehicle"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-04 14:56:19.417065",
+ "modified": "2020-04-06 16:26:01.949542",
  "modified_by": "Administrator",
  "module": "Raw Milk Reception Dock",
  "name": "RMRD",

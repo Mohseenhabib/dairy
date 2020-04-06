@@ -9,10 +9,12 @@
   "naming_series",
   "van_collection",
   "route",
+  "vehicle",
   "shift",
   "date",
   "column_break_4",
   "dcs",
+  "company",
   "sb2",
   "cow_milk_vol",
   "cb1",
@@ -334,10 +336,25 @@
   {
    "fieldname": "section_break_40",
    "fieldtype": "Section Break"
+  },
+  {
+   "fetch_from": "van_collection.vehicle",
+   "fieldname": "vehicle",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Vehicle",
+   "options": "Vehicle"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Company",
+   "options": "Company"
   }
  ],
  "links": [],
- "modified": "2020-04-02 17:24:18.800301",
+ "modified": "2020-04-06 13:05:45.498961",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Van Collection Items",
