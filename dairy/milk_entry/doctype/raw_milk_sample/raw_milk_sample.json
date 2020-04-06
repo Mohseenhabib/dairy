@@ -13,7 +13,6 @@
   "date",
   "sb1",
   "sample_lines",
-  "milk_entry",
   "amended_from"
  ],
  "fields": [
@@ -52,14 +51,6 @@
    "set_only_once": 1
   },
   {
-   "fieldname": "milk_entry",
-   "fieldtype": "Link",
-   "hidden": 1,
-   "in_list_view": 1,
-   "label": "Milk Entry",
-   "options": "Milk Entry"
-  },
-  {
    "fieldname": "amended_from",
    "fieldtype": "Link",
    "label": "Amended From",
@@ -84,7 +75,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-04 12:15:08.073601",
+ "modified": "2020-04-06 18:11:25.872655",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Raw Milk Sample",
