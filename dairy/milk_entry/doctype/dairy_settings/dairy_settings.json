@@ -80,7 +80,9 @@
   "section_break_60",
   "order_locking_time",
   "morning_locking_time",
-  "evening_locking_time"
+  "evening_locking_time",
+  "section_break_77",
+  "auto_print_milk_receipt"
  ],
  "fields": [
   {
@@ -491,11 +493,21 @@
    "label": "Curd Mix Milk",
    "options": "Item",
    "reqd": 1
+  },
+  {
+   "fieldname": "section_break_77",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "auto_print_milk_receipt",
+   "fieldtype": "Check",
+   "label": "Auto Print Milk Receipt"
   }
  ],
  "issingle": 1,
  "links": [],
- "modified": "2020-04-02 17:15:25.983688",
+ "modified": "2020-04-09 17:26:14.546461",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",
