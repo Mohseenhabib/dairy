@@ -82,7 +82,11 @@
   "morning_locking_time",
   "evening_locking_time",
   "section_break_77",
-  "auto_print_milk_receipt"
+  "auto_print_milk_receipt",
+  "milk_leakage_section",
+  "leakage_percentage",
+  "column_break_81",
+  "leakage_qty"
  ],
  "fields": [
   {
@@ -503,11 +507,30 @@
    "fieldname": "auto_print_milk_receipt",
    "fieldtype": "Check",
    "label": "Auto Print Milk Receipt"
+  },
+  {
+   "fieldname": "milk_leakage_section",
+   "fieldtype": "Section Break",
+   "label": "Milk Leakage"
+  },
+  {
+   "fieldname": "leakage_percentage",
+   "fieldtype": "Data",
+   "label": "Leakage Percentage"
+  },
+  {
+   "fieldname": "column_break_81",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "leakage_qty",
+   "fieldtype": "Int",
+   "label": " Leakage Applicable Qty"
   }
  ],
  "issingle": 1,
  "links": [],
- "modified": "2020-04-09 17:26:14.546461",
+ "modified": "2020-04-16 17:37:53.557341",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",
