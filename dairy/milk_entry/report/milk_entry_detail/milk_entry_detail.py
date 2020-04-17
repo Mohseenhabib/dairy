@@ -135,7 +135,7 @@ def get_data(filters):
     conditions = get_conditions(filters)
 
     query = """ select tm.name,tm.member,tm.dcs_id,tm.date,tm.time,tm.shift,tm.milk_type,tm.volume,tm.fat,tm.clr,tm.milk_rate,tm.unit_price,tm.total, 
-                tm.owner,tm.creation,tm.sample,tm.status,tp.name,tp.company from  `tabMilk Entry` tm inner join `tabPurchase Receipt` tp where tp.milk_entry = tm.name """
+                tm.owner,tm.creation,tm.sample,tm.status,tp.name,tm.company from  `tabMilk Entry` tm inner join `tabPurchase Receipt` tp where tp.milk_entry = tm.name """
 
     print("====query",query+conditions)
     q_data = frappe.db.sql(query+conditions)
@@ -171,7 +171,7 @@ def get_conditions(filters):
     if filters:
         query = """   and  date >= '{0}' and  date <= '{1}'  """.format(filters.from_date,filters.to_date)
         if filters.get('company'):
-            query += """ and  company = '%s'  """%filters.company
+            query += """ and  tm.company = '%s'  """%filters.company
         if filters.get('dcs'):
             query += """ and  dcs_id = '%s'  """%filters.dcs
         if filters.get('member'):
