@@ -30,7 +30,10 @@ dairy/field_order/doctype/field_order/test_field_order.py
 dairy/milk_entry/__init__.py
 dairy/milk_entry/custom_delivery_note.py
 dairy/milk_entry/custom_purchase_receipt.py
+dairy/milk_entry/custom_sales_order.py
 dairy/milk_entry/custom/customer.json
+dairy/milk_entry/custom/item.json
+dairy/milk_entry/custom/item_barcode.json
 dairy/milk_entry/custom/payment_entry.json
 dairy/milk_entry/custom/purchase_invoice.json
 dairy/milk_entry/custom/purchase_receipt.json

@@ -137,7 +137,7 @@ def get_data(filters):
     query = """ select tm.name,tm.member,tm.dcs_id,tm.date,tm.time,tm.shift,tm.milk_type,tm.volume,tm.fat,tm.clr,tm.milk_rate,tm.unit_price,tm.total, 
                 tm.owner,tm.creation,tm.sample,tm.status,tp.name,tm.company from  `tabMilk Entry` tm inner join `tabPurchase Receipt` tp where tp.milk_entry = tm.name """
 
-    print("====query",query+conditions)
+    # print("====query",query+conditions)
     q_data = frappe.db.sql(query+conditions)
     data = []
     for q in q_data:
