@@ -3,4 +3,4 @@ import frappe
 
 def after_install():
     res = frappe.db.sql("""INSERT INTO `tabDomain` (name,domain) VALUES ('Dairy','Dairy')""")
-    res.db_update()
+    # res.db_update()
