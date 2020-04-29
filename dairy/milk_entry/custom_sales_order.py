@@ -9,7 +9,7 @@ def before_submit(sales, method):
         lst.append(line)
     for line in lst:
         item = frappe.get_doc("Item",line.item_code)
-        if item.leakage_applicable and line.qty > leakage_qty:
+        if item.leakage_applicable and line.stock_qty > leakage_qty:
             sales.append("items",{
                 "item_code": line.item_code,
                 "item_name": line.item_name,
