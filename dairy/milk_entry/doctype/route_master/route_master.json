@@ -12,6 +12,7 @@
   "territory",
   "price_list",
   "cb2",
+  "company",
   "route_type",
   "source_warehouse",
   "dest_warehouse",
@@ -19,12 +20,12 @@
   "vehicle",
   "cb1",
   "driver",
-  "amended_from",
-  "company",
   "section_break_17",
   "vehicle_html",
   "column_break_19",
-  "address_html"
+  "address_html",
+  "section_break_19",
+  "amended_from"
  ],
  "fields": [
   {
@@ -96,9 +97,9 @@
   {
    "fieldname": "company",
    "fieldtype": "Link",
-   "hidden": 1,
    "label": "Company",
-   "options": "Company"
+   "options": "Company",
+   "reqd": 1
   },
   {
    "allow_in_quick_entry": 1,
@@ -146,11 +147,15 @@
    "fieldtype": "Link",
    "label": "Price List",
    "options": "Price List"
+  },
+  {
+   "fieldname": "section_break_19",
+   "fieldtype": "Section Break"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-01 14:54:13.399253",
+ "modified": "2020-05-07 19:55:12.650207",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Route Master",

@@ -9,7 +9,7 @@ from frappe.model.document import Document
 class RMRD(Document):
 	def validate(self):
 		result = frappe.db.sql("select * from `tabRMRD` where route =%s and date =%s and shift =%s",(self.route,self.date,self.shift))
-		if result:
+		if result and self.get('__islocal'):
 			frappe.throw("you can not create duplicate entry with same DCS,Date and Shift.")
 
 	def start_rmrd(self):
