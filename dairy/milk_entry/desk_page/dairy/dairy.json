@@ -3,7 +3,7 @@
   {
    "hidden": 0,
    "label": "Dairy",
-   "links": "[  \n    {  \n        \"type\": \"doctype\",       \n        \"name\": \"Milk Entry\",\n        \"label\": \"Milk Entry\",\n        \"description\": \"Milk Entry\",\n        \"onboard\": 1   \n    },\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Raw Milk Sample\",\n        \"label\": \"Raw Milk Sample\",\n        \"description\": \"Raw Milk Sample\",\n        \"onboard\": 1\n    },\n    {       \n        \"type\": \"doctype\",       \n        \"name\": \"VaCollection\",       \n        \"label\": \"VaCollection\",       \n        \"description\": \"VaCollection\",       \n        \"onboard\": 1   \n    },  \n    {       \n        \"type\": \"doctype\",       \n        \"name\": \"VaCollectioItems\",       \n        \"label\": \"VaCollectioItems\",       \n        \"description\": \"VaCollectioItems\",      \n        \"onboard\": 1  \n    },   \n    {       \n        \"type\": \"doctype\",       \n        \"name\": \"Warehouse\",       \n        \"label\": \"DCS\",       \n        \"description\": \"DCS\",       \n        \"onboard\": 1  \n    },   \n    {       \n        \"type\": \"doctype\",       \n        \"name\": \"Supplier\",       \n        \"label\": \"Member\",       \n        \"description\": \"Member\",       \n        \"onboard\": 1   \n    }\n]"
+   "links": "[  \n    {  \n        \"type\": \"doctype\",       \n        \"name\": \"Milk Entry\",\n        \"label\": \"Milk Entry\",\n        \"description\": \"Milk Entry\",\n        \"onboard\": 1   \n    },\n    {\n        \"type\": \"doctype\",\n        \"name\": \"Raw Milk Sample\",\n        \"label\": \"Raw Milk Sample\",\n        \"description\": \"Raw Milk Sample\",\n        \"onboard\": 1\n    },\n    {       \n        \"type\": \"doctype\",       \n        \"name\": \"Van Collection\",       \n        \"label\": \"Van Collection\",       \n        \"description\": \"Van Collection\",       \n        \"onboard\": 1   \n    },  \n    {       \n        \"type\": \"doctype\",       \n        \"name\": \"Van Collection Items\",       \n        \"label\": \"Van Collection Items\",       \n        \"description\": \"Van Collection Items\",      \n        \"onboard\": 1  \n    },   \n    {       \n        \"type\": \"doctype\",       \n        \"name\": \"Warehouse\",       \n        \"label\": \"DCS\",       \n        \"description\": \"DCS\",       \n        \"onboard\": 1  \n    },   \n    {       \n        \"type\": \"doctype\",       \n        \"name\": \"Supplier\",       \n        \"label\": \"Member\",       \n        \"description\": \"Member\",       \n        \"onboard\": 1   \n    }\n]"
   },
   {
    "hidden": 0,
@@ -62,7 +62,7 @@
  "idx": 0,
  "is_standard": 1,
  "label": "Dairy",
- "modified": "2020-04-18 12:46:02.128282",
+ "modified": "2020-05-11 12:36:33.158417",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy",
