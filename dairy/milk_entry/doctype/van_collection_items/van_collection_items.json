@@ -148,13 +148,15 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Gate Pass",
-   "options": "Stock Entry"
+   "options": "Stock Entry",
+   "read_only": 1
   },
   {
    "fieldname": "time",
    "fieldtype": "Time",
    "in_list_view": 1,
-   "label": "Time"
+   "label": "Time",
+   "read_only": 1
   },
   {
    "allow_in_quick_entry": 1,
@@ -354,7 +356,7 @@
   }
  ],
  "links": [],
- "modified": "2020-04-06 13:05:45.498961",
+ "modified": "2020-05-12 12:11:57.780015",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Van Collection Items",
