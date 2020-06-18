@@ -19,11 +19,12 @@ def before_submit(sales, method):
                     "description": str(line.description)+" Leakage Scheme applied",
                     "gst_hsn_code": line.gst_hsn_code,
                     "is_nil_exempt": line.is_nil_exempt,
-                    "qty": float(((str((line.stock_qty * leakage_perc)/100)+".").split("."))[0]),
+                    "qty": (line.stock_qty * leakage_perc)/100,
                     "uom": line.stock_uom,
                     "stock_uom": line.stock_uom,
                     # "conversion_factor": line.conversion_factor,
-                    "rate": line.rate,
+                    "rate": 0.0,
+                    # "rate": line.rate,
                     "warehouse": line.warehouse,
                 })
                 sales.validate()
@@ -36,11 +37,12 @@ def before_submit(sales, method):
                     "description": str(line.description)+" Leakage Scheme applied",
                     "gst_hsn_code": line.gst_hsn_code,
                     "is_nil_exempt": line.is_nil_exempt,
-                    "qty": float(((str((line.qty * leakage_perc)/100)+".").split("."))[0]),
+                    "qty": (line.qty * leakage_perc)/100,
                     "uom": line.uom,
                     "stock_uom": line.stock_uom,
                     # "conversion_factor": line.conversion_factor,
-                    "rate": line.rate,
+                    "rate": 0.0,
+                    # "rate": line.rate,
                     "warehouse": line.warehouse,
                 })
                 sales.validate()
