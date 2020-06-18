@@ -84,8 +84,9 @@
   "section_break_77",
   "auto_print_milk_receipt",
   "milk_leakage_section",
-  "leakage_percentage",
+  "applicable_on",
   "column_break_81",
+  "leakage_percentage",
   "leakage_qty"
  ],
  "fields": [
@@ -523,14 +524,23 @@
    "fieldtype": "Column Break"
   },
   {
+   "description": "Leakage would only be applicable on the item in sales order when the item has leakage applicable and the quantity of the item in the selected UOM is greater than what is defined here.",
    "fieldname": "leakage_qty",
-   "fieldtype": "Int",
-   "label": " Leakage Applicable Qty"
+   "fieldtype": "Data",
+   "label": "Leakage Threshold Qty"
+  },
+  {
+   "default": "Stock UOM",
+   "fieldname": "applicable_on",
+   "fieldtype": "Select",
+   "label": "Leakage Applicable on",
+   "options": "Stock UOM\nOrder UOM",
+   "reqd": 1
   }
  ],
  "issingle": 1,
  "links": [],
- "modified": "2020-04-16 17:37:53.557341",
+ "modified": "2020-06-18 12:04:58.637993",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",
