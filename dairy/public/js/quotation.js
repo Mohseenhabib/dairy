@@ -8,7 +8,7 @@ frappe.ui.form.on('Quotation', {
             return {
                 filters: {
                     "company":doc.company,
-                    "route_type":"Selling"
+                    "route_type":"Milk Marketing"
                 }
             };
         });
@@ -27,8 +27,22 @@ frappe.ui.form.on('Quotation', {
             {            
                 if(frm.doc.delivery_date == frappe.datetime.get_today())
                 {
-                    frappe.validated = false;
-                    frappe.throw(__('Order locking time is over'));
+                     frm.call({
+                        method:"dairy.milk_entry.custom_sales_order.order_role",
+        //				doc: frm.doc,
+                        args: {
+                        },
+                        callback: function(r) {
+                            if(r.message == 1){
+                                    frappe.validated = true;
+                                    frappe.throw(__('Order locking time is over'));
+                                }
+                               else{
+                                frappe.validated = false;
+                                frappe.throw(__('Order locking time is over'));
+                               }
+                            }
+                        });
                     
                 }            
                 
@@ -36,8 +50,22 @@ frappe.ui.form.on('Quotation', {
                 {
                     if(time > otm)
                     {
-                        frappe.validated = false;
-                        frappe.throw(__('Order locking time is over'));
+                        frm.call({
+                        method:"dairy.milk_entry.custom_sales_order.order_role",
+        //				doc: frm.doc,
+                        args: {
+                        },
+                        callback: function(r) {
+                            if(r.message == 1){
+                                    frappe.validated = true;
+                                    frappe.throw(__('Order locking time is over'));
+                                }
+                               else{
+                                frappe.validated = false;
+                                frappe.throw(__('Order locking time is over'));
+                               }
+                            }
+                        });
                     }
 
                 }
@@ -57,13 +85,48 @@ frappe.ui.form.on('Quotation', {
                 {
                     if(time > ote)
                     {
-                        frappe.validated = false;
-                        frappe.throw(__('Order locking time is over'));
+                       frm.call({
+                        method:"dairy.milk_entry.custom_sales_order.order_role",
+        //				doc: frm.doc,
+                        args: {
+                        },
+                        callback: function(r) {
+                            if(r.message == 1){
+                                    frappe.validated = true;
+                                    frappe.throw(__('Order locking time is over'));
+                                }
+                               else{
+                                frappe.validated = false;
+                                frappe.throw(__('Order locking time is over'));
+                               }
+                            }
+                        });
                     }
                 }
             }
         });
     },
+
+        before_submit:function(frm){
+        // validate if restrict_multiple_orders_in_single_shift in dairy setting is check
+	    frm.call({
+				method:"dairy.milk_entry.custom_sales_order.validate_multiple_orders_in_quotation",
+//				doc: frm.doc,
+				args: {
+					customer: frm.doc.customer_name,
+					delivery_shift: frm.doc.delivery_shift,
+					route: frm.doc.route,
+					delivery_date: frm.doc.delivery_date
+				},
+				callback: function(r) {
+					if(r.message == 1){
+                        frappe.validated=false;
+                         frappe.msgprint("Multiple Orders In Single Shift Not Allowed");
+					}
+				}
+			});
+    },
+
     party_name:function(frm){
         if (frm.doc.quotation_to == "Customer")
         {
@@ -82,5 +145,25 @@ frappe.ui.form.on('Quotation', {
                     }
             });
         }
+    },
+
+    route:function(frm){
+    //set territory
+    	         return cur_frm.call({
+            method:"dairy.milk_entry.custom_sales_order.set_territory",
+            args: {
+
+                  },
+            callback: function(r)
+                {
+                   if(r.message)
+                   {
+                    console.log(r.message);
+                    if(r.message == "Route"){
+                        frm.set_value("territory",frm.doc.route_territory);
+                    }
+                   }
+                }
+        });
     }
  });   

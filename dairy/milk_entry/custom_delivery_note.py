@@ -101,3 +101,17 @@ def get_route_price_list(doc_name=None):
             dic['warehouse'] = doc.source_warehouse
             return dic
         return  False
+
+@frappe.whitelist()
+def get_route_price_list_route(doc_name=None):
+    if doc_name:
+        route_name = frappe.db.sql("""select parent from `tabDynamic Link`
+                                where parenttype ='Customer'
+                                and link_doctype ='Route Master'
+                                and link_name =%s limit 1""",(doc_name))
+        print("*************",route_name)
+        if route_name:
+            dic = {}
+            dic['route'] = route_name[0][0]
+            return dic
+        return False

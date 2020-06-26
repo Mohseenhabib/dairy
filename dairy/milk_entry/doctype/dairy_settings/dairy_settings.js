@@ -4,6 +4,9 @@
 frappe.ui.form.on('Dairy Settings', {
     onload: function(frm) {
         frm.trigger('set_property');
+        if(frm.doc.__islocal){
+            frm.set_value("get_territory","Customer");
+        }
     },
     set_property: function(frm) {
          if(frm.doc.default_payment_type =="Days")

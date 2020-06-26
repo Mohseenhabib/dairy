@@ -107,7 +107,7 @@
    "fieldtype": "Select",
    "in_standard_filter": 1,
    "label": "Route Type",
-   "options": "\nBuying\nSelling",
+   "options": "\nMilk Procurement\nMilk Marketing",
    "reqd": 1
   },
   {
@@ -155,7 +155,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-05-07 19:55:12.650207",
+ "modified": "2020-06-26 13:38:16.099781",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Route Master",
