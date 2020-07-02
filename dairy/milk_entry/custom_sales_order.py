@@ -26,6 +26,7 @@ def before_submit(sales, method):
                     "rate": 0.0,
                     # "rate": line.rate,
                     "warehouse": line.warehouse,
+                    "is_free_item": 1
                 })
                 sales.validate()
 
@@ -44,6 +45,7 @@ def before_submit(sales, method):
                     "rate": 0.0,
                     # "rate": line.rate,
                     "warehouse": line.warehouse,
+                    "is_free_item": 1
                 })
                 sales.validate()
 

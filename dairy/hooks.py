@@ -170,7 +170,7 @@ has_permission = {
 # ------------------------------
 #
 # override_whitelisted_methods = {
-# 	"erpnext.selling.doctype.quotation.quotation.make_sales_order": "dairy.milk_entry.custom_delivery_note.make_sales_order"
+# 	"erpnext.stock.doctype.delivery_note.delivery_note.make_delivery_trip": "dairy.milk_entry.custom_delivery_note.make_delivery_trip"
 # }
 #
 # each overriding function accepts a `data` argument;
@@ -180,3 +180,8 @@ has_permission = {
 # 	"Task": "dairy.task.get_dashboard_data"
 # }
 
+jenv = {
+	"methods": [
+		"get_jinja_data:dairy.milk_entry.custom_delivery_trip.get_jinja_data"
+	]
+}

@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 import frappe
 from frappe import _
+from frappe.model.mapper import get_mapped_doc
+
 
 @frappe.whitelist()
 def calculate_crate(doc_name = None):
@@ -115,3 +117,52 @@ def get_route_price_list_route(doc_name=None):
             dic['route'] = route_name[0][0]
             return dic
         return False
+
+# @frappe.whitelist()
+# def make_delivery_trip(source_name, target_doc=None):
+# 	def update_stop_details(source_doc, target_doc, source_parent):
+# 		target_doc.customer = source_parent.customer
+# 		target_doc.address = source_parent.shipping_address_name
+# 		target_doc.customer_address = source_parent.shipping_address
+# 		target_doc.contact = source_parent.contact_person
+# 		target_doc.customer_contact = source_parent.contact_display
+# 		target_doc.route = source_parent.route
+#
+#
+# 		# Append unique Delivery Notes in Delivery Trip
+# 		delivery_notes.append(target_doc.delivery_note)
+#
+#
+# 	delivery_notes = []
+#
+#
+# 	doclist = get_mapped_doc("Delivery Note", source_name, {
+# 		"Delivery Note": {
+# 			"doctype": "Delivery Trip",
+# 			"validation": {
+# 				"docstatus": ["=", 1]
+# 			}
+# 		},
+# 		"Delivery Note Item": {
+# 				"doctype": "Delivery Stop",
+# 			"field_map": {
+# 				"parent": "delivery_note",
+#
+# 			},
+# 			"condition": lambda item: item.parent in delivery_notes,
+# 			"postprocess": update_stop_details
+# 		},
+#         "Delivery Note Item": {
+#             "doctype": "Delivery Note Details",
+#             "field_map": {
+#                 "parent": "delivery_note",
+#                 "qty": "quantity",
+#                 "route": "route"
+#             },
+#             # "condition": lambda item: item.parent not in delivery_notes,
+#             "postprocess": update_stop_details
+#         },
+# 	}, target_doc,ignore_permissions=True)
+#
+# 	return doclist
+

@@ -13,6 +13,11 @@ frappe.ui.form.on("Delivery Note", {
 				cur_frm.cscript.calculate_crate()
 			}).addClass("btn-primary");
         }
+
+        if (frm.doc.docstatus==1) {
+				frm.remove_custom_button("Delivery Trip", 'Create');
+			}
+
 	},
 	onload: function(frm){
 	    frm.trigger('set_property');
@@ -43,6 +48,7 @@ frappe.ui.form.on("Delivery Note", {
         });
     }
 });
+
 
 cur_frm.cscript.calculate_crate = function(){
     return cur_frm.call({
