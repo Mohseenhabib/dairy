@@ -26,7 +26,9 @@ def before_submit(sales, method):
                     "rate": 0.0,
                     # "rate": line.rate,
                     "warehouse": line.warehouse,
-                    "is_free_item": 1
+                    "is_free_item": 1,
+                    "price_list_rate": 0
+
                 })
                 sales.validate()
 
@@ -45,7 +47,8 @@ def before_submit(sales, method):
                     "rate": 0.0,
                     # "rate": line.rate,
                     "warehouse": line.warehouse,
-                    "is_free_item": 1
+                    "is_free_item": 1,
+                    "price_list_rate": 0
                 })
                 sales.validate()
 
@@ -89,3 +92,4 @@ def get_customer(doc_name):
 def set_territory():
     territory = frappe.db.get_single_value("Dairy Settings", "get_territory")
     return territory
+
