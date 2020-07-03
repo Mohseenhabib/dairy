@@ -15,5 +15,4 @@ def get_jinja_data(doc):
              
              """,{"name":doc.name}, as_dict=True)
 
-	print("*******",res)
 	return res
