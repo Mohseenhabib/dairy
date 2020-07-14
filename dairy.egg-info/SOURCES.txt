@@ -20,6 +20,7 @@ dairy/config/dairy.py
 dairy/config/desktop.py
 dairy/config/docs.py
 dairy/config/milk_entry.py
+dairy/config/stock.py
 dairy/field_order/__init__.py
 dairy/field_order/doctype/__init__.py
 dairy/field_order/doctype/field_order/__init__.py
@@ -29,9 +30,13 @@ dairy/field_order/doctype/field_order/field_order.py
 dairy/field_order/doctype/field_order/test_field_order.py
 dairy/milk_entry/__init__.py
 dairy/milk_entry/custom_delivery_note.py
+dairy/milk_entry/custom_delivery_trip.py
 dairy/milk_entry/custom_purchase_receipt.py
 dairy/milk_entry/custom_sales_order.py
 dairy/milk_entry/custom/customer.json
+dairy/milk_entry/custom/dairy_settings.json
+dairy/milk_entry/custom/delivery_stop.json
+dairy/milk_entry/custom/delivery_trip.json
 dairy/milk_entry/custom/item.json
 dairy/milk_entry/custom/item_barcode.json
 dairy/milk_entry/custom/payment_entry.json
@@ -40,6 +45,7 @@ dairy/milk_entry/custom/purchase_receipt.json
 dairy/milk_entry/custom/purchase_receipt_item.json
 dairy/milk_entry/custom/quotation.json
 dairy/milk_entry/custom/quotation_item.json
+dairy/milk_entry/custom/sales_invoice.json
 dairy/milk_entry/custom/sales_invoice_item.json
 dairy/milk_entry/custom/sales_order.json
 dairy/milk_entry/custom/sales_order_item.json
@@ -75,6 +81,9 @@ dairy/milk_entry/doctype/dairy_settings/dairy_settings.js
 dairy/milk_entry/doctype/dairy_settings/dairy_settings.json
 dairy/milk_entry/doctype/dairy_settings/dairy_settings.py
 dairy/milk_entry/doctype/dairy_settings/test_dairy_settings.py
+dairy/milk_entry/doctype/delivery_note_details/__init__.py
+dairy/milk_entry/doctype/delivery_note_details/delivery_note_details.json
+dairy/milk_entry/doctype/delivery_note_details/delivery_note_details.py
 dairy/milk_entry/doctype/milk_entry/__init__.py
 dairy/milk_entry/doctype/milk_entry/milk_entry.js
 dairy/milk_entry/doctype/milk_entry/milk_entry.json
@@ -136,6 +145,8 @@ dairy/milk_entry/page/dairy_page/__init__.py
 dairy/milk_entry/page/dairy_page/dairy_page.js
 dairy/milk_entry/page/dairy_page/dairy_page.json
 dairy/milk_entry/print_format/__init__.py
+dairy/milk_entry/print_format/gate_pass/__init__.py
+dairy/milk_entry/print_format/gate_pass/gate_pass.json
 dairy/milk_entry/print_format/milk_entry_invoice/__init__.py
 dairy/milk_entry/print_format/milk_entry_invoice/milk_entry_invoice.json
 dairy/milk_entry/report/__init__.py
@@ -143,6 +154,11 @@ dairy/milk_entry/report/collection_item_details/__init__.py
 dairy/milk_entry/report/collection_item_details/collection_item_details.js
 dairy/milk_entry/report/collection_item_details/collection_item_details.json
 dairy/milk_entry/report/collection_item_details/collection_item_details.py
+dairy/milk_entry/report/gate_pass/__init__.py
+dairy/milk_entry/report/gate_pass/gate_pass.js
+dairy/milk_entry/report/gate_pass/gate_pass.json
+dairy/milk_entry/report/gate_pass/gate_pass.py
+dairy/milk_entry/report/gate_pass/gate_pass_report.html
 dairy/milk_entry/report/general_ledger_report/__init__.py
 dairy/milk_entry/report/general_ledger_report/general_ledger_report.json
 dairy/milk_entry/report/milk_entry_detail/__init__.py
@@ -191,6 +207,7 @@ dairy/order_book/doctype/order_book_line/order_book_line.py
 dairy/public/build.json
 dairy/public/js/customer.js
 dairy/public/js/delivery_note.js
+dairy/public/js/delivery_trip.js
 dairy/public/js/quotation.js
 dairy/public/js/sales_invoice.js
 dairy/public/js/sales_order.js

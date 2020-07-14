@@ -11,7 +11,13 @@ def before_submit(sales, method):
             lst.append(line)
         for line in lst:
             item = frappe.get_doc("Item",line.item_code)
-            if item.leakage_applicable and applicable_on == "Stock UOM" and line.stock_qty > leakage_qty :
+            if item.leakage_applicable and applicable_on == "Stock UOM" and line.stock_qty > leakage_qty:
+                qty = (line.stock_qty * leakage_perc)/100
+                uom = frappe.get_doc("UOM",line.stock_uom)
+                if uom.must_be_whole_number:
+                    qty = round((line.stock_qty * leakage_perc) / 100)
+                if qty == 0:
+                    qty = 1
                 sales.append("items",{
                     "item_code": line.item_code,
                     "item_name": line.item_name,
@@ -19,20 +25,24 @@ def before_submit(sales, method):
                     "description": str(line.description)+" Leakage Scheme applied",
                     "gst_hsn_code": line.gst_hsn_code,
                     "is_nil_exempt": line.is_nil_exempt,
-                    "qty": (line.stock_qty * leakage_perc)/100,
+                    "qty": qty,
                     "uom": line.stock_uom,
                     "stock_uom": line.stock_uom,
-                    # "conversion_factor": line.conversion_factor,
                     "rate": 0.0,
-                    # "rate": line.rate,
                     "warehouse": line.warehouse,
                     "is_free_item": 1,
                     "price_list_rate": 0
-
                 })
                 sales.validate()
 
-            if item.leakage_applicable and applicable_on == "Order UOM" and line.qty > leakage_qty :
+            if item.leakage_applicable and applicable_on == "Order UOM" and line.qty > leakage_qty:
+                qty = (line.qty * leakage_perc)/100
+                uom1 = frappe.get_doc("UOM", line.stock_uom)
+                uom2 = frappe.get_doc("UOM", line.uom)
+                if uom1.must_be_whole_number or uom2.must_be_whole_number:
+                    qty = round((line.qty * leakage_perc) / 100)
+                if qty == 0:
+                    qty = 1
                 sales.append("items",{
                     "item_code": line.item_code,
                     "item_name": line.item_name,
@@ -40,12 +50,10 @@ def before_submit(sales, method):
                     "description": str(line.description)+" Leakage Scheme applied",
                     "gst_hsn_code": line.gst_hsn_code,
                     "is_nil_exempt": line.is_nil_exempt,
-                    "qty": (line.qty * leakage_perc)/100,
+                    "qty": qty,
                     "uom": line.uom,
                     "stock_uom": line.stock_uom,
-                    # "conversion_factor": line.conversion_factor,
                     "rate": 0.0,
-                    # "rate": line.rate,
                     "warehouse": line.warehouse,
                     "is_free_item": 1,
                     "price_list_rate": 0
@@ -79,7 +87,7 @@ def validate_multiple_orders_in_quotation(customer,delivery_shift,route,delivery
 @frappe.whitelist()
 def order_role():
     role = frappe.get_roles(frappe.session.user)
-    fixed_role = frappe.db.get_single_value("Dairy Settings", "order_controler")
+    fixed_role = frappe.db.get_single_value("Dairy Settings", "order_controller")
     if fixed_role in role:
         return 1
 

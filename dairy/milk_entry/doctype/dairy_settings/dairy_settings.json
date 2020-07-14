@@ -81,8 +81,13 @@
   "order_locking_time",
   "morning_locking_time",
   "evening_locking_time",
+  "h3d",
+  "order_controller",
+  "get_territory",
   "section_break_77",
   "auto_print_milk_receipt",
+  "column_break_82",
+  "restrict_multiple_orders_in_single_shift",
   "milk_leakage_section",
   "applicable_on",
   "column_break_81",
@@ -536,11 +541,39 @@
    "label": "Leakage Applicable on",
    "options": "Stock UOM\nOrder UOM",
    "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "restrict_multiple_orders_in_single_shift",
+   "fieldtype": "Check",
+   "label": "Restrict Multiple Orders in Single Shift"
+  },
+  {
+   "fieldname": "h3d",
+   "fieldtype": "Heading",
+   "label": " "
+  },
+  {
+   "fieldname": "get_territory",
+   "fieldtype": "Select",
+   "label": "Get Territory",
+   "options": "Customer\nRoute"
+  },
+  {
+   "fieldname": "column_break_82",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Role that is allowed to submit orders that exceed credit limits set.",
+   "fieldname": "order_controller",
+   "fieldtype": "Link",
+   "label": "Order Controller",
+   "options": "Role"
   }
  ],
  "issingle": 1,
  "links": [],
- "modified": "2020-06-18 12:04:58.637993",
+ "modified": "2020-07-14 15:29:30.173277",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",
