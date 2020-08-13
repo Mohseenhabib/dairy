@@ -34,7 +34,6 @@ dairy/milk_entry/custom_delivery_trip.py
 dairy/milk_entry/custom_purchase_receipt.py
 dairy/milk_entry/custom_sales_order.py
 dairy/milk_entry/custom/customer.json
-dairy/milk_entry/custom/dairy_settings.json
 dairy/milk_entry/custom/delivery_stop.json
 dairy/milk_entry/custom/delivery_trip.json
 dairy/milk_entry/custom/item.json

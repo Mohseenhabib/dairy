@@ -7,12 +7,12 @@ frappe.ui.form.on("Delivery Note", {
 	    cur_frm.cscript.calculate_crate()
 	},
 	refresh: function(frm){
-        if(!frm.doc.__islocal && frm.doc.docstatus == 0)
-        {
-            frm.add_custom_button(__('Calculate Crate'), function() {
-				cur_frm.cscript.calculate_crate()
-			}).addClass("btn-primary");
-        }
+//        if(!frm.doc.__islocal && frm.doc.docstatus == 0)
+//        {
+//            frm.add_custom_button(__('Calculate Crate'), function() {
+//				cur_frm.cscript.calculate_crate()
+//			}).addClass("btn-primary");
+//        }
 
         if (frm.doc.docstatus==1) {
 				frm.remove_custom_button("Delivery Trip", 'Create');

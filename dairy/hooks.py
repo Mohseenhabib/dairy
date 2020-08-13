@@ -103,7 +103,8 @@ after_install = "dairy.install.after_install"
 
 doc_events = {
     "Delivery Note": {
-        "after_insert": "dairy.milk_entry.custom_delivery_note.calculate_crate_after_insert",
+        # "before_insert": "dairy.milk_entry.custom_delivery_note.calculate_crate_after_insert",
+        "before_save": "dairy.milk_entry.custom_delivery_note.calculate_crate_after_insert",
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
     },
     "Sales Order": {
