@@ -38,7 +38,8 @@ frappe.ui.form.on('RMRD', {
         frm.set_query('route', function(doc) {
             return {
                 filters: {
-                    "route_type":"Buying"
+                    "route_type":"Milk Procurement",
+                    "docstatus":1
                 }
             };
         });

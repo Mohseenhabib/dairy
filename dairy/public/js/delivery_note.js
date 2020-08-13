@@ -25,7 +25,8 @@ frappe.ui.form.on("Delivery Note", {
             return {
                 filters: {
                     "company":doc.company,
-                    "route_type":"Selling"
+                     "route_type":"Milk Marketing",
+                    "docstatus":1
                 }
             };
         });

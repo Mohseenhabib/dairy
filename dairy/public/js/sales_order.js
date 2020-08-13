@@ -10,7 +10,8 @@ frappe.ui.form.on("Sales Order", {
             return {
                 filters: {
                     "company":doc.company,
-                    "route_type":"Milk Marketing"
+                     "route_type":"Milk Marketing",
+                    "docstatus":1
                 }
             };
         });

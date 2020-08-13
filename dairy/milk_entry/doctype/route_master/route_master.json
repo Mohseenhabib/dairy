@@ -53,8 +53,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Vehicle",
-   "options": "Vehicle",
-   "reqd": 1
+   "options": "Vehicle"
   },
   {
    "fieldname": "sb1",
@@ -155,7 +154,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-06-26 13:38:16.099781",
+ "modified": "2020-08-13 19:08:14.231221",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Route Master",

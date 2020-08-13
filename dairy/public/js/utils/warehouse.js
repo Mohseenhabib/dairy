@@ -4,7 +4,8 @@ frappe.ui.form.on('Warehouse', {
             return {
                 filters: {
                     "company":doc.company,
-                    "route_type":"Buying"
+                    "route_type":"Milk Procurement",
+                    "docstatus":1
                 }
             };
         });
