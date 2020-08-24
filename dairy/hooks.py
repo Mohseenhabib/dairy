@@ -170,9 +170,9 @@ has_permission = {
 # Overriding Methods
 # ------------------------------
 #
-# override_whitelisted_methods = {
-# 	"erpnext.stock.doctype.delivery_note.delivery_note.make_delivery_trip": "dairy.milk_entry.custom_delivery_note.make_delivery_trip"
-# }
+override_whitelisted_methods = {
+	"erpnext.selling.doctype.sales_order.sales_order.make_delivery_note": "dairy.milk_entry.custom_sales_order.make_delivery_note"
+}
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,

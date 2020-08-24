@@ -92,7 +92,11 @@
   "applicable_on",
   "column_break_81",
   "leakage_percentage",
-  "leakage_qty"
+  "leakage_qty",
+  "crate_section",
+  "crate_reconciliation_based_on",
+  "column_break_91",
+  "crate_loss_billed_to"
  ],
  "fields": [
   {
@@ -569,11 +573,34 @@
    "fieldtype": "Link",
    "label": "Order Controller",
    "options": "Role"
+  },
+  {
+   "fieldname": "crate_section",
+   "fieldtype": "Section Break",
+   "label": "Crate"
+  },
+  {
+   "default": "Delivery Note",
+   "fieldname": "crate_reconciliation_based_on",
+   "fieldtype": "Select",
+   "label": "Crate Reconciliation Based on",
+   "options": "Delivery Note\nGate pass"
+  },
+  {
+   "fieldname": "column_break_91",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Customer",
+   "fieldname": "crate_loss_billed_to",
+   "fieldtype": "Select",
+   "label": "Crate Loss Billed To",
+   "options": "Customer\nTransporter"
   }
  ],
  "issingle": 1,
  "links": [],
- "modified": "2020-07-14 15:29:30.173277",
+ "modified": "2020-08-20 12:30:57.242919",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",

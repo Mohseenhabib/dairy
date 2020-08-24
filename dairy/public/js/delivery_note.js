@@ -31,6 +31,92 @@ frappe.ui.form.on("Delivery Note", {
             };
         });
 	},
+
+	before_save: function(frm){
+	    var count = 0;
+	    var lp = 0;
+	    var lst = [];
+       $.each(frm.doc["items"],function(i, items)
+            {
+                lst[lp] = items.against_sales_order
+                lp += 1;
+            });
+       frm.call({
+                method: "dairy.milk_entry.custom_delivery_note.delivery_shift",
+                args: {name: lst[0]},
+                callback: function(r) {
+                    if(r.message){
+                         var array = String(r.message[0]);
+                         frm.set_value("shift",array);
+                    }
+                }
+            });
+
+
+//      frm.call({
+//            method: "dairy.milk_entry.custom_delivery_note.calculate_crate",
+//            args: {doc_name: cur_frm.doc.name},
+//            callback: function(r) {
+//                if(r.message){
+//                     cur_frm.reload_doc();
+//                }
+//            }
+//            });
+//       for(var i=0;i<(lst.length - 1);i++){
+//            if(lst[i] != lst[i+1]){
+//                count = count+1;
+//                console.log("******",count)
+//            }
+//            if(count > 0){
+//                frm.clear_table("items");
+//                frm.refresh_fields();
+//                frm.reload_doc();
+//                frappe.validated = false;
+//                frappe.throw("Select only one sales order to fetch items");
+//                    }
+//            else{
+//                         frm.call({
+//                                method: "dairy.milk_entry.custom_delivery_note.delivery_shift",
+//                                args: {name: lst[0]},
+//                                callback: function(r) {
+//                                    if(r.message){
+//                                         var array = String(r.message[0]);
+//                                         frm.set_value("shift",array);
+//                                    }
+//                                }
+//                            });
+//                    }
+//       }
+
+//	   $.each(frm.doc["items"],function(i, items)
+//            {
+//                if(items.item_code){
+//                    count = count+1;
+//                    if(count > 1){
+//                        frm.clear_table("items");
+//                        frm.refresh_fields();
+//						frm.reload_doc();
+//                        frappe.validated = false;
+//                        frappe.throw("Select only one sales order to fetch items");
+//                    }
+//                    else{
+//                         frm.call({
+//                                method: "dairy.milk_entry.custom_delivery_note.delivery_shift",
+//                                args: {name: items.against_sales_order},
+//                                callback: function(r) {
+//                                    if(r.message){
+//                                         var array = String(r.message[0]);
+//                                         frm.set_value("shift",array);
+//                                    }
+//                                }
+//                            });
+//                    }
+//                }
+//            });
+	},
+	after_save: function(frm){
+	    cur_frm.cscript.calculate_crate()
+	},
 	customer:function(frm){
         return cur_frm.call({
             method:"dairy.milk_entry.custom_delivery_note.get_route_price_list",

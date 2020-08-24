@@ -1,0 +1,84 @@
+{
+ "actions": [],
+ "creation": "2020-08-20 15:24:02.779476",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "item_code",
+  "item_name",
+  "qty",
+  "uom",
+  "column_break_5",
+  "free_qty",
+  "out_crate",
+  "in_crate",
+  "warehouse"
+ ],
+ "fields": [
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Item Code",
+   "options": "Item"
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item Name"
+  },
+  {
+   "fieldname": "qty",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Quantity"
+  },
+  {
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "label": "UOM",
+   "options": "UOM"
+  },
+  {
+   "fieldname": "free_qty",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Free Qty"
+  },
+  {
+   "fieldname": "out_crate",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Out Crate "
+  },
+  {
+   "fieldname": "in_crate",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "In Crate"
+  },
+  {
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "label": "From Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "istable": 1,
+ "links": [],
+ "modified": "2020-08-21 17:21:53.905173",
+ "modified_by": "Administrator",
+ "module": "Milk Entry",
+ "name": "Gate Pass Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

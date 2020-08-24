@@ -47,6 +47,15 @@ frappe.ui.form.on('Route Master', {
                 }
             };
         });
+
+        frm.set_query('transporter', function(doc) {
+            return {
+                filters: {
+                    "is_transporter":1
+                }
+            };
+        });
+
         frm.trigger('set_property');
 
     },

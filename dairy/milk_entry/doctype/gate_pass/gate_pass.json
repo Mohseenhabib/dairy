@@ -1,0 +1,145 @@
+{
+ "actions": [],
+ "autoname": "naming_series:",
+ "creation": "2020-08-20 11:49:22.958472",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "date",
+  "shift",
+  "company",
+  "column_break_5",
+  "transporter",
+  "vehicle",
+  "driver",
+  "items_section",
+  "item",
+  "merge_items",
+  "merge_item",
+  "crate_count_section",
+  "calculate_crate",
+  "crate",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "DD.MM.YYYY"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "shift",
+   "fieldtype": "Select",
+   "label": "Shift",
+   "options": "\nMorning\nEvening"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "transporter",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Transporter",
+   "options": "Supplier",
+   "reqd": 1
+  },
+  {
+   "fieldname": "vehicle",
+   "fieldtype": "Data",
+   "label": "Vehicle"
+  },
+  {
+   "fieldname": "driver",
+   "fieldtype": "Data",
+   "label": "Driver"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Gate Pass",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "items_section",
+   "fieldtype": "Section Break",
+   "label": "Items"
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Table",
+   "label": "Item",
+   "options": "Gate Pass Item"
+  },
+  {
+   "fieldname": "merge_items",
+   "fieldtype": "Section Break",
+   "label": "Items"
+  },
+  {
+   "fieldname": "merge_item",
+   "fieldtype": "Table",
+   "label": "Item",
+   "options": "Merge Gate Pass Item"
+  },
+  {
+   "fieldname": "crate_count_section",
+   "fieldtype": "Section Break",
+   "label": "Crate Count"
+  },
+  {
+   "fieldname": "calculate_crate",
+   "fieldtype": "Button",
+   "label": "Calculate Crate"
+  },
+  {
+   "fieldname": "crate",
+   "fieldtype": "Table",
+   "label": "Crate",
+   "options": "Gate Pass Crate Count"
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2020-08-21 14:44:15.289970",
+ "modified_by": "Administrator",
+ "module": "Milk Entry",
+ "name": "Gate Pass",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

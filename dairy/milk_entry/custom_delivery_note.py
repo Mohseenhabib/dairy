@@ -8,23 +8,41 @@ from frappe.model.mapper import get_mapped_doc
 def calculate_crate(doc_name = None):
     if doc_name:
         doc = frappe.get_doc("Delivery Note",doc_name)
-        add_crate_count_item_line(doc)
+        # add_crate_count_item_line(doc)
         frappe.db.sql("delete from `tabCrate Count Child` where parent = %s",(doc.name))
         doc = frappe.get_doc("Delivery Note", doc_name)
-        dict_create_type = {}
-        for itm in doc.items:
-            crate_count = frappe.get_doc("Item",itm.item_code)
-            if itm.crate_count and itm.crate_type:
-                if crate_count.crate_type in dict_create_type.keys():
-                    dict_create_type[ itm.crate_type] = dict_create_type[ itm.crate_type] + itm.crate_count
-                else:
-                    dict_create_type[crate_count.crate_type] = itm.crate_count
-
-        for i in dict_create_type:
-            doc.append('crate_count',{
-                'crate_type':i,
-                'outgoing_count':dict_create_type[i]
-            })
+        dict_create_type = dict()
+        dist_itm = list(frappe.db.sql("""select distinct(item_code) from `tabDelivery Note Item` where parent= %(parent)s """,{'parent':doc.name}))
+        print("**************************************************",dist_itm)
+        for i in range(0,len(dist_itm)):
+            dist_warehouse = list(frappe.db.sql("""select distinct(warehouse) from `tabDelivery Note Item` where item_code= %(item_code)s """,
+                                           {'item_code':dist_itm[i]}))
+            print("##################################",dist_warehouse)
+            for j in range(0,len(dist_warehouse)):
+                total_qty = frappe.db.sql(""" select sum(qty) from `tabDelivery Note Item` where 
+                                                warehouse = %(warehouse)s and item_code = %(item_code)s and parent = %(doc_name)s """,
+                                            {'warehouse':dist_warehouse[j],'item_code':dist_itm[i],'doc_name':doc_name})
+                print("total qty",total_qty)
+                crate_details = frappe.db.sql(""" select crate_quantity,crate_type from `tabCrate` where parent=%(item_code)s and 
+                                                    warehouse=%(warehouse)s limit 1 """,{'item_code':dist_itm[i],'warehouse':dist_warehouse[j]})
+                print("000000000000000000000000000000000000000",crate_details)
+                if len(crate_details) > 0:
+                    doc.append('crate_count', {
+                                        'crate_type': crate_details[0][1],
+                                        'outgoing_count': int(round((total_qty[0][0] / (crate_details[0][0])),2))
+                                    })
+        # for itm in doc.items:
+        #     count = 0
+        #     crate_count = frappe.get_doc("Item",itm.item_code)
+        #     for itms in crate_count.crate:
+        #         if itm.warehouse == itms.warehouse and count == 0:
+        #             if itms.crate_quantity and itms.crate_type:
+        #                 doc.append('crate_count', {
+        #                     'crate_type': itms.crate_type,
+        #                     'outgoing_count': int(round((itm.stock_qty / (itms.crate_quantity)),2))
+        #                 })
+        #                 count = 1
+        #
         doc.save(ignore_permissions=True)
         return dict_create_type
 
@@ -39,18 +57,16 @@ def calculate_crate_after_insert(doc, method):
     add_crate_count_item_line(doc)
     dict_create_type = {}
     for itm in doc.items:
+        count = 0
         crate_count = frappe.get_doc("Item", itm.item_code)
-        if itm.crate_count and itm.crate_type:
-            if crate_count.crate_type in dict_create_type.keys():
-                dict_create_type[itm.crate_type] = dict_create_type[itm.crate_type] + itm.crate_count
-            else:
-                dict_create_type[crate_count.crate_type] = itm.crate_count
-
-    for i in dict_create_type:
-        doc.append('crate_count',{
-            'crate_type':i,
-            'outgoing_count':dict_create_type[i]
-        })
+        for itms in crate_count.crate:
+            if itm.warehouse == itms.warehouse and count == 0:
+                if itms.crate_quantity and itms.crate_type:
+                    doc.append('crate_count', {
+                        'crate_type': itms.crate_type,
+                        'outgoing_count': int(round((itm.stock_qty / (itms.crate_quantity)), 2))
+                    })
+                    count = 1
     # doc.save(ignore_permissions=True)
     # return dict_create_type
     # doc.db_update()
@@ -64,17 +80,17 @@ def add_crate_count_item_line(doc):
                 overage = crate_count.crate_overage
             # qty = round((itm.qty / (crate_count.crate_quantity * (1 + overage / 100))),2)
             qty = 0
-            if crate_count.crate_quantity:
-                qty = round((itm.stock_qty / (crate_count.crate_quantity)),2)
-            if 0 < qty < 1:
-                qty =1.0
-            itm.crate_count = float(((str(qty) + ".").split("."))[0])
-            itm.crate_type = crate_count.crate_type
+            for itms in crate_count.crate:
+                count = 0
+                if itm.warehouse == itms.warehouse and count == 0:
+                    if itms.crate_quantity:
+                        qty = int(round((itm.stock_qty / (itms.crate_quantity)),2))
+                    if 0 < qty < 1:
+                        qty =1.0
+                    itm.crate_count = float(((str(qty) + ".").split("."))[0])
+                    itm.crate_type = crate_count.crate_type
+                    count =1
             # itm.db_update()
-
-# @frappe.whitelist()
-# def make_sales_order(source_name, target_doc=None):
-#     print("---------------------------make_sales_order")
 
 # @frappe.whitelist()
 def route_validation(obj, method):
@@ -118,6 +134,12 @@ def get_route_price_list_route(doc_name=None):
             dic['route'] = route_name[0][0]
             return dic
         return False
+
+@frappe.whitelist()
+def delivery_shift(name=None):
+    shift = frappe.db.sql("""select delivery_shift from `tabSales Order` where name = %(name)s""",{'name':name})
+    return shift
+
 
 # @frappe.whitelist()
 # def make_delivery_trip(source_name, target_doc=None):

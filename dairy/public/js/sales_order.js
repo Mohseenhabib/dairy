@@ -120,11 +120,8 @@ frappe.ui.form.on("Sales Order", {
 				},
 				callback: function(r) {
 					if(r.message == 1){
-//                        frappe.throw('Nacho bc');
                         frappe.validated=false;
                          frappe.msgprint("Multiple Orders In Single Shift Not Allowed");
-
-//                         frappe.throw(__('Nacho bc'));
 					}
 				}
 			});
@@ -168,7 +165,6 @@ frappe.ui.form.on("Sales Order", {
                 {
                    if(r.message)
                    {
-//                    console.log(r.message);
                     if(r.message == "Route"){
                         frm.set_value("territory",frm.doc.route_territory);
                     }

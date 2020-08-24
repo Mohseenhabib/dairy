@@ -14,6 +14,7 @@
   "cb2",
   "company",
   "route_type",
+  "transporter",
   "source_warehouse",
   "dest_warehouse",
   "sb2",
@@ -150,11 +151,18 @@
   {
    "fieldname": "section_break_19",
    "fieldtype": "Section Break"
+  },
+  {
+   "depends_on": "eval:doc.route_type==\"Milk Marketing\"",
+   "fieldname": "transporter",
+   "fieldtype": "Link",
+   "label": "Transporter",
+   "options": "Supplier"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-08-13 19:08:14.231221",
+ "modified": "2020-08-18 15:40:07.943602",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Route Master",
