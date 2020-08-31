@@ -34,9 +34,13 @@ class GatePass(Document):
 	def on_cancel(self):
 		for i in self.item:
 			if i.delivery_note:
-				del_note = frappe.get_doc("Delivery Note", i.delivery_note)
-				del_note.crate_get_pass_done = 0
-				del_note.db_update()
+				frappe.db.sql(""" update `tabDelivery Note` set crate_gate_pass_done = 0 where name = %(name)s """,{'name': i.delivery_note})
+				frappe.db.commit()
+				# del_note = frappe.get_doc("Delivery Note", i.delivery_note)
+				# del_note.crate_get_pass_done = 0
+				# del_note.db_update
+				# del_note.save
+				# del_note.submit
 
 
 @frappe.whitelist()
@@ -207,7 +211,6 @@ def merge_items(doc_name):
 							'item_name': itm_name,
 							'warehouse': warehouse[0][0],
 							'uom': stock_uom,
-							'batch_no': dist_batch_no[k][0],
 							'free_qty': free_qty,
 						})
 
@@ -220,7 +223,6 @@ def merge_items(doc_name):
 							'item_name': itm_name,
 							'warehouse': warehouse[0][0],
 							'uom': stock_uom,
-							'batch_no': dist_batch_no[k][0],
 							'free_qty': free_qty,
 						})
 

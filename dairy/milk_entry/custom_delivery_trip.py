@@ -16,3 +16,18 @@ def get_jinja_data(doc):
              """,{"name":doc.name}, as_dict=True)
 
 	return res
+
+@frappe.whitelist()
+def get_jinja_data_del_note(doc):
+	res = frappe.db.sql("""
+	select distinct(delivery_note) from `tabGate Pass Item` where parent = %(name)s """, {"name": doc.name}, as_dict=True)
+	return res
+
+@frappe.whitelist()
+def get_jinja_data_del_note_item(del_note):
+	res = frappe.db.sql("""
+	select 
+		item_code,item_name,batch_no,uom,qty,free_qty,outgoing_count,incoming_count
+	from 
+		`tabCrate Count Child` where parent = %(name)s """, {"name": del_note}, as_dict=True)
+	return res

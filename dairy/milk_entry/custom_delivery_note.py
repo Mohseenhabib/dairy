@@ -10,6 +10,7 @@ def calculate_crate(doc_name = None):
         doc = frappe.get_doc("Delivery Note",doc_name)
         # add_crate_count_item_line(doc)
         frappe.db.sql("delete from `tabCrate Count Child` where parent = %s",(doc.name))
+        frappe.db.sql("delete from `tabLoose Crate` where parent = %s", (doc.name))
         doc = frappe.get_doc("Delivery Note", doc_name)
         dict_create_type = dict()
         dist_itm = list(frappe.db.sql("""select distinct(item_code) from `tabDelivery Note Item` where parent= %(parent)s """,{'parent':doc.name}))
