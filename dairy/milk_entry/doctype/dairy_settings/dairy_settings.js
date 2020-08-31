@@ -6,6 +6,7 @@ frappe.ui.form.on('Dairy Settings', {
         frm.trigger('set_property');
         if(frm.doc.__islocal){
             frm.set_value("get_territory","Customer");
+
         }
     },
     set_property: function(frm) {

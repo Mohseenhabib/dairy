@@ -8,9 +8,11 @@
  "field_order": [
   "naming_series",
   "date",
+  "delivery_note",
   "shift",
   "company",
   "column_break_5",
+  "route",
   "transporter",
   "vehicle",
   "driver",
@@ -21,6 +23,10 @@
   "crate_count_section",
   "calculate_crate",
   "crate",
+  "loose_crate_section",
+  "loose_crates",
+  "crate_reconcilation_done",
+  "status",
   "amended_from"
  ],
  "fields": [
@@ -28,24 +34,28 @@
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "label": "Naming Series",
-   "options": "DD.MM.YYYY"
+   "options": "DD.-.MM.-.YYYY.##",
+   "reqd": 1
   },
   {
    "fieldname": "date",
    "fieldtype": "Date",
-   "label": "Date"
+   "label": "Date",
+   "reqd": 1
   },
   {
    "fieldname": "shift",
    "fieldtype": "Select",
    "label": "Shift",
-   "options": "\nMorning\nEvening"
+   "options": "\nMorning\nEvening",
+   "reqd": 1
   },
   {
    "fieldname": "company",
    "fieldtype": "Link",
    "label": "Company",
-   "options": "Company"
+   "options": "Company",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_5",
@@ -56,18 +66,20 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Transporter",
-   "options": "Supplier",
-   "reqd": 1
+   "options": "Supplier"
   },
   {
+   "fetch_from": "route.vehicle",
    "fieldname": "vehicle",
-   "fieldtype": "Data",
-   "label": "Vehicle"
+   "fieldtype": "Link",
+   "label": "Vehicle",
+   "options": "Vehicle"
   },
   {
    "fieldname": "driver",
-   "fieldtype": "Data",
-   "label": "Driver"
+   "fieldtype": "Link",
+   "label": "Driver",
+   "options": "Driver"
   },
   {
    "fieldname": "amended_from",
@@ -86,6 +98,7 @@
   {
    "fieldname": "item",
    "fieldtype": "Table",
+   "hidden": 1,
    "label": "Item",
    "options": "Gate Pass Item"
   },
@@ -113,13 +126,53 @@
   {
    "fieldname": "crate",
    "fieldtype": "Table",
+   "hidden": 1,
    "label": "Crate",
    "options": "Gate Pass Crate Count"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "loose_crate_section",
+   "fieldtype": "Section Break",
+   "label": "Loose Crate"
+  },
+  {
+   "fieldname": "loose_crates",
+   "fieldtype": "Table",
+   "label": "Loose Crates",
+   "options": "Loose Crate"
+  },
+  {
+   "fieldname": "route",
+   "fieldtype": "Link",
+   "label": "Route",
+   "options": "Route Master",
+   "reqd": 1
+  },
+  {
+   "fieldname": "delivery_note",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Delivery Note",
+   "options": "Delivery Note",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "crate_reconcilation_done",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Crate Reconcilation Done"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Data",
+   "label": "status"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-08-21 14:44:15.289970",
+ "modified": "2020-08-31 12:25:33.405568",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Gate Pass",
@@ -138,7 +191,6 @@
    "write": 1
   }
  ],
- "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
  "track_changes": 1

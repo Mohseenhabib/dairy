@@ -8,6 +8,7 @@
  "field_order": [
   "naming_series",
   "customer",
+  "transporter",
   "route",
   "column_break_4",
   "date",
@@ -41,8 +42,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Customer",
-   "options": "Customer",
-   "reqd": 1
+   "options": "Customer"
   },
   {
    "fieldname": "route",
@@ -163,11 +163,17 @@
    "label": "Company",
    "options": "Company",
    "reqd": 1
+  },
+  {
+   "fieldname": "transporter",
+   "fieldtype": "Link",
+   "label": "Transporter",
+   "options": "Supplier"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-03-24 16:20:52.490236",
+ "modified": "2020-08-26 16:04:15.555900",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Crate Reconciliation",

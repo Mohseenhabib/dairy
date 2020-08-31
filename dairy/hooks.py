@@ -43,7 +43,8 @@ doctype_js = {
     "Vehicle": "public/js/vehicle.js",
     "Customer": "public/js/customer.js",
     "Sales Invoice": "public/js/sales_invoice.js",
-    "Supplier": "public/js/supplier.js"
+    "Supplier": "public/js/supplier.js",
+    "Item": "public/js/item.js"
     }
 
 doctype_list_js = {
@@ -104,7 +105,7 @@ after_install = "dairy.install.after_install"
 doc_events = {
     "Delivery Note": {
         # "before_insert": "dairy.milk_entry.custom_delivery_note.calculate_crate_after_insert",
-        "before_save": "dairy.milk_entry.custom_delivery_note.calculate_crate_after_insert",
+        # "before_save": "dairy.milk_entry.custom_delivery_note.calculate_crate_after_insert",
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
     },
     "Sales Order": {
@@ -177,9 +178,9 @@ override_whitelisted_methods = {
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
 # along with any modifications made in other Frappe apps
-# override_doctype_dashboards = {
-# 	"Task": "dairy.task.get_dashboard_data"
-# }
+override_doctype_dashboards = {
+	"Delivery Note": "dairy.delivery_note_dashboard.get_data"
+}
 
 jenv = {
 	"methods": [

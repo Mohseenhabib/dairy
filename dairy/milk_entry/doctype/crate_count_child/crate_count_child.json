@@ -8,7 +8,14 @@
   "crate_type",
   "incoming_count",
   "outgoing_count",
-  "damaged_count"
+  "damaged_count",
+  "free_qty",
+  "column_break_6",
+  "item_code",
+  "item_name",
+  "qty",
+  "batch_no",
+  "uom"
  ],
  "fields": [
   {
@@ -36,11 +43,51 @@
    "fieldtype": "Float",
    "in_list_view": 1,
    "label": "Damaged Count"
+  },
+  {
+   "fieldname": "free_qty",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Free Qty"
+  },
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Data",
+   "label": "Item_code",
+   "read_only": 1
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "qty",
+   "fieldtype": "Int",
+   "label": "Quantity",
+   "read_only": 1
+  },
+  {
+   "fieldname": "batch_no",
+   "fieldtype": "Data",
+   "label": "Batch No",
+   "read_only": 1
+  },
+  {
+   "fieldname": "uom",
+   "fieldtype": "Data",
+   "label": "UOM",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_6",
+   "fieldtype": "Column Break"
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2020-03-20 14:47:19.704680",
+ "modified": "2020-08-29 16:15:39.104569",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Crate Count Child",

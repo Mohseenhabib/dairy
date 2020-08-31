@@ -3,9 +3,22 @@
 
 frappe.ui.form.on('Crate Reconciliation', {
 	 refresh: function(frm, dt, dn) {
+	 frappe.db.get_value("Dairy Settings", "Dairy Settings", "crate_reconciliation_based_on", (r) => {
+        if (r && r.crate_reconciliation_based_on == "Delivery Note" || r.crate_reconciliation_based_on == "") {
+            frm.set_df_property("transporter","hidden",1);
+            frm.set_df_property("customer","reqd",1);
+            }else {
+                frm.set_df_property("customer","hidden",1);
+                frm.set_df_property("transporter","reqd",1);
+            }
+        })
+
+
         if (frm.doc.docstatus ==0)
         {
-            frm.add_custom_button(__('Delivery Note'),function() {
+            frappe.db.get_value("Dairy Settings", "Dairy Settings", "crate_reconciliation_based_on", (r) => {
+			if (r && r.crate_reconciliation_based_on == "Delivery Note" || r.crate_reconciliation_based_on == "") {
+                frm.add_custom_button(__('Delivery Note'),function() {
                 erpnext.utils.map_current_doc({
                     method: "dairy.milk_entry.doctype.crate_reconciliation.crate_reconciliation.make_delivery_note",
                     source_doctype: "Delivery Note",
@@ -20,9 +33,31 @@ frappe.ui.form.on('Crate Reconciliation', {
                         route: frm.doc.route,
                         crate_reconcilation_done:0,
                         docstatus: 1
-                    }
-                })
-            }, __("Get items from"));
+                            }
+                        })
+                    }, __("Get items from"));
+                } else {
+                frm.add_custom_button(__('Gate Pass'),function() {
+                erpnext.utils.map_current_doc({
+                    method: "dairy.milk_entry.doctype.crate_reconciliation.crate_reconciliation.make_gate_pass",
+                    source_doctype: "Gate Pass",
+                    target: frm,
+                    date_field: "posting_date",
+                    setters: {
+                            transporter: frm.doc.transporter || undefined,
+                            route: frm.doc.route || undefined
+                        },
+                    get_query_filters: {
+                        company: frm.doc.company,
+                        route: frm.doc.route,
+                        crate_reconcilation_done:0,
+                        docstatus: 1
+                            }
+                        })
+                    }, __("Get items from"));
+                }
+            })
+
         }
         if (frm.doc.docstatus ==1)
         {
@@ -46,6 +81,13 @@ frappe.ui.form.on('Crate Reconciliation', {
                 }
             };
         });
+        frm.set_query('transporter', function() {
+			return {
+				filters: {
+					'is_transporter': 1
+				}
+			}
+		});
      },
      before_submit: function(frm)
      {

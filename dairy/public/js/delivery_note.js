@@ -114,9 +114,22 @@ frappe.ui.form.on("Delivery Note", {
 //                }
 //            });
 	},
-	after_save: function(frm){
-	    cur_frm.cscript.calculate_crate()
-	},
+
+    after_save: function(frm){
+        if(frm.doc.docstatus != "1"){
+          frm.call({
+            method:"dairy.milk_entry.custom_delivery_note.calculate_crate",
+            args: {
+                    doc_name: cur_frm.doc.name
+                  },
+            callback: function(r)
+                {
+                   cur_frm.reload_doc();
+                }
+        });
+    }
+    },
+
 	customer:function(frm){
         return cur_frm.call({
             method:"dairy.milk_entry.custom_delivery_note.get_route_price_list",

@@ -38,15 +38,25 @@ class CrateReconciliation(Document):
 
 	def on_submit(self):
 		for i in self.delivery_info:
-			del_note = frappe.get_doc("Delivery Note",i.delivery_note)
-			del_note.crate_reconcilation_done =1
-			del_note.db_update()
+			if i.delivery_note:
+				del_note = frappe.get_doc("Delivery Note",i.delivery_note)
+				del_note.crate_reconcilation_done =1
+				del_note.db_update()
+			if i.gate_pass:
+				del_note = frappe.get_doc("Gate Pass", i.gate_pass)
+				del_note.crate_reconcilation_done = 1
+				del_note.db_update()
 
 	def on_cancel(self):
 		for i in self.delivery_info:
-			del_note = frappe.get_doc("Delivery Note",i.delivery_note)
-			del_note.crate_reconcilation_done =0
-			del_note.db_update()
+			if i.delivery_note:
+				del_note = frappe.get_doc("Delivery Note",i.delivery_note)
+				del_note.crate_reconcilation_done =0
+				del_note.db_update()
+			if i.gate_pass:
+				del_note = frappe.get_doc("Gate Pass",i.gate_pass)
+				del_note.crate_reconcilation_done =0
+				del_note.db_update()
 
 	def calculate_crate_type_summary(self):
 		if self:
@@ -116,6 +126,39 @@ def make_delivery_note(source_name, target_doc=None, ignore_permissions=False):
 
 	doclist = get_mapped_doc("Delivery Note", source_name, {
 		"Delivery Note": {
+			"doctype": "Crate Reconciliation",
+		}
+	}, target_doc,set_item_in_sales_invoice)
+	return doclist
+
+@frappe.whitelist()
+def make_gate_pass(source_name, target_doc=None, ignore_permissions=False):
+	def set_item_in_sales_invoice(source, target):
+		del_note = frappe.get_doc(source)
+		crate_recl = frappe.get_doc(target)
+		for i in del_note.crate	:
+			out_count = i.outgoing_count if i.outgoing_count else 0
+			in_count = i.incoming_count if i.incoming_count else 0
+			dam_count = i.damaged_count if i.damaged_count else 0
+			vehicle_name = None
+			if del_note.route:
+				route_doc = frappe.get_doc("Route Master",del_note.route)
+				vehicle_name = route_doc.vehicle
+			crate_recl.append("delivery_info",{
+				"delivery_date": del_note.date,
+				"gate_pass": del_note.name,
+				"transporter": del_note.transporter,
+				"route": del_note.route,
+				"crate_type": i.crate_type,
+				"vehicle": vehicle_name,
+				"outgoing": out_count,
+				"incoming": in_count,
+				"damaged": dam_count,
+				"difference": out_count - in_count
+			})
+
+	doclist = get_mapped_doc("Gate Pass", source_name, {
+		"Gate Pass": {
 			"doctype": "Crate Reconciliation",
 		}
 	}, target_doc,set_item_in_sales_invoice)

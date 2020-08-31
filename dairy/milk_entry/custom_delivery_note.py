@@ -15,22 +15,147 @@ def calculate_crate(doc_name = None):
         dist_itm = list(frappe.db.sql("""select distinct(item_code) from `tabDelivery Note Item` where parent= %(parent)s """,{'parent':doc.name}))
         print("**************************************************",dist_itm)
         for i in range(0,len(dist_itm)):
+            overage_details = frappe.get_doc("Item",dist_itm[i][0])
+            overage = overage_details.crate_overage
+            has_batch_no = overage_details.has_batch_no
+            print("##################################################",overage)
             dist_warehouse = list(frappe.db.sql("""select distinct(warehouse) from `tabDelivery Note Item` where item_code= %(item_code)s """,
                                            {'item_code':dist_itm[i]}))
             print("##################################",dist_warehouse)
             for j in range(0,len(dist_warehouse)):
-                total_qty = frappe.db.sql(""" select sum(qty) from `tabDelivery Note Item` where 
-                                                warehouse = %(warehouse)s and item_code = %(item_code)s and parent = %(doc_name)s """,
-                                            {'warehouse':dist_warehouse[j],'item_code':dist_itm[i],'doc_name':doc_name})
-                print("total qty",total_qty)
-                crate_details = frappe.db.sql(""" select crate_quantity,crate_type from `tabCrate` where parent=%(item_code)s and 
-                                                    warehouse=%(warehouse)s limit 1 """,{'item_code':dist_itm[i],'warehouse':dist_warehouse[j]})
-                print("000000000000000000000000000000000000000",crate_details)
-                if len(crate_details) > 0:
-                    doc.append('crate_count', {
-                                        'crate_type': crate_details[0][1],
-                                        'outgoing_count': int(round((total_qty[0][0] / (crate_details[0][0])),2))
-                                    })
+                if has_batch_no == 1:
+                    dist_batch_no = list(frappe.db.sql(
+                        """select distinct(batch_no) from `tabDelivery Note Item` where warehouse = %(warehouse)s and item_code = %(item_code)s and parent = %(doc_name)s """,
+                                                {'warehouse':dist_warehouse[j],'item_code':dist_itm[i],'doc_name':doc_name}))
+                    for k in range(0, len(dist_batch_no)):
+                        total_qty = frappe.db.sql(""" select sum(stock_qty) from `tabDelivery Note Item` where
+                                                        is_free_item = 0 and warehouse = %(warehouse)s and item_code = %(item_code)s and parent = %(doc_name)s and batch_no = %(batch_no)s""",
+                                                   {'warehouse':dist_warehouse[j],'item_code':dist_itm[i],'doc_name':doc_name,'batch_no':dist_batch_no[k]})
+
+                        free_qty = 0
+                        free_qty_list = frappe.db.sql(""" select sum(stock_qty) from `tabDelivery Note Item` where
+                                                                               is_free_item = 1 and warehouse = %(warehouse)s and item_code = %(item_code)s and parent = %(doc_name)s and batch_no = %(batch_no)s""",
+                                                  {'warehouse': dist_warehouse[j], 'item_code': dist_itm[i],
+                                                   'doc_name': doc_name, 'batch_no': dist_batch_no[k]})
+                        if free_qty_list:
+                            free_qty = free_qty_list[0][0]
+                        print("total qty",total_qty,dist_warehouse[j],dist_itm[i],doc_name)
+                        ttl_qty = str(total_qty[0][0])
+                        print(ttl_qty)
+                        if ttl_qty != "None":
+                            crate_details = frappe.db.sql(""" select crate_quantity,crate_type from `tabCrate` where parent = %(item_code)s and
+                                                                warehouse = %(warehouse)s limit 1 """,{'item_code':dist_itm[i],'warehouse':dist_warehouse[j]})
+                            print("000000000000000000000000000000000000000",crate_details)
+                            if len(crate_details) > 0:
+
+                                doc.append('crate_count', {
+                                                    'crate_type': crate_details[0][1],
+                                                    'outgoing_count': int(round((total_qty[0][0] / int((crate_details[0][0])* (1 + overage/100))), 2)),
+                                                    'item_code': dist_itm[i],
+                                                    'item_name': overage_details.item_name,
+                                                    'qty': total_qty[0][0],
+                                                    'batch_no': dist_batch_no[k],
+                                                    'uom': overage_details.stock_uom,
+                                                    'free_qty': free_qty,
+                                                    # 'outgoing_count': int(total_qty[0][0]) / int((crate_details[0][0]) * (1 + (overage/100)))
+                                                })
+                                doc.append('loose_crate_', {
+                                    'crate_type': crate_details[0][1],
+                                    'qty': int(round((total_qty[0][0] % int(((crate_details[0][0]) * (1 + overage/100)))), 2))
+                                })
+
+            #                 free items
+            #             total_qty = frappe.db.sql(""" select sum(stock_qty) from `tabDelivery Note Item` where
+            #                             is_free_item = 1 and warehouse = %(warehouse)s and item_code = %(item_code)s and parent = %(doc_name)s and batch_no = %(batch_no)s""",
+            #                                       {'warehouse': dist_warehouse[j], 'item_code': dist_itm[i],
+            #                                        'doc_name': doc_name, 'batch_no': dist_batch_no[k]})
+            #             print("total qty", total_qty, dist_warehouse[j], dist_itm[i], doc_name)
+            #             ttl_qty = str(total_qty[0][0])
+            #             print(ttl_qty)
+            #             if ttl_qty != "None":
+            #                 crate_details = frappe.db.sql(""" select crate_quantity,crate_type from `tabCrate` where parent = %(item_code)s and
+            #                                                                         warehouse = %(warehouse)s limit 1 """,
+            #                                               {'item_code': dist_itm[i], 'warehouse': dist_warehouse[j]})
+            #                 print("000000000000000000000000000000000000000", crate_details)
+            #                 if len(crate_details) > 0:
+            #                     doc.append('crate_count', {
+            #                         'free_qty': total_qty[0][0],
+            #                         'item_code': dist_itm[i],
+            #                         'item_name': overage_details.item_name,
+            #                         'qty': total_qty[0][0],
+            #                         'batch_no': dist_batch_no[k],
+            #                         'uom': overage_details.stock_uom
+            #                         # 'outgoing_count': int(round((total_qty[0][0] / int((crate_details[0][0]) * (1 + overage / 100))), 2))
+            #                         # 'outgoing_count': int(total_qty[0][0]) / int((crate_details[0][0]) * (1 + (overage/100)))
+            #                     })
+                elif has_batch_no == 0:
+                    free_qty = 0
+                    free_qty_list = frappe.db.sql(""" select sum(stock_qty) from `tabDelivery Note Item` where is_free_item = 1 and 
+                    warehouse = %(warehouse)s and item_code = %(item_code)s and parent = %(doc_name)s""",
+                                        {'warehouse': dist_warehouse[j], 'item_code': dist_itm[i], 'doc_name': doc_name})
+                    if free_qty_list:
+                        free_qty = free_qty_list[0][0]
+
+                    total_qty = frappe.db.sql(""" select sum(stock_qty) from `tabDelivery Note Item` where
+                                                    is_free_item = 0 and warehouse = %(warehouse)s and item_code = %(item_code)s and parent = %(doc_name)s""",
+                                              {'warehouse': dist_warehouse[j], 'item_code': dist_itm[i],
+                                               'doc_name': doc_name})
+                    print("total qty", total_qty, dist_warehouse[j], dist_itm[i], doc_name)
+                    ttl_qty = str(total_qty[0][0])
+                    print(ttl_qty)
+                    if ttl_qty != "None":
+                        crate_details = frappe.db.sql(""" select crate_quantity,crate_type from `tabCrate` where parent = %(item_code)s and
+                                                            warehouse = %(warehouse)s limit 1 """,
+                                                      {'item_code': dist_itm[i],
+                                                       'warehouse': dist_warehouse[j]})
+                        print("000000000000000000000000000000000000000", crate_details)
+                        if len(crate_details) > 0:
+                            doc.append('crate_count', {
+                                'crate_type': crate_details[0][1],
+                                'outgoing_count': int(
+                                    round((total_qty[0][0] / int((crate_details[0][0]) * (1 + overage / 100))),
+                                          2)),
+                                'item_code': dist_itm[i],
+                                'item_name': overage_details.item_name,
+                                'qty': total_qty[0][0],
+                                'uom': overage_details.stock_uom,
+                                'free_qty': free_qty,
+                                # 'outgoing_count': int(total_qty[0][0]) / int((crate_details[0][0]) * (1 + (overage/100)))
+                            })
+                            doc.append('loose_crate_', {
+                                'crate_type': crate_details[0][1],
+                                'qty': int(round(
+                                    (total_qty[0][0] % int(((crate_details[0][0]) * (1 + overage / 100)))), 2))
+                            })
+
+
+
+                    #                 free items
+                    # total_qty = frappe.db.sql(""" select sum(stock_qty) from `tabDelivery Note Item` where
+                    #                                                     is_free_item = 1 and warehouse = %(warehouse)s and item_code = %(item_code)s and parent = %(doc_name)s""",
+                    #                           {'warehouse': dist_warehouse[j], 'item_code': dist_itm[i],
+                    #                            'doc_name': doc_name})
+                    # print("total qty", total_qty, dist_warehouse[j], dist_itm[i], doc_name)
+                    # ttl_qty = str(total_qty[0][0])
+                    # print(ttl_qty)
+                    # if ttl_qty != "None":
+                    #     crate_details = frappe.db.sql(""" select crate_quantity,crate_type from `tabCrate` where parent = %(item_code)s and
+                    #                                                             warehouse = %(warehouse)s limit 1 """,
+                    #                                   {'item_code': dist_itm[i],
+                    #                                    'warehouse': dist_warehouse[j]})
+                    #     print("000000000000000000000000000000000000000", crate_details)
+                    #     if len(crate_details) > 0:
+                    #         doc.append('crate_count', {
+                    #             'free_qty': total_qty[0][0],
+                    #             'item_code': dist_itm[i],
+                    #             'item_name': overage_details.item_name,
+                    #             'qty': total_qty[0][0],
+                    #             'uom': overage_details.stock_uom
+                    #             # 'outgoing_count': int(round((total_qty[0][0] / int((crate_details[0][0]) * (1 + overage / 100))), 2))
+                    #             # 'outgoing_count': int(total_qty[0][0]) / int((crate_details[0][0]) * (1 + (overage/100)))
+                    #         })
+
+
         # for itm in doc.items:
         #     count = 0
         #     crate_count = frappe.get_doc("Item",itm.item_code)
@@ -48,25 +173,25 @@ def calculate_crate(doc_name = None):
 
 
 # @frappe.whitelist()
-def calculate_crate_after_insert(doc, method):
-    if not doc.get("__islocal"):
-        doc = frappe.get_doc("Delivery Note",doc.name)
-        frappe.db.sql("delete from `tabCrate Count Child` where parent = %s",(doc.name))
-
-        # doc = frappe.get_doc("Delivery Note", doc.name)
-    add_crate_count_item_line(doc)
-    dict_create_type = {}
-    for itm in doc.items:
-        count = 0
-        crate_count = frappe.get_doc("Item", itm.item_code)
-        for itms in crate_count.crate:
-            if itm.warehouse == itms.warehouse and count == 0:
-                if itms.crate_quantity and itms.crate_type:
-                    doc.append('crate_count', {
-                        'crate_type': itms.crate_type,
-                        'outgoing_count': int(round((itm.stock_qty / (itms.crate_quantity)), 2))
-                    })
-                    count = 1
+# def calculate_crate_after_insert(doc, method):
+#     if not doc.get("__islocal"):
+#         doc = frappe.get_doc("Delivery Note",doc.name)
+#         frappe.db.sql("delete from `tabCrate Count Child` where parent = %s",(doc.name))
+#
+#         # doc = frappe.get_doc("Delivery Note", doc.name)
+#     add_crate_count_item_line(doc)
+#     dict_create_type = {}
+#     for itm in doc.items:
+#         count = 0
+#         crate_count = frappe.get_doc("Item", itm.item_code)
+#         for itms in crate_count.crate:
+#             if itm.warehouse == itms.warehouse and count == 0:
+#                 if itms.crate_quantity and itms.crate_type:
+#                     doc.append('crate_count', {
+#                         'crate_type': itms.crate_type,
+#                         'outgoing_count': int(round((itm.stock_qty / (itms.crate_quantity)), 2))
+#                     })
+#                     count = 1
     # doc.save(ignore_permissions=True)
     # return dict_create_type
     # doc.db_update()
@@ -92,7 +217,7 @@ def add_crate_count_item_line(doc):
                     count =1
             # itm.db_update()
 
-# @frappe.whitelist()
+@frappe.whitelist()
 def route_validation(obj, method):
     doc = frappe.get_doc(obj)
     item_code_lst = ['0000']
