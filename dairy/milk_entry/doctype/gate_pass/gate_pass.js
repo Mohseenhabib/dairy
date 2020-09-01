@@ -26,6 +26,7 @@ frappe.ui.form.on('Gate Pass', {
 	            frm.set_df_property("items_section", "hidden", 1);
 	        }
 	        if( frm.doc.__islocal){
+	            frm.set_df_property("item", "reqd", 1);
 	            frm.set_df_property("merge_items", "hidden", 1);
 	            frm.set_df_property("crate_count_section", "hidden", 1);
                 frm.set_df_property("loose_crate_section", "hidden", 1);
@@ -95,19 +96,19 @@ frappe.ui.form.on('Gate Pass', {
 
 	 },
 
-    before_save: function(frm){
-        var total = 0;
-         $.each(frm.doc["item"],function(i, item)
-	    {
-             if(item.item_code){
-                total += 1;
-             }
-	    });
-	    if(total == 0){
-	        frappe.validated = false;
-	        frappe.throw("Get items from delivery note and then save doc to see items information");
-	    }
-    },
+//    before_save: function(frm){
+//        var total = 0;
+//         $.each(frm.doc["item"],function(i, item)
+//	    {
+//             if(item.item_code){
+//                total += 1;
+//             }
+//	    });
+//	    if(total == 0){
+//	        frappe.validated = false;
+//	        frappe.throw("Get items from delivery note and then save doc to see items information");
+//	    }
+//    },
 
      after_submit:function(frm){
         // knowingly leave empty to resolve method callling of after_save on submit button

@@ -24,31 +24,36 @@
    "in_list_view": 1,
    "label": "Crate Type",
    "options": "Crate Type",
+   "read_only": 1,
    "reqd": 1
   },
   {
    "fieldname": "incoming_count",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Incoming Count"
+   "label": "Incoming Count",
+   "read_only": 1
   },
   {
    "fieldname": "outgoing_count",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Outgoing Count"
+   "label": "Outgoing Count",
+   "read_only": 1
   },
   {
    "fieldname": "damaged_count",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Damaged Count"
+   "label": "Damaged Count",
+   "read_only": 1
   },
   {
    "fieldname": "free_qty",
    "fieldtype": "Int",
    "in_list_view": 1,
-   "label": "Free Qty"
+   "label": "Free Qty",
+   "read_only": 1
   },
   {
    "fieldname": "item_code",
@@ -87,7 +92,7 @@
  ],
  "istable": 1,
  "links": [],
- "modified": "2020-08-29 16:15:39.104569",
+ "modified": "2020-09-01 15:38:23.062066",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Crate Count Child",

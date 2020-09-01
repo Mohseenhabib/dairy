@@ -8,7 +8,6 @@
  "field_order": [
   "naming_series",
   "date",
-  "delivery_note",
   "shift",
   "company",
   "column_break_5",
@@ -49,8 +48,8 @@
   {
    "fieldname": "shift",
    "fieldtype": "Select",
-   "label": "Shift",
-   "options": "\nMorning\nEvening",
+   "label": "Delivery Shift",
+   "options": "Morning\nEvening",
    "reqd": 1
   },
   {
@@ -65,6 +64,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "fetch_from": "route.transporter",
    "fieldname": "transporter",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -103,6 +103,7 @@
    "fieldname": "item",
    "fieldtype": "Table",
    "hidden": 1,
+   "ignore_user_permissions": 1,
    "label": "Item",
    "options": "Gate Pass Item"
   },
@@ -154,14 +155,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "delivery_note",
-   "fieldtype": "Link",
-   "hidden": 1,
-   "label": "Delivery Note",
-   "options": "Delivery Note",
-   "read_only": 1
-  },
-  {
    "default": "0",
    "fieldname": "crate_reconcilation_done",
    "fieldtype": "Int",
@@ -194,7 +187,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-09-01 11:05:17.649514",
+ "modified": "2020-09-01 16:27:25.007855",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Gate Pass",
