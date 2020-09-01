@@ -2,6 +2,7 @@ frappe.ui.form.on("Delivery Note", {
     setup: function(frm) {
 		frm.add_fetch("route", "source_warehouse", "set_warehouse");
 		frm.add_fetch("route", "price_list", "selling_price_list");
+		frm.add_fetch("route", "transporter", "transporter");
 	},
 	calculate_crate: function(frm){
 	    cur_frm.cscript.calculate_crate()
@@ -146,7 +147,11 @@ frappe.ui.form.on("Delivery Note", {
                    }
                 }
         });
-    }
+    },
+
+    route: function(frm){
+        frm.add_fetch("route", "transporter", "transporter");
+    },
 });
 
 
