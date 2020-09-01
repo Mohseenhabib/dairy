@@ -122,7 +122,10 @@ def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
 def merge_items(doc_name):
 	doc = frappe.get_doc("Gate Pass", doc_name)
 	frappe.db.sql("delete from `tabMerge Gate Pass Item` where parent = %s", (doc.name))
-
+	doc.total_qty = 0
+	doc.total_free_qty = 0
+	total_supp_qty = 0
+	total_free_qty = 0
 	dist_item = frappe.db.sql(""" select distinct(item_code) from `tabGate Pass Item` where parent = %(parent)s """,
 							  {'parent': doc_name})
 	print("##################", dist_item)
@@ -167,7 +170,10 @@ def merge_items(doc_name):
 								'batch_no': dist_batch_no[k][0],
 								'free_qty': free_qty,
 							})
-
+							total_supp_qty += total_qty[0][0]
+							str_free_qty = str(free_qty)
+							if (str_free_qty != "None"):
+								total_free_qty += int(free_qty)
 						elif ttl_qty == "None" and free_qty != 0:
 							item_doc = frappe.get_doc("Item", dist_item[i][0])
 							itm_name = item_doc.item_name
@@ -180,7 +186,7 @@ def merge_items(doc_name):
 								'batch_no': dist_batch_no[k][0],
 								'free_qty': free_qty,
 							})
-
+							total_free_qty += free_qty
 		elif has_batch_no == 0:
 			warehouse = frappe.db.sql(
 				""" select distinct(warehouse) from `tabGate Pass Item` where parent = %(parent)s and item_code = %(item_code)s """,
@@ -213,7 +219,10 @@ def merge_items(doc_name):
 							'uom': stock_uom,
 							'free_qty': free_qty,
 						})
-
+						total_supp_qty += total_qty[0][0]
+						str_free_qty = str(free_qty)
+						if(str_free_qty != "None"):
+							total_free_qty += int(free_qty)
 					elif ttl_qty == "None" and free_qty != 0:
 						item_doc = frappe.get_doc("Item", dist_item[i][0])
 						itm_name = item_doc.item_name
@@ -225,7 +234,7 @@ def merge_items(doc_name):
 							'uom': stock_uom,
 							'free_qty': free_qty,
 						})
-
+						total_free_qty += free_qty
 
 				# dist_batch_no = frappe.db.sql(
 				# 	""" select distinct(batch_no) from `tabGate Pass Item` where parent = %(parent)s and item_code = %(item_code)s and is_free_item = 0 """,
@@ -306,12 +315,16 @@ def merge_items(doc_name):
 				# 			'warehouse': warehouse[j][0],
 				# 			'batch_no': dist_batch_no[k][0]
 				# 		})
+	doc.total_qty = total_supp_qty
+	doc.total_free_qty = total_free_qty
 	doc.save()
 
 @frappe.whitelist()
 def calculate_crate(doc_name = None):
 	doc = frappe.get_doc("Gate Pass",doc_name)
 	frappe.db.sql("delete from `tabLoose Crate` where parent = %s", (doc.name))
+	doc.total_crate = 0
+	total_crate = 0
 	for itm in doc.merge_item:
 		# warehouse = itm.warehouse
 		if itm.qty:
@@ -328,10 +341,11 @@ def calculate_crate(doc_name = None):
 						# })
 						itm.crate_type = itms.crate_type
 						itm.out_crate = int(round((itm.qty / int((itms.crate_quantity) * (1 + overage/100))),2))
+						total_crate += int(round((itm.qty / int((itms.crate_quantity) * (1 + overage/100))),2))
 						doc.append('loose_crates', {
 							'crate_type': itms.crate_type,
 							'qty': int(round((itm.qty) % int((itms.crate_quantity) * (1 + overage/100)),2))
 						})
 						count = 1
-
+	doc.total_crate = total_crate
 	doc.save(ignore_permissions=True)
