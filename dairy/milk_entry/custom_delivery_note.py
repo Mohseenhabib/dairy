@@ -15,6 +15,9 @@ def calculate_crate(doc_name = None):
         dict_create_type = dict()
         dist_itm = list(frappe.db.sql("""select distinct(item_code) from `tabDelivery Note Item` where parent= %(parent)s """,{'parent':doc.name}))
         print("**************************************************",dist_itm)
+        total_supp_qty = 0
+        total_crate_qty = 0
+        total_free_qty = 0
         for i in range(0,len(dist_itm)):
             overage_details = frappe.get_doc("Item",dist_itm[i][0])
             overage = overage_details.crate_overage
@@ -60,6 +63,11 @@ def calculate_crate(doc_name = None):
                                                     'free_qty': free_qty,
                                                     # 'outgoing_count': int(total_qty[0][0]) / int((crate_details[0][0]) * (1 + (overage/100)))
                                                 })
+                                total_supp_qty += total_qty[0][0]
+                                total_crate_qty += int(round((total_qty[0][0] / int((crate_details[0][0])* (1 + overage/100))), 2))
+                                str_free_qty = str(free_qty)
+                                if (str_free_qty != "None"):
+                                    total_free_qty += int(free_qty)
                                 doc.append('loose_crate_', {
                                     'crate_type': crate_details[0][1],
                                     'qty': int(round((total_qty[0][0] % int(((crate_details[0][0]) * (1 + overage/100)))), 2))
@@ -123,6 +131,11 @@ def calculate_crate(doc_name = None):
                                 'free_qty': free_qty,
                                 # 'outgoing_count': int(total_qty[0][0]) / int((crate_details[0][0]) * (1 + (overage/100)))
                             })
+                            total_supp_qty += total_qty[0][0]
+                            total_crate_qty += int(round((total_qty[0][0] / int((crate_details[0][0]) * (1 + overage / 100))), 2))
+                            str_free_qty = str(free_qty)
+                            if (str_free_qty != "None"):
+                                total_free_qty += int(free_qty)
                             doc.append('loose_crate_', {
                                 'crate_type': crate_details[0][1],
                                 'qty': int(round(
@@ -169,6 +182,10 @@ def calculate_crate(doc_name = None):
         #                 })
         #                 count = 1
         #
+
+        doc.total_supp_qty = total_supp_qty
+        doc.total_crate_qty = total_crate_qty
+        doc.total_free_qty = total_free_qty
         doc.save(ignore_permissions=True)
         return dict_create_type
 

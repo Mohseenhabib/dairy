@@ -31,3 +31,12 @@ def get_jinja_data_del_note_item(del_note):
 	from 
 		`tabCrate Count Child` where parent = %(name)s """, {"name": del_note}, as_dict=True)
 	return res
+
+@frappe.whitelist()
+def del_note_total(del_note):
+	res = frappe.db.sql("""
+		select 
+			total_supp_qty,total_crate_qty,total_free_qty
+		from 
+			`tabDelivery Note` where name = %(name)s """, {"name": del_note}, as_dict=True)
+	return res

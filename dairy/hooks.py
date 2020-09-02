@@ -186,6 +186,7 @@ jenv = {
 	"methods": [
 		"get_jinja_data:dairy.milk_entry.custom_delivery_trip.get_jinja_data",
         "get_jinja_data_del_note:dairy.milk_entry.custom_delivery_trip.get_jinja_data_del_note",
-        "get_jinja_data_del_note_item:dairy.milk_entry.custom_delivery_trip.get_jinja_data_del_note_item"
+        "get_jinja_data_del_note_item:dairy.milk_entry.custom_delivery_trip.get_jinja_data_del_note_item",
+        "del_note_total:dairy.milk_entry.custom_delivery_trip.del_note_total"
 	]
 }

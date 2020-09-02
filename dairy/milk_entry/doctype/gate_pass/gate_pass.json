@@ -11,8 +11,8 @@
   "shift",
   "company",
   "column_break_5",
-  "route",
   "transporter",
+  "route",
   "vehicle",
   "driver",
   "items_section",
@@ -69,7 +69,8 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Transporter",
-   "options": "Supplier"
+   "options": "Supplier",
+   "reqd": 1
   },
   {
    "fetch_from": "route.vehicle",
@@ -187,7 +188,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-09-01 16:27:25.007855",
+ "modified": "2020-09-02 09:26:01.633775",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Gate Pass",
