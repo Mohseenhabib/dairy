@@ -90,6 +90,7 @@
   "restrict_multiple_orders_in_single_shift",
   "milk_leakage_section",
   "applicable_on",
+  "leakage_calculated_on",
   "column_break_81",
   "leakage_percentage",
   "leakage_qty",
@@ -598,11 +599,19 @@
    "fieldtype": "Select",
    "label": "Crate Loss Billed To",
    "options": "Customer\nTransporter"
+  },
+  {
+   "default": "Sales Order",
+   "fieldname": "leakage_calculated_on",
+   "fieldtype": "Select",
+   "label": "Leakage Calculated on",
+   "options": "Sales Order\nGate Pass",
+   "reqd": 1
   }
  ],
  "issingle": 1,
  "links": [],
- "modified": "2020-08-24 12:23:19.692923",
+ "modified": "2020-09-03 10:07:25.262873",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",

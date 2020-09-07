@@ -14,51 +14,110 @@ def get_columns(filters):
     columns = [
 
         {
-            "label": _("Customer"),
-            "options": "Customer",
+            "fieldname": "crate_type",
+            "fieldtype": "Link",
+            "label": "Crate Type",
+            "options": "Crate Type",
+            "width": 100
+        },
+        {
+            "fieldname": "crate_opening",
+            "fieldtype": "Int",
+            "label": "Crate Opening",
+            "width": 80
+        },
+        {
+            "fieldname": "crate_issue",
+            "fieldtype": "Int",
+            "label": "Crate Issue",
+            "width": 80
+        },
+        {
+            "fieldname": "crate_return",
+            "fieldtype": "Int",
+            "label": "Crate Return",
+            "width": 80
+        },
+        {
+            "fieldname": "crate_balance",
+            "fieldtype": "Int",
+            "label": "Crate Balance",
+            "width": 80
+        },
+        {
+            "fieldname": "transporter",
+            "fieldtype": "Link",
+            "label": "Transporter",
+            "options": "Supplier",
+            "width": 80
+        },
+        {
             "fieldname": "customer",
             "fieldtype": "Link",
-            "width": 150
+            "label": "Customer",
+            "options": "Customer",
+            "width": 80
         },
         {
-            "label": _("Route"),
-            "options": "Route Master",
+            "fieldname": "vehicle",
+            "fieldtype": "Link",
+            "label": "Vehicle",
+            "options": "Vehicle",
+            "width": 80
+        },
+        {
             "fieldname": "route",
             "fieldtype": "Link",
-            "width": 150
+            "label": "Route",
+            "options": "Route Master",
+            "width": 80
         },
         {
-            "label": _("Delivery Note"),
-            "options": "Delivery Note",
-            "fieldname": "delivery_note",
-            "fieldtype": "Link",
-            "width": 150
-        },
-        {
-            "label": _("Delivery Date"),
             "fieldname": "date",
             "fieldtype": "Date",
+            "label": "Date",
+            "width": 80
+        },
+        {
+            "fieldname": "voucher_type",
+            "fieldtype": "Link",
+            "label": "Voucher Type",
+            "options": "DocType",
+            "width": 80
+        },
+        {
+            "fieldname": "voucher",
+            "fieldtype": "Dynamic Link",
+            "label": "Voucher",
+            "options": "voucher_type",
+            "width": 80
+        },
+        {
+            "fieldname": "company",
+            "fieldtype": "Link",
+            "label": "Company",
+            "options": "Company",
+            "width": 80
+        },
+        {
+            "fieldname": "source_warehouse",
+            "fieldtype": "Link",
+            "label": "Source Warehouse",
+            "options": "Warehouse",
             "width": 120
         },
         {
-            "label": _("Vehicle"),
-            "options":"Vehicle",
-            "fieldname": "vehicle",
-            "fieldtype": "Link",
-            "width": 150
+            "fieldname": "damaged",
+            "fieldtype": "Int",
+            "label": "Damaged",
+            "width": 80
         },
+
         {
-            "label": _("Item"),
-            "options": "Item",
-            "fieldname": "item",
-            "fieldtype": "Link",
+            "fieldname": "note",
+            "fieldtype": "Data",
+            "label": "Note",
             "width": 150
-        },
-        {
-            "label": _("Crate Count"),
-            "fieldname": "crate_count",
-            "fieldtype": "Float",
-            "width": 100
         }
     ]
     return columns
@@ -66,18 +125,30 @@ def get_columns(filters):
 def get_data(filters):
     data =[]
 
-    result = frappe.db.sql("""select TDN.customer,TDN.route,TDN.name,TDN.posting_date,TR.vehicle,TDNI.item_code,TDNI.crate_count 
-                            from `tabDelivery Note` TDN 
-                            inner join `tabDelivery Note Item` TDNI on TDNI.parent =TDN.name
-                            inner join `tabRoute Master` TR on TR.name = TDN.route""",as_dict =True)
+    # result = frappe.db.sql("""select TDN.customer,TDN.route,TDN.name,TDN.posting_date,TR.vehicle,TDNI.item_code,TDNI.crate_count
+    #                         from `tabDelivery Note` TDN
+    #                         inner join `tabDelivery Note Item` TDNI on TDNI.parent =TDN.name
+    #                         inner join `tabRoute Master` TR on TR.name = TDN.route""",as_dict =True)
+    result = frappe.db.sql("""select crate_type,crate_opening,crate_issue,crate_return,crate_balance,transporter,customer,vehicle,
+                                route,date,voucher_type,voucher,company,source_warehouse,damaged,note from `tabCrate Log` """, as_dict=True)
     for res in result:
         data.append({
+            "crate_type":res.get('crate_type'),
+            "crate_opening":res.get('crate_opening'),
+            "crate_issue":res.get('crate_issue'),
+            "crate_return":res.get('crate_return'),
+            "crate_balance":res.get('crate_balance'),
+            "transporter":res.get('transporter'),
             "customer":res.get('customer'),
-            "route":res.get('route'),
-            "delivery_note":res.get('name'),
-            "date":res.get('posting_date'),
-            "vehicle":res.get('vehicle'),
-            "item":res.get('item_code'),
-            "crate_count":res.get('crate_count')
+            "vehicle": res.get('vehicle'),
+            "route": res.get('route'),
+            "date": res.get('date'),
+            "voucher_type": res.get('voucher_type'),
+            "voucher": res.get('voucher'),
+            "company": res.get('company'),
+            "source_warehouse": res.get('source_warehouse'),
+            "damaged": res.get('damaged'),
+            "note": res.get('note'),
+
         })
     return data

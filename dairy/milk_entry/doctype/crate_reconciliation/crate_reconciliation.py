@@ -4,6 +4,7 @@
 
 from __future__ import unicode_literals
 import frappe
+from erpnext.buying.doctype.purchase_order.purchase_order import set_missing_values
 from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
 from erpnext.assets.doctype.asset.depreciation \
@@ -17,6 +18,27 @@ class CrateReconciliation(Document):
 
 	def after_insert(self):
 		self.calculate_total_count()
+		self.settlement()
+	def settlement(self):
+
+		dist_crate_type =frappe.db.sql(""" select distinct crate_type from `tabCrate Reconciliation Child` where parent = %(name)s """,
+									   {'name':self.name})
+		for i in range(0,len(dist_crate_type)):
+			totals = frappe.db.sql(""" select sum(outgoing),sum(incoming),sum(damaged) from `tabCrate Reconciliation Child` where 
+			 		parent = %(name)s and crate_type = %(crate_type)s""",{'name':self.name,'crate_type':dist_crate_type[i][0]})
+			difference = totals[0][0] - totals[0][1]
+			# row = self.append("settlement_info", {})
+			# row.total_outgoing = totals[0][0]
+			# row.total_incoming = totals[0][1]
+			# row.total_damaged = totals[0][2]
+			# row.difference = difference
+			self.append("settlement_info", {
+				"crate_type": dist_crate_type[i][0],
+				"total_outgoing": totals[0][0],
+				"total_incoming": totals[0][1],
+				"total_damaged": totals[0][2],
+				"difference": difference
+			})
 
 	def calculate_total_count(self):
 		total_outgoing = 0.0
@@ -46,6 +68,10 @@ class CrateReconciliation(Document):
 				del_note = frappe.get_doc("Gate Pass", i.gate_pass)
 				del_note.crate_reconcilation_done = 1
 				del_note.db_update()
+			if i.crate_log:
+				crate_log = frappe.get_doc("Crate Log", i.crate_log)
+				crate_log.crate_reconsilliation_done = 1
+				crate_log.db_update()
 
 	def on_cancel(self):
 		for i in self.delivery_info:
@@ -57,6 +83,10 @@ class CrateReconciliation(Document):
 				del_note = frappe.get_doc("Gate Pass",i.gate_pass)
 				del_note.crate_reconcilation_done =0
 				del_note.db_update()
+			if i.crate_log:
+				crate_log = frappe.get_doc("Crate Log", i.crate_log)
+				crate_log.crate_reconsilliation_done = 0
+				crate_log.db_update()
 
 	def calculate_crate_type_summary(self):
 		if self:
@@ -131,34 +161,59 @@ def make_delivery_note(source_name, target_doc=None, ignore_permissions=False):
 	}, target_doc,set_item_in_sales_invoice)
 	return doclist
 
+# @frappe.whitelist()
+# def make_gate_pass(source_name, target_doc=None, ignore_permissions=False):
+# 	def set_item_in_sales_invoice(source, target):
+# 		del_note = frappe.get_doc(source)
+# 		crate_recl = frappe.get_doc(target)
+# 		for i in del_note.crate	:
+# 			out_count = i.outgoing_count if i.outgoing_count else 0
+# 			in_count = i.incoming_count if i.incoming_count else 0
+# 			dam_count = i.damaged_count if i.damaged_count else 0
+# 			vehicle_name = None
+# 			if del_note.route:
+# 				route_doc = frappe.get_doc("Route Master",del_note.route)
+# 				vehicle_name = route_doc.vehicle
+# 			crate_recl.append("delivery_info",{
+# 				"delivery_date": del_note.date,
+# 				"gate_pass": del_note.name,
+# 				"transporter": del_note.transporter,
+# 				"route": del_note.route,
+# 				"crate_type": i.crate_type,
+# 				"vehicle": vehicle_name,
+# 				"outgoing": out_count,
+# 				"incoming": in_count,
+# 				"damaged": dam_count,
+# 				"difference": out_count - in_count
+# 			})
+#
+# 	doclist = get_mapped_doc("Gate Pass", source_name, {
+# 		"Gate Pass": {
+# 			"doctype": "Crate Reconciliation",
+# 		}
+# 	}, target_doc,set_item_in_sales_invoice)
+# 	return doclist
+
 @frappe.whitelist()
-def make_gate_pass(source_name, target_doc=None, ignore_permissions=False):
+def make_crate_log(source_name, target_doc=None, ignore_permissions=False):
 	def set_item_in_sales_invoice(source, target):
 		del_note = frappe.get_doc(source)
 		crate_recl = frappe.get_doc(target)
-		for i in del_note.crate	:
-			out_count = i.outgoing_count if i.outgoing_count else 0
-			in_count = i.incoming_count if i.incoming_count else 0
-			dam_count = i.damaged_count if i.damaged_count else 0
-			vehicle_name = None
-			if del_note.route:
-				route_doc = frappe.get_doc("Route Master",del_note.route)
-				vehicle_name = route_doc.vehicle
-			crate_recl.append("delivery_info",{
-				"delivery_date": del_note.date,
-				"gate_pass": del_note.name,
-				"transporter": del_note.transporter,
-				"route": del_note.route,
-				"crate_type": i.crate_type,
-				"vehicle": vehicle_name,
-				"outgoing": out_count,
-				"incoming": in_count,
-				"damaged": dam_count,
-				"difference": out_count - in_count
-			})
+		crate_recl.append("delivery_info",{
+			"delivery_date": del_note.date,
+			"crate_log": del_note.name,
+			"transporter": del_note.transporter,
+			"route": del_note.route,
+			"crate_type": del_note.crate_type,
+			"vehicle": del_note.vehicle,
+			"outgoing": del_note.crate_issue,
+			"incoming": del_note.crate_return,
+			"damaged": del_note.damaged,
+			"difference": del_note.crate_issue - del_note.crate_return
+		})
 
-	doclist = get_mapped_doc("Gate Pass", source_name, {
-		"Gate Pass": {
+	doclist = get_mapped_doc("Crate Log", source_name, {
+		"Crate Log": {
 			"doctype": "Crate Reconciliation",
 		}
 	}, target_doc,set_item_in_sales_invoice)

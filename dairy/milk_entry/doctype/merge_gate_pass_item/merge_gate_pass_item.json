@@ -7,36 +7,43 @@
  "field_order": [
   "item_code",
   "item_name",
+  "description",
+  "crate_type",
   "batch_no",
   "uom",
   "qty",
-  "crate_type",
   "column_break_6",
+  "leakage_applied",
   "free_qty",
   "out_crate",
   "in_crate",
+  "damaged_crate",
   "warehouse",
   "outgoing_count_crate"
  ],
  "fields": [
   {
-   "columns": 4,
+   "columns": 2,
    "fieldname": "item_code",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Item Code",
-   "options": "Item"
+   "options": "Item",
+   "read_only": 1
   },
   {
    "fieldname": "item_name",
    "fieldtype": "Data",
-   "label": "Item Name"
+   "label": "Item Name",
+   "read_only": 1
   },
   {
+   "columns": 1,
    "fieldname": "qty",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Quantity"
+   "label": "Quantity",
+   "read_only": 1
   },
   {
    "columns": 1,
@@ -44,34 +51,38 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "UOM",
-   "options": "UOM"
+   "options": "UOM",
+   "read_only": 1
   },
   {
    "columns": 1,
    "fieldname": "free_qty",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Free Qty"
+   "label": "Free Qty",
+   "read_only": 1
   },
   {
    "columns": 1,
    "fieldname": "out_crate",
-   "fieldtype": "Data",
+   "fieldtype": "Int",
    "in_list_view": 1,
-   "label": "Out Crate "
+   "label": "Crate ",
+   "read_only": 1
   },
   {
    "columns": 1,
    "fieldname": "in_crate",
-   "fieldtype": "Data",
+   "fieldtype": "Int",
    "in_list_view": 1,
-   "label": "In Crate"
+   "label": "Crate Return"
   },
   {
    "fieldname": "warehouse",
    "fieldtype": "Link",
    "label": "From Warehouse",
-   "options": "Warehouse"
+   "options": "Warehouse",
+   "read_only": 1
   },
   {
    "fieldname": "outgoing_count_crate",
@@ -84,24 +95,46 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Crate Type",
-   "options": "Crate Type"
+   "options": "Crate Type",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_6",
    "fieldtype": "Column Break"
   },
   {
-   "columns": 2,
+   "columns": 1,
    "fieldname": "batch_no",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Batch No",
-   "options": "Batch"
+   "options": "Batch",
+   "read_only": 1
+  },
+  {
+   "columns": 1,
+   "fieldname": "damaged_crate",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Damaged Crate"
+  },
+  {
+   "fetch_from": "item.description",
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Description"
+  },
+  {
+   "default": "0",
+   "fieldname": "leakage_applied",
+   "fieldtype": "Check",
+   "label": "leakage Applied",
+   "read_only": 1
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2020-09-01 10:41:21.095415",
+ "modified": "2020-09-03 12:32:57.572949",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Merge Gate Pass Item",

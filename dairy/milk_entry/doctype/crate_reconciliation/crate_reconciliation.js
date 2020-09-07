@@ -16,47 +16,68 @@ frappe.ui.form.on('Crate Reconciliation', {
 
         if (frm.doc.docstatus ==0)
         {
-            frappe.db.get_value("Dairy Settings", "Dairy Settings", "crate_reconciliation_based_on", (r) => {
-			if (r && r.crate_reconciliation_based_on == "Delivery Note" || r.crate_reconciliation_based_on == "") {
-                frm.add_custom_button(__('Delivery Note'),function() {
+        frm.add_custom_button(__('Crate Log'),function() {
                 erpnext.utils.map_current_doc({
-                    method: "dairy.milk_entry.doctype.crate_reconciliation.crate_reconciliation.make_delivery_note",
-                    source_doctype: "Delivery Note",
+                    method: "dairy.milk_entry.doctype.crate_reconciliation.crate_reconciliation.make_crate_log",
+                    source_doctype: "Crate Log",
                     target: frm,
                     date_field: "posting_date",
                     setters: {
                             customer: frm.doc.customer || undefined,
-                            route: frm.doc.route || undefined
-                        },
-                    get_query_filters: {
-                        company: frm.doc.company,
-                        route: frm.doc.route,
-                        crate_reconcilation_done:0,
-                        docstatus: 1
-                            }
-                        })
-                    }, __("Get items from"));
-                } else {
-                frm.add_custom_button(__('Gate Pass'),function() {
-                erpnext.utils.map_current_doc({
-                    method: "dairy.milk_entry.doctype.crate_reconciliation.crate_reconciliation.make_gate_pass",
-                    source_doctype: "Gate Pass",
-                    target: frm,
-                    date_field: "posting_date",
-                    setters: {
                             transporter: frm.doc.transporter || undefined,
                             route: frm.doc.route || undefined
                         },
                     get_query_filters: {
                         company: frm.doc.company,
                         route: frm.doc.route,
-                        crate_reconcilation_done:0,
+                        crate_reconsilliation_done:0,
                         docstatus: 1
                             }
                         })
                     }, __("Get items from"));
-                }
-            })
+
+//            frappe.db.get_value("Dairy Settings", "Dairy Settings", "crate_reconciliation_based_on", (r) => {
+//			if (r && r.crate_reconciliation_based_on == "Delivery Note" || r.crate_reconciliation_based_on == "") {
+//                frm.add_custom_button(__('Delivery Note'),function() {
+//                erpnext.utils.map_current_doc({
+//                    method: "dairy.milk_entry.doctype.crate_reconciliation.crate_reconciliation.make_delivery_note",
+//                    source_doctype: "Delivery Note",
+//                    target: frm,
+//                    date_field: "posting_date",
+//                    setters: {
+//                            customer: frm.doc.customer || undefined,
+//                            route: frm.doc.route || undefined
+//                        },
+//                    get_query_filters: {
+//                        company: frm.doc.company,
+//                        route: frm.doc.route,
+//                        crate_reconcilation_done:0,
+//                        docstatus: 1
+//                            }
+//                        })
+//                    }, __("Get items from"));
+//                }
+//                else {
+//                frm.add_custom_button(__('Gate Pass'),function() {
+//                erpnext.utils.map_current_doc({
+//                    method: "dairy.milk_entry.doctype.crate_reconciliation.crate_reconciliation.make_gate_pass",
+//                    source_doctype: "Gate Pass",
+//                    target: frm,
+//                    date_field: "posting_date",
+//                    setters: {
+//                            transporter: frm.doc.transporter || undefined,
+//                            route: frm.doc.route || undefined
+//                        },
+//                    get_query_filters: {
+//                        company: frm.doc.company,
+//                        route: frm.doc.route,
+//                        crate_reconcilation_done:0,
+//                        docstatus: 1
+//                            }
+//                        })
+//                    }, __("Get items from"));
+//                }
+//            })
 
         }
         if (frm.doc.docstatus ==1)

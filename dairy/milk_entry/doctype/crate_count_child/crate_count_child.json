@@ -15,7 +15,8 @@
   "item_name",
   "qty",
   "batch_no",
-  "uom"
+  "uom",
+  "warehouse"
  ],
  "fields": [
   {
@@ -31,22 +32,20 @@
    "fieldname": "incoming_count",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Incoming Count",
-   "read_only": 1
+   "label": "Crate Return"
   },
   {
    "fieldname": "outgoing_count",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Outgoing Count",
+   "label": "Crate",
    "read_only": 1
   },
   {
    "fieldname": "damaged_count",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Damaged Count",
-   "read_only": 1
+   "label": "Damaged Count"
   },
   {
    "fieldname": "free_qty",
@@ -81,18 +80,26 @@
   },
   {
    "fieldname": "uom",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "label": "UOM",
+   "options": "UOM",
    "read_only": 1
   },
   {
    "fieldname": "column_break_6",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "label": "Warehouse",
+   "options": "Warehouse",
+   "read_only": 1
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2020-09-01 15:38:23.062066",
+ "modified": "2020-09-05 17:19:58.712579",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Crate Count Child",

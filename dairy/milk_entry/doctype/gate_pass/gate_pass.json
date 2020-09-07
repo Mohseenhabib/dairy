@@ -22,12 +22,19 @@
   "total_qty",
   "total_crate",
   "total_free_qty",
-  "crate_count_section",
+  "total_leakage",
+  "total_crate_return",
   "calculate_crate",
   "crate",
   "loose_crate_section",
   "loose_crates",
+  "leakage_section",
+  "leakage_item",
+  "crate_summary_details_section",
+  "crate_summary",
+  "section_break_23",
   "crate_reconcilation_done",
+  "gate_crate_cal_done",
   "status",
   "amended_from"
  ],
@@ -49,7 +56,7 @@
    "fieldname": "shift",
    "fieldtype": "Select",
    "label": "Delivery Shift",
-   "options": "Morning\nEvening",
+   "options": "\nMorning\nEvening",
    "reqd": 1
   },
   {
@@ -120,11 +127,6 @@
    "options": "Merge Gate Pass Item"
   },
   {
-   "fieldname": "crate_count_section",
-   "fieldtype": "Section Break",
-   "label": "Crate Count"
-  },
-  {
    "fieldname": "calculate_crate",
    "fieldtype": "Button",
    "label": "Calculate Crate"
@@ -165,6 +167,7 @@
   {
    "fieldname": "status",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "status"
   },
   {
@@ -184,11 +187,57 @@
    "fieldtype": "Int",
    "hidden": 1,
    "label": "Total Free Qty"
+  },
+  {
+   "depends_on": "eval:doc.docstatus == 1",
+   "fieldname": "leakage_section",
+   "fieldtype": "Section Break",
+   "label": "Leakage"
+  },
+  {
+   "fieldname": "leakage_item",
+   "fieldtype": "Table",
+   "label": "Leakage Item",
+   "options": "Leakage Item"
+  },
+  {
+   "fieldname": "section_break_23",
+   "fieldtype": "Section Break"
+  },
+  {
+   "depends_on": "eval:doc.docstatus == 1",
+   "fieldname": "crate_summary_details_section",
+   "fieldtype": "Section Break",
+   "label": "Crate Summary Details"
+  },
+  {
+   "fieldname": "crate_summary",
+   "fieldtype": "Table",
+   "label": "Crate Summary",
+   "options": "Crate Summary"
+  },
+  {
+   "fieldname": "total_leakage",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Total Leakage"
+  },
+  {
+   "fieldname": "total_crate_return",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Total Crate Return"
+  },
+  {
+   "fieldname": "gate_crate_cal_done",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Crate Cal Done"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-09-02 09:26:01.633775",
+ "modified": "2020-09-05 12:14:36.162440",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Gate Pass",

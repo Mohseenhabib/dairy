@@ -24,6 +24,8 @@
   "total_damaged",
   "column_break_16",
   "difference",
+  "section_break_19",
+  "settlement_info",
   "crate_type_summary_section",
   "crate_type_summary",
   "section_break_20",
@@ -169,11 +171,21 @@
    "fieldtype": "Link",
    "label": "Transporter",
    "options": "Supplier"
+  },
+  {
+   "fieldname": "section_break_19",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "settlement_info",
+   "fieldtype": "Table",
+   "label": "Settlement Info",
+   "options": "Settlement"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-08-26 16:04:15.555900",
+ "modified": "2020-09-07 15:54:02.727640",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Crate Reconciliation",

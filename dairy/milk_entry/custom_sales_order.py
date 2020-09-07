@@ -10,63 +10,64 @@ from erpnext.stock.doctype.item.item import get_item_defaults
 from erpnext.setup.doctype.item_group.item_group import get_item_group_defaults
 
 def before_submit(sales, method):
-    if frappe.db.get_single_value("Dairy Settings", "leakage_percentage") and frappe.db.get_single_value("Dairy Settings", "leakage_qty"):
-        leakage_perc = float(frappe.db.get_single_value("Dairy Settings", "leakage_percentage"))
-        leakage_qty = float(frappe.db.get_single_value("Dairy Settings", "leakage_qty"))
-        applicable_on = (frappe.db.get_single_value("Dairy Settings", "applicable_on"))
-        lst = []
-        for line in sales.items:
-            lst.append(line)
-        for line in lst:
-            item = frappe.get_doc("Item",line.item_code)
-            if item.leakage_applicable and applicable_on == "Stock UOM" and line.stock_qty > leakage_qty:
-                qty = (line.stock_qty * leakage_perc)/100
-                uom = frappe.get_doc("UOM",line.stock_uom)
-                if uom.must_be_whole_number:
-                    qty = round((line.stock_qty * leakage_perc) / 100)
-                if qty == 0:
-                    qty = 1
-                sales.append("items",{
-                    "item_code": line.item_code,
-                    "item_name": line.item_name,
-                    "delivery_date": line.delivery_date,
-                    "description": str(line.description)+" Leakage Scheme applied",
-                    "gst_hsn_code": line.gst_hsn_code,
-                    "is_nil_exempt": line.is_nil_exempt,
-                    "qty": qty,
-                    "uom": line.stock_uom,
-                    "stock_uom": line.stock_uom,
-                    "rate": 0.0,
-                    "warehouse": line.warehouse,
-                    "is_free_item": 1,
-                    "price_list_rate": 0
-                })
-                sales.validate()
+    if frappe.db.get_single_value("Dairy Settings", "leakage_calculated_on") == "Sales Order":
+        if frappe.db.get_single_value("Dairy Settings", "leakage_percentage") and frappe.db.get_single_value("Dairy Settings", "leakage_qty"):
+            leakage_perc = float(frappe.db.get_single_value("Dairy Settings", "leakage_percentage"))
+            leakage_qty = float(frappe.db.get_single_value("Dairy Settings", "leakage_qty"))
+            applicable_on = (frappe.db.get_single_value("Dairy Settings", "applicable_on"))
+            lst = []
+            for line in sales.items:
+                lst.append(line)
+            for line in lst:
+                item = frappe.get_doc("Item",line.item_code)
+                if item.leakage_applicable and applicable_on == "Stock UOM" and line.stock_qty > leakage_qty:
+                    qty = (line.stock_qty * leakage_perc)/100
+                    uom = frappe.get_doc("UOM",line.stock_uom)
+                    if uom.must_be_whole_number:
+                        qty = round((line.stock_qty * leakage_perc) / 100)
+                    if qty == 0:
+                        qty = 1
+                    sales.append("items",{
+                        "item_code": line.item_code,
+                        "item_name": line.item_name,
+                        "delivery_date": line.delivery_date,
+                        "description": str(line.description)+" Leakage Scheme applied",
+                        "gst_hsn_code": line.gst_hsn_code,
+                        "is_nil_exempt": line.is_nil_exempt,
+                        "qty": qty,
+                        "uom": line.stock_uom,
+                        "stock_uom": line.stock_uom,
+                        "rate": 0.0,
+                        "warehouse": line.warehouse,
+                        "is_free_item": 1,
+                        "price_list_rate": 0
+                    })
+                    sales.validate()
 
-            if item.leakage_applicable and applicable_on == "Order UOM" and line.qty > leakage_qty:
-                qty = (line.qty * leakage_perc)/100
-                uom1 = frappe.get_doc("UOM", line.stock_uom)
-                uom2 = frappe.get_doc("UOM", line.uom)
-                if uom1.must_be_whole_number or uom2.must_be_whole_number:
-                    qty = round((line.qty * leakage_perc) / 100)
-                if qty == 0:
-                    qty = 1
-                sales.append("items",{
-                    "item_code": line.item_code,
-                    "item_name": line.item_name,
-                    "delivery_date": line.delivery_date,
-                    "description": str(line.description)+" Leakage Scheme applied",
-                    "gst_hsn_code": line.gst_hsn_code,
-                    "is_nil_exempt": line.is_nil_exempt,
-                    "qty": qty,
-                    "uom": line.uom,
-                    "stock_uom": line.stock_uom,
-                    "rate": 0.0,
-                    "warehouse": line.warehouse,
-                    "is_free_item": 1,
-                    "price_list_rate": 0
-                })
-                sales.validate()
+                if item.leakage_applicable and applicable_on == "Order UOM" and line.qty > leakage_qty:
+                    qty = (line.qty * leakage_perc)/100
+                    uom1 = frappe.get_doc("UOM", line.stock_uom)
+                    uom2 = frappe.get_doc("UOM", line.uom)
+                    if uom1.must_be_whole_number or uom2.must_be_whole_number:
+                        qty = round((line.qty * leakage_perc) / 100)
+                    if qty == 0:
+                        qty = 1
+                    sales.append("items",{
+                        "item_code": line.item_code,
+                        "item_name": line.item_name,
+                        "delivery_date": line.delivery_date,
+                        "description": str(line.description)+" Leakage Scheme applied",
+                        "gst_hsn_code": line.gst_hsn_code,
+                        "is_nil_exempt": line.is_nil_exempt,
+                        "qty": qty,
+                        "uom": line.uom,
+                        "stock_uom": line.stock_uom,
+                        "rate": 0.0,
+                        "warehouse": line.warehouse,
+                        "is_free_item": 1,
+                        "price_list_rate": 0
+                    })
+                    sales.validate()
 
 @frappe.whitelist()
 def validate_multiple_orders(customer,delivery_shift,route,delivery_date):

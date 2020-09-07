@@ -117,7 +117,11 @@ frappe.ui.form.on("Delivery Note", {
 	},
 
     after_save: function(frm){
-        if(frm.doc.docstatus != "1"){
+//        if(frm.doc.crate_cal_done != "Done"){
+//
+//        }
+        if(frm.doc.docstatus != "1" && frm.doc.crate_cal_done != "Done"){
+
           frm.call({
             method:"dairy.milk_entry.custom_delivery_note.calculate_crate",
             args: {
@@ -129,6 +133,8 @@ frappe.ui.form.on("Delivery Note", {
                 }
         });
     }
+
+
     },
 
 	customer:function(frm){

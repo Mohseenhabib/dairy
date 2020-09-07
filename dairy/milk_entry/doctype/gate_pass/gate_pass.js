@@ -74,14 +74,20 @@ frappe.ui.form.on('Gate Pass', {
                                 crate_gate_pass_done:0
 							}
 						})
-						frappe.msgprint("After getting item. Save the document to see item details...");
+						frappe.msgprint({
+                            title: __('Note'),
+                            indicator: 'green',
+                            message: __('After getting item. Save the document to see item details...')
+                        });
+
 					}, __("Get items from"));
 			}
 			}
 	 },
 
 	 after_save: function(frm){
-            if(frm.doc.status != "Draft"){
+//	        cur_frm.fields_dict.loose_crate.grid.toggle_reqd("description");
+            if(frm.doc.docstatus == 0 && frm.doc.gate_crate_cal_done != "Done"){
                 frm.call({
                         method:"dairy.milk_entry.doctype.gate_pass.gate_pass.merge_items",
                         args: {
@@ -92,10 +98,10 @@ frappe.ui.form.on('Gate Pass', {
                         });
 //                        cur_frm.refresh();
 //                        cur_frm.reload_doc();
-
             }
-            frm.trigger("calculate_crate");
             frappe.ui.toolbar.clear_cache();
+//            frm.trigger("calculate_crate");
+
 	 },
 
 //    before_save: function(frm){
@@ -118,6 +124,7 @@ frappe.ui.form.on('Gate Pass', {
 	 },
 
     calculate_crate: function(frm){
+            if(frm.doc.name  && frm.doc.gate_crate_cal_done != "Done"){
                 return cur_frm.call({
                     method:"dairy.milk_entry.doctype.gate_pass.gate_pass.calculate_crate",
                     args: {
@@ -128,6 +135,7 @@ frappe.ui.form.on('Gate Pass', {
                            cur_frm.reload_doc();
                         }
                 });
+                }
         },
 });
 

@@ -8,6 +8,15 @@ frappe.ui.form.on('Dairy Settings', {
             frm.set_value("get_territory","Customer");
 
         }
+        if(! frm.doc.leakage_calculated_on)
+        {
+        frm.set_value("leakage_calculated_on","Sales Order");
+        }
+
+        if(! frm.doc.crate_reconciliation_based_on){
+            frm.set_value("crate_reconciliation_based_on","Delivery Note");
+        }
+
     },
     set_property: function(frm) {
          if(frm.doc.default_payment_type =="Days")
