@@ -15,9 +15,6 @@ def before_submit(self,method):
                 sums = frappe.db.sql(""" select sum(outgoing_count) as crate, sum(incoming_count) as crate_ret, sum(damaged_count) as damaged_crate
     			 from `tabCrate Count Child` where crate_type = %(crate)s and parent = %(name)s 
     			 and warehouse = %(warehouse)s""", {'crate': crate, 'name': self.name, 'warehouse': warehouse}, as_dict=1)
-                print("sum ********", sums)
-                print("crate ***", crate)
-                print(" dist_warehose **", dist_warehouse)
                 log = frappe.new_doc("Crate Log")
                 log.customer = self.customer
                 # log.vehicle = self.vehicle
@@ -36,22 +33,18 @@ def before_submit(self,method):
     							 and company = %(company)s and  docstatus = 1	 order by date desc  """,
                                              {'crate': crate, 'warehouse': warehouse,
                                               'company': self.company}, as_dict=1)
-                print("opening_cnt = ", openning_cnt)
                 if openning_cnt[0]['count(*)'] > 0:
-                    print("11111111111111111111111111111111111111111111111111111111111111111111111111111111111111")
                     openning = frappe.db.sql(""" select crate_balance from `tabCrate Log`  where crate_type = %(crate)s and source_warehouse = %(warehouse)s and
     				company = %(company)s and  docstatus = 1 order by date desc limit 1 """,
                                              {'crate': crate, 'warehouse': warehouse, 'company': self.company},
                                              as_dict=1)
-                    print("------------", openning)
                     log.crate_opening = int(openning[0]['crate_balance'])
                     log.crate_balance = openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret'])
                 else:
-                    print("0000000000000000000000000000000000000000000000000000000000000000000000000000000")
                     log.crate_opening = int(0)
                     log.crate_balance = int(0) - (sums[0]['crate'] + sums[0]['crate_ret'])
-                log.save()
-                log.submit()
+                log.save(ignore_permissions=True)
+                log.submit(ignore_permissions=True)
 
 #     calculate total crate return
 #     crate_ret = frappe.db.sql(""" select sum(incoming_count) from `tabCrate Count Child` where parent = %(name)s """,{'name':self.name})
@@ -69,19 +62,15 @@ def calculate_crate(doc_name = None):
         doc = frappe.get_doc("Delivery Note", doc_name)
         dict_create_type = dict()
         dist_itm = list(frappe.db.sql("""select distinct(item_code) from `tabDelivery Note Item` where parent= %(parent)s """,{'parent':doc.name}))
-        print("**************************************************",dist_itm)
         total_supp_qty = 0
         total_crate_qty = 0
         total_free_qty = 0
-
         for i in range(0,len(dist_itm)):
             overage_details = frappe.get_doc("Item",dist_itm[i][0])
             overage = overage_details.crate_overage
             has_batch_no = overage_details.has_batch_no
-            print("##################################################",overage)
             dist_warehouse = list(frappe.db.sql("""select distinct(warehouse) from `tabDelivery Note Item` where item_code= %(item_code)s """,
                                            {'item_code':dist_itm[i]}))
-            print("##################################",dist_warehouse)
             for j in range(0,len(dist_warehouse)):
                 if has_batch_no == 1:
                     dist_batch_no = list(frappe.db.sql(
@@ -99,13 +88,13 @@ def calculate_crate(doc_name = None):
                                                    'doc_name': doc_name, 'batch_no': dist_batch_no[k]})
                         if str(free_qty_list[0][0]) != "None":
                             free_qty = int(free_qty_list[0][0])
-                        print("total qty",total_qty,dist_warehouse[j],dist_itm[i],doc_name)
+
                         ttl_qty = str(total_qty[0][0])
-                        print(ttl_qty)
+
                         if ttl_qty != "None":
                             crate_details = frappe.db.sql(""" select crate_quantity,crate_type from `tabCrate` where parent = %(item_code)s and
                                                                 warehouse = %(warehouse)s limit 1 """,{'item_code':dist_itm[i],'warehouse':dist_warehouse[j]})
-                            print("000000000000000000000000000000000000000",crate_details)
+
                             if len(crate_details) > 0:
 
                                 doc.append('crate_count', {
@@ -129,7 +118,6 @@ def calculate_crate(doc_name = None):
                                 if qty > 0:
                                     doc.append('loose_crate_', {
                                         'item_code': dist_itm[i][0],
-                                        # 'item_name': overage_details.item_name,
                                         'crate_type': crate_details[0][1],
                                         'qty': int(round(((total_qty[0][0] + free_qty) % int(((crate_details[0][0]) * (1 + overage/100)))), 2))
                                     })
@@ -153,7 +141,6 @@ def calculate_crate(doc_name = None):
                                                             warehouse = %(warehouse)s limit 1 """,
                                                       {'item_code': dist_itm[i],
                                                        'warehouse': dist_warehouse[j]})
-                        print("000000000000000000000000000000000000000", crate_details)
                         if len(crate_details) > 0:
                             doc.append('crate_count', {
                                 'crate_type': crate_details[0][1],
@@ -174,7 +161,6 @@ def calculate_crate(doc_name = None):
                             if qty > 0:
                                 doc.append('loose_crate_', {
                                     'item_code': dist_itm[i][0],
-                                    # 'item_name': overage_details.item_name,
                                     'crate_type': crate_details[0][1],
                                     'qty': int(round(((total_qty[0][0] + free_qty) % int(((crate_details[0][0]) * (1 + overage / 100)))), 2))
                                 })

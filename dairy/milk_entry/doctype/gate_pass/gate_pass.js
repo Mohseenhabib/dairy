@@ -21,6 +21,20 @@ frappe.ui.form.on('Gate Pass', {
 				}
 			}
 		});
+
+        if(! frm.doc.__islocal && frm.doc.docstatus != 1){
+            if((frm.doc.item.length) > 0 && (frm.doc.merge_item) == 0){
+                    frm.call({
+                        method:"dairy.milk_entry.doctype.gate_pass.gate_pass.merge_items",
+                        args: {
+                            doc_name: frm.doc.name
+                        },
+                        callback: function(r) {
+                            }
+                        });
+                        frappe.ui.toolbar.clear_cache();
+            }
+        }
      },
 	 refresh: function(frm) {
 	        if(! frm.doc.__islocal){
@@ -46,35 +60,7 @@ frappe.ui.form.on('Gate Pass', {
 							shift: frm.doc.shift || undefined,
 							transporter: frm.doc.transporter || undefined
 							},
-//							setters: [
-//                            {
-//                                label: "Date",
-//                                fieldname: "posting_date",
-//                                fieldtype: "Date",
-//                                default: frm.doc.date || undefined,
-//                            },
-//                            {
-//                                label: "Route",
-//                                fieldname: "route",
-//                                fieldtype: "Link",
-//                                options: "Route Master",
-//                                default: frm.doc.route || undefined,
-//                            },
-//                            {
-//                                label: "Shift",
-//                                fieldname: "shift",
-//                                fieldtype: "Data",
-//                                default: frm.doc.shift || undefined,
-//                            },
-//
-//                            {
-//                                label: "Transporter",
-//                                fieldname: "transporter",
-//                                fieldtype: "Link",
-//                                options: "Supplier",
-//                                default: frm.doc.transporter || undefined,
-//                            }
-//                        ],
+
 							get_query_filters: {
 								docstatus: 1,
 								status: ["=", ["To Bill"]],
@@ -103,27 +89,9 @@ frappe.ui.form.on('Gate Pass', {
                         callback: function(r) {
                             }
                         });
-//                        cur_frm.refresh();
-//                        cur_frm.reload_doc();
             }
             frappe.ui.toolbar.clear_cache();
-//            frm.trigger("calculate_crate");
-
 	 },
-
-//    before_save: function(frm){
-//        var total = 0;
-//         $.each(frm.doc["item"],function(i, item)
-//	    {
-//             if(item.item_code){
-//                total += 1;
-//             }
-//	    });
-//	    if(total == 0){
-//	        frappe.validated = false;
-//	        frappe.throw("Get items from delivery note and then save doc to see items information");
-//	    }
-//    },
 
      after_submit:function(frm){
         // knowingly leave empty to resolve method callling of after_save on submit button
@@ -146,25 +114,3 @@ frappe.ui.form.on('Gate Pass', {
         },
 });
 
-//cur_frm.cscript.calculate_crate = function(){
-//
-//        return cur_frm.call({
-//            method:"dairy.milk_entry.doctype.gate_pass.gate_pass.merge_items",
-//            args: {
-//                doc_name: frm.doc.name
-//            },
-//            callback: function(r) {
-//            frappe.ui.toolbar.clear_cache();
-//                }
-//            });
-//    return cur_frm.call({
-//        method:"dairy.milk_entry.doctype.gate_pass.gate_pass.calculate_crate",
-//        args: {
-//                doc_name: cur_frm.doc.name
-//              },
-//        callback: function(r)
-//            {
-//               cur_frm.reload_doc();
-//            }
-//    });
-//}

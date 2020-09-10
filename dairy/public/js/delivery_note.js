@@ -28,6 +28,11 @@ frappe.ui.form.on("Delivery Note", {
                 }
             };
         });
+        if(! frm.doc.__islocal && frm.doc.docstatus != 1){
+            if((frm.doc.items.length) > 0 && (frm.doc.crate_count) == 0){
+                cur_frm.cscript.calculate_crate()
+            }
+        }
 	},
 
     after_save: function(frm){

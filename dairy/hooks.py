@@ -108,7 +108,7 @@ doc_events = {
         # "before_save": "dairy.milk_entry.custom_delivery_note.calculate_crate_after_insert",
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
         "before_submit":"dairy.milk_entry.custom_delivery_note.before_submit",
-        "after_save":"dairy.milk_entry.custom_delivery_note.calculate_crate",
+
     },
     "Sales Order": {
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
