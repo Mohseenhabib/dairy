@@ -58,6 +58,7 @@ class GatePass(Document):
 				for line in sales.merge_item:
 					lst.append(line)
 				total_leakage = 0
+				print("leakage***********8",lst)
 				for line in lst:
 					item = frappe.get_doc("Item", line.item_code)
 					if item.leakage_applicable and applicable_on == "Stock UOM" and line.qty > leakage_qty:
@@ -70,7 +71,8 @@ class GatePass(Document):
 						sales.append("leakage_item", {
 							"item": line.item_code,
 							"item_name": line.item_name,
-							"leakage_qty": qty
+							"leakage_qty": qty,
+							"uom": uom.uom_name
 						})
 						total_leakage += qty
 
@@ -85,7 +87,8 @@ class GatePass(Document):
 						sales.append("leakage_item", {
 							"item": line.item_code,
 							"item_name": line.item_name,
-							"leakage_qty": qty
+							"leakage_qty": qty,
+							"uom": uom1.uom_name
 						})
 						total_leakage += qty
 				frappe.db.set(sales, 'total_leakage', total_leakage)

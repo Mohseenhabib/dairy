@@ -19,19 +19,15 @@ class CrateReconciliation(Document):
 	def after_insert(self):
 		self.calculate_total_count()
 		self.settlement()
-	def settlement(self):
 
+	def settlement(self):
 		dist_crate_type =frappe.db.sql(""" select distinct crate_type from `tabCrate Reconciliation Child` where parent = %(name)s """,
 									   {'name':self.name})
 		for i in range(0,len(dist_crate_type)):
 			totals = frappe.db.sql(""" select sum(outgoing),sum(incoming),sum(damaged) from `tabCrate Reconciliation Child` where 
 			 		parent = %(name)s and crate_type = %(crate_type)s""",{'name':self.name,'crate_type':dist_crate_type[i][0]})
 			difference = totals[0][0] - totals[0][1]
-			# row = self.append("settlement_info", {})
-			# row.total_outgoing = totals[0][0]
-			# row.total_incoming = totals[0][1]
-			# row.total_damaged = totals[0][2]
-			# row.difference = difference
+
 			self.append("settlement_info", {
 				"crate_type": dist_crate_type[i][0],
 				"total_outgoing": totals[0][0],
@@ -215,6 +211,9 @@ def make_crate_log(source_name, target_doc=None, ignore_permissions=False):
 	doclist = get_mapped_doc("Crate Log", source_name, {
 		"Crate Log": {
 			"doctype": "Crate Reconciliation",
+			# "field_map": {
+			# 	"date": ""
+			# }
 		}
 	}, target_doc,set_item_in_sales_invoice)
 	return doclist

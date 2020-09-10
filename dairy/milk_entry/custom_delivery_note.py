@@ -62,6 +62,13 @@ def before_submit(self,method):
                 # })
                 log.save()
                 log.submit()
+
+#     calculate total crate return
+#     crate_ret = frappe.db.sql(""" select sum(incoming_count) from `tabCrate Count Child` where parent = %(name)s """,{'name':self.name})
+#     print("*********************",crate_ret)
+#     res = frappe.db.sql(""" INSERT INTO `tabDelivery Note` (total_crate_return) values (%(crate_ret)s) where name = %(name)s""",
+#                   {'crate_ret':crate_ret[0][0],'name':self.name})
+
 @frappe.whitelist()
 def calculate_crate(doc_name = None):
     if doc_name:
@@ -76,6 +83,7 @@ def calculate_crate(doc_name = None):
         total_supp_qty = 0
         total_crate_qty = 0
         total_free_qty = 0
+
         for i in range(0,len(dist_itm)):
             overage_details = frappe.get_doc("Item",dist_itm[i][0])
             overage = overage_details.crate_overage

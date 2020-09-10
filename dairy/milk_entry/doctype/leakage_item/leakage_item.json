@@ -7,7 +7,8 @@
  "field_order": [
   "item",
   "item_name",
-  "leakage_qty"
+  "leakage_qty",
+  "uom"
  ],
  "fields": [
   {
@@ -28,11 +29,18 @@
    "fieldname": "item_name",
    "fieldtype": "Data",
    "label": "Item Name"
+  },
+  {
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "UOM",
+   "options": "UOM"
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2020-09-03 11:51:00.245267",
+ "modified": "2020-09-09 17:38:32.761384",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Leakage Item",

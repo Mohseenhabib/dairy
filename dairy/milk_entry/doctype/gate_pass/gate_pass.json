@@ -12,6 +12,7 @@
   "company",
   "column_break_5",
   "transporter",
+  "transporter_name",
   "route",
   "vehicle",
   "driver",
@@ -233,11 +234,18 @@
    "fieldtype": "Data",
    "hidden": 1,
    "label": "Crate Cal Done"
+  },
+  {
+   "fetch_from": "transporter.supplier_name",
+   "fieldname": "transporter_name",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Transporter Name"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-09-05 12:14:36.162440",
+ "modified": "2020-09-09 15:16:19.509204",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Gate Pass",

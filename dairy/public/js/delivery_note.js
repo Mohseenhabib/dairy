@@ -173,3 +173,21 @@ cur_frm.cscript.calculate_crate = function(){
             }
     });
 }
+//frappe.ui.form.on('Crate Count Child',{
+//	incoming_count: function(frm, cdt, cdn) {
+//		var d = locals[cdt][cdn]
+//		frappe.call({
+//			method:"erpnext.accounts.party.get_party_details",
+//			args:{
+//				party: d.supplier,
+//				party_type: 'Supplier'
+//			},
+//			callback: function(r){
+//				if(r.message){
+//					frappe.model.set_value(cdt, cdn, 'contact', r.message.contact_person)
+//					frappe.model.set_value(cdt, cdn, 'email_id', r.message.contact_email)
+//				}
+//			}
+//		})
+//	},
+//});

@@ -40,34 +40,41 @@ frappe.ui.form.on('Gate Pass', {
 							method: "dairy.milk_entry.doctype.gate_pass.gate_pass.make_delivery_note",
 							source_doctype: "Delivery Note",
 							target: me.frm,
-							setters: [
-                            {
-                                label: "Date",
-                                fieldname: "posting_date",
-                                fieldtype: "Date",
-                                default: frm.doc.date || undefined,
-                            },
-                            {
-                                label: "Route",
-                                fieldname: "route",
-                                fieldtype: "Link",
-                                options: "Route Master",
-                                default: frm.doc.route || undefined,
-                            },
-                            {
-                                label: "Shift",
-                                fieldname: "shift",
-                                fieldtype: "Data",
-                                default: frm.doc.shift || undefined,
-                            },
-                            {
-                                label: "Transporter",
-                                fieldname: "transporter",
-                                fieldtype: "Link",
-                                options: "Supplier",
-                                default: frm.doc.transporter || undefined,
-                            }
-                        ],
+							setters: {
+							posting_date: frm.doc.date || undefined,
+							route: frm.doc.route || undefined,
+							shift: frm.doc.shift || undefined,
+							transporter: frm.doc.transporter || undefined
+							},
+//							setters: [
+//                            {
+//                                label: "Date",
+//                                fieldname: "posting_date",
+//                                fieldtype: "Date",
+//                                default: frm.doc.date || undefined,
+//                            },
+//                            {
+//                                label: "Route",
+//                                fieldname: "route",
+//                                fieldtype: "Link",
+//                                options: "Route Master",
+//                                default: frm.doc.route || undefined,
+//                            },
+//                            {
+//                                label: "Shift",
+//                                fieldname: "shift",
+//                                fieldtype: "Data",
+//                                default: frm.doc.shift || undefined,
+//                            },
+//
+//                            {
+//                                label: "Transporter",
+//                                fieldname: "transporter",
+//                                fieldtype: "Link",
+//                                options: "Supplier",
+//                                default: frm.doc.transporter || undefined,
+//                            }
+//                        ],
 							get_query_filters: {
 								docstatus: 1,
 								status: ["=", ["To Bill"]],
