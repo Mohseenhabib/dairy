@@ -8,19 +8,16 @@ frappe.ui.form.on("Delivery Note", {
 	    cur_frm.cscript.calculate_crate()
 	},
 	refresh: function(frm){
-//        if(!frm.doc.__islocal && frm.doc.docstatus == 0)
-//        {
-//            frm.add_custom_button(__('Calculate Crate'), function() {
-//				cur_frm.cscript.calculate_crate()
-//			}).addClass("btn-primary");
-//        }
-
         if (frm.doc.docstatus==1) {
 				frm.remove_custom_button("Delivery Trip", 'Create');
 			}
-
 	},
 	onload: function(frm){
+	    if(frm.doc.__islocal){
+	         frm.set_df_property("calculate_crate", "hidden",1);
+	         frm.set_df_property("crate_count", "hidden",1);
+	         frm.set_df_property("loose_crate_", "hidden",1);
+	    }
 	    frm.trigger('set_property');
 	    frm.set_query('route', function(doc) {
             return {
@@ -33,108 +30,10 @@ frappe.ui.form.on("Delivery Note", {
         });
 	},
 
-	before_save: function(frm){
-	    var count = 0;
-	    var lp = 0;
-	    var lst = [];
-       $.each(frm.doc["items"],function(i, items)
-            {
-                lst[lp] = items.against_sales_order
-                lp += 1;
-            });
-       frm.call({
-                method: "dairy.milk_entry.custom_delivery_note.delivery_shift",
-                args: {name: lst[0]},
-                callback: function(r) {
-                    if(r.message){
-                         var array = String(r.message[0]);
-                         frm.set_value("shift",array);
-                    }
-                }
-            });
-
-
-//      frm.call({
-//            method: "dairy.milk_entry.custom_delivery_note.calculate_crate",
-//            args: {doc_name: cur_frm.doc.name},
-//            callback: function(r) {
-//                if(r.message){
-//                     cur_frm.reload_doc();
-//                }
-//            }
-//            });
-//       for(var i=0;i<(lst.length - 1);i++){
-//            if(lst[i] != lst[i+1]){
-//                count = count+1;
-//                console.log("******",count)
-//            }
-//            if(count > 0){
-//                frm.clear_table("items");
-//                frm.refresh_fields();
-//                frm.reload_doc();
-//                frappe.validated = false;
-//                frappe.throw("Select only one sales order to fetch items");
-//                    }
-//            else{
-//                         frm.call({
-//                                method: "dairy.milk_entry.custom_delivery_note.delivery_shift",
-//                                args: {name: lst[0]},
-//                                callback: function(r) {
-//                                    if(r.message){
-//                                         var array = String(r.message[0]);
-//                                         frm.set_value("shift",array);
-//                                    }
-//                                }
-//                            });
-//                    }
-//       }
-
-//	   $.each(frm.doc["items"],function(i, items)
-//            {
-//                if(items.item_code){
-//                    count = count+1;
-//                    if(count > 1){
-//                        frm.clear_table("items");
-//                        frm.refresh_fields();
-//						frm.reload_doc();
-//                        frappe.validated = false;
-//                        frappe.throw("Select only one sales order to fetch items");
-//                    }
-//                    else{
-//                         frm.call({
-//                                method: "dairy.milk_entry.custom_delivery_note.delivery_shift",
-//                                args: {name: items.against_sales_order},
-//                                callback: function(r) {
-//                                    if(r.message){
-//                                         var array = String(r.message[0]);
-//                                         frm.set_value("shift",array);
-//                                    }
-//                                }
-//                            });
-//                    }
-//                }
-//            });
-	},
-
     after_save: function(frm){
-//        if(frm.doc.crate_cal_done != "Done"){
-//
-//        }
         if(frm.doc.docstatus != "1" && frm.doc.crate_cal_done != "Done"){
-
-          frm.call({
-            method:"dairy.milk_entry.custom_delivery_note.calculate_crate",
-            args: {
-                    doc_name: cur_frm.doc.name
-                  },
-            callback: function(r)
-                {
-                   cur_frm.reload_doc();
-                }
-        });
-    }
-
-
+            cur_frm.cscript.calculate_crate()
+        }
     },
 
 	customer:function(frm){
@@ -173,21 +72,3 @@ cur_frm.cscript.calculate_crate = function(){
             }
     });
 }
-//frappe.ui.form.on('Crate Count Child',{
-//	incoming_count: function(frm, cdt, cdn) {
-//		var d = locals[cdt][cdn]
-//		frappe.call({
-//			method:"erpnext.accounts.party.get_party_details",
-//			args:{
-//				party: d.supplier,
-//				party_type: 'Supplier'
-//			},
-//			callback: function(r){
-//				if(r.message){
-//					frappe.model.set_value(cdt, cdn, 'contact', r.message.contact_person)
-//					frappe.model.set_value(cdt, cdn, 'email_id', r.message.contact_email)
-//				}
-//			}
-//		})
-//	},
-//});
