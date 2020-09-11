@@ -28,18 +28,14 @@ frappe.ui.form.on("Delivery Note", {
                 }
             };
         });
-        if(! frm.doc.__islocal && frm.doc.docstatus != 1){
-            if((frm.doc.items.length) > 0 && (frm.doc.crate_count) == 0){
-                cur_frm.cscript.calculate_crate()
-            }
-        }
 	},
 
+
     after_save: function(frm){
-        if(frm.doc.docstatus != "1" && frm.doc.crate_cal_done != "Done"){
-            cur_frm.cscript.calculate_crate()
-        }
-    },
+            frm.set_df_property("crate_count", "hidden",0);
+	        frm.set_df_property("loose_crate_", "hidden",0);
+	        cur_frm.reload_doc();
+      },
 
 	customer:function(frm){
         return cur_frm.call({

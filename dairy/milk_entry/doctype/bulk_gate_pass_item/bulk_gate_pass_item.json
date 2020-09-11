@@ -16,7 +16,11 @@
   "in_crate",
   "warehouse",
   "delivery_note",
-  "is_free_item"
+  "is_free_item",
+  "shift",
+  "route",
+  "date",
+  "customer"
  ],
  "fields": [
   {
@@ -89,11 +93,34 @@
    "fieldname": "is_free_item",
    "fieldtype": "Check",
    "label": "is Free Item"
+  },
+  {
+   "fieldname": "shift",
+   "fieldtype": "Select",
+   "label": "Shift",
+   "options": "\nMorning\nEvening"
+  },
+  {
+   "fieldname": "route",
+   "fieldtype": "Link",
+   "label": "Route",
+   "options": "Route Master"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2020-09-08 12:26:33.586145",
+ "modified": "2020-09-11 09:33:46.209432",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Bulk Gate Pass Item",

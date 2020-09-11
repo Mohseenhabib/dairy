@@ -21,21 +21,8 @@ frappe.ui.form.on('Gate Pass', {
 				}
 			}
 		});
-
-        if(! frm.doc.__islocal && frm.doc.docstatus != 1){
-            if((frm.doc.item.length) > 0 && (frm.doc.merge_item) == 0){
-                    frm.call({
-                        method:"dairy.milk_entry.doctype.gate_pass.gate_pass.merge_items",
-                        args: {
-                            doc_name: frm.doc.name
-                        },
-                        callback: function(r) {
-                            }
-                        });
-                        frappe.ui.toolbar.clear_cache();
-            }
-        }
      },
+
 	 refresh: function(frm) {
 	        if(! frm.doc.__islocal){
 	            frm.set_df_property("items_section", "hidden", 1);
@@ -45,6 +32,11 @@ frappe.ui.form.on('Gate Pass', {
 	            frm.set_df_property("merge_items", "hidden", 1);
 	            frm.set_df_property("crate_count_section", "hidden", 1);
                 frm.set_df_property("loose_crate_section", "hidden", 1);
+	        }
+	        else{
+	            frm.set_df_property("merge_items", "hidden", 0);
+	            frm.set_df_property("crate_count_section", "hidden", 0);
+                frm.set_df_property("loose_crate_section", "hidden", 0);
 	        }
 	        if ((frm.is_new())) {
             if (frm.doc.docstatus===0) {
@@ -67,35 +59,15 @@ frappe.ui.form.on('Gate Pass', {
                                 crate_gate_pass_done:0
 							}
 						})
-						frappe.msgprint({
-                            title: __('Note'),
-                            indicator: 'green',
-                            message: __('After getting item. Save the document to see item details...')
-                        });
+//						frappe.msgprint({
+//                            title: __('Note'),
+//                            indicator: 'green',
+//                            message: __('After getting item. Save the document to see item details...')
+//                        });
 
 					}, __("Get items from"));
 			}
 			}
-	 },
-
-	 after_save: function(frm){
-//	        cur_frm.fields_dict.loose_crate.grid.toggle_reqd("description");
-            if(frm.doc.docstatus == 0 && frm.doc.gate_crate_cal_done != "Done"){
-                frm.call({
-                        method:"dairy.milk_entry.doctype.gate_pass.gate_pass.merge_items",
-                        args: {
-                            doc_name: frm.doc.name
-                        },
-                        callback: function(r) {
-                            }
-                        });
-            }
-            frappe.ui.toolbar.clear_cache();
-	 },
-
-     after_submit:function(frm){
-        // knowingly leave empty to resolve method callling of after_save on submit button
-
 	 },
 
     calculate_crate: function(frm){

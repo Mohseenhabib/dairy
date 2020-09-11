@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_rename": 1,
  "autoname": "field:crate_name",
  "creation": "2020-03-20 13:51:58.233198",
  "doctype": "DocType",
@@ -71,7 +72,7 @@
   }
  ],
  "links": [],
- "modified": "2020-03-24 13:14:34.551231",
+ "modified": "2020-09-11 16:11:40.094935",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Crate Type",

@@ -8,31 +8,36 @@ from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
 class BulkGatePassCreationTool(Document):
 	def create_delivery_note(self):
-		doc = frappe.new_doc("Gate Pass")
-		doc.total_qty = 0
-		doc.total_free_qty = 0
-		doc.date = self.date
-		doc.transporter = self.transporter
-		doc.shift = self.shift
-		doc.route = self.route
-		total_supp_qty = 0
-		total_free_qty = 0
 
+		lst = []
 		for itm in self.items:
-			doc.append('item', {
-						'item_code': itm.item_code,
-						'item_name': itm.item_name,
-						'batch_no': itm.batch_no,
-						'qty': itm.qty,
-						'uom': itm.uom,
-						'out_crate': itm.out_crate,
-						'free_qty': itm.free_qty,
-						'in_crate': itm.in_crate,
-						'warehouse': itm.warehouse,
-						'delivery_note': itm.delivery_note,
-						'is_free_item': itm.is_free_item
-					})
-		doc.save(ignore_permissions=True)
+			lst.append(itm.route + "," + itm.shift + "," + itm.date +","+ itm.customer)
+		for customer in set(lst):
+			doc = frappe.new_doc("Gate Pass")
+			doc.total_qty = 0
+			doc.total_free_qty = 0
+			doc.date = self.date
+			doc.transporter = self.transporter
+			doc.shift = self.shift
+			doc.route = self.route
+			total_supp_qty = 0
+			total_free_qty = 0
+			for itm in self.items:
+				if customer == (itm.route + "," + itm.shift + "," + itm.date +","+ itm.customer):
+					doc.append('item', {
+								'item_code': itm.item_code,
+								'item_name': itm.item_name,
+								'batch_no': itm.batch_no,
+								'qty': itm.qty,
+								'uom': itm.uom,
+								'out_crate': itm.out_crate,
+								'free_qty': itm.free_qty,
+								'in_crate': itm.in_crate,
+								'warehouse': itm.warehouse,
+								'delivery_note': itm.delivery_note,
+								'is_free_item': itm.is_free_item
+							})
+			doc.save(ignore_permissions=True)
 
 	# def create_delivery_note(self):
 	# 	lst = []
@@ -124,6 +129,16 @@ class BulkGatePassCreationTool(Document):
 
 @frappe.whitelist()
 def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
+	def update_item(source, target, source_parent):
+		if source_parent.route:
+			target.update({'route': source_parent.route})
+		if source_parent.shift:
+			target.update({'shift': source_parent.shift})
+		if source_parent.customer:
+			target.update({'customer': source_parent.customer})
+		if source_parent.posting_date:
+			target.update({'date': source_parent.posting_date})
+
 	doclist = get_mapped_doc("Delivery Note", source_name, {
 		"Delivery Note": {
 			"doctype": "Bulk Gate Pass Creation Tool",
@@ -140,7 +155,8 @@ def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
 				["stock_uom", "uom"],
 				["delivery_note_item", "name"],
 				["is_free_item", "is_free_item"]
-			]
+			],
+			"postprocess": update_item,
 		}
 	}, target_doc)
 	# print("********",doclist)

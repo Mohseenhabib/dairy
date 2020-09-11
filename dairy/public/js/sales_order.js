@@ -28,7 +28,7 @@ frappe.ui.form.on("Sales Order", {
         {
             var otm = d.morning_locking_time;  
             var td = frappe.datetime.add_days(frappe.datetime.get_today(),1);
-            
+//            console.log("************",td);
             if (frm.doc.delivery_shift == 'Morning') 
             {            
                 if(frm.doc.delivery_date == frappe.datetime.get_today())

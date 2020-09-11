@@ -153,6 +153,7 @@
    "fieldtype": "Section Break"
   },
   {
+   "allow_on_submit": 1,
    "depends_on": "eval:doc.route_type==\"Milk Marketing\"",
    "fieldname": "transporter",
    "fieldtype": "Link",
@@ -162,7 +163,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-08-18 15:40:07.943602",
+ "modified": "2020-09-11 11:21:05.913804",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Route Master",
