@@ -158,12 +158,13 @@
    "fieldname": "transporter",
    "fieldtype": "Link",
    "label": "Transporter",
+   "mandatory_depends_on": "eval:doc.route_type==\"Milk Marketing\"",
    "options": "Supplier"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-09-11 11:21:05.913804",
+ "modified": "2020-09-12 10:06:38.338137",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Route Master",

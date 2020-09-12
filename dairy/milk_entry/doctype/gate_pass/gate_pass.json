@@ -37,6 +37,12 @@
   "crate_reconcilation_done",
   "gate_crate_cal_done",
   "status",
+  "print_settings_section",
+  "print_language",
+  "letter_head",
+  "column_break_35",
+  "print_heading",
+  "group_same_items",
   "amended_from"
  ],
  "fields": [
@@ -241,11 +247,47 @@
    "fieldtype": "Data",
    "hidden": 1,
    "label": "Transporter Name"
+  },
+  {
+   "fieldname": "print_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Print Settings"
+  },
+  {
+   "default": "en",
+   "fieldname": "print_language",
+   "fieldtype": "Data",
+   "label": "Print Language",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "letter_head",
+   "fieldtype": "Link",
+   "label": "Letter Head",
+   "options": "Letter Head"
+  },
+  {
+   "fieldname": "column_break_35",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "print_heading",
+   "fieldtype": "Link",
+   "label": "Print Heading",
+   "options": "Print Heading"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "group_same_items",
+   "fieldtype": "Check",
+   "label": "Group same items"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-09-09 15:16:19.509204",
+ "modified": "2020-09-12 10:22:25.792451",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Gate Pass",
