@@ -191,6 +191,7 @@ jenv = {
         "get_jinja_data_del_note:dairy.milk_entry.custom_delivery_trip.get_jinja_data_del_note",
         "get_jinja_data_del_note_item:dairy.milk_entry.custom_delivery_trip.get_jinja_data_del_note_item",
         "del_note_total:dairy.milk_entry.custom_delivery_trip.del_note_total",
-        "del_note_details:dairy.milk_entry.custom_delivery_trip.del_note_details"
+        "del_note_details:dairy.milk_entry.custom_delivery_trip.del_note_details",
+        "del_note_non_crate_itm:dairy.milk_entry.custom_delivery_trip.del_note_non_crate_itm"
 	]
 }

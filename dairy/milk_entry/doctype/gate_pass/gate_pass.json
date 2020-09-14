@@ -12,6 +12,7 @@
   "company",
   "column_break_5",
   "transporter",
+  "customer",
   "transporter_name",
   "route",
   "vehicle",
@@ -283,11 +284,18 @@
    "fieldname": "group_same_items",
    "fieldtype": "Check",
    "label": "Group same items"
+  },
+  {
+   "description": "Customer For Leakage Items",
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-09-12 10:22:25.792451",
+ "modified": "2020-09-14 14:02:00.490863",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Gate Pass",

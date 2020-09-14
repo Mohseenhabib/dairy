@@ -39,6 +39,12 @@ class GatePass(Document):
 				leakage_perc = float(frappe.db.get_single_value("Dairy Settings", "leakage_percentage"))
 				leakage_qty = float(frappe.db.get_single_value("Dairy Settings", "leakage_qty"))
 				applicable_on = (frappe.db.get_single_value("Dairy Settings", "applicable_on"))
+				if not sales.customer:
+					frappe.throw("Select Customer For leakage Items")
+
+				# del_note = frappe.new_doc("Delivery Note")
+				# del_note.customer = sales.customer
+				# del_note.route = sales.route
 				lst = []
 				for line in sales.merge_item:
 					lst.append(line)
@@ -59,6 +65,13 @@ class GatePass(Document):
 							"leakage_qty": qty,
 							"uom": item.stock_uom
 						})
+						# del_note.append("items",{
+						# 	"item_code": line.item_code,
+						# 	"item_name": line.item_name,
+						# 	"qty": qty,
+						# 	"uom": item.stock_uom,
+						# 	"stock_uom": item.stock_uom
+						# })
 						total_leakage += qty
 
 
@@ -73,9 +86,17 @@ class GatePass(Document):
 							"item": line.item_code,
 							"item_name": line.item_name,
 							"leakage_qty": qty,
-							"uom": item.stock_uom
+							"uom": line.uom
 						})
+						# del_note.append("items", {
+						# 	"item_code": line.item_code,
+						# 	"item_name": line.item_name,
+						# 	"qty": qty,
+						# 	"uom": line.uom,
+						# 	"stock_uom": item.stock_uom
+						# })
 						total_leakage += qty
+				# del_note.save(ignore_permissions=True)
 				frappe.db.set(sales, 'total_leakage', total_leakage)
 
 
@@ -158,7 +179,7 @@ class GatePass(Document):
 
 	def merge_items(self,doc_name):
 		doc = frappe.get_doc("Gate Pass", doc_name)
-		frappe.db.sql("delete from `tabMerge Gate Pass Item` where parent = %s", (doc.name))
+		frappe.db.sql("delete from `tabMerge Gate Pass Item` where parent = %(name)s",{'name':self.name})
 		frappe.db.commit()
 		doc.total_qty = 0
 		doc.total_free_qty = 0
@@ -318,58 +339,6 @@ def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
 	}, target_doc)
 
 	return doclist
-
-# @frappe.whitelist()
-# def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
-# 	def set_missing_values(source, target):
-# 		target.ignore_pricing_rule = 1
-# 		target.run_method("set_missing_values")
-# 		target.run_method("set_po_nos")
-# 		target.run_method("calculate_taxes_and_totals")
-#
-# 		if source.company_address:
-# 			target.update({'company_address': source.company_address})
-# 		else:
-# 			# set company address
-# 			target.update(get_company_address(target.company))
-#
-# 		if target.company_address:
-# 			target.update(get_fetch_values("Delivery Note", 'company_address', target.company_address))
-#
-#
-#
-# 	mapper = {
-# 		"Delivery Note": {
-# 			"doctype": "Gate Pass",
-# 			"validation": {
-# 				"docstatus": ["=", 1]
-# 				# "material_request_type": ["=", "Purchase"]
-# 			}
-# 		},
-# 		"Delivery Note Item": {
-# 			"doctype": "Gate Pass Item",
-# 			"field_map": [
-# 				["item_code", "item_code"],
-# 				["uom", "uom"]
-# 			]
-# 		}
-#
-# 	}
-#
-# 	if not skip_item_mapping:
-# 		mapper["Delivery Note Item"] = {
-# 			"doctype": "Gate Pass Item",
-# 			"field_map": {
-# 				"item_code": "item_code",
-# 				"uom": "uom"
-# 			}
-# 		}
-#
-# 	target_doc = get_mapped_doc("Delivery Note", source_name, mapper, target_doc, set_missing_values)
-#
-# 	return target_doc
-# @frappe.whitelist()
-
 
 @frappe.whitelist()
 def calculate_crate(doc_name = None):
