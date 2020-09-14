@@ -36,27 +36,29 @@ def del_note_details(del_note):
 def get_jinja_data_del_note_item(del_note):
 	res = frappe.db.sql("""
 	select 
-		item_code,item_name,batch_no,uom,qty,free_qty,outgoing_count,incoming_count,crate_type
+		A.item_code,A.item_name,A.batch_no,A.stock_uom,A.qty,B.free_qty,B.outgoing_count,B.incoming_count,B.crate_type
 	from 
-		`tabCrate Count Child` where parent = %(name)s """, {"name": del_note}, as_dict=True)
-	print("1st",res)
+		`tabDelivery Note Item` A
+	Right Join `tabCrate Count Child` B
+	on A.item_code = B.item_code
+	where 
+		A.parent = %(name)s and B.parent = %(name)s """, {"name": del_note}, as_dict=True)
+	print("*********************",res)
 	return res
 
 @frappe.whitelist()
 def del_note_non_crate_itm(del_note):
-	final_res = {}
+
 	dist_itm = frappe.db.sql(""" select distinct(item_code) from `tabDelivery Note Item` where parent = %(name)s """,
 							 {'name':del_note})
 	for itm in dist_itm:
-		print("**************************",itm[0])
 		obj = frappe.get_doc("Item",itm[0])
 		if not obj.crate:
 			res = frappe.db.sql(""" select item_code,item_name,stock_uom,batch_no,qty
 									from `tabDelivery Note Item` where parent = %(name)s and item_code = %(item_code)s""",
 								{'name':del_note,'item_code':obj.item_code}, as_dict=True)
-			print("******2nd******",res)
-	final_res.append(res)
-	return final_res
+
+	return res
 @frappe.whitelist()
 def del_note_total(del_note):
 	res = frappe.db.sql("""
