@@ -92,6 +92,7 @@
   {
    "fieldname": "naming_series",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "label": "Naming Series",
    "options": "\nDD.-.MM.-.YYYY.##",
    "reqd": 1
@@ -100,7 +101,7 @@
  "hide_toolbar": 1,
  "issingle": 1,
  "links": [],
- "modified": "2020-09-15 14:12:55.413644",
+ "modified": "2020-09-15 15:58:24.814829",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Bulk Gate Pass Creation Tool",

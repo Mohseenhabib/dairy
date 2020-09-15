@@ -11,6 +11,10 @@ frappe.ui.form.on('Bulk Gate Pass Creation Tool', {
                 }
         });
 
+        frm.add_custom_button(__('Go to Gate Pass'),function() {
+            frappe.set_route("List", "Gate Pass");
+        });
+
         if (frm.doc.docstatus===0) {
 				frm.add_custom_button(__('Delivery Note'),
 					function() {
@@ -18,46 +22,18 @@ frappe.ui.form.on('Bulk Gate Pass Creation Tool', {
 							method: "dairy.milk_entry.doctype.bulk_gate_pass_creation_tool.bulk_gate_pass_creation_tool.make_delivery_note",
 							source_doctype: "Delivery Note",
 							target: me.frm,
-							setters: [
-                            {
-                                label: "Date",
-                                fieldname: "posting_date",
-                                fieldtype: "Date",
-                                default: frm.doc.date || undefined,
+                        setters: {
+                                posting_date: frm.doc.date || undefined,
+                                route: frm.doc.route || undefined,
+                                shift: frm.doc.shift || undefined,
+                                transporter: frm.doc.transporter || undefined
                             },
-                            {
-                                label: "Route",
-                                fieldname: "route",
-                                fieldtype: "Link",
-                                options: "Route Master",
-                                default: frm.doc.route || undefined,
-                            },
-                            {
-                                label: "Shift",
-                                fieldname: "shift",
-                                fieldtype: "Data",
-                                default: frm.doc.shift || undefined,
-                            },
-                            {
-                                label: "Transporter",
-                                fieldname: "transporter",
-                                fieldtype: "Link",
-                                options: "Supplier",
-                                default: frm.doc.transporter || undefined,
-                            }
-                        ],
 							get_query_filters: {
 								docstatus: 1,
 								status: ["=", ["To Bill"]],
                                 crate_gate_pass_done:0
 							}
 						})
-//						frappe.msgprint({
-//                            title: __('Note'),
-//                            indicator: 'green',
-//                            message: __('After getting item. Save the document to see item details...')
-//                        });
-
 					}, __("Get items from"));
 			}
 

@@ -45,7 +45,7 @@ class GatePass(Document):
 				del_note = frappe.new_doc("Delivery Note")
 				del_note.customer = sales.customer
 				del_note.route = sales.route
-
+				del_note.set_warehouse = sales.warehouse
 				lst = []
 				for line in sales.merge_item:
 					lst.append(line)
@@ -71,7 +71,8 @@ class GatePass(Document):
 							"item_name": line.item_name,
 							"qty": qty,
 							"uom": item.stock_uom,
-							"stock_uom": item.stock_uom
+							"stock_uom": item.stock_uom,
+							"is_free_item": '1'
 						})
 						total_leakage += qty
 
@@ -94,7 +95,8 @@ class GatePass(Document):
 							"item_name": line.item_name,
 							"qty": qty,
 							"uom": line.uom,
-							"stock_uom": item.stock_uom
+							"stock_uom": item.stock_uom,
+							"is_free_item": 1
 						})
 						total_leakage += qty
 				del_note.save(ignore_permissions=True)

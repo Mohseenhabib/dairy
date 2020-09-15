@@ -15,6 +15,7 @@
   "customer",
   "transporter_name",
   "route",
+  "warehouse",
   "vehicle",
   "driver",
   "items_section",
@@ -291,11 +292,19 @@
    "fieldtype": "Link",
    "label": "Customer",
    "options": "Customer"
+  },
+  {
+   "fetch_from": "route.source_warehouse",
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Warehouse",
+   "options": "Warehouse"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-09-14 14:02:00.490863",
+ "modified": "2020-09-15 18:20:00.977307",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Gate Pass",
