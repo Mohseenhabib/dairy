@@ -36,34 +36,44 @@ def del_note_details(del_note):
 def get_jinja_data_del_note_item(del_note):
 	res = frappe.db.sql("""
 	select 
-		A.item_code,A.item_name,A.batch_no,A.stock_uom,A.qty,B.free_qty,B.outgoing_count,B.incoming_count,B.crate_type
+		A.item_code,A.item_name,A.batch_no,A.stock_uom,A.stock_qty,B.free_qty,B.outgoing_count,B.incoming_count,B.crate_type
 	from 
 		`tabDelivery Note Item` A
-	Right Join `tabCrate Count Child` B
+	right outer Join `tabCrate Count Child` B
 	on A.item_code = B.item_code
 	where 
 		A.parent = %(name)s and B.parent = %(name)s """, {"name": del_note}, as_dict=True)
-	print("*********************",res)
-	return res
-
-@frappe.whitelist()
-def del_note_non_crate_itm(del_note):
 
 	dist_itm = frappe.db.sql(""" select distinct(item_code) from `tabDelivery Note Item` where parent = %(name)s """,
 							 {'name':del_note})
 	for itm in dist_itm:
 		obj = frappe.get_doc("Item",itm[0])
 		if not obj.crate:
-			res = frappe.db.sql(""" select item_code,item_name,stock_uom,batch_no,qty
+			res2 = frappe.db.sql(""" select item_code,item_name,batch_no,stock_uom,stock_qty
 									from `tabDelivery Note Item` where parent = %(name)s and item_code = %(item_code)s""",
 								{'name':del_note,'item_code':obj.item_code}, as_dict=True)
 
+
+	res.append(res2[0])
+
 	return res
+
 @frappe.whitelist()
 def del_note_total(del_note):
-	res = frappe.db.sql("""
-		select 
-			total_supp_qty,total_crate_qty,total_free_qty
-		from 
-			`tabDelivery Note` where name = %(name)s """, {"name": del_note}, as_dict=True)
-	return res
+	f_res = []
+	res = {}
+
+	supp_qty = frappe.db.sql(""" select sum(stock_qty) as stock_qty  from `tabDelivery Note Item` 
+								 where parent = %(name)s and is_free_item = 0""",{'name':del_note},as_dict=True)
+	res["stock_qty"] = supp_qty[0]["stock_qty"]
+
+	free_qty = frappe.db.sql(""" select sum(stock_qty) as fre_qty from `tabDelivery Note Item` 
+								 where parent = %(name)s and is_free_item = 1""",{'name':del_note},as_dict=True)
+	res["fre_qty"] = free_qty[0]["fre_qty"]
+
+	crate_qty = frappe.db.sql(""" select sum(outgoing_count) as crate_qty from `tabCrate Count Child` 
+								  where parent = %(name)s """,{'name':del_note},as_dict=True)
+	res["crate_qty"] = crate_qty[0]["crate_qty"]
+
+	f_res.append(res)
+	return f_res

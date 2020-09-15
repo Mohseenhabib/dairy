@@ -11,9 +11,10 @@ class BulkGatePassCreationTool(Document):
 
 		lst = []
 		for itm in self.items:
-			lst.append(itm.route + "," + itm.shift + "," + itm.date +","+ itm.customer)
+			lst.append(itm.shift + "," + itm.transporter)
 		for customer in set(lst):
 			doc = frappe.new_doc("Gate Pass")
+			doc.naming_series = self.naming_series
 			doc.total_qty = 0
 			doc.total_free_qty = 0
 			doc.date = self.date
@@ -23,7 +24,7 @@ class BulkGatePassCreationTool(Document):
 			total_supp_qty = 0
 			total_free_qty = 0
 			for itm in self.items:
-				if customer == (itm.route + "," + itm.shift + "," + itm.date +","+ itm.customer):
+				if customer == (itm.shift + "," + itm.transporter):
 					doc.append('item', {
 								'item_code': itm.item_code,
 								'item_name': itm.item_name,
@@ -51,6 +52,8 @@ def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
 			target.update({'customer': source_parent.customer})
 		if source_parent.posting_date:
 			target.update({'date': source_parent.posting_date})
+		if source_parent.transporter:
+			target.update({'transporter': source_parent.transporter})
 
 	doclist = get_mapped_doc("Delivery Note", source_name, {
 		"Delivery Note": {
@@ -72,5 +75,5 @@ def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
 			"postprocess": update_item,
 		}
 	}, target_doc)
-	# print("********",doclist)
+
 	return doclist

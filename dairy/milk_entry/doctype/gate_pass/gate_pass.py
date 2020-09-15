@@ -42,9 +42,10 @@ class GatePass(Document):
 				if not sales.customer:
 					frappe.throw("Select Customer For leakage Items")
 
-				# del_note = frappe.new_doc("Delivery Note")
-				# del_note.customer = sales.customer
-				# del_note.route = sales.route
+				del_note = frappe.new_doc("Delivery Note")
+				del_note.customer = sales.customer
+				del_note.route = sales.route
+
 				lst = []
 				for line in sales.merge_item:
 					lst.append(line)
@@ -65,13 +66,13 @@ class GatePass(Document):
 							"leakage_qty": qty,
 							"uom": item.stock_uom
 						})
-						# del_note.append("items",{
-						# 	"item_code": line.item_code,
-						# 	"item_name": line.item_name,
-						# 	"qty": qty,
-						# 	"uom": item.stock_uom,
-						# 	"stock_uom": item.stock_uom
-						# })
+						del_note.append("items",{
+							"item_code": line.item_code,
+							"item_name": line.item_name,
+							"qty": qty,
+							"uom": item.stock_uom,
+							"stock_uom": item.stock_uom
+						})
 						total_leakage += qty
 
 
@@ -88,15 +89,15 @@ class GatePass(Document):
 							"leakage_qty": qty,
 							"uom": line.uom
 						})
-						# del_note.append("items", {
-						# 	"item_code": line.item_code,
-						# 	"item_name": line.item_name,
-						# 	"qty": qty,
-						# 	"uom": line.uom,
-						# 	"stock_uom": item.stock_uom
-						# })
+						del_note.append("items", {
+							"item_code": line.item_code,
+							"item_name": line.item_name,
+							"qty": qty,
+							"uom": line.uom,
+							"stock_uom": item.stock_uom
+						})
 						total_leakage += qty
-				# del_note.save(ignore_permissions=True)
+				del_note.save(ignore_permissions=True)
 				frappe.db.set(sales, 'total_leakage', total_leakage)
 
 
