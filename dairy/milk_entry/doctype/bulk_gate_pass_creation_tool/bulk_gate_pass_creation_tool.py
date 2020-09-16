@@ -25,19 +25,33 @@ class BulkGatePassCreationTool(Document):
 			total_free_qty = 0
 			for itm in self.items:
 				if customer == (itm.shift + "," + itm.transporter):
-					doc.append('item', {
-								'item_code': itm.item_code,
-								'item_name': itm.item_name,
-								'batch_no': itm.batch_no,
-								'qty': itm.qty,
-								'uom': itm.uom,
-								'out_crate': itm.out_crate,
-								'free_qty': itm.free_qty,
-								'in_crate': itm.in_crate,
-								'warehouse': itm.warehouse,
-								'delivery_note': itm.delivery_note,
-								'is_free_item': itm.is_free_item
-							})
+					if itm.batch_no:
+						doc.append('item', {
+									'item_code': itm.item_code,
+									'item_name': itm.item_name,
+									'batch_no': itm.batch_no,
+									'qty': itm.qty,
+									'uom': itm.uom,
+									'out_crate': itm.out_crate,
+									'free_qty': itm.free_qty,
+									'in_crate': itm.in_crate,
+									'warehouse': itm.warehouse,
+									'delivery_note': itm.delivery_note,
+									'is_free_item': itm.is_free_item
+								})
+					else:
+						doc.append('item', {
+							'item_code': itm.item_code,
+							'item_name': itm.item_name,
+							'qty': itm.qty,
+							'uom': itm.uom,
+							'out_crate': itm.out_crate,
+							'free_qty': itm.free_qty,
+							'in_crate': itm.in_crate,
+							'warehouse': itm.warehouse,
+							'delivery_note': itm.delivery_note,
+							'is_free_item': itm.is_free_item
+						})
 			doc.save(ignore_permissions=True)
 
 

@@ -41,11 +41,11 @@ class GatePass(Document):
 				applicable_on = (frappe.db.get_single_value("Dairy Settings", "applicable_on"))
 				if not sales.customer:
 					frappe.throw("Select Customer For leakage Items")
-
 				del_note = frappe.new_doc("Delivery Note")
 				del_note.customer = sales.customer
 				del_note.route = sales.route
 				del_note.set_warehouse = sales.warehouse
+
 				lst = []
 				for line in sales.merge_item:
 					lst.append(line)
@@ -72,7 +72,7 @@ class GatePass(Document):
 							"qty": qty,
 							"uom": item.stock_uom,
 							"stock_uom": item.stock_uom,
-							"is_free_item": '1'
+							"is_free_item": 1
 						})
 						total_leakage += qty
 
@@ -102,6 +102,119 @@ class GatePass(Document):
 				del_note.save(ignore_permissions=True)
 				frappe.db.set(sales, 'total_leakage', total_leakage)
 
+				# lst = []
+				# for line in sales.merge_item:
+				# 	item = frappe.get_doc("Item", line.item_code)
+				# 	if not item.variant_of:
+				# 		lst.append(line.item_code)
+				# total_leakage = 0
+				#
+				# for itm in set(lst):
+				# 	item = frappe.get_doc("Item", itm)
+				# 	if not item.has_variants:
+				# 		qunty = frappe.db.sql(""" select sum(qty) as qty, uom as uom from `tabMerge Gate Pass Item`
+				# 									where item_code = %(item_code)s and parent = %(name)s""",
+				# 							  {'item_code': itm, 'name': sales.name}, as_dict=True)
+				#
+				# 		if item.leakage_applicable and applicable_on == "Stock UOM" and qunty[0]['qty'] > leakage_qty:
+				# 			qty = (qunty[0]['qty'] * leakage_perc) / 100
+				# 			uom = frappe.get_doc("UOM", qunty[0]['uom'])
+				# 			if uom.must_be_whole_number:
+				# 				qty = round(((qunty[0]['qty']) * leakage_perc) / 100)
+				# 			if qty == 0:
+				# 				qty = 1
+				# 			sales.append("leakage_item", {
+				# 				"item": item.item_code,
+				# 				"item_name": item.item_name,
+				# 				"leakage_qty": qty,
+				# 				"uom": item.stock_uom
+				# 			})
+				# 			del_note.append("items",{
+				# 				"item_code": item.item_code,
+				# 				"item_name": item.item_name,
+				# 				"qty": qty,
+				# 				"uom": item.stock_uom,
+				# 				"stock_uom": item.stock_uom,
+				# 				"is_free_item": 1
+				# 			})
+				# 			total_leakage += qty
+				#
+				#
+				# 		if item.leakage_applicable and applicable_on == "Order UOM" and qunty[0]['qty'] > leakage_qty:
+				# 			qty = (qunty[0]['qty'] * leakage_perc) / 100
+				# 			uom1 = frappe.get_doc("UOM", qunty[0]['uom'])
+				# 			if uom1.must_be_whole_number:
+				# 				qty = round(((qunty[0]['qty']) * leakage_perc) / 100)
+				# 			if qty == 0:
+				# 				qty = 1
+				# 			sales.append("leakage_item", {
+				# 				"item": item.item_code,
+				# 				"item_name": item.item_name,
+				# 				"leakage_qty": qty,
+				# 				"uom": qunty[0]['uom']
+				# 			})
+				# 			del_note.append("items", {
+				# 				"item_code": item.item_code,
+				# 				"item_name": item.item_name,
+				# 				"qty": qty,
+				# 				"uom": qunty[0]['uom'],
+				# 				"stock_uom": item.stock_uom,
+				# 				"is_free_item": 1
+				# 			})
+				# 			total_leakage += qty
+				# 	if item.has_variants:
+				# 		qunty = frappe.db.sql(""" select A.sum(qty) as qty, uom as uom
+				# 									from `tabMerge Gate Pass Item` A , `tabItem` B
+				# 									where A.parent = %(name)s and B.variant_of = %(item_code)s  and A.item_code = B.variant_of""",
+				# 							  {'item_code': itm, 'name': sales.name}, as_dict=True)
+				#
+				# 		if item.leakage_applicable and applicable_on == "Stock UOM" and qunty[0]['qty'] > leakage_qty:
+				# 			qty = (qunty[0]['qty'] * leakage_perc) / 100
+				# 			uom = frappe.get_doc("UOM", qunty[0]['uom'])
+				# 			if uom.must_be_whole_number:
+				# 				qty = round(((qunty[0]['qty']) * leakage_perc) / 100)
+				# 			if qty == 0:
+				# 				qty = 1
+				# 			sales.append("leakage_item", {
+				# 				"item": item.item_code,
+				# 				"item_name": item.item_name,
+				# 				"leakage_qty": qty,
+				# 				"uom": item.stock_uom
+				# 			})
+				# 			del_note.append("items", {
+				# 				"item_code": item.item_code,
+				# 				"item_name": item.item_name,
+				# 				"qty": qty,
+				# 				"uom": item.stock_uom,
+				# 				"stock_uom": item.stock_uom,
+				# 				"is_free_item": 1
+				# 			})
+				# 			total_leakage += qty
+				#
+				# 		if item.leakage_applicable and applicable_on == "Order UOM" and qunty[0]['qty'] > leakage_qty:
+				# 			qty = (qunty[0]['qty'] * leakage_perc) / 100
+				# 			uom1 = frappe.get_doc("UOM", qunty[0]['uom'])
+				# 			if uom1.must_be_whole_number:
+				# 				qty = round(((qunty[0]['qty']) * leakage_perc) / 100)
+				# 			if qty == 0:
+				# 				qty = 1
+				# 			sales.append("leakage_item", {
+				# 				"item": item.item_code,
+				# 				"item_name": item.item_name,
+				# 				"leakage_qty": qty,
+				# 				"uom": qunty[0]['uom']
+				# 			})
+				# 			del_note.append("items", {
+				# 				"item_code": item.item_code,
+				# 				"item_name": item.item_name,
+				# 				"qty": qty,
+				# 				"uom": qunty[0]['uom'],
+				# 				"stock_uom": item.stock_uom,
+				# 				"is_free_item": 1
+				# 			})
+				# 			total_leakage += qty
+				# del_note.save(ignore_permissions=True)
+				# frappe.db.set(sales, 'total_leakage', total_leakage)
 
 
 		# for creating crate Log
