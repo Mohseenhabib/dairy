@@ -6,6 +6,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "naming_series",
   "date",
   "shift",
   "company",
@@ -89,12 +90,18 @@
    "options": "Bulk Gate Pass Creation Tool",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "DD.-.MM.-.YYYY.##"
   }
  ],
  "hide_toolbar": 1,
  "issingle": 1,
  "links": [],
- "modified": "2020-09-16 12:52:01.151944",
+ "modified": "2020-09-16 13:00:42.896301",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Bulk Gate Pass Creation Tool",
