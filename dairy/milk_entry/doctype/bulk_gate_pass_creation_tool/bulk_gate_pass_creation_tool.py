@@ -14,7 +14,7 @@ class BulkGatePassCreationTool(Document):
 			lst.append(itm.shift + "," + itm.transporter)
 		for customer in set(lst):
 			doc = frappe.new_doc("Gate Pass")
-			doc.naming_series = self.name_ser
+			# doc.naming_series = self.name_ser
 			doc.total_qty = 0
 			doc.total_free_qty = 0
 			doc.date = self.date

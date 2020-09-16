@@ -1,12 +1,11 @@
 {
  "actions": [],
- "autoname": "name_ser",
+ "autoname": "naming_series:",
  "creation": "2020-09-08 14:31:40.499830",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "name_ser",
   "date",
   "shift",
   "company",
@@ -90,19 +89,12 @@
    "options": "Bulk Gate Pass Creation Tool",
    "print_hide": 1,
    "read_only": 1
-  },
-  {
-   "fieldname": "name_ser",
-   "fieldtype": "Select",
-   "label": "Naming Series ",
-   "options": "\nDD.-.MM.-.YYYY.##",
-   "reqd": 1
   }
  ],
  "hide_toolbar": 1,
  "issingle": 1,
  "links": [],
- "modified": "2020-09-16 12:37:44.729803",
+ "modified": "2020-09-16 12:52:01.151944",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Bulk Gate Pass Creation Tool",
