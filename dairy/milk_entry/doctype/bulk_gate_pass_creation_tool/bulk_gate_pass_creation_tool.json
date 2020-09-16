@@ -59,12 +59,14 @@
    "reqd": 1
   },
   {
+   "fetch_from": "route.vehicle",
    "fieldname": "vehicle",
    "fieldtype": "Link",
    "label": "Vehicle",
    "options": "Vehicle"
   },
   {
+   "fetch_from": "route.driver",
    "fieldname": "driver",
    "fieldtype": "Link",
    "label": "Driver",
@@ -90,6 +92,7 @@
    "read_only": 1
   },
   {
+   "default": "DD.-.MM.-.YYYY.##",
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "label": "Naming Series",
@@ -100,7 +103,7 @@
  "hide_toolbar": 1,
  "issingle": 1,
  "links": [],
- "modified": "2020-09-15 18:52:06.131225",
+ "modified": "2020-09-16 09:48:12.137187",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Bulk Gate Pass Creation Tool",
