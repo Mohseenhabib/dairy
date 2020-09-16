@@ -7,23 +7,30 @@ import frappe
 from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
 class BulkGatePassCreationTool(Document):
+	def get_options(self, arg=None):
+		if frappe.get_meta("Gate Pass").get_field("naming_series"):
+			return frappe.get_meta("Gate Pass").get_field("naming_series").options
+
 	def create_delivery_note(self):
 
 		lst = []
 		for itm in self.items:
-			lst.append(itm.shift + "," + itm.transporter)
+			lst.append(itm.shift + "," + itm.transporter + "," + itm.vehicle)
 		for customer in set(lst):
 			doc = frappe.new_doc("Gate Pass")
 			doc.total_qty = 0
 			doc.total_free_qty = 0
 			doc.date = self.date
-			doc.transporter = self.transporter
-			doc.shift = self.shift
-			doc.route = self.route
+			doc.naming_series = self.name_series
+			# doc.route = self.route
 			total_supp_qty = 0
 			total_free_qty = 0
 			for itm in self.items:
-				if customer == (itm.shift + "," + itm.transporter):
+				if customer == (itm.shift + "," + itm.transporter + "," + itm.vehicle):
+					doc.route = itm.route
+					doc.transporter = itm.transporter
+					doc.vehicle = itm.vehicle
+					doc.shift = itm.shift
 					if itm.batch_no:
 						doc.append('item', {
 									'item_code': itm.item_code,
@@ -67,6 +74,8 @@ def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
 			target.update({'date': source_parent.posting_date})
 		if source_parent.transporter:
 			target.update({'transporter': source_parent.transporter})
+		if source_parent.vehicle:
+			target.update({'vehicle': source_parent.vehicle})
 
 	doclist = get_mapped_doc("Delivery Note", source_name, {
 		"Delivery Note": {

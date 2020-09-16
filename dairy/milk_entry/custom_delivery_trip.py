@@ -48,14 +48,15 @@ def get_jinja_data_del_note_item(del_note):
 							 {'name':del_note})
 	for itm in dist_itm:
 		obj = frappe.get_doc("Item",itm[0])
-		if not obj.crate:
+		if len(obj.crate) == 0:
+			print("____________________________--",len(obj.crate))
 			res2 = frappe.db.sql(""" select item_code,item_name,batch_no,stock_uom,sum(stock_qty) as stock_qty
 									from `tabDelivery Note Item` where parent = %(name)s and item_code = %(item_code)s""",
 								{'name':del_note,'item_code':obj.item_code}, as_dict=True)
 
-
-			res.append(res2[0])
-			print("***************************************************************",res)
+			for i in range(0, len(res2)):
+				res.append(res2[i])
+			print("***************************************************************",res2)
 
 	return res
 

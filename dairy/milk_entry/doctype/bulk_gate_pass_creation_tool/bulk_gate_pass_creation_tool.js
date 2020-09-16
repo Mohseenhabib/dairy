@@ -2,6 +2,15 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Bulk Gate Pass Creation Tool', {
+        onload: function(frm){
+             frappe.call({
+                method: "get_options",
+                doc: frm.doc,
+                callback: function(r) {
+                    frm.set_df_property("name_series", "options", r.message);
+                }
+            });
+        },
 		 refresh: function(frm) {
         frm.set_query('transporter', function() {
 			return {
