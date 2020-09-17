@@ -281,10 +281,12 @@
   },
   {
    "description": "Customer For Leakage Items",
+   "fetch_from": "transporter.customer_for_leakge",
    "fieldname": "customer",
    "fieldtype": "Link",
    "label": "Customer",
-   "options": "Customer"
+   "options": "Customer",
+   "read_only": 1
   },
   {
    "fetch_from": "route.source_warehouse",
@@ -304,7 +306,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-09-16 15:37:21.256500",
+ "modified": "2020-09-17 10:12:57.436199",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Gate Pass",
