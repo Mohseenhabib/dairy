@@ -3,6 +3,7 @@
 
 frappe.ui.form.on('Gate Pass', {
      onload : function(frm){
+
         frm.set_query('route', function(doc) {
             return {
                 filters: {
@@ -84,5 +85,7 @@ frappe.ui.form.on('Gate Pass', {
                 });
                 }
         },
+
+
 });
 

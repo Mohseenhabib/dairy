@@ -35,7 +35,8 @@ frappe.ui.form.on('Bulk Gate Pass Creation Tool', {
                                 posting_date: frm.doc.date || undefined,
                                 route: frm.doc.route || undefined,
                                 shift: frm.doc.shift || undefined,
-                                transporter: frm.doc.transporter || undefined
+                                transporter: frm.doc.transporter || undefined,
+                                set_warehouse: frm.doc.warehouse || undefined
                             },
 							get_query_filters: {
 								docstatus: 1,

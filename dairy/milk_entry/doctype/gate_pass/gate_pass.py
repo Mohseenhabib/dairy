@@ -18,6 +18,11 @@ class GatePass(Document):
 				del_note.db_update()
 
 	def on_cancel(self):
+		frappe.db.sql("delete from `tabMerge Gate Pass Item` where parent = %(name)s", {'name': self.name})
+		frappe.db.commit()
+		frappe.db.sql("delete from `tabLeakage Item` where parent = %(name)s", {'name': self.name})
+		frappe.db.commit()
+
 		for i in self.item:
 			if i.delivery_note:
 				frappe.db.sql(""" update `tabDelivery Note` set crate_gate_pass_done = 0 where name = %(name)s """,{'name': i.delivery_note})
@@ -26,7 +31,7 @@ class GatePass(Document):
 							  {'name': self.name})
 				frappe.db.commit()
 
-
+		self.reload()
 	def before_submit(sales):
 		frappe.db.sql("delete from `tabLeakage Item` where parent = %(name)s",{'name':sales.name})
 		frappe.db.commit()
@@ -41,10 +46,6 @@ class GatePass(Document):
 				applicable_on = (frappe.db.get_single_value("Dairy Settings", "applicable_on"))
 				if not sales.customer:
 					frappe.throw("Select Customer For leakage Items")
-				del_note = frappe.new_doc("Delivery Note")
-				del_note.customer = sales.customer
-				del_note.route = sales.route
-				del_note.set_warehouse = sales.warehouse
 
 				lst = []
 				for line in sales.merge_item:
@@ -60,19 +61,12 @@ class GatePass(Document):
 							qty = round((line.qty * leakage_perc) / 100)
 						if qty == 0:
 							qty = 1
+						print("************************",line.item_code)
 						sales.append("leakage_item", {
 							"item": line.item_code,
 							"item_name": line.item_name,
 							"leakage_qty": qty,
 							"uom": item.stock_uom
-						})
-						del_note.append("items",{
-							"item_code": line.item_code,
-							"item_name": line.item_name,
-							"qty": qty,
-							"uom": item.stock_uom,
-							"stock_uom": item.stock_uom,
-							"is_free_item": 1
 						})
 						total_leakage += qty
 
@@ -90,18 +84,58 @@ class GatePass(Document):
 							"leakage_qty": qty,
 							"uom": line.uom
 						})
-						del_note.append("items", {
-							"item_code": line.item_code,
-							"item_name": line.item_name,
-							"qty": qty,
-							"uom": line.uom,
-							"stock_uom": item.stock_uom,
-							"is_free_item": 1
-						})
 						total_leakage += qty
-				del_note.save(ignore_permissions=True)
-				frappe.db.set(sales, 'total_leakage', total_leakage)
 
+				frappe.db.set(sales, 'total_leakage', total_leakage)
+				# ********************************************************************************************
+
+		if len(sales.get("leakage_item")) > 0:
+			dn = frappe.new_doc("Delivery Note")
+			dn.posting_date =  frappe.utils.nowdate()
+			dn.posting_time =  frappe.utils.nowtime()
+			dn.set_posting_time = 1
+			dn.route = sales.route
+			dn.company = sales.company or "_Test Company"
+			dn.customer = sales.customer or "_Test Customer"
+			dn.currency = "INR"
+			val = 0
+			for itm in sales.leakage_item:
+				if itm.leakage_qty > 0:
+					val = 1
+					dn.append("items", {
+						"item_code":  itm.item,
+						"warehouse":  sales.warehouse,
+						"qty":  itm.leakage_qty,
+						"rate": 0,
+						"conversion_factor": 1.0,
+						"allow_zero_valuation_rate":  1,
+						"expense_account": frappe.get_cached_value('Company', sales.company, 'expense_account'),
+						"cost_center":  frappe.get_cached_value('Company', sales.company, 'cost_center'),
+						"is_free_item": 1
+						# "serial_no": args.serial_no,
+						# "target_warehouse": "Koderma - JMF"
+					})
+			# if val == 1:
+			# dn.save(ignore_permissions=True)
+			# dn.insert(ignore_permissions=True)
+			dn.save(ignore_permissions=True)
+			# dn.submit()
+			print("***************************8",dn.name)
+			obj = frappe.get_doc("Delivery Note",dn.name)
+			obj.status = "Closed"
+			obj.save()
+			obj.submit()
+			print(obj)
+			# dn.save(ignore_permissions=True)
+				# dn.status = "Closed"
+			# dn.submit()
+		# # return dn
+
+
+
+
+
+		# ******************************************************************************************************
 				# lst = []
 				# for line in sales.merge_item:
 				# 	item = frappe.get_doc("Item", line.item_code)
@@ -431,6 +465,11 @@ class GatePass(Document):
 		doc.total_qty = total_supp_qty
 		doc.total_free_qty = total_free_qty
 		doc.save()
+
+def set_delivery_note_missing_values(target):
+	target.run_method('set_missing_values')
+	target.run_method('set_po_nos')
+	target.run_method('calculate_taxes_and_totals')
 
 @frappe.whitelist()
 def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):

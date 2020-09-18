@@ -22,6 +22,7 @@ class BulkGatePassCreationTool(Document):
 			doc.total_free_qty = 0
 			doc.date = self.date
 			doc.naming_series = self.name_series
+			doc.customer = self.customer
 			# doc.route = self.route
 			total_supp_qty = 0
 			total_free_qty = 0
@@ -31,6 +32,7 @@ class BulkGatePassCreationTool(Document):
 					doc.transporter = itm.transporter
 					doc.vehicle = itm.vehicle
 					doc.shift = itm.shift
+					doc.warehouse = itm.warehouse
 					if itm.batch_no:
 						doc.append('item', {
 									'item_code': itm.item_code,
@@ -76,6 +78,8 @@ def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
 			target.update({'transporter': source_parent.transporter})
 		if source_parent.vehicle:
 			target.update({'vehicle': source_parent.vehicle})
+		if source_parent.set_warehouse:
+			target.update({'warehouse': source_parent.set_warehouse})
 
 	doclist = get_mapped_doc("Delivery Note", source_name, {
 		"Delivery Note": {
@@ -97,5 +101,6 @@ def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
 			"postprocess": update_item,
 		}
 	}, target_doc)
+
 
 	return doclist
