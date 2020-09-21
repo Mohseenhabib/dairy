@@ -4,7 +4,14 @@
 frappe.provide("erpnext.item");
 
 frappe.ui.form.on("Item", {
-
+    has_variants:function(frm){
+        if (frm.doc.has_variants == 1){
+             frm.doc.leakage_applicable = 0;
+            frm.set_df_property("leakage_applicable","hidden",1);
+        }else{
+            frm.set_df_property("leakage_applicable","hidden",0);
+        }
+    }
 });
 
 frappe.ui.form.on("Crate", {
