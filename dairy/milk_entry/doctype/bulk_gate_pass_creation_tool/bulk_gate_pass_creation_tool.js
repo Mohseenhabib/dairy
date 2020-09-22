@@ -12,6 +12,17 @@ frappe.ui.form.on('Bulk Gate Pass Creation Tool', {
             });
         },
 		 refresh: function(frm) {
+//        if (frm.doc.docstatus == 0) {
+//			if(!frm.is_new()) {
+//				frm.page.clear_primary_action();
+//				frm.add_custom_button(__("Get Employees"),
+//					function() {
+//						frm.events.fill_details(frm);
+//					}
+//				).toggleClass('btn-primary', !(frm.doc.employees || []).length);
+//			}
+//		}
+
         frm.set_query('transporter', function() {
 			return {
 				filters: {
@@ -66,5 +77,16 @@ frappe.ui.form.on('Bulk Gate Pass Creation Tool', {
                     }
                 });
             });
-	 }
+	 },
+
+//	 fill_details: function(frm){
+//	    return frappe.call({
+//			doc: frm.doc,
+//			method: 'fill_details',
+//		}).then(r => {
+//			if (r.docs){
+//				console.log("hey");
+//			}
+//		})
+//	 }
 });

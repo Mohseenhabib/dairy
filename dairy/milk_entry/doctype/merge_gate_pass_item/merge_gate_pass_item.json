@@ -22,6 +22,7 @@
   "outgoing_count_crate",
   "variant_of",
   "leakage_applicable",
+  "leakage_variant",
   "total_weight"
  ],
  "fields": [
@@ -143,17 +144,24 @@
    "default": "0",
    "fieldname": "leakage_applicable",
    "fieldtype": "Check",
+   "hidden": 1,
    "label": "leakage applicable"
   },
   {
    "fieldname": "total_weight",
-   "fieldtype": "Int",
+   "fieldtype": "Float",
    "label": "Total Weight"
+  },
+  {
+   "fieldname": "leakage_variant",
+   "fieldtype": "Link",
+   "label": "Leakage Variant",
+   "options": "Item"
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2020-09-19 13:55:44.200349",
+ "modified": "2020-09-22 14:19:30.298996",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Merge Gate Pass Item",

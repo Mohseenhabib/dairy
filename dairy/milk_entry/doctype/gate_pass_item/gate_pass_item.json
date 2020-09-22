@@ -10,7 +10,9 @@
   "batch_no",
   "qty",
   "uom",
+  "weight_per_unit",
   "column_break_5",
+  "total_weight",
   "free_qty",
   "out_crate",
   "in_crate",
@@ -89,11 +91,21 @@
    "fieldtype": "Link",
    "label": "Batch No",
    "options": "Batch"
+  },
+  {
+   "fieldname": "weight_per_unit",
+   "fieldtype": "Float",
+   "label": "Weight Per Unit"
+  },
+  {
+   "fieldname": "total_weight",
+   "fieldtype": "Data",
+   "label": "Total Weight"
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2020-09-05 09:57:25.164284",
+ "modified": "2020-09-21 17:39:30.356813",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Gate Pass Item",

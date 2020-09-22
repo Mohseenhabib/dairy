@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
+from frappe import _
 class BulkGatePassCreationTool(Document):
 	def get_options(self, arg=None):
 		if frappe.get_meta("Gate Pass").get_field("naming_series"):
@@ -62,6 +63,44 @@ class BulkGatePassCreationTool(Document):
 						})
 			doc.save(ignore_permissions=True)
 
+	def get_filter_condition(self):
+		self.check_mandatory()
+
+		cond = ''
+		for f in ['shift', 'transporter', 'route']:
+			if self.get(f):
+				cond += " and DN." + f + " = '" + self.get(f).replace("'", "\'") + "'"
+
+		return cond
+
+	def check_mandatory(self):
+		for fieldname in ['name_series', 'date', 'shift', 'transporter', 'route']:
+			if not self.get(fieldname):
+				frappe.throw(_("Please set {0}").format(self.meta.get_label(fieldname)))
+
+	def get_emp_list(self):
+		"""
+			Returns list of active employees based on selected criteria
+			and for which salary structure exists
+		"""
+		cond = self.get_filter_condition()
+		query = frappe.db.sql(""" select DNI.item_code, DNI.item_name, DNI.qty, DNI.uom, DNI.warehouse, DNI.is_free_item, DN.name as delivery_note, 
+				 DN.route, DN.vehicle, DN.shift, DN.transporter from `tabDelivery Note Item` DNI, `tabDelivery Note` DN where
+				 DN.name = DNI.parent and DN.docstatus = 1"""% cond,as_dict=True)
+
+		# q_data = frappe.db.sql(query+cond)
+		print("*************************", query)
+		return query
+
+	def fill_details(self):
+		self.set('items', {})
+		items = self.get_emp_list()
+		if not items:
+			frappe.throw(_("No employees for the mentioned criteria"))
+
+		for d in items:
+			print("****ddddddddd*",d)
+			# self.append('items', d)
 
 @frappe.whitelist()
 def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
