@@ -52,15 +52,13 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Transporter",
-   "options": "Supplier",
-   "reqd": 1
+   "options": "Supplier"
   },
   {
    "fieldname": "route",
    "fieldtype": "Link",
    "label": "Route",
-   "options": "Route Master",
-   "reqd": 1
+   "options": "Route Master"
   },
   {
    "fetch_from": "route.vehicle",
@@ -144,7 +142,7 @@
  "hide_toolbar": 1,
  "issingle": 1,
  "links": [],
- "modified": "2020-09-23 09:35:45.854317",
+ "modified": "2020-09-23 15:32:08.458960",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Bulk Gate Pass Creation Tool",

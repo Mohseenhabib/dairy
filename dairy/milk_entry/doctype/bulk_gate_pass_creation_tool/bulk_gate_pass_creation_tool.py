@@ -24,7 +24,6 @@ class BulkGatePassCreationTool(Document):
 			doc.date = self.date
 			doc.naming_series = self.name_series
 			doc.customer = self.customer
-			# doc.route = self.route
 			total_supp_qty = 0
 			total_free_qty = 0
 			for itm in self.items:
@@ -74,7 +73,7 @@ class BulkGatePassCreationTool(Document):
 		return cond
 
 	def check_mandatory(self):
-		for fieldname in ['name_series', 'date', 'shift', 'transporter', 'route']:
+		for fieldname in ['name_series', 'date', 'shift']:
 			if not self.get(fieldname):
 				frappe.throw(_("Please set {0}").format(self.meta.get_label(fieldname)))
 
@@ -92,7 +91,6 @@ class BulkGatePassCreationTool(Document):
 
 		ord_by = "order by DN.posting_date"
 		q_data = frappe.db.sql(query+cond+ord_by,as_dict=True)
-		print("*************************", q_data)
 		return q_data
 
 	def fill_details(self):

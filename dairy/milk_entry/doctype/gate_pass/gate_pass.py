@@ -39,93 +39,6 @@ class GatePass(Document):
 		frappe.db.sql("delete from `tabCrate Summary` where parent = %(name)s", {'name': sales.name})
 		frappe.db.commit()
 
-		# if frappe.db.get_single_value("Dairy Settings", "leakage_calculated_on") == "Gate Pass":
-		# 	if frappe.db.get_single_value("Dairy Settings", "leakage_percentage") and frappe.db.get_single_value("Dairy Settings", "leakage_qty"):
-		# 		leakage_perc = float(frappe.db.get_single_value("Dairy Settings", "leakage_percentage"))
-		# 		leakage_qty = float(frappe.db.get_single_value("Dairy Settings", "leakage_qty"))
-		# 		applicable_on = (frappe.db.get_single_value("Dairy Settings", "applicable_on"))
-		# 		if not sales.customer:
-		# 			frappe.throw("Select Customer For leakage Items")
-		#
-		# 		lst = []
-		# 		for line in sales.merge_item:
-		# 			lst.append(line)
-		# 		total_leakage = 0
-		#
-		# 		for line in lst:
-		# 			item = frappe.get_doc("Item", line.item_code)
-		# 			if item.leakage_applicable and applicable_on == "Stock UOM" and line.qty > leakage_qty:
-		# 				qty = (line.qty * leakage_perc) / 100
-		# 				uom = frappe.get_doc("UOM", line.uom)
-		# 				if uom.must_be_whole_number:
-		# 					qty = round((line.qty * leakage_perc) / 100)
-		# 				if qty == 0:
-		# 					qty = 1
-		# 				print("************************",line.item_code)
-		# 				sales.append("leakage_item", {
-		# 					"item": line.item_code,
-		# 					"item_name": line.item_name,
-		# 					"leakage_qty": qty,
-		# 					"uom": item.stock_uom
-		# 				})
-		# 				total_leakage += qty
-		#
-		#
-		# 			if item.leakage_applicable and applicable_on == "Order UOM" and line.qty > leakage_qty:
-		# 				qty = (line.qty * leakage_perc) / 100
-		# 				uom1 = frappe.get_doc("UOM", line.uom)
-		# 				if uom1.must_be_whole_number:
-		# 					qty = round((line.qty * leakage_perc) / 100)
-		# 				if qty == 0:
-		# 					qty = 1
-		# 				sales.append("leakage_item", {
-		# 					"item": line.item_code,
-		# 					"item_name": line.item_name,
-		# 					"leakage_qty": qty,
-		# 					"uom": line.uom
-		# 				})
-		# 				total_leakage += qty
-		#
-		# 		frappe.db.set(sales, 'total_leakage', total_leakage)
-		# 		# ********************************************************************************************
-		#
-		# if len(sales.get("leakage_item")) > 0:
-		# 	dn = frappe.new_doc("Delivery Note")
-		# 	dn.posting_date =  frappe.utils.nowdate()
-		# 	dn.posting_time =  frappe.utils.nowtime()
-		# 	dn.set_posting_time = 1
-		# 	dn.route = sales.route
-		# 	dn.company = sales.company or "_Test Company"
-		# 	dn.customer = sales.customer or "_Test Customer"
-		# 	dn.currency = "INR"
-		# 	val = 0
-		# 	for itm in sales.leakage_item:
-		# 		if itm.leakage_qty > 0:
-		# 			val = 1
-		# 			dn.append("items", {
-		# 				"item_code":  itm.item,
-		# 				"warehouse":  sales.warehouse,
-		# 				"qty":  itm.leakage_qty,
-		# 				"rate": 0,
-		# 				"conversion_factor": 1.0,
-		# 				"allow_zero_valuation_rate":  1,
-		# 				"expense_account": frappe.get_cached_value('Company', sales.company, 'expense_account'),
-		# 				"cost_center":  frappe.get_cached_value('Company', sales.company, 'cost_center'),
-		# 				"is_free_item": 1
-		#
-		# 			})
-		# 	if val == 1:
-		# 		dn.save(ignore_permissions=True)
-		# 		obj = frappe.get_doc("Delivery Note",dn.name)
-		# 		obj.status = "Closed"
-		# 		obj.save()
-		# 		obj.submit()
-
-
-
-
-
-
 
 		# ******************************************************************************************************
 		# if frappe.db.get_single_value("Dairy Settings", "leakage_calculated_on") == "Gate Pass":
@@ -388,6 +301,7 @@ class GatePass(Document):
 					val = 1
 					dn.append("items", {
 						"item_code":  itm.item,
+						"description": "Leakage From Gate Pass",
 						"warehouse":  sales.warehouse,
 						"qty":  itm.leakage_qty,
 						"rate": 0,
