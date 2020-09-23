@@ -4,6 +4,16 @@
 frappe.provide("erpnext.item");
 
 frappe.ui.form.on("Item", {
+    refresh: function(frm){
+        frm.set_query("leakage_variant", function() {
+		    return {
+               filters: {
+					"variant_of":frm.doc.variant_of,
+				}
+            }
+        });
+    },
+
     has_variants:function(frm){
         if (frm.doc.has_variants == 1){
              frm.doc.leakage_applicable = 0;
