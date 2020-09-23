@@ -12,16 +12,16 @@ frappe.ui.form.on('Bulk Gate Pass Creation Tool', {
             });
         },
 		 refresh: function(frm) {
-//        if (frm.doc.docstatus == 0) {
-//			if(!frm.is_new()) {
-//				frm.page.clear_primary_action();
-//				frm.add_custom_button(__("Get Employees"),
-//					function() {
-//						frm.events.fill_details(frm);
-//					}
-//				).toggleClass('btn-primary', !(frm.doc.employees || []).length);
-//			}
-//		}
+        if (frm.doc.docstatus == 0) {
+			if(!frm.is_new()) {
+				frm.page.clear_primary_action();
+				frm.add_custom_button(__("Get Delivery Note"),
+					function() {
+						frm.events.fill_details(frm);
+					}
+				).toggleClass('btn-primary', !(frm.doc.items || []).length);
+			}
+		}
 
         frm.set_query('transporter', function() {
 			return {
@@ -35,28 +35,28 @@ frappe.ui.form.on('Bulk Gate Pass Creation Tool', {
             frappe.set_route("List", "Gate Pass");
         });
 
-        if (frm.doc.docstatus===0) {
-				frm.add_custom_button(__('Delivery Note'),
-					function() {
-						erpnext.utils.map_current_doc({
-							method: "dairy.milk_entry.doctype.bulk_gate_pass_creation_tool.bulk_gate_pass_creation_tool.make_delivery_note",
-							source_doctype: "Delivery Note",
-							target: me.frm,
-                        setters: {
-                                posting_date: frm.doc.date || undefined,
-                                route: frm.doc.route || undefined,
-                                shift: frm.doc.shift || undefined,
-                                transporter: frm.doc.transporter || undefined,
-                                set_warehouse: frm.doc.warehouse || undefined
-                            },
-							get_query_filters: {
-								docstatus: 1,
-								status: ["=", ["To Bill"]],
-                                crate_gate_pass_done:0
-							}
-						})
-					}, __("Get items from"));
-			}
+//        if (frm.doc.docstatus===0) {
+//				frm.add_custom_button(__('Delivery Note'),
+//					function() {
+//						erpnext.utils.map_current_doc({
+//							method: "dairy.milk_entry.doctype.bulk_gate_pass_creation_tool.bulk_gate_pass_creation_tool.make_delivery_note",
+//							source_doctype: "Delivery Note",
+//							target: me.frm,
+//                        setters: {
+//                                posting_date: frm.doc.date || undefined,
+//                                route: frm.doc.route || undefined,
+//                                shift: frm.doc.shift || undefined,
+//                                transporter: frm.doc.transporter || undefined,
+//                                set_warehouse: frm.doc.warehouse || undefined
+//                            },
+//							get_query_filters: {
+//								docstatus: 1,
+//								status: ["=", ["To Bill"]],
+//                                crate_gate_pass_done:0
+//							}
+//						})
+//					}, __("Get items from"));
+//			}
 
            frm.disable_save();
             frm.page.set_primary_action(__('Create Gate Pass'), () => {
@@ -79,14 +79,19 @@ frappe.ui.form.on('Bulk Gate Pass Creation Tool', {
             });
 	 },
 
-//	 fill_details: function(frm){
-//	    return frappe.call({
-//			doc: frm.doc,
-//			method: 'fill_details',
-//		}).then(r => {
-//			if (r.docs){
+    date: function(frm){
+        frm.set_value("posting_date",frm.doc.date);
+    },
+
+	 fill_details: function(frm){
+	    return frappe.call({
+			doc: frm.doc,
+			method: 'fill_details',
+		}).then(r => {
+			if (r.docs){
 //				console.log("hey");
-//			}
-//		})
-//	 }
+				frm.refresh_field("items");
+			}
+		})
+	 }
 });

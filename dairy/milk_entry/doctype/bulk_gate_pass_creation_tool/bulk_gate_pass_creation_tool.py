@@ -67,7 +67,7 @@ class BulkGatePassCreationTool(Document):
 		self.check_mandatory()
 
 		cond = ''
-		for f in ['shift', 'transporter', 'route']:
+		for f in ['shift', 'transporter', 'route', 'set_warehouse', 'posting_date']:
 			if self.get(f):
 				cond += " and DN." + f + " = '" + self.get(f).replace("'", "\'") + "'"
 
@@ -78,29 +78,33 @@ class BulkGatePassCreationTool(Document):
 			if not self.get(fieldname):
 				frappe.throw(_("Please set {0}").format(self.meta.get_label(fieldname)))
 
-	def get_emp_list(self):
+	def get_del_note(self):
 		"""
-			Returns list of active employees based on selected criteria
-			and for which salary structure exists
+			Returns list of active items based on selected criteria
+
 		"""
 		cond = self.get_filter_condition()
-		query = frappe.db.sql(""" select DNI.item_code, DNI.item_name, DNI.qty, DNI.uom, DNI.warehouse, DNI.is_free_item, DN.name as delivery_note, 
-				 DN.route, DN.vehicle, DN.shift, DN.transporter from `tabDelivery Note Item` DNI, `tabDelivery Note` DN where
-				 DN.name = DNI.parent and DN.docstatus = 1"""% cond,as_dict=True)
 
-		# q_data = frappe.db.sql(query+cond)
-		print("*************************", query)
-		return query
+		query = """ select DNI.item_code as item_code, DNI.item_name, DNI.qty, DNI.uom, DNI.warehouse, DNI.is_free_item, 
+					DNI.batch_no, DN.name as delivery_note, 
+				 DN.route, DN.vehicle, DN.shift, DN.transporter from `tabDelivery Note Item` DNI, `tabDelivery Note` DN where
+				 DN.name = DNI.parent and DN.docstatus = 1 and DN.status = 'To Bill'  and DN.crate_gate_pass_done = 0 """
+
+		ord_by = "order by DN.posting_date"
+		q_data = frappe.db.sql(query+cond+ord_by,as_dict=True)
+		print("*************************", q_data)
+		return q_data
 
 	def fill_details(self):
-		self.set('items', {})
-		items = self.get_emp_list()
+		self.set('items', [])
+		items = self.get_del_note()
 		if not items:
-			frappe.throw(_("No employees for the mentioned criteria"))
+			frappe.throw(_("No Delivery Note for the mentioned criteria"))
 
 		for d in items:
-			print("****ddddddddd*",d)
-			# self.append('items', d)
+			self.append('items', d)
+
+
 
 @frappe.whitelist()
 def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
