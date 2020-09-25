@@ -196,8 +196,6 @@ class GatePass(Document):
 						line.variant_of = item.variant_of
 						line.leakage_applicable = 1
 						line.leakage_variant = item.leakage_variant
-					# line.total_weight = (line.qty * item.weight_per_unit)
-					# lst.append(item.variant_of)
 					else:
 						print("**", item.item_code)
 						if item.leakage_applicable and applicable_on == "Stock UOM" and line.qty > leakage_qty:
@@ -242,7 +240,8 @@ class GatePass(Document):
 					item_obj = frappe.get_doc("Item",dis_itm)
 					for itm in sales.merge_item:
 						if itm.variant_of == dis_itm:
-							dist_leakge_variant.append(itm.leakage_variant)
+							if itm.leakage_variant:
+								dist_leakge_variant.append(itm.leakage_variant)
 					print("****************************dist_leakge_variant************************",dist_leakge_variant)
 					total_weight = 0
 					line_uom = ""
@@ -444,6 +443,7 @@ class GatePass(Document):
 							if ttl_qty != "None":
 								item_doc = frappe.get_doc("Item", dist_item[i][0])
 								itm_name = item_doc.item_name
+								item_group = item_doc.item_group
 								stock_uom = item_doc.stock_uom
 								doc.append('merge_item', {
 									'item_code': dist_item[i][0],
@@ -453,7 +453,8 @@ class GatePass(Document):
 									'uom': stock_uom,
 									'batch_no': dist_batch_no[k][0],
 									'free_qty': free_qty,
-									'total_weight': total_qty[0][1]
+									'total_weight': total_qty[0][1],
+									'item_group': item_group
 								})
 
 								total_supp_qty += total_qty[0][0]
@@ -465,6 +466,7 @@ class GatePass(Document):
 							elif ttl_qty == "None" and free_qty != 0:
 								item_doc = frappe.get_doc("Item", dist_item[i][0])
 								itm_name = item_doc.item_name
+								item_group = item_doc.item_group
 								stock_uom = item_doc.stock_uom
 								doc.append('merge_item', {
 									'item_code': dist_item[i][0],
@@ -473,6 +475,8 @@ class GatePass(Document):
 									'uom': stock_uom,
 									'batch_no': dist_batch_no[k][0],
 									'free_qty': free_qty,
+									'total_weight': total_qty[0][1],
+									'item_group': item_group
 									# 'in_crate': total_qty[0][1]
 								})
 								total_free_qty += free_qty
@@ -504,6 +508,7 @@ class GatePass(Document):
 						if ttl_qty != "None":
 							item_doc = frappe.get_doc("Item", dist_item[i][0])
 							itm_name = item_doc.item_name
+							item_group = item_doc.item_group
 							stock_uom = item_doc.stock_uom
 							doc.append('merge_item', {
 								'item_code': dist_item[i][0],
@@ -512,7 +517,8 @@ class GatePass(Document):
 								'warehouse': warehouse[0][0],
 								'uom': stock_uom,
 								'free_qty': free_qty,
-								'total_weight': total_qty[0][1]
+								'total_weight': total_qty[0][1],
+								'item_group': item_group
 								# 'in_crate': total_qty[0][1]
 							})
 							total_supp_qty += total_qty[0][0]
@@ -524,6 +530,7 @@ class GatePass(Document):
 						elif ttl_qty == "None" and free_qty != 0:
 							item_doc = frappe.get_doc("Item", dist_item[i][0])
 							itm_name = item_doc.item_name
+							item_group = item_doc.item_group
 							stock_uom = item_doc.stock_uom
 							doc.append('merge_item', {
 								'item_code': dist_item[i][0],
@@ -531,6 +538,8 @@ class GatePass(Document):
 								'warehouse': warehouse[0][0],
 								'uom': stock_uom,
 								'free_qty': free_qty,
+								'total_weight': total_qty[0][1],
+								'item_group': item_group
 							})
 							total_free_qty += free_qty
 		doc.total_qty = total_supp_qty

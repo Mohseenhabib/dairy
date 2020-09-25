@@ -45,7 +45,9 @@ class BulkGatePassCreationTool(Document):
 									'in_crate': itm.in_crate,
 									'warehouse': itm.warehouse,
 									'delivery_note': itm.delivery_note,
-									'is_free_item': itm.is_free_item
+									'is_free_item': itm.is_free_item,
+									'total_weight': itm.total_weight,
+									'item_group': itm.item_group
 								})
 					else:
 						doc.append('item', {
@@ -58,7 +60,9 @@ class BulkGatePassCreationTool(Document):
 							'in_crate': itm.in_crate,
 							'warehouse': itm.warehouse,
 							'delivery_note': itm.delivery_note,
-							'is_free_item': itm.is_free_item
+							'is_free_item': itm.is_free_item,
+							'total_weight': itm.total_weight,
+							'item_group': itm.item_group
 						})
 			doc.save(ignore_permissions=True)
 
@@ -73,7 +77,7 @@ class BulkGatePassCreationTool(Document):
 		return cond
 
 	def check_mandatory(self):
-		for fieldname in ['name_series', 'date', 'shift']:
+		for fieldname in ['name_series', 'date', 'shift', 'warehouse']:
 			if not self.get(fieldname):
 				frappe.throw(_("Please set {0}").format(self.meta.get_label(fieldname)))
 
@@ -84,10 +88,14 @@ class BulkGatePassCreationTool(Document):
 		"""
 		cond = self.get_filter_condition()
 
-		query = """ select DNI.item_code as item_code, DNI.item_name, DNI.qty, DNI.uom, DNI.warehouse, DNI.is_free_item, 
-					DNI.batch_no, DN.name as delivery_note, 
-				 DN.route, DN.vehicle, DN.shift, DN.transporter from `tabDelivery Note Item` DNI, `tabDelivery Note` DN where
-				 DN.name = DNI.parent and DN.docstatus = 1 and DN.status = 'To Bill'  and DN.crate_gate_pass_done = 0 """
+		query = """ select DNI.item_code as item_code, DNI.item_name, DNI.stock_qty as qty, DNI.stock_uom as uom, DNI.warehouse,
+		 			DNI.is_free_item, DNI.batch_no, DNI.total_weight, 
+					DN.name as delivery_note, DN.route, DN.vehicle, DN.shift, DN.transporter,
+					ITM.item_group
+				  from `tabDelivery Note Item` DNI, `tabDelivery Note` DN, `tabItem` ITM
+				   where
+				 	DN.name = DNI.parent and DN.docstatus = 1 and DN.status in ('To Bill','Completed')  and DN.crate_gate_pass_done = 0
+				 	 and ITM.item_code = DNI.item_code"""
 
 		ord_by = "order by DN.posting_date"
 		q_data = frappe.db.sql(query+cond+ord_by,as_dict=True)

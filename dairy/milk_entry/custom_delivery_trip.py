@@ -49,14 +49,13 @@ def get_jinja_data_del_note_item(del_note):
 	for itm in dist_itm:
 		obj = frappe.get_doc("Item",itm[0])
 		if len(obj.crate) == 0:
-			print("____________________________--",len(obj.crate))
 			res2 = frappe.db.sql(""" select item_code,item_name,batch_no,stock_uom,sum(stock_qty) as stock_qty
 									from `tabDelivery Note Item` where parent = %(name)s and item_code = %(item_code)s""",
 								{'name':del_note,'item_code':obj.item_code}, as_dict=True)
 
 			for i in range(0, len(res2)):
 				res.append(res2[i])
-			print("***************************************************************",res2)
+
 
 	return res
 
@@ -79,3 +78,11 @@ def del_note_total(del_note):
 
 	f_res.append(res)
 	return f_res
+
+@frappe.whitelist()
+def total_supp_qty_based_on_itm_grp(gate_pass):
+	itm_grp = frappe.db.sql(""" select item_group_name from `tabItem Group` where is_total_supplier_quantity_item_group_ = 1 """,as_dict=True)
+	based_itm_grp =  itm_grp[0]['item_group_name']
+	total_qty = frappe.db.sql(""" select sum(qty) from `tabMerge Gate Pass Item` where parent = %(gate_pass)s and 
+	 								item_group = %(item_group)s """,{'gate_pass':gate_pass,'item_group':based_itm_grp})
+	return total_qty[0][0]
