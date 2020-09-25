@@ -112,6 +112,7 @@
   {
    "fieldname": "item",
    "fieldtype": "Table",
+   "hidden": 1,
    "ignore_user_permissions": 1,
    "label": "Item",
    "options": "Gate Pass Item"
@@ -305,7 +306,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-09-21 17:43:43.206862",
+ "modified": "2020-09-25 15:15:22.149100",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Gate Pass",

@@ -8,7 +8,7 @@ def get_data(data):
 			'Stock Entry': 'delivery_note_no',
 			'Quality Inspection': 'reference_name',
 			'Auto Repeat': 'reference_document',
-			'Gate Pass': 'delivery_note',
+			# 'Gate Pass': 'delivery_note',
 		},
 		'internal_links': {
 			'Sales Order': ['items', 'against_sales_order'],

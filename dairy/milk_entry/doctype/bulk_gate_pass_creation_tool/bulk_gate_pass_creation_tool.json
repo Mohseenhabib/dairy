@@ -126,7 +126,6 @@
    "reqd": 1
   },
   {
-   "fetch_from": "route.source_warehouse",
    "fieldname": "set_warehouse",
    "fieldtype": "Link",
    "label": "Set Warehouse",
@@ -143,7 +142,7 @@
  "hide_toolbar": 1,
  "issingle": 1,
  "links": [],
- "modified": "2020-09-25 09:55:42.470355",
+ "modified": "2020-09-25 16:31:56.125878",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Bulk Gate Pass Creation Tool",

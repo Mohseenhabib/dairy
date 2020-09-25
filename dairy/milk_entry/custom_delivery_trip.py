@@ -17,6 +17,8 @@ def get_jinja_data(doc):
 
 	return res
 
+# *******************  Following Methods Use in gate pass print format  *******************************
+
 @frappe.whitelist()
 def get_jinja_data_del_note(doc):
 	res = frappe.db.sql("""
@@ -83,8 +85,9 @@ def del_note_total(del_note):
 def total_supp_qty_based_on_itm_grp(gate_pass):
 	itm_grp = frappe.db.sql(""" select item_group_name from `tabItem Group` where is_total_supplier_quantity_item_group_ = 1 """,as_dict=True)
 	based_itm_grp =  itm_grp[0]['item_group_name']
+
 	total_qty = frappe.db.sql(""" select sum(qty) from `tabMerge Gate Pass Item` where parent = %(gate_pass)s and 
 	 								item_group = %(item_group)s """,{'gate_pass':gate_pass,'item_group':based_itm_grp})
 	final_total_qty = total_qty[0][0]
-	print("**************************",type(final_total_qty))
+
 	return final_total_qty

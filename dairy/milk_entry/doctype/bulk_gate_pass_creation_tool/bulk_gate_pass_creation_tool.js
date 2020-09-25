@@ -82,6 +82,9 @@ frappe.ui.form.on('Bulk Gate Pass Creation Tool', {
     date: function(frm){
         frm.set_value("posting_date",frm.doc.date);
     },
+    warehouse:function(frm){
+        frm.set_value("set_warehouse",frm.doc.warehouse);
+    },
 
 	 fill_details: function(frm){
 	    return frappe.call({

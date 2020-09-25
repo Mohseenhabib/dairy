@@ -4,11 +4,15 @@
 #
 # def get_data():
 # 	return {
-# 		'fieldname': 'gate_pass',
+# 		'fieldname': 'delivery_note',
+# 		'internal_links': {
+# 			'Gate Pass': ['items', 'delivery_note']
+# 			# 'Gate Pass': ['item', 'delivery_note']
+# 		},
 # 		'transactions': [
 # 			{
-# 				'label': _('Stock Entry'),
-# 				'items': ['Stock Entry']
+# 				'label': _('Delivery Note'),
+# 				'items': ['Delivery Note']
 # 			},
 # 					]
 # 	}
