@@ -47,7 +47,9 @@ class BulkGatePassCreationTool(Document):
 									'delivery_note': itm.delivery_note,
 									'is_free_item': itm.is_free_item,
 									'total_weight': itm.total_weight,
-									'item_group': itm.item_group
+									'item_group': itm.item_group,
+									'weight_per_unit': itm.weight_per_unit
+
 								})
 					else:
 						doc.append('item', {
@@ -62,7 +64,8 @@ class BulkGatePassCreationTool(Document):
 							'delivery_note': itm.delivery_note,
 							'is_free_item': itm.is_free_item,
 							'total_weight': itm.total_weight,
-							'item_group': itm.item_group
+							'item_group': itm.item_group,
+							'weight_per_unit': itm.weight_per_unit
 						})
 			doc.save(ignore_permissions=True)
 
@@ -89,7 +92,7 @@ class BulkGatePassCreationTool(Document):
 		cond = self.get_filter_condition()
 
 		query = """ select DNI.item_code as item_code, DNI.item_name, DNI.stock_qty as qty, DNI.stock_uom as uom, DNI.warehouse,
-		 			DNI.is_free_item, DNI.batch_no, DNI.total_weight, 
+		 			DNI.is_free_item, DNI.batch_no, DNI.total_weight, DNI.weight_per_unit,
 					DN.name as delivery_note, DN.route, DN.vehicle, DN.shift, DN.transporter,
 					ITM.item_group
 				  from `tabDelivery Note Item` DNI, `tabDelivery Note` DN, `tabItem` ITM

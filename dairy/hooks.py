@@ -192,6 +192,7 @@ jenv = {
         "get_jinja_data_del_note_item:dairy.milk_entry.custom_delivery_trip.get_jinja_data_del_note_item",
         "del_note_total:dairy.milk_entry.custom_delivery_trip.del_note_total",
         "del_note_details:dairy.milk_entry.custom_delivery_trip.del_note_details",
-        "total_supp_qty_based_on_itm_grp:dairy.milk_entry.custom_delivery_trip.total_supp_qty_based_on_itm_grp"
+        "total_supp_qty_based_on_itm_grp:dairy.milk_entry.custom_delivery_trip.total_supp_qty_based_on_itm_grp",
+        "warehouse_address:dairy.milk_entry.custom_delivery_trip.warehouse_address"
 	]
 }
