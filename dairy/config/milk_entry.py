@@ -20,6 +20,13 @@ def get_data():
                     "name": "Vehicle Wise Crate Summary",
                     "reference_doctype": "Delivery Note",
                     "onboard": 1
+                },
+                {
+                    "type": "report",
+                    "is_query_report": True,
+                    "name": "Sales Analysis",
+                    "reference_doctype": "Sales Order",
+                    "onboard": 1
                 }
             ]
         }

@@ -41,145 +41,7 @@ class GatePass(Document):
 
 
 		# ******************************************************************************************************
-		# if frappe.db.get_single_value("Dairy Settings", "leakage_calculated_on") == "Gate Pass":
-		# 	if frappe.db.get_single_value("Dairy Settings","leakage_percentage") and frappe.db.get_single_value("Dairy Settings","leakage_qty"):
-		# 		leakage_perc = float(frappe.db.get_single_value("Dairy Settings", "leakage_percentage"))
-		# 		leakage_qty = float(frappe.db.get_single_value("Dairy Settings", "leakage_qty"))
-		# 		applicable_on = (frappe.db.get_single_value("Dairy Settings", "applicable_on"))
-		#
-		# 		if not sales.customer:
-		# 			frappe.throw("Select Customer For leakage Items")
-		# 		doc = frappe.get_doc("Gate Pass", sales.name)
-		# 		lst = []
-		# 		for line in doc.merge_item:
-		# 			item = frappe.get_doc("Item", line.item_code)
-		# 			if item.variant_of and item.leakage_applicable:
-		# 				line.variant_of = item.variant_of
-		# 				line.leakage_applicable = 1
-		# 				line.leakage_variant = item.leakage_variant
-		# 				# line.total_weight = (line.qty * item.weight_per_unit)
-		# 				# lst.append(item.variant_of)
-		# 			if not item.variant_of:
-		# 				print("**",item.item_code)
-		#
-		# 				if item.leakage_applicable and applicable_on == "Stock UOM" and line.qty > leakage_qty:
-		# 					qty = (line.qty * leakage_perc) / 100
-		# 					uom = frappe.get_doc("UOM", line.uom)
-		# 					if uom.must_be_whole_number:
-		# 						qty = round((line.qty * leakage_perc) / 100)
-		# 					if qty == 0:
-		# 						qty = 1
-		# 					doc.append("leakage_item", {
-		# 						"item": line.item_code,
-		# 						"item_name": line.item_name,
-		# 						"leakage_qty": qty,
-		# 						"uom": item.stock_uom
-		# 					})
-		#
-		# 				if item.leakage_applicable and applicable_on == "Order UOM" and line.qty > leakage_qty:
-		# 					qty = (line.qty * leakage_perc) / 100
-		# 					uom1 = frappe.get_doc("UOM", line.uom)
-		# 					if uom1.must_be_whole_number:
-		# 						qty = round((line.qty * leakage_perc) / 100)
-		# 					if qty == 0:
-		# 						qty = 1
-		# 					doc.append("leakage_item", {
-		# 						"item": line.item_code,
-		# 						"item_name": line.item_name,
-		# 						"leakage_qty": qty,
-		# 						"uom": line.uom
-		# 					})
-		# 		doc.save(ignore_permissions=True)
-		# 		# obj = frappe.get_doc("Gate Pass", sales.name)
-		# 		dist_var = frappe.db.sql(""" select distinct(variant_of) from `tabMerge Gate Pass Item` where parent = %(name)s and
-		# 		 		leakage_applicable = 1 """,
-		# 							{'name':sales.name})
-		# 		print("****************************dsit var***************************",dist_var)
-		# 		for varant in dist_var:
-		# 			dist_leak_var = frappe.db.sql(""" select distinct(leakage_variant) from `tabMerge Gate Pass Item` where parent = %(name)s and
-		# 		 		leakage_applicable = 1 and variant_of = %(variant_of)s """,{'name':sales.name,'variant_of':varant[0]})
-		# 			print("varant",varant)
-		# 			print("dist_leak_var",)
-		# 			item = frappe.get_doc("Item", varant[0])
-		# 			sum_qty = frappe.db.sql(
-		# 				""" select sum(total_weight),uom from `tabMerge Gate Pass Item`  where variant_of = %(variant)s and parent = %(name)s """,
-		# 				{'variant': varant[0], 'name': sales.name})
-		# 			print("sum qty",sum_qty)
-		#
-		# 			chek_lakge_var_for_itms = frappe.db.sql(
-		# 				""" select item_code from `tabMerge Gate Pass Item`  where variant_of = %(variant)s and parent = %(name)s """,
-		# 				{'variant': varant[0], 'name': sales.name})
-		#
-		# 			var_itm_code = ""
-		# 			var_itm_name = ""
-		# 			var_itm_uom = ""
-		#
-		# 			for itms in chek_lakge_var_for_itms:
-		# 				leakage_varnt = frappe.db.sql(""" select leakage_variant from `tabItem`
-		# 											where name = %(variant)s and leakage_variant  IS NOT NULL """,
-		# 												{'variant': itms})
-		# 				if leakage_varnt:
-		# 					print("------------------____________________---------------",leakage_varnt[0][0])
-		# 					leak_var_item = frappe.get_doc("Item",leakage_varnt[0][0])
-		# 					var_itm_code = leak_var_item.item_code
-		# 					var_itm_name = leak_var_item.item_name
-		# 					var_itm_uom = leak_var_item.stock_uom
-		#
-		# 			# if item.leakage_variant:
-		# 			# 	var_itm = frappe.get_doc("Item",item.leakage_variant)
-		# 			# 	var_itm_code = var_itm.item_code
-		# 			# 	var_itm_name = var_itm.item_name
-		# 			# 	var_itm_uom = var_itm.stock_uom
-		#
-		# 			if applicable_on == "Stock UOM" and sum_qty[0][0] > leakage_qty:
-		# 				print("***1",sum_qty[0][0])
-		# 				qty = (sum_qty[0][0] * leakage_perc) / 100
-		# 				uom = frappe.get_doc("UOM", sum_qty[0][1])
-		# 				if uom.must_be_whole_number:
-		# 					qty = round((sum_qty[0][0] * leakage_perc) / 100)
-		# 				if qty == 0:
-		# 					qty = 1
-		# 				print("*************sum_qty",sum_qty[0][0])
-		# 				if sum_qty[0][0] > 0:
-		# 					if var_itm_code != "":
-		# 						sales.append("leakage_item", {
-		# 							"item": var_itm_code,
-		# 							"item_name": var_itm_name,
-		# 							"leakage_qty": qty,
-		# 							"uom": var_itm_uom
-		# 						})
-		# 					else:
-		# 						sales.append("leakage_item", {
-		# 							"item": item.item_code,
-		# 							"item_name": item.item_name,
-		# 							"leakage_qty": qty,
-		# 							"uom": item.stock_uom
-		# 						})
-		# 			if applicable_on == "Order UOM" and sum_qty[0][0] > leakage_qty:
-		#
-		# 				print("***2", sum_qty[0][0])
-		# 				qty = (sum_qty[0][0] * leakage_perc) / 100
-		# 				uom = frappe.get_doc("UOM", sum_qty[0][1])
-		# 				if uom.must_be_whole_number:
-		# 					qty = round((sum_qty[0][0] * leakage_perc) / 100)
-		# 				if qty == 0:
-		# 					qty = 1
-		# 				print("*************sum_qty", sum_qty[0][0])
-		# 				if sum_qty[0][0] > 0:
-		# 					if var_itm_code != "":
-		# 						sales.append("leakage_item", {
-		# 							"item": var_itm_code,
-		# 							"item_name": var_itm_name,
-		# 							"leakage_qty": qty,
-		# 							"uom": sum_qty[0][1]
-		# 						})
-		# 					else:
-		# 						sales.append("leakage_item", {
-		# 							"item": item.item_code,
-		# 							"item_name": item.item_name,
-		# 							"leakage_qty": qty,
-		# 							"uom": sum_qty[0][1]
-		# 						})
+
 		# 						************************  New  **************************
 		if frappe.db.get_single_value("Dairy Settings", "leakage_calculated_on") == "Gate Pass":
 			if frappe.db.get_single_value("Dairy Settings","leakage_percentage") and frappe.db.get_single_value("Dairy Settings","leakage_qty"):
@@ -332,6 +194,7 @@ class GatePass(Document):
 													where parent = %(name)s and crate_type = %(crate_type)s """,
 													{'name': sales.name,'crate_type':crate})
 				for warehouse in dist_warehouse:
+
 					sums = frappe.db.sql(""" select 
 												 sum(out_crate) as crate, sum(in_crate) as crate_ret, sum(damaged_crate) as damaged_crate
 					 						  from 
@@ -344,6 +207,7 @@ class GatePass(Document):
 					log.transporter = sales.transporter
 					log.vehicle = sales.vehicle
 					log.route = sales.route
+					log.shift = sales.shift
 					log.date = frappe.utils.nowdate()
 					log.company = sales.company
 					log.voucher_type = "Gate Pass"
@@ -357,15 +221,19 @@ class GatePass(Document):
 					openning_cnt = frappe.db.sql(""" select count(*) from `tabCrate Log`  
 													where 
 														crate_type = %(crate)s and source_warehouse = %(warehouse)s 
-														and company = %(company)s and docstatus = 1	order by date desc """,
-												 		{'crate': crate, 'warehouse': warehouse,'company': sales.company}, as_dict=1)
+														and company = %(company)s and docstatus = 1 and vehicle = %(vehicle)s	
+														and transporter = %(transporter)s and shift = %(shift)s order by date desc """,
+												 		{'crate': crate, 'warehouse': warehouse,'company': sales.company,
+														 'vehicle':sales.vehicle,'transporter':sales.transporter, 'shift':sales.shift}, as_dict=1)
 					if openning_cnt[0]['count(*)'] > 0:
 
 						openning = frappe.db.sql(""" select crate_balance from `tabCrate Log`  
 													where 
 													crate_type = %(crate)s and source_warehouse = %(warehouse)s and
-													company = %(company)s and  docstatus = 1 order by date desc limit 1 """,
-												 	{'crate':crate,'warehouse':warehouse,'company':sales.company},as_dict=1)
+													company = %(company)s and  docstatus = 1 and vehicle = %(vehicle)s
+													and transporter = %(transporter)s and shift = %(shift)s order by date desc limit 1 """,
+												 	{'crate':crate,'warehouse':warehouse,'company':sales.company,
+													 'vehicle':sales.vehicle,'transporter':sales.transporter, 'shift':sales.shift},as_dict=1)
 
 						log.crate_opening = int(openning[0]['crate_balance'])
 						log.crate_balance = openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret'])
