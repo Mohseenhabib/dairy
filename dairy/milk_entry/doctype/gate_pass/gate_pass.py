@@ -59,10 +59,8 @@ class GatePass(Document):
 						line.leakage_applicable = 1
 						line.leakage_variant = item.leakage_variant
 					else:
-						print("**", item.item_code)
 						if item.leakage_applicable and applicable_on == "Stock UOM" and line.qty > leakage_qty:
 							qty = (line.qty * leakage_perc) / 100
-							print("******************8uoms  ",line.uom)
 							uom = frappe.get_doc("UOM", line.uom)
 							if uom.must_be_whole_number:
 								qty = round((line.qty * leakage_perc) / 100)
