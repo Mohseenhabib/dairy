@@ -5,25 +5,20 @@
 frappe.query_reports["Sales Analysis"] = {
 	"filters": [
 
-		{
-			"fieldname":"based_on",
-			"label": __("Based On"),
-			"fieldtype": "Select",
-			"options": [
-				{ "value": "item_group", "label": __("Item Group") }
-			],
-			"default": "Item"
-		},
-		{
-			"fieldname":"group_by",
-			"label": __("Group By"),
-			"fieldtype": "Select",
-			"options": [
-				"",
-				{ "value": "item_code", "label": __("Item") },
-				{ "value": "customer", "label": __("Customer") }
-			],
-			"default": ""
+//		{
+//			"fieldname":"based_on",
+//			"label": __("Based On"),
+//			"fieldtype": "Select",
+//			"options": [
+//				{ "value": "item_group", "label": __("Item Group") }
+//			],
+//			"default": "Item"
+//		},
+        {
+			"fieldname":"item_group",
+			"label": __("Item Group"),
+			"fieldtype": "Link",
+			"options": "Item Group"
 		},
 		{
 			"fieldname":"fiscal_year",
@@ -56,7 +51,14 @@ frappe.query_reports["Sales Analysis"] = {
 			"fieldname":"to_date",
 			"label": __("To Date"),
 			"fieldtype": "Date"
-		}
+		},
+		{
+			"fieldname":"territory",
+			"label": __("Territory"),
+			"fieldtype": "Link",
+			"options": "Territory"
+		},
+
 
 	]
 };
