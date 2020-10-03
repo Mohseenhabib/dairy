@@ -75,7 +75,7 @@ class GatePass(Document):
 
 						if item.leakage_applicable and applicable_on == "Order UOM" and line.qty > leakage_qty:
 							qty = (line.qty * leakage_perc) / 100
-							print("******************8uoms  ", line.uom)
+
 							uom1 = frappe.get_doc("UOM", line.uom)
 							if uom1.must_be_whole_number:
 								qty = round((line.qty * leakage_perc) / 100)
@@ -107,39 +107,44 @@ class GatePass(Document):
 					line_uom = ""
 					for leakge_variant in set(dist_leakge_variant):
 						leakage_variant_itm_obj = frappe.get_doc("Item",leakge_variant)
+						leakage_variant_weight_uom = leakage_variant_itm_obj.weight_uom
+						conversion_fact = frappe.db.sql(""" select conversion_factor from `tabUOM Conversion Detail` 
+														where uom = %(uom)s and parent = %(parent)s """,
+														{'uom':leakage_variant_weight_uom,'parent':leakage_variant_itm_obj.name})
 
 						for itm in sales.merge_item:
 							if itm.variant_of == dis_itm and itm.leakage_variant == leakge_variant:
 								total_weight += itm.total_weight
 								line_uom = itm.uom
-						print("****************************",total_weight)
+
 						if applicable_on == "Stock UOM" and total_weight > leakage_qty:
 							qty = (total_weight * leakage_perc) / 100
-							print("uoms  ",item_obj.stock_uom)
+							qty_after_conv = int(qty * conversion_fact[0][0])
 							uom = frappe.get_doc("UOM", item_obj.stock_uom)
 							if uom.must_be_whole_number:
-								qty = round((total_weight * leakage_perc) / 100)
-							if qty == 0:
-								qty = 1
+								qty_after_conv = round(qty_after_conv)
+							if qty_after_conv == 0:
+								qty_after_conv = 1
 							if total_weight > 0:
 								sales.append("leakage_item", {
 									"item": leakage_variant_itm_obj.item_code,
 									"item_name": leakage_variant_itm_obj.item_name,
-									"leakage_qty": qty,
+									"leakage_qty": qty_after_conv,
 									"uom": uom.name
 								})
 
 						if applicable_on == "Order UOM" and total_weight > leakage_qty:
 							qty = (total_weight * leakage_perc) / 100
+							qty_after_conv = int(qty * conversion_fact[0][0])
 							uom1 = frappe.get_doc("UOM", line_uom)
 							if uom1.must_be_whole_number:
-								qty = round((total_weight * leakage_perc) / 100)
-							if qty == 0:
-								qty = 1
+								qty_after_conv = round(qty_after_conv)
+							if qty_after_conv == 0:
+								qty_after_conv = 1
 							sales.append("leakage_item", {
 								"item": leakage_variant_itm_obj.item_code,
 								"item_name": leakage_variant_itm_obj.item_name,
-								"leakage_qty": qty,
+								"leakage_qty": qty_after_conv,
 								"uom": uom1.name
 							})
 
