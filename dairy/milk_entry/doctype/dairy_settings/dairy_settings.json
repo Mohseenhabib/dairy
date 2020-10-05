@@ -609,9 +609,10 @@
    "reqd": 1
   }
  ],
+ "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2020-09-28 09:44:30.661482",
+ "modified": "2020-10-03 13:45:17.348870",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",
