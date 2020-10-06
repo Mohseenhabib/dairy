@@ -112,6 +112,11 @@ class GatePass(Document):
 														where uom = %(uom)s and parent = %(parent)s """,
 														{'uom':leakage_variant_weight_uom,'parent':leakage_variant_itm_obj.name})
 
+						if not conversion_fact:
+							conversion_fact = 1
+						else:
+							conversion_fact = conversion_fact[0][0]
+						print("8******conv fact*******",conversion_fact)
 						for itm in sales.merge_item:
 							if itm.variant_of == dis_itm and itm.leakage_variant == leakge_variant:
 								total_weight += itm.total_weight
@@ -119,7 +124,7 @@ class GatePass(Document):
 
 						if applicable_on == "Stock UOM" and total_weight > leakage_qty:
 							qty = (total_weight * leakage_perc) / 100
-							qty_after_conv = int(qty * conversion_fact[0][0])
+							qty_after_conv = int(qty * conversion_fact)
 							uom = frappe.get_doc("UOM", item_obj.stock_uom)
 							if uom.must_be_whole_number:
 								qty_after_conv = round(qty_after_conv)
@@ -135,7 +140,7 @@ class GatePass(Document):
 
 						if applicable_on == "Order UOM" and total_weight > leakage_qty:
 							qty = (total_weight * leakage_perc) / 100
-							qty_after_conv = int(qty * conversion_fact[0][0])
+							qty_after_conv = int(qty * conversion_fact)
 							uom1 = frappe.get_doc("UOM", line_uom)
 							if uom1.must_be_whole_number:
 								qty_after_conv = round(qty_after_conv)
