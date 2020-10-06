@@ -205,7 +205,8 @@ def make_crate_log(source_name, target_doc=None, ignore_permissions=False):
 			"outgoing": del_note.crate_issue,
 			"incoming": del_note.crate_return,
 			"damaged": del_note.damaged,
-			"difference": del_note.crate_issue - del_note.crate_return
+			"difference": del_note.crate_issue - del_note.crate_return,
+			"gate_pass": del_note.voucher
 		})
 
 	doclist = get_mapped_doc("Crate Log", source_name, {
