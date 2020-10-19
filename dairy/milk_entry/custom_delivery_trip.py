@@ -44,7 +44,7 @@ def get_jinja_data_del_note_item(del_note):
 	right outer Join `tabCrate Count Child` B
 	on A.item_code = B.item_code
 	where 
-		A.parent = %(name)s and B.parent = %(name)s """, {"name": del_note}, as_dict=True)
+		A.parent = %(name)s and B.parent = %(name)s and A.is_free_item = 0 """, {"name": del_note}, as_dict=True)
 
 	dist_itm = frappe.db.sql(""" select distinct(item_code) from `tabDelivery Note Item` where parent = %(name)s """,
 							 {'name':del_note})
