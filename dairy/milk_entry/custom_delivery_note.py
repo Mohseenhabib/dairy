@@ -58,7 +58,7 @@ def before_submit(self,method):
                     log.crate_balance = int(0) - (sums[0]['crate'] + sums[0]['crate_ret'])
 
                 log.save(ignore_permissions=True)
-                log.submit(ignore_permissions=True)
+                log.submit()
 
 #     calculate total crate return
 #     crate_ret = frappe.db.sql(""" select sum(incoming_count) from `tabCrate Count Child` where parent = %(name)s """,{'name':self.name})
