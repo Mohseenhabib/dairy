@@ -67,7 +67,7 @@ def before_submit(self,method):
 #                   {'crate_ret':crate_ret[0][0],'name':self.name})
 
 @frappe.whitelist()
-def calculate_crate(obj,method):
+def calculate_crate(obj,method=None):
     if not obj.get("__islocal") and obj.crate_cal_done != "Done":
         doc_name = obj.name
         if doc_name:
