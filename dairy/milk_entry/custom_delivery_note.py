@@ -59,12 +59,130 @@ def before_submit(self,method):
 
                 log.save(ignore_permissions=True)
                 log.submit()
+    # good_cow_milk = float(frappe.db.get_single_value("Dairy Settings", "cow_pro"))
+    # good_buff_milk = float(frappe.db.get_single_value("Dairy Settings", "buf_pro"))
+    # good_mix_milk = float(frappe.db.get_single_value("Dairy Settings", "mix_pro"))
+    # milk_type = ""
+    # for itm in self.items:
+    #     # print("************************************************itm",good_cow_milk)
+    #     # frappe.throw("ja ki")
+    #     if float(itm.item_code) == good_cow_milk or float(itm.item_code) == good_buff_milk or float(itm.item_code) == good_mix_milk:
+    #         print(good_cow_milk)
+    #         print(good_buff_milk)
+    #         print(good_mix_milk)
+    #         print("rate updation *********************************************************************")
+    #         # frappe.throw("ja ki")
+    #         if float(itm.item_code) == good_cow_milk:
+    #             milk_type = "Cow"
+    #         elif float(itm.item_code) == good_buff_milk:
+    #             milk_type = "Buffalow"
+    #         elif float(itm.item_code) == good_mix_milk:
+    #             milk_type = "Mix"
+    #         print("****************************************************************milktype",milk_type)
+    #         pricelist_name = frappe.db.sql("""
+    #                     select milk_rate.name from `tabMilk Rate` as milk_rate
+    #                     inner join `tabWarehouse Child` as ware on ware.parent = milk_rate.name
+    #                     where milk_rate.milk_type = '{0}' and ware.warehouse_id = '{1}'
+    #                     and milk_rate.docstatus = 1 and milk_rate.effective_date <= '{2}' limit 1  """.format(
+    #                         milk_type, itm.warehouse, self.posting_date))
+    #         if not pricelist_name:
+    #             frappe.throw(_("Milk Rate not found."))
+    #         print("*********************************pricelist******************88",pricelist_name[0][0])
+    #         rate = frappe.db.sql(""" select rate from `tabMilk Rate Chart` where fat >= {0} and snf_clr >= {1}
+    #                             and parent = '{2}' order by fat,snf_clr asc limit 1 """.format(itm.fat, itm.snf_clr,
+    #                                                                                            pricelist_name[0][0]))
+    #         print("*********************************************************rate",rate[0][0])
+    #         if not rate:
+    #             frappe.throw(_("Milk price not found."))
+    #         itm.rate = rate[0][0]
+
+
+def after_save(self,method):
+    if not self.get("__islocal"):
+        good_cow_milk = frappe.db.get_single_value("Dairy Settings", "cow_pro")
+        good_buff_milk = frappe.db.get_single_value("Dairy Settings", "buf_pro")
+        good_mix_milk = frappe.db.get_single_value("Dairy Settings", "mix_pro")
+        milk_type = ""
+        for itm in self.items:
+
+            if itm.item_code == good_cow_milk or itm.item_code == good_buff_milk or itm.item_code == good_mix_milk:
+                print(good_cow_milk)
+                print(good_buff_milk)
+                print(good_mix_milk)
+
+                if itm.item_code == good_cow_milk:
+                    milk_type = "Cow"
+                elif itm.item_code == good_buff_milk:
+                    milk_type = "Buffalow"
+                elif itm.item_code == good_mix_milk:
+                    milk_type = "Mix"
+
+                pricelist_name = frappe.db.sql("""
+                                select milk_rate.name from `tabMilk Rate` as milk_rate 
+                                inner join `tabWarehouse Child` as ware on ware.parent = milk_rate.name 
+                                where milk_rate.milk_type = '{0}' and ware.warehouse_id = '{1}' 
+                                and milk_rate.docstatus = 1 and milk_rate.effective_date <= '{2}' limit 1  """.format(
+                    milk_type, itm.warehouse, self.posting_date))
+                if not pricelist_name:
+                    frappe.throw(_("Milk Rate not found."))
+
+                rate = frappe.db.sql(""" select rate from `tabMilk Rate Chart` where fat >= {0} and snf_clr >= {1} 
+                                        and parent = '{2}' order by fat,snf_clr asc limit 1 """.format(itm.fat, itm.snf_clr,
+                                                                                                       pricelist_name[0][
+                                                                                                           0]))
+
+                if not rate:
+                    frappe.throw(_("Milk price not found."))
+                itm.rate = rate[0][0]
+
+
 
 #     calculate total crate return
 #     crate_ret = frappe.db.sql(""" select sum(incoming_count) from `tabCrate Count Child` where parent = %(name)s """,{'name':self.name})
 #     print("*********************",crate_ret)
 #     res = frappe.db.sql(""" INSERT INTO `tabDelivery Note` (total_crate_return) values (%(crate_ret)s) where name = %(name)s""",
 #                   {'crate_ret':crate_ret[0][0],'name':self.name})
+
+# @frappe.whitelist()
+# def change_rate(item_code,warehouse,posting_date,fat,snf_clr):
+#
+#     good_cow_milk = float(frappe.db.get_single_value("Dairy Settings", "cow_pro"))
+#     good_buff_milk = float(frappe.db.get_single_value("Dairy Settings", "buf_pro"))
+#     good_mix_milk = float(frappe.db.get_single_value("Dairy Settings", "mix_pro"))
+#     milk_type = ""
+#
+#
+#     if float(item_code) == good_cow_milk or float(item_code) == good_buff_milk or float(
+#             item_code) == good_mix_milk:
+#         print(good_cow_milk)
+#         print(good_buff_milk)
+#         print(good_mix_milk)
+#
+#         if float(item_code) == good_cow_milk:
+#             milk_type = "Cow"
+#         elif float(item_code) == good_buff_milk:
+#             milk_type = "Buffalow"
+#         elif float(item_code) == good_mix_milk:
+#             milk_type = "Mix"
+#
+#         pricelist_name = frappe.db.sql("""
+#                         select milk_rate.name from `tabMilk Rate` as milk_rate
+#                         inner join `tabWarehouse Child` as ware on ware.parent = milk_rate.name
+#                         where milk_rate.milk_type = '{0}' and ware.warehouse_id = '{1}'
+#                         and milk_rate.docstatus = 1 and milk_rate.effective_date <= '{2}' limit 1  """.format(
+#             milk_type, warehouse, posting_date))
+#         if not pricelist_name:
+#             frappe.throw(_("Milk Rate not found."))
+#
+#         rate = frappe.db.sql(""" select rate from `tabMilk Rate Chart` where fat >= {0} and snf_clr >= {1}
+#                                 and parent = '{2}' order by fat,snf_clr asc limit 1 """.format(fat, snf_clr,
+#                                                                                                pricelist_name[0][
+#                                                                                                    0]))
+#         print("***********rate********************8",rate)
+#         if not rate:
+#             frappe.throw(_("Milk price not found."))
+#         rate = rate[0][0]
+#         return rate
 
 @frappe.whitelist()
 def calculate_crate(obj,method=None):

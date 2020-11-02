@@ -85,3 +85,51 @@ frappe.ui.form.on("Delivery Note", {
 //            }
 //    });
 //}
+
+//frappe.ui.form.on("Delivery Note Item", {
+//	fat: function(frm,cdt,cdn) {
+//	    console.log("****************************************fat");
+//		var row = locals[cdt][cdn];
+//		if (row.snf_clr){
+//            frm.call({
+//				method: 'dairy.milk_entry.custom_delivery_note.change_rate',
+//				args: {
+//					item_code: row.item_code,
+//					warehouse: row.warehouse,
+//					posting_date: frm.doc.posting_date,
+//					fat: row.fat,
+//					snf_clr: row.snf_clr
+//				},
+//				callback: function(r) {
+//					if(r.message) {
+//					    row.rate = r.message;
+//					}
+//				}
+//			});
+//		}
+//
+//	},
+//	snf_clr: function(frm,cdt,cdn) {
+//		var row = locals[cdt][cdn];
+//		if (row.fat){
+//		    frm.call({
+//				method: 'dairy.milk_entry.custom_delivery_note.change_rate',
+//				args: {
+//					item_code: row.item_code,
+//					warehouse: row.warehouse,
+//					posting_date: frm.doc.posting_date,
+//					fat: row.fat,
+//					snf_clr: row.snf_clr
+//				},
+//				callback: function(r) {
+//					if(r.message) {
+//					    row.rate = r.message;
+//					    frm.refresh();
+//					}
+//				}
+//			});
+//		}
+//
+//	},
+//
+//});

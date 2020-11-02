@@ -175,3 +175,16 @@ def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
 
 	return target_doc
 
+@frappe.whitelist()
+def defsellinguom(doc_name=None):
+    try:
+        doc = frappe.get_doc("Item",doc_name)
+        if doc.sales_uom:
+            sale_uom = doc.sales_uom
+            res = frappe.db.sql(""" select uom,conversion_factor from `tabUOM Conversion Detail` where parent = %(p)s and uom = %(u)s """,
+                          {'p':doc_name,'u':sale_uom},as_dict= True)
+            return res
+        else:
+            return 1
+    except:
+        frappe.throw("select item")

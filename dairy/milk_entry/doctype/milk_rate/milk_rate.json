@@ -14,6 +14,7 @@
   "effective_date",
   "cl1",
   "dsc_name",
+  "selling_rate",
   "sb1",
   "milk_rate_chart",
   "amended_from"
@@ -86,11 +87,18 @@
   {
    "fieldname": "column_break_2",
    "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "selling_rate",
+   "fieldtype": "Check",
+   "label": "Selling Rate"
   }
  ],
+ "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-04 11:29:25.216639",
+ "modified": "2020-10-31 10:58:45.220441",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Milk Rate",

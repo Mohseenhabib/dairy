@@ -108,8 +108,10 @@ doc_events = {
         # "before_save": "dairy.milk_entry.custom_delivery_note.calculate_crate_after_insert",
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
         "before_submit": "dairy.milk_entry.custom_delivery_note.before_submit",
-        "after_insert": "dairy.milk_entry.custom_delivery_note.calculate_crate",
-        "before_save": "dairy.milk_entry.custom_delivery_note.calculate_crate",
+        "after_insert": ["dairy.milk_entry.custom_delivery_note.calculate_crate",
+                         "dairy.milk_entry.custom_delivery_note.after_save"],
+        "before_save": ["dairy.milk_entry.custom_delivery_note.calculate_crate",
+                        "dairy.milk_entry.custom_delivery_note.after_save"],
     },
     "Sales Order": {
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
@@ -126,7 +128,11 @@ doc_events = {
     },
     "Purchase Receipt":{
         "after_insert": "dairy.milk_entry.custom_purchase_receipt.change_milk_entry_status",
-        "on_submit": "dairy.milk_entry.custom_purchase_receipt.change_milk_status",
+        "on_cancel": ["dairy.milk_entry.custom_purchase_receipt.cancel_update_snf",
+                      "dairy.milk_entry.custom_purchase_receipt.cancel_update_fat"],
+        "on_submit": ["dairy.milk_entry.custom_purchase_receipt.change_milk_status",
+                        "dairy.milk_entry.custom_purchase_receipt.update_snf",
+                      "dairy.milk_entry.custom_purchase_receipt.update_fat"]
     }
 }
 
