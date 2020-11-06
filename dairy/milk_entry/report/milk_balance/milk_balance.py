@@ -164,8 +164,8 @@ def get_stock_ledger_entries(filters, items):
 
 	return frappe.db.sql("""
 		select
-			sle.item_code, warehouse, sle.posting_date, sle.actual_qty, sle.valuation_rate,
-			sle.company, sle.voucher_type, sle.qty_after_transaction, sle.stock_value_difference,
+			sle.item_code, warehouse, sle.posting_date, sle.actual_qty,
+			sle.company, sle.voucher_type, sle.qty_after_transaction,
 			sle.item_code as name, sle.voucher_no, sle.fat
 		from
 			`tabMilk Ledger Entry` sle 

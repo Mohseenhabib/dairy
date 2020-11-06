@@ -108,8 +108,10 @@ def on_submit(self, method):
                     new_mle.actual_qty = -1 * itm.total_weight
                     new_mle.fat = -1 * float(itm.fat)
                     new_mle.snf = -1 * float(itm.snf_clr)
-                    new_mle.fat_per = -1 * float(itm.fat_per)
-                    new_mle.snf_per = -1 * float(itm.snf_clr_per)
+                    # new_mle.fat_per = -1 * float(itm.fat_per)
+                    # new_mle.snf_per = -1 * float(itm.snf_clr_per)
+                    new_mle.fat_per =  float(itm.fat_per)
+                    new_mle.snf_per =  float(itm.snf_clr_per)
                     new_mle.stock_uom = itm.weight_uom
                     new_mle.qty_after_transaction = mle_obj.qty_after_transaction - itm.total_weight
                     new_mle.fat_after_transaction = mle_obj.fat_after_transaction - itm.fat
@@ -191,7 +193,8 @@ def after_save(self,method):
                 mle = frappe.db.sql(query,
                                     {'warehouse': itm.warehouse, 'item_code': itm.item_code, 'batch_no': itm.batch_no,
                                      'serial_no': itm.serial_no}, as_dict=True)
-
+                if not mle:
+                    frappe.throw("Milk Ledger Entry Not Found For This Item")
                 if mle[0]['name']:
                     mle_obj = frappe.get_doc("Milk Ledger Entry",mle[0]['name'])
                     itm.fat = (mle_obj.fat_per / 100) * itm.total_weight
@@ -201,11 +204,28 @@ def after_save(self,method):
 
                 # rate
                 if milk_type != "":
-                    query2 = frappe.db.sql(""" select rate,snf_clr_rate from `tabBulk Milk Price List` where warehouse = %(warehouse)s and
-                    active = 1 and milk_type = %(milk_type)s or customer = %(customer)s """,{'warehouse':itm.warehouse,'milk_type':milk_type,
-                                                                                             'customer':self.customer},as_dict=True)
+
+                    query2 = frappe.db.sql(""" select bmpl.name, bmpl.rate, bmpl.snf_clr_rate 
+                                            from `tabBulk Milk Price List` bmpl, `tabBulk Milk Price List Warehouse` bmplw, `tabBulk Milk Price List Customer` bmplc
+                                            where bmplw.warehouse = %(warehouse)s and bmpl.active = 1 and bmpl.milk_type = %(milk_type)s 
+                                            and bmplc.customer = %(customer)s and bmpl.name = bmplc.parent and bmpl.name = bmplw.parent
+                                            and bmpl.docstatus =1 
+                                             order by bmpl.modified desc limit 1 """,
+                                           {'warehouse':itm.warehouse,'milk_type':milk_type,'customer':self.customer},
+                                            as_dict=True)
                     if not query2:
-                        frappe.throw("No Rate Specified in Milk Ledger Price List")
+                        query3 = frappe.db.sql(""" select bmpl.name, bmpl.rate, bmpl.snf_clr_rate 
+                                                                    from `tabBulk Milk Price List` bmpl, `tabBulk Milk Price List Warehouse` bmplw, `tabBulk Milk Price List Customer` bmplc
+                                                                    where bmplw.warehouse = %(warehouse)s and bmpl.active = 1 and bmpl.milk_type = %(milk_type)s 
+                                                                    and bmpl.name = bmplw.parent and bmpl.docstatus =1 order by bmpl.modified desc limit 1 """,
+                                               {'warehouse': itm.warehouse, 'milk_type': milk_type,
+                                                'customer': self.customer},
+                                               as_dict=True)
+                        if not query3:
+                            frappe.throw("No Rate Specified in Milk Ledger Price List")
+                        else:
+                            itm.rate = (((itm.fat_per * query3[0]['rate']) + (
+                                        itm.snf_clr_per * query3[0]['snf_clr_rate'])) / (itm.total_weight))
                     else:
                         itm.rate = (((itm.fat_per * query2[0]['rate']) + (itm.snf_clr_per * query2[0]['snf_clr_rate'])) / (itm.total_weight))
             # ****************8

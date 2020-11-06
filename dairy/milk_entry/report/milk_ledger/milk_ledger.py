@@ -111,7 +111,8 @@ def get_stock_ledger_entries(filters, items):
 			fat,
 			snf,
 			fat_after_transaction,
-			qty_after_transaction
+			qty_after_transaction,
+			snf_after_transaction
 		FROM
 			`tabMilk Ledger Entry` sle
 		WHERE

@@ -23,7 +23,7 @@
   {
    "hidden": 0,
    "label": "Settings",
-   "links": "[    \n    {        \n        \"type\": \"doctype\",        \n        \"name\": \"Dairy Settings\",        \n        \"label\": \"Dairy Settings\",        \n        \"description\": \"Dairy Settings\",        \n        \"onboard\": 1    \n    },    \n    {        \n        \"type\": \"doctype\",        \n        \"name\": \"Route Master\",        \n        \"label\": \"Route Master\",        \n        \"description\": \"Route Master\",        \n        \"onboard\": 1    \n    },    \n    {        \n        \"type\": \"doctype\",        \n        \"name\": \"Milk Rate\",        \n        \"label\": \"Milk Rate\",        \n        \"description\": \"Milk Rate\",        \n        \"onboard\": 1    \n    },    \n    {        \n        \"type\": \"doctype\",        \n        \"name\": \"Crate Type\",        \n        \"label\": \"Crate Type\",        \n        \"description\": \"Crate Type\",        \n        \"onboard\": 1    \n    }\n]\n"
+   "links": "[    \n    {        \n        \"type\": \"doctype\",        \n        \"name\": \"Dairy Settings\",        \n        \"label\": \"Dairy Settings\",        \n        \"description\": \"Dairy Settings\",        \n        \"onboard\": 1    \n    },    \n    {        \n        \"type\": \"doctype\",        \n        \"name\": \"Route Master\",        \n        \"label\": \"Route Master\",        \n        \"description\": \"Route Master\",        \n        \"onboard\": 1    \n    },    \n    {        \n        \"type\": \"doctype\",        \n        \"name\": \"Milk Rate\",        \n        \"label\": \"Milk Rate\",        \n        \"description\": \"Milk Rate\",        \n        \"onboard\": 1    \n    },    \n    {        \n        \"type\": \"doctype\",        \n        \"name\": \"Crate Type\",        \n        \"label\": \"Crate Type\",        \n        \"description\": \"Crate Type\",        \n        \"onboard\": 1    \n    },\n     {        \n        \"type\": \"doctype\",        \n        \"name\": \"Bulk Milk Price List\",        \n        \"label\": \"Bulk Milk Price List\",        \n        \"description\": \"Bulk Milk Price List\",        \n        \"onboard\": 1    \n    }\n]\n"
   },
   {
    "hidden": 0,
@@ -33,7 +33,7 @@
   {
    "hidden": 0,
    "label": "Reports",
-   "links": "[    \n    {        \n        \"type\": \"report\",        \n        \"is_query_report\": 1,        \n        \"name\": \"Stock Ledger\",        \n        \"reference_doctype\": \"Stock Ledger Entry\",        \n        \"onboard\": 1    \n    },    \n    {       \n        \"type\": \"report\",        \n        \"is_query_report\": 1,        \n        \"name\": \"Received Items To Be Billed\",        \n        \"reference_doctype\": \"Purchase Invoice\",        \n        \"onboard\": 1    \n    },    \n    {        \n        \"type\": \"report\",        \n        \"is_query_report\": 1,       \n        \"name\": \"Milk Entry Detail\",        \n        \"reference_doctype\": \"Milk Entry\",        \n        \"onboard\": 1    \n    },    \n    {        \n        \"type\": \"report\",        \n        \"is_query_report\": 1,        \n        \"name\": \"Vehicle Wise Crate Summary\",        \n        \"reference_doctype\": \"Delivery Note\",        \n        \"onboard\": 1    \n    }\n]\n"
+   "links": "[    \n    {        \n        \"type\": \"report\",        \n        \"is_query_report\": 1,        \n        \"name\": \"Stock Ledger\",        \n        \"reference_doctype\": \"Stock Ledger Entry\",        \n        \"onboard\": 1    \n    },    \n    {       \n        \"type\": \"report\",        \n        \"is_query_report\": 1,        \n        \"name\": \"Received Items To Be Billed\",        \n        \"reference_doctype\": \"Purchase Invoice\",        \n        \"onboard\": 1    \n    },    \n    {        \n        \"type\": \"report\",        \n        \"is_query_report\": 1,       \n        \"name\": \"Milk Entry Detail\",        \n        \"reference_doctype\": \"Milk Entry\",        \n        \"onboard\": 1    \n    },    \n    {        \n        \"type\": \"report\",        \n        \"is_query_report\": 1,        \n        \"name\": \"Vehicle Wise Crate Summary\",        \n        \"reference_doctype\": \"Delivery Note\",        \n        \"onboard\": 1    \n    },\n    {        \n        \"type\": \"report\",        \n        \"is_query_report\": 1,        \n        \"name\": \"Milk Ledger\",        \n        \"reference_doctype\": \"Milk Ledger Entry\",        \n        \"onboard\": 1    \n    }\n]\n"
   },
   {
    "hidden": 0,
@@ -42,16 +42,7 @@
   }
  ],
  "category": "Domains",
- "charts": [
-  {
-   "chart_name": "Milk Entry",
-   "label": "Milk Entry By Week"
-  },
-  {
-   "chart_name": "milk entry by dcs",
-   "label": "Milk Entry By DCS"
-  }
- ],
+ "charts": [],
  "charts_label": "",
  "creation": "2020-03-12 10:36:30.921482",
  "developer_mode_only": 0,
@@ -59,10 +50,11 @@
  "docstatus": 0,
  "doctype": "Desk Page",
  "extends_another_page": 0,
+ "hide_custom": 0,
  "idx": 0,
  "is_standard": 1,
  "label": "Dairy",
- "modified": "2020-05-11 12:36:33.158417",
+ "modified": "2020-11-06 10:59:45.377052",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy",

@@ -47,10 +47,9 @@
   },
   {
    "fieldname": "warehouse",
-   "fieldtype": "Link",
-   "in_list_view": 1,
+   "fieldtype": "Table",
    "label": "Warehouse",
-   "options": "Warehouse",
+   "options": "Bulk Milk Price List Warehouse",
    "reqd": 1
   },
   {
@@ -73,13 +72,13 @@
    "fieldname": "rate",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Fat Rate(in Kg)",
+   "label": "Fat Per Kg Rate",
    "reqd": 1
   },
   {
    "fieldname": "snf_clr_rate",
    "fieldtype": "Float",
-   "label": "SNF/CLR Rate(in Kg)",
+   "label": "SNF/CLR Per Kg Rate",
    "reqd": 1
   },
   {
@@ -93,15 +92,15 @@
   },
   {
    "fieldname": "customer",
-   "fieldtype": "Link",
+   "fieldtype": "Table",
    "label": "Customer",
-   "options": "Customer"
+   "options": "Bulk Milk Price List Customer"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2020-11-05 16:46:21.387009",
+ "modified": "2020-11-06 12:43:02.517673",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Bulk Milk Price List",
