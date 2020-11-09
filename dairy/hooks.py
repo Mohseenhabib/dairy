@@ -114,6 +114,7 @@ doc_events = {
                          "dairy.milk_entry.custom_delivery_note.after_save"],
         "before_save": ["dairy.milk_entry.custom_delivery_note.calculate_crate",
                         "dairy.milk_entry.custom_delivery_note.after_save"],
+        "on_cancel": "dairy.milk_entry.custom_delivery_note.cancel_milk_stock_ledger"
     },
     "Sales Order": {
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
@@ -126,13 +127,19 @@ doc_events = {
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
     },
     "Stock Entry":{
-        "after_insert": "dairy.milk_entry.doctype.van_collection.van_collection.change_van_collection_status"
+        "after_insert": ["dairy.milk_entry.doctype.van_collection.van_collection.change_van_collection_status",
+                         "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry"],
+        "before_save": "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry",
+        "before_submit": "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry",
+        "on_submit": "dairy.milk_entry.custom_stock_entry.on_submit",
+        "on_cancel": "dairy.milk_entry.custom_stock_entry.cancel_create_milk_stock_ledger"
     },
     "Purchase Receipt":{
         "after_insert": "dairy.milk_entry.custom_purchase_receipt.change_milk_entry_status",
         "on_cancel": ["dairy.milk_entry.custom_purchase_receipt.cancel_create_milk_stock_ledger"],
         "on_submit": ["dairy.milk_entry.custom_purchase_receipt.change_milk_status",
-                      "dairy.milk_entry.custom_purchase_receipt.create_milk_stock_ledger"]
+                      "dairy.milk_entry.custom_purchase_receipt.create_milk_stock_ledger"],
+
     }
 }
 

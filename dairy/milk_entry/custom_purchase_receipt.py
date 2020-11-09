@@ -292,29 +292,30 @@ def create_milk_stock_ledger(self,method):
                 query += """ order by modified desc limit 1 """
                 mle = frappe.db.sql(query, {'warehouse':itm.warehouse,'item_code':itm.item_code,'batch_no':itm.batch_no,
                                                'serial_no':itm.serial_no}, as_dict=True)
-                if mle[0]['name']:
-                    mle_obj = frappe.get_doc("Milk Ledger Entry",mle[0]['name'])
-                    new_mle = frappe.new_doc("Milk Ledger Entry")
-                    new_mle.item_code = mle_obj.item_code
-                    new_mle.serial_no = cstr(mle_obj.serial_no).strip()
-                    new_mle.batch_no = mle_obj.batch_no
-                    new_mle.warehouse = mle_obj.warehouse
-                    new_mle.posting_date = self.posting_date
-                    new_mle.posting_time = self.posting_time
-                    new_mle.voucher_type = "Purchase Receipt"
-                    new_mle.voucher_no = self.name
-                    new_mle.voucher_detail_no = itm.name
-                    new_mle.actual_qty = itm.total_weight
-                    new_mle.fat = itm.fat
-                    new_mle.snf = itm.clr
-                    new_mle.stock_uom = itm.weight_uom
-                    new_mle.qty_after_transaction = itm.total_weight + mle_obj.qty_after_transaction
-                    new_mle.fat_after_transaction = mle_obj.fat_after_transaction + itm.fat
-                    new_mle.snf_after_transaction = mle_obj.snf_after_transaction + itm.clr
-                    new_mle.fat_per = ((mle_obj.fat_after_transaction + itm.fat) / (itm.total_weight + mle_obj.qty_after_transaction)) * 100
-                    new_mle.snf_per = ((mle_obj.snf_after_transaction + itm.clr) / (itm.total_weight + mle_obj.qty_after_transaction)) * 100
-                    new_mle.save()
-                    new_mle.submit()
+                if len(mle) > 0:
+                    if mle[0]['name']:
+                        mle_obj = frappe.get_doc("Milk Ledger Entry",mle[0]['name'])
+                        new_mle = frappe.new_doc("Milk Ledger Entry")
+                        new_mle.item_code = mle_obj.item_code
+                        new_mle.serial_no = cstr(mle_obj.serial_no).strip()
+                        new_mle.batch_no = mle_obj.batch_no
+                        new_mle.warehouse = mle_obj.warehouse
+                        new_mle.posting_date = self.posting_date
+                        new_mle.posting_time = self.posting_time
+                        new_mle.voucher_type = "Purchase Receipt"
+                        new_mle.voucher_no = self.name
+                        new_mle.voucher_detail_no = itm.name
+                        new_mle.actual_qty = itm.total_weight
+                        new_mle.fat = itm.fat
+                        new_mle.snf = itm.clr
+                        new_mle.stock_uom = itm.weight_uom
+                        new_mle.qty_after_transaction = itm.total_weight + mle_obj.qty_after_transaction
+                        new_mle.fat_after_transaction = mle_obj.fat_after_transaction + itm.fat
+                        new_mle.snf_after_transaction = mle_obj.snf_after_transaction + itm.clr
+                        new_mle.fat_per = ((mle_obj.fat_after_transaction + itm.fat) / (itm.total_weight + mle_obj.qty_after_transaction)) * 100
+                        new_mle.snf_per = ((mle_obj.snf_after_transaction + itm.clr) / (itm.total_weight + mle_obj.qty_after_transaction)) * 100
+                        new_mle.save()
+                        new_mle.submit()
 
 def cancel_create_milk_stock_ledger(self,method):
     for itm in self.items:
@@ -329,40 +330,46 @@ def cancel_create_milk_stock_ledger(self,method):
             if itm.serial_no:
                 query += """ and serial_no = %(serial_no)s """
 
+            query += """ and voucher_type = "Purchase Receipt" and voucher_no = %(voucher_no)s 
+                                and voucher_detail_no = %(voucher_detail_no)s """
+
             query += """ order by modified desc limit 1 """
             mle = frappe.db.sql(query, {'warehouse': itm.warehouse, 'item_code': itm.item_code, 'batch_no': itm.batch_no,
-                                        'serial_no': itm.serial_no}, as_dict=True)
-            if mle[0]['name']:
-                mle_obj = frappe.get_doc("Milk Ledger Entry", mle[0]['name'])
+                                        'serial_no': itm.serial_no,"voucher_detail_no":itm.name,"voucher_no":itm.parent}, as_dict=True)
+            if len(mle) > 0:
+                if mle[0]['name']:
+                    mle_obj = frappe.get_doc("Milk Ledger Entry", mle[0]['name'])
 
+                    new_mle = frappe.new_doc("Milk Ledger Entry")
+                    new_mle.item_code = mle_obj.item_code
+                    new_mle.serial_no = cstr(mle_obj.serial_no).strip()
+                    new_mle.batch_no = mle_obj.batch_no
+                    new_mle.warehouse = mle_obj.warehouse
+                    new_mle.posting_date = self.posting_date
+                    new_mle.posting_time = self.posting_time
+                    new_mle.voucher_type = "Purchase Receipt"
+                    new_mle.voucher_no = self.name
+                    new_mle.voucher_detail_no = itm.name
+                    new_mle.actual_qty = -1 * itm.total_weight
+                    new_mle.fat = -1 * itm.fat
+                    new_mle.snf = -1 * itm.clr
+                    new_mle.stock_uom = itm.weight_uom
+                    new_mle.qty_after_transaction =  mle_obj.qty_after_transaction - itm.total_weight
+                    new_mle.fat_after_transaction = mle_obj.fat_after_transaction - itm.fat
+                    new_mle.snf_after_transaction = mle_obj.snf_after_transaction - itm.clr
+                    new_mle.fat_per = ((mle_obj.fat_after_transaction - itm.fat) / (mle_obj.qty_after_transaction - itm.total_weight)) * 100
+                    new_mle.snf_per = ((mle_obj.snf_after_transaction - itm.clr) / (mle_obj.qty_after_transaction - itm.total_weight)) * 100
+                    # new_mle.is_cancelled = 1
 
-                new_mle = frappe.new_doc("Milk Ledger Entry")
-                new_mle.item_code = mle_obj.item_code
-                new_mle.serial_no = cstr(mle_obj.serial_no).strip()
-                new_mle.batch_no = mle_obj.batch_no
-                new_mle.warehouse = mle_obj.warehouse
-                new_mle.posting_date = self.posting_date
-                new_mle.posting_time = self.posting_time
-                new_mle.voucher_type = "Purchase Receipt"
-                new_mle.voucher_no = self.name
-                new_mle.voucher_detail_no = itm.name
-                new_mle.actual_qty = -1 * itm.total_weight
-                new_mle.fat = -1 * itm.fat
-                new_mle.snf = -1 * itm.clr
-                new_mle.stock_uom = itm.weight_uom
-                new_mle.qty_after_transaction =  mle_obj.qty_after_transaction - itm.total_weight
-                new_mle.fat_after_transaction = mle_obj.fat_after_transaction - itm.fat
-                new_mle.snf_after_transaction = mle_obj.snf_after_transaction - itm.clr
-                new_mle.fat_per = ((mle_obj.fat_after_transaction - itm.fat) / (mle_obj.qty_after_transaction - itm.total_weight)) * 100
-                new_mle.snf_per = ((mle_obj.snf_after_transaction - itm.clr) / (mle_obj.qty_after_transaction - itm.total_weight)) * 100
-                new_mle.is_cancelled = 1
+                    frappe.db.sql(""" update `tabMilk Ledger Entry` set is_cancelled = 1 where name = %(name)s """,
+                                  {'name': mle_obj.name})
+                    frappe.db.commit()
 
-                frappe.db.sql(""" update `tabMilk Ledger Entry` set is_cancelled = 1 where name = %(name)s """,
-                              {'name': mle_obj.name})
-                frappe.db.commit()
-
-                new_mle.save()
-                new_mle.submit()
+                    new_mle.save()
+                    new_mle.submit()
+                    frappe.db.sql(""" update `tabMilk Ledger Entry` set is_cancelled = 1 where name = %(name)s """,
+                                  {'name': new_mle.name})
+                    frappe.db.commit()
 
 
 

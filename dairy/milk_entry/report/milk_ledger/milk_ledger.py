@@ -22,7 +22,7 @@ def execute(filters=None):
 	if opening_row:
 		data.append(opening_row)
 
-	actual_qty = stock_value = 0
+	# actual_qty = stock_value = 0
 
 	for sle in sl_entries:
 		item_detail = item_details[sle.item_code]
@@ -31,21 +31,21 @@ def execute(filters=None):
 
 		if filters.get("batch_no"):
 			actual_qty += flt(sle.actual_qty, precision)
-			stock_value += sle.stock_value_difference
+			# stock_value += sle.stock_value_difference
 
 			if sle.voucher_type == 'Stock Reconciliation' and not sle.actual_qty:
 				actual_qty = sle.qty_after_transaction
-				stock_value = sle.stock_value
+				# stock_value = sle.stock_value
 
 			sle.update({
-				"qty_after_transaction": actual_qty,
-				"stock_value": stock_value
+				"qty_after_transaction": actual_qty
+				# "stock_value": stock_value
 			})
 
-		sle.update({
-			"in_qty": max(sle.actual_qty, 0),
-			"out_qty": min(sle.actual_qty, 0)
-		})
+		# sle.update({
+		# 	"in_qty": max(sle.actual_qty, 0),
+		# 	"out_qty": min(sle.actual_qty, 0)
+		# })
 
 		data.append(sle)
 
@@ -101,7 +101,7 @@ def get_stock_ledger_entries(filters, items):
 			warehouse,
 			actual_qty,
 			qty_after_transaction,
-			stock_value,
+			# stock_value,
 			voucher_type,
 			voucher_no,
 			batch_no,
@@ -210,7 +210,7 @@ def get_opening_balance(filters, columns):
 		"item_code": _("'Opening'"),
 		"qty_after_transaction": last_entry.get("qty_after_transaction", 0),
 		# "valuation_rate": last_entry.get("valuation_rate", 0),
-		"stock_value": last_entry.get("stock_value", 0)
+		# "stock_value": last_entry.get("stock_value", 0)
 	}
 
 	return row
