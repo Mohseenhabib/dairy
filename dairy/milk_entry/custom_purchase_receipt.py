@@ -35,28 +35,7 @@ def change_milk_status(pc,method):
             doc.status = "To Sample"
         doc.db_update()
 
-# def update_snf(pc,method):
-#     for itm in pc.items:
-#         # sle = frappe.db.sql(""" select count(name) from `tabStock Ledger Entry` where voucher_type = "Purchase Receipt" """)
-#         sle = frappe.db.sql(""" select name from `tabStock Ledger Entry` where voucher_type = "Purchase Receipt"
-#                             and voucher_no = %(name)s and voucher_detail_no = %(c_name)s and is_cancelled != 1
-#                              order by modified desc  """,
-#                             {'name': pc.name,'c_name': itm.name,'batch_no':itm.batch_no, 'serial_no':itm.serial_no},as_dict=True)
-#         print("******************************************************",sle)
-#         if sle[0]['name']:
-#             doc = frappe.get_doc("Stock Ledger Entry",sle[0]['name'])
-#             doc.actual_snf = itm.clr
-#             f_slv = frappe.db.sql(""" select actual_snf_after_transaction from `tabStock Ledger Entry` where voucher_type = "Purchase Receipt"
-#                                      and item_code = %(item_code)s and warehouse = %(warehouse)s and name != %(name)s
-#                                     order by modified desc """,
-#                                 {'item_code': itm.item_code,"warehouse": itm.warehouse,'name':sle[0]['name']}, as_dict=True)
-#             print("**********************************************************",f_slv)
-#             if f_slv:
-#                 if float(f_slv[0]['actual_snf_after_transaction']) > 0.0:
-#                     doc.actual_snf_after_transaction = f_slv[0]['actual_snf_after_transaction'] + itm.clr
-#                 else:
-#                     doc.actual_snf_after_transaction = itm.clr
-#             doc.save(ignore_permissions=True)
+
 
 def update_snf(pc,method):
     for itm in pc.items:
@@ -84,7 +63,7 @@ def update_snf(pc,method):
             f_slv = frappe.db.sql(query2,{'item_code': itm.item_code,"warehouse": itm.warehouse,'name':sle[0]['name'],'batch_no':itm.batch_no, 'serial_no':itm.serial_no}
                                   , as_dict=True)
 
-            print("**********************************************************",f_slv)
+
             if f_slv:
                 if float(f_slv[0]['actual_snf_after_transaction']) > 0.0:
                     doc.actual_snf_after_transaction = f_slv[0]['actual_snf_after_transaction'] + itm.clr
@@ -92,29 +71,6 @@ def update_snf(pc,method):
                     doc.actual_snf_after_transaction = itm.clr
             doc.save(ignore_permissions=True)
 
-
-# def update_fat(pc,method):
-#     for itm in pc.items:
-#         # sle = frappe.db.sql(""" select count(name) from `tabStock Ledger Entry` where voucher_type = "Purchase Receipt" """)
-#         sle = frappe.db.sql(""" select name from `tabStock Ledger Entry` where voucher_type = "Purchase Receipt"
-#                             and voucher_no = %(name)s and voucher_detail_no = %(c_name)s and is_cancelled != 1
-#                              order by modified desc  """,
-#                             {'name': pc.name,'c_name': itm.name},as_dict=True)
-#         print("******************************************************",sle)
-#         if sle[0]['name']:
-#             doc = frappe.get_doc("Stock Ledger Entry",sle[0]['name'])
-#             doc.actual_fat = itm.fat
-#             f_slv = frappe.db.sql(""" select actual_fat_after_transaction from `tabStock Ledger Entry` where voucher_type = "Purchase Receipt"
-#                                      and item_code = %(item_code)s and warehouse = %(warehouse)s and name != %(name)s
-#                                     order by modified desc """,
-#                                 {'item_code': itm.item_code,"warehouse": itm.warehouse,'name':sle[0]['name']}, as_dict=True)
-#             print("**********************************************************",f_slv)
-#             if f_slv:
-#                 if float(f_slv[0]['actual_fat_after_transaction']) > 0.0:
-#                     doc.actual_fat_after_transaction = f_slv[0]['actual_fat_after_transaction'] + itm.fat
-#                 else:
-#                     doc.actual_fat_after_transaction = itm.fat
-#             doc.save(ignore_permissions=True)
 
 def update_fat(pc,method):
     for itm in pc.items:
@@ -144,7 +100,7 @@ def update_fat(pc,method):
             f_slv = frappe.db.sql(query2,{'item_code': itm.item_code,"warehouse": itm.warehouse,'name':sle[0]['name'],
                                           'batch_no':itm.batch_no, 'serial_no':itm.serial_no}, as_dict=True)
 
-            print("**********************************************************",f_slv)
+
             if f_slv:
                 if float(f_slv[0]['actual_fat_after_transaction']) > 0.0:
                     doc.actual_fat_after_transaction = f_slv[0]['actual_fat_after_transaction'] + itm.fat
@@ -154,7 +110,7 @@ def update_fat(pc,method):
 
 def cancel_update_snf(pc,method):
     for itm in pc.items:
-        # sle = frappe.db.sql(""" select count(name) from `tabStock Ledger Entry` where voucher_type = "Purchase Receipt" """)
+
         query = """ select name from `tabStock Ledger Entry` where voucher_type = "Purchase Receipt"
                             and voucher_no = %(name)s and voucher_detail_no = %(c_name)s and is_cancelled = 1 """
         if itm.batch_no:
@@ -165,8 +121,8 @@ def cancel_update_snf(pc,method):
         query += """ order by modified desc """
 
         sle = frappe.db.sql(query,{'name': pc.name,'c_name': itm.name,'batch_no':itm.batch_no, 'serial_no':itm.serial_no},as_dict=True)
-                            # {'name': pc.name,'c_name': itm.name,'batch_no':itm.batch_no, 'serial_no':itm.serial_no},as_dict=True)
-        print("******************************************************",sle)
+
+
         if sle[1]['name']:
             doc = frappe.get_doc("Stock Ledger Entry",sle[1]['name'])
             new_actual_snf = 0 - float(doc.actual_snf)
@@ -181,12 +137,8 @@ def cancel_update_snf(pc,method):
                 query2 += """ and serial_no = %(serial_no)s """
 
             query2 += """ order by modified desc limit 1 """
-            # u_sle = frappe.db.sql(""" select name from `tabStock Ledger Entry` where voucher_type = "Purchase Receipt"
-            #                             and voucher_no = %(name)s and voucher_detail_no = %(c_name)s and is_cancelled = 1
-            #                             order by modified desc limit 1 """,
-            #                     {'name': pc.name, 'c_name': itm.name}, as_dict=True)
             u_sle = frappe.db.sql(query2,{'name': pc.name, 'c_name': itm.name,'batch_no':itm.batch_no, 'serial_no':itm.serial_no}, as_dict=True)
-            print("*****************************************u_sale*************", u_sle)
+
             if u_sle:
                 if u_sle[0]['name']:
                     u_doc = frappe.get_doc("Stock Ledger Entry", u_sle[0]['name'])
@@ -197,9 +149,6 @@ def cancel_update_snf(pc,method):
 def cancel_update_fat(pc,method):
     for itm in pc.items:
 
-        # sle = frappe.db.sql(""" select name from `tabStock Ledger Entry` where voucher_type = "Purchase Receipt"
-        #                     and voucher_no = %(name)s and voucher_detail_no = %(c_name)s and is_cancelled = 1 order by modified desc""",
-        #                     {'name': pc.name,'c_name': itm.name},as_dict=True)
         query = """ select name from `tabStock Ledger Entry` where voucher_type = "Purchase Receipt"
                   and voucher_no = %(name)s and voucher_detail_no = %(c_name)s and is_cancelled = 1 """
         if itm.batch_no:
@@ -215,10 +164,6 @@ def cancel_update_fat(pc,method):
             new_actual_fat = 0 - float(doc.actual_fat)
             new_tran_fat = float(doc.actual_fat_after_transaction) - float(doc.actual_fat)
 
-            # u_sle = frappe.db.sql(""" select name from `tabStock Ledger Entry` where voucher_type = "Purchase Receipt"
-            #                             and voucher_no = %(name)s and voucher_detail_no = %(c_name)s and is_cancelled = 1
-            #                             order by modified desc limit 1 """,
-            #                     {'name': pc.name, 'c_name': itm.name}, as_dict=True)
             query2 = """ select name from `tabStock Ledger Entry` where voucher_type = "Purchase Receipt"
                                          and voucher_no = %(name)s and voucher_detail_no = %(c_name)s and is_cancelled = 1
                                           """
@@ -256,8 +201,7 @@ def create_milk_stock_ledger(self,method):
 
             total_count = frappe.db.sql(query,{'warehouse':itm.warehouse,'item_code':itm.item_code,'batch_no':itm.batch_no,
                                                'serial_no':itm.serial_no})
-            # print("*************************************************",total_count)
-            # frappe.throw("not")
+
             if total_count[0][0] == 0:
                 pr_qty = flt(itm.qty) * flt(itm.conversion_factor)
                 new_mle = frappe.new_doc("Milk Ledger Entry")
