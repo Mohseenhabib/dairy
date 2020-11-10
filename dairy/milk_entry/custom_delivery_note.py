@@ -64,10 +64,12 @@ def before_submit(self,method):
     # create milk ledger entry
 def on_submit(self, method):
     for itm in self.items:
+        itm_obj = frappe.get_doc("Item", itm.item_code)
+        maintain_snf_fat = itm_obj.maintain_fat_snf_clr
         good_cow_milk = frappe.db.get_single_value("Dairy Settings", "cow_pro")
         good_buff_milk = frappe.db.get_single_value("Dairy Settings", "buf_pro")
         good_mix_milk = frappe.db.get_single_value("Dairy Settings", "mix_pro")
-        if itm.item_code == good_cow_milk or itm.item_code == good_buff_milk or itm.item_code == good_mix_milk:
+        if itm.item_code == good_cow_milk or itm.item_code == good_buff_milk or itm.item_code == good_mix_milk or maintain_snf_fat == 1:
             query = """ select count(*) from `tabMilk Ledger Entry` where item_code = %(item_code)s and warehouse = %(warehouse)s 
                         """
             if itm.batch_no:
@@ -132,7 +134,9 @@ def after_save(self,method):
         milk_type = ""
         for itm in self.items:
             # ******************8
-            if itm.item_code == good_cow_milk or itm.item_code == good_buff_milk or itm.item_code == good_mix_milk:
+            itm_obj = frappe.get_doc("Item", itm.item_code)
+            maintain_snf_fat = itm_obj.maintain_fat_snf_clr
+            if itm.item_code == good_cow_milk or itm.item_code == good_buff_milk or itm.item_code == good_mix_milk or maintain_snf_fat == 1:
                 if itm.item_code == good_cow_milk:
                     milk_type = "Cow"
                 elif itm.item_code == good_buff_milk:
@@ -191,10 +195,12 @@ def after_save(self,method):
 
 def cancel_milk_stock_ledger(self, method):
     for itm in self.items:
+        itm_obj = frappe.get_doc("Item", itm.item_code)
+        maintain_snf_fat = itm_obj.maintain_fat_snf_clr
         good_cow_milk = frappe.db.get_single_value("Dairy Settings", "cow_pro")
         good_buff_milk = frappe.db.get_single_value("Dairy Settings", "buf_pro")
         good_mix_milk = frappe.db.get_single_value("Dairy Settings", "mix_pro")
-        if itm.item_code == good_cow_milk or itm.item_code == good_buff_milk or itm.item_code == good_mix_milk:
+        if itm.item_code == good_cow_milk or itm.item_code == good_buff_milk or itm.item_code == good_mix_milk or maintain_snf_fat == 1:
             query = """ select name from `tabMilk Ledger Entry` where item_code = %(item_code)s and warehouse = %(warehouse)s 
                                             """
             if itm.batch_no:
