@@ -347,3 +347,8 @@ def cancel_create_milk_stock_ledger(self,method):
                         frappe.db.sql(""" update `tabMilk Ledger Entry` set is_cancelled = 1 where name = %(name)s """,
                                       {'name': new_mle.name})
                         frappe.db.commit()
+
+@frappe.whitelist()
+def get_item_weight(item_code):
+    obj = frappe.get_doc("Item",item_code)
+    return obj.weight_per_unit
