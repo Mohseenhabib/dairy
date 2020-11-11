@@ -53,8 +53,8 @@ def execute(filters=None):
 		})
 
 		sle.update({
-			"in_snf": max(sle.fat, 0),
-			"out_snf": min(sle.fat, 0)
+			"in_snf": max(sle.snf, 0),
+			"out_snf": min(sle.snf, 0)
 		})
 
 		data.append(sle)

@@ -16,6 +16,7 @@ def milk_ledger_stock_entry(self,method):
                 itm_weight = float(itm_obj.weight_per_unit)
                 weight_uom = itm_obj.weight_uom
                 maintain_snf_fat = itm_obj.maintain_fat_snf_clr
+                itm_milk_type = itm_obj.milk_type
             # ******************8
                 if itm.item_code == good_cow_milk or itm.item_code == good_buff_milk or itm.item_code == good_mix_milk or maintain_snf_fat == 1:
                     if itm.item_code == good_cow_milk:
@@ -24,6 +25,9 @@ def milk_ledger_stock_entry(self,method):
                         milk_type = "Buffalow"
                     elif itm.item_code == good_mix_milk:
                         milk_type = "Mix"
+                    elif maintain_snf_fat == 1:
+                        milk_type = itm_milk_type
+                        print("**************************************************itm mik type",milk_type)
                     query = """ select name from `tabMilk Ledger Entry` where item_code = %(item_code)s 
                     and warehouse = %(warehouse)s """
                     if itm.batch_no:
@@ -46,7 +50,7 @@ def milk_ledger_stock_entry(self,method):
 
                     # rate
                     if milk_type != "":
-
+                        print("**************************************************itm mik type", milk_type)
                         query2 = frappe.db.sql(""" select bmpl.name, bmpl.rate, bmpl.snf_clr_rate 
                                                 from `tabBulk Milk Price List` bmpl, `tabBulk Milk Price List Warehouse` bmplw, `tabBulk Milk Price List Customer` bmplc
                                                 where bmplw.warehouse = %(warehouse)s and bmpl.active = 1 and bmpl.milk_type = %(milk_type)s 

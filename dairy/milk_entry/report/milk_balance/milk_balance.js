@@ -1,10 +1,9 @@
-// Copyright (c) 2016, Dexciss Technology Pvt Ltd and contributors
+// Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors and contributors
 // For license information, please see license.txt
-/* eslint-disable */
 
 frappe.query_reports["Milk Balance"] = {
 	"filters": [
-        {
+		{
 			"fieldname": "company",
 			"label": __("Company"),
 			"fieldtype": "Link",
@@ -64,9 +63,29 @@ frappe.query_reports["Milk Balance"] = {
 				}
 			}
 		},
-
-
-
+		{
+			"fieldname": "warehouse_type",
+			"label": __("Warehouse Type"),
+			"fieldtype": "Link",
+			"width": "80",
+			"options": "Warehouse Type"
+		},
+		{
+			"fieldname":"include_uom",
+			"label": __("Include UOM"),
+			"fieldtype": "Link",
+			"options": "UOM"
+		},
+		{
+			"fieldname": "show_variant_attributes",
+			"label": __("Show Variant Attributes"),
+			"fieldtype": "Check"
+		},
+		{
+			"fieldname": 'show_stock_ageing_data',
+			"label": __('Show Stock Ageing Data'),
+			"fieldtype": 'Check'
+		},
 	],
 
 	"formatter": function (value, row, column, data, default_formatter) {
@@ -81,5 +100,4 @@ frappe.query_reports["Milk Balance"] = {
 
 		return value;
 	}
-	]
 };
