@@ -70,22 +70,7 @@ frappe.query_reports["Milk Balance"] = {
 			"width": "80",
 			"options": "Warehouse Type"
 		},
-		{
-			"fieldname":"include_uom",
-			"label": __("Include UOM"),
-			"fieldtype": "Link",
-			"options": "UOM"
-		},
-		{
-			"fieldname": "show_variant_attributes",
-			"label": __("Show Variant Attributes"),
-			"fieldtype": "Check"
-		},
-		{
-			"fieldname": 'show_stock_ageing_data',
-			"label": __('Show Stock Ageing Data'),
-			"fieldtype": 'Check'
-		},
+
 	],
 
 	"formatter": function (value, row, column, data, default_formatter) {
@@ -95,6 +80,18 @@ frappe.query_reports["Milk Balance"] = {
 			value = "<span style='color:red'>" + value + "</span>";
 		}
 		else if (column.fieldname == "in_qty" && data && data.in_qty > 0) {
+			value = "<span style='color:green'>" + value + "</span>";
+		}
+		if (column.fieldname == "out_fat" && data && data.out_fat > 0) {
+			value = "<span style='color:red'>" + value + "</span>";
+		}
+		else if (column.fieldname == "in_fat" && data && data.in_fat > 0) {
+			value = "<span style='color:green'>" + value + "</span>";
+		}
+		if (column.fieldname == "out_snf" && data && data.out_snf > 0) {
+			value = "<span style='color:red'>" + value + "</span>";
+		}
+		else if (column.fieldname == "in_snf" && data && data.in_snf > 0) {
 			value = "<span style='color:green'>" + value + "</span>";
 		}
 

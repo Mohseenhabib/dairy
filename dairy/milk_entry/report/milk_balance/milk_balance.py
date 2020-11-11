@@ -99,22 +99,18 @@ def get_columns(filters):
 		{"label": _("Item Group"), "fieldname": "item_group", "fieldtype": "Link", "options": "Item Group", "width": 100},
 		{"label": _("Warehouse"), "fieldname": "warehouse", "fieldtype": "Link", "options": "Warehouse", "width": 100},
 		{"label": _("Stock UOM"), "fieldname": "stock_uom", "fieldtype": "Link", "options": "UOM", "width": 90},
-		# {"label": _("Balance Value"), "fieldname": "bal_val", "fieldtype": "Currency", "width": 100, "options": "currency"},
 		{"label": _("Opening Qty"), "fieldname": "opening_qty", "fieldtype": "Float", "width": 100, "convertible": "qty"},
-		# {"label": _("Opening Value"), "fieldname": "opening_val", "fieldtype": "Currency", "width": 110, "options": "currency"},
 		{"label": _("In Qty"), "fieldname": "in_qty", "fieldtype": "Float", "width": 80, "convertible": "qty"},
-		# {"label": _("In Value"), "fieldname": "in_val", "fieldtype": "Float", "width": 80},
 		{"label": _("Out Qty"), "fieldname": "out_qty", "fieldtype": "Float", "width": 80, "convertible": "qty"},
 		{"label": _("Balance Qty"), "fieldname": "bal_qty", "fieldtype": "Float", "width": 100, "convertible": "qty"},
-		# {"label": _("Out Value"), "fieldname": "out_val", "fieldtype": "Float", "width": 80},
 		{"label": _("Opening Fat"), "fieldname": "fat", "fieldtype": "Float", "width": 80},
 		{"label": _("In Fat"), "fieldname": "in_fat", "fieldtype": "Float", "width": 80, "convertible": "fat"},
 		{"label": _("Out Fat"), "fieldname": "out_fat", "fieldtype": "Float", "width": 80, "convertible": "fat"},
-		# {"label": _("Balance Fat"), "fieldname": "bal_fat", "fieldtype": "Float", "width": 100, "convertible": "fat"},
+		{"label": _("Balance Fat"), "fieldname": "bal_fat", "fieldtype": "Float", "width": 100, "convertible": "fat"},
 		{"label": _("Opening SNF/CLR"), "fieldname": "snf", "fieldtype": "Float", "width": 80},
 		{"label": _("In SNF/CLR"), "fieldname": "in_snf", "fieldtype": "Float", "width": 80, "convertible": "snf"},
 		{"label": _("Out SNF/CLR"), "fieldname": "out_snf", "fieldtype": "Float", "width": 80, "convertible": "snf"},
-		# {"label": _("Balance SNF/CLR "), "fieldname": "bal_snf", "fieldtype": "Float", "width": 100, "convertible": "snf"},
+		{"label": _("Balance SNF/CLR "), "fieldname": "bal_snf", "fieldtype": "Float", "width": 100, "convertible": "snf"},
 		{"label": _("Company"), "fieldname": "company", "fieldtype": "Link", "options": "Company", "width": 100},
 	]
 
@@ -192,7 +188,8 @@ def get_item_warehouse_map(filters, sle):
 				"val_rate": 0.0, "fat": 0.0,
 				"in_fat": 0.0, "out_fat": 0.0,
 				"in_snf":0.0, "out_snf":0.0,
-				"snf": 0.0
+				"snf": 0.0, "bal_fat":0.0,
+				"bal_snf": 0.0
 			})
 
 		qty_dict = iwb_map[(d.company, d.item_code, d.warehouse)]
@@ -203,9 +200,8 @@ def get_item_warehouse_map(filters, sle):
 			snf_diff = flt(d.snf)
 		else:
 			qty_diff = flt(d.actual_qty)
-
-		fat_diff = flt(d.fat)
-		snf_diff = flt(d.snf)
+			fat_diff = flt(d.fat)
+			snf_diff = flt(d.snf)
 		# value_diff = flt(d.stock_value_difference)
 
 		if d.posting_date < from_date:
@@ -229,8 +225,9 @@ def get_item_warehouse_map(filters, sle):
 
 		# qty_dict.val_rate = d.valuation_rate
 		qty_dict.bal_qty += qty_diff
-		# qty_dict.bal_fat += fat_diff
-		# qty_dict.bal_snf += snf_diff
+		# print("********************type***********fat_diff",type(fat_diff))
+		qty_dict.bal_fat += fat_diff
+		qty_dict.bal_snf += snf_diff
 		# qty_dict.bal_val += value_diff
 
 	iwb_map = filter_items_with_no_transactions(iwb_map, float_precision)
