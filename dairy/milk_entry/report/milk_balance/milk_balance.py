@@ -422,13 +422,13 @@ def get_columns(filters):
 		{"label": _("Warehouse"), "fieldname": "warehouse", "fieldtype": "Link", "options": "Warehouse", "width": 100},
 		{"label": _("Stock UOM"), "fieldname": "stock_uom", "fieldtype": "Link", "options": "UOM", "width": 90},
 		{"label": _("Balance Qty"), "fieldname": "bal_qty", "fieldtype": "Float", "width": 100, "convertible": "qty"},
-		{"label": _("Balance Value"), "fieldname": "bal_val", "fieldtype": "Currency", "width": 100, "options": "currency"},
+		# {"label": _("Balance Value"), "fieldname": "bal_val", "fieldtype": "Currency", "width": 100, "options": "currency"},
 		{"label": _("Opening Qty"), "fieldname": "opening_qty", "fieldtype": "Float", "width": 100, "convertible": "qty"},
-		{"label": _("Opening Value"), "fieldname": "opening_val", "fieldtype": "Currency", "width": 110, "options": "currency"},
+		# {"label": _("Opening Value"), "fieldname": "opening_val", "fieldtype": "Currency", "width": 110, "options": "currency"},
 		{"label": _("In Qty"), "fieldname": "in_qty", "fieldtype": "Float", "width": 80, "convertible": "qty"},
-		{"label": _("In Value"), "fieldname": "in_val", "fieldtype": "Float", "width": 80},
+		# {"label": _("In Value"), "fieldname": "in_val", "fieldtype": "Float", "width": 80},
 		{"label": _("Out Qty"), "fieldname": "out_qty", "fieldtype": "Float", "width": 80, "convertible": "qty"},
-		{"label": _("Out Value"), "fieldname": "out_val", "fieldtype": "Float", "width": 80},
+		# {"label": _("Out Value"), "fieldname": "out_val", "fieldtype": "Float", "width": 80},
 		{"label": _("Fat"), "fieldname": "fat", "fieldtype": "Float", "width": 80},
 		{"label": _("In Fat"), "fieldname": "in_fat", "fieldtype": "Float", "width": 80, "convertible": "fat"},
 		{"label": _("Out Fat"), "fieldname": "out_fat", "fieldtype": "Float", "width": 80, "convertible": "fat"},
@@ -485,8 +485,8 @@ def get_stock_ledger_entries(filters, items):
 
 	return frappe.db.sql("""
 		select
-			sle.item_code, warehouse, sle.posting_date, sle.actual_qty, sle.valuation_rate,
-			sle.company, sle.voucher_type, sle.qty_after_transaction, sle.stock_value_difference,
+			sle.item_code, warehouse, sle.posting_date, sle.actual_qty,
+			sle.company, sle.voucher_type, sle.qty_after_transaction,
 			sle.item_code as name, sle.voucher_no, sle.fat, sle.snf
 		from
 			`tabMilk Ledger Entry` sle 
@@ -523,28 +523,28 @@ def get_item_warehouse_map(filters, sle):
 			qty_diff = flt(d.actual_qty)
 		fat = flt(d.fat)
 		snf = flt(d.snf)
-		value_diff = flt(d.stock_value_difference)
+		# value_diff = flt(d.stock_value_difference)
 
 		if d.posting_date < from_date:
 			qty_dict.opening_qty += qty_diff
-			qty_dict.opening_val += value_diff
+			# qty_dict.opening_val += value_diff
 			qty_dict.fat += fat
 			qty_dict.snf += snf
 		elif d.posting_date >= from_date and d.posting_date <= to_date:
 			if flt(qty_diff, float_precision) >= 0:
 				qty_dict.in_qty += qty_diff
-				qty_dict.in_val += value_diff
+				# qty_dict.in_val += value_diff
 				qty_dict.in_fat += fat
 				qty_dict.in_snf += snf
 			else:
 				qty_dict.out_qty += abs(qty_diff)
-				qty_dict.out_val += abs(value_diff)
+				# qty_dict.out_val += abs(value_diff)
 				qty_dict.out_fat += abs(fat)
 				qty_dict.out_snf += abs(snf)
 
-		qty_dict.val_rate = d.valuation_rate
+		# qty_dict.val_rate = d.valuation_rate
 		qty_dict.bal_qty += qty_diff
-		qty_dict.bal_val += value_diff
+		# qty_dict.bal_val += value_diff
 
 	iwb_map = filter_items_with_no_transactions(iwb_map, float_precision)
 
