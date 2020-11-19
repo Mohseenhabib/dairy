@@ -18,6 +18,15 @@ frappe.ui.form.on('Stock Entry Detail', {
             var df = frappe.meta.get_docfield("Stock Entry Detail","snf_clr_per", cur_frm.doc.name);
             df.read_only = 1;
 
+        }else{
+            var df = frappe.meta.get_docfield("Stock Entry Detail","fat", cur_frm.doc.name);
+            df.read_only = 0;
+            var df = frappe.meta.get_docfield("Stock Entry Detail","fat_per", cur_frm.doc.name);
+            df.read_only = 0;
+            var df = frappe.meta.get_docfield("Stock Entry Detail","snf_clr", cur_frm.doc.name);
+            df.read_only = 0;
+            var df = frappe.meta.get_docfield("Stock Entry Detail","snf_clr_per", cur_frm.doc.name);
+            df.read_only = 0;
         }
     },
 
@@ -31,10 +40,7 @@ frappe.ui.form.on('Stock Entry Detail', {
 					if (!r.exe){
 					       var weight = r.message * d.transfer_qty
 					       var per = ((d.fat / weight) * 100)
-					       if(! d.fat_per){
 					        frappe.model.set_value(cdt, cdn, "fat_per", per);
-					       }
-
 					}
 				}
 			});
@@ -54,6 +60,7 @@ frappe.ui.form.on('Stock Entry Detail', {
 					       if(! d.fat){
 					        frappe.model.set_value(cdt, cdn, "fat", fat);
 					       }
+					       frappe.model.set_value(cdt, cdn, "fat", fat);
 
 					}
 				}
@@ -74,6 +81,7 @@ frappe.ui.form.on('Stock Entry Detail', {
 					       if(! d.snf_clr_per){
 					        frappe.model.set_value(cdt, cdn, "snf_clr_per", per);
 					       }
+					       frappe.model.set_value(cdt, cdn, "snf_clr_per", per);
 
 					}
 				}
@@ -94,7 +102,7 @@ frappe.ui.form.on('Stock Entry Detail', {
 					       if(! d.snf_clr){
 					        frappe.model.set_value(cdt, cdn, "snf_clr", snf_clr);
 					       }
-
+                            frappe.model.set_value(cdt, cdn, "snf_clr", snf_clr);
 					}
 				}
 			});

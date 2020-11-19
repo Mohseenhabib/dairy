@@ -45,7 +45,8 @@ doctype_js = {
     "Sales Invoice": "public/js/sales_invoice.js",
     "Supplier": "public/js/supplier.js",
     "Item": "public/js/item.js",
-    "Stock Entry": "public/js/stock_entry.js"
+    "Stock Entry": "public/js/stock_entry.js",
+    "Purchase Receipt": "public/js/purchase_receipt.js"
     }
 
 doctype_list_js = {
