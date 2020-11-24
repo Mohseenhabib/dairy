@@ -20,6 +20,8 @@ def before_submit(sales, method):
                 lst.append(line)
             for line in lst:
                 item = frappe.get_doc("Item",line.item_code)
+                weight_uom = item.weight_uom
+                weight_per_unit = item.weight_per_unit
                 if item.leakage_applicable and applicable_on == "Stock UOM" and line.stock_qty > leakage_qty:
                     qty = (line.stock_qty * leakage_perc)/100
                     uom = frappe.get_doc("UOM",line.stock_uom)
@@ -40,7 +42,11 @@ def before_submit(sales, method):
                         "rate": 0.0,
                         "warehouse": line.warehouse,
                         "is_free_item": 1,
-                        "price_list_rate": 0
+                        "price_list_rate": 0,
+                        "weight_uom": weight_uom,
+                        "weight_per_unit": weight_per_unit,
+                        "total_weight": qty * weight_per_unit
+
                     })
                     sales.validate()
 
@@ -65,7 +71,10 @@ def before_submit(sales, method):
                         "rate": 0.0,
                         "warehouse": line.warehouse,
                         "is_free_item": 1,
-                        "price_list_rate": 0
+                        "price_list_rate": 0,
+                        "weight_uom": weight_uom,
+                        "weight_per_unit": weight_per_unit,
+                        "total_weight": qty * weight_per_unit
                     })
                     sales.validate()
 
