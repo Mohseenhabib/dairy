@@ -189,10 +189,13 @@ def after_save(self,method):
                         if not query3:
                             frappe.throw("No Rate Specified in Milk Ledger Price List")
                         else:
-                            itm.rate = (((itm.fat_per * query3[0]['rate']) + (
-                                        itm.snf_clr_per * query3[0]['snf_clr_rate'])) / (itm.total_weight))
+                            # itm.rate = (((itm.fat_per * query3[0]['rate']) + (
+                            #             itm.snf_clr_per * query3[0]['snf_clr_rate'])) / (itm.total_weight))
+                            itm.rate = (((itm.fat * query3[0]['rate']) + (
+                                        itm.snf_clr * query3[0]['snf_clr_rate'])) / (itm.total_weight))
                     else:
-                        itm.rate = (((itm.fat_per * query2[0]['rate']) + (itm.snf_clr_per * query2[0]['snf_clr_rate'])) / (itm.total_weight))
+                        # itm.rate = (((itm.fat_per * query2[0]['rate']) + (itm.snf_clr_per * query2[0]['snf_clr_rate'])) / (itm.total_weight))
+                        itm.rate = (((itm.fat * query2[0]['rate']) + (itm.snf_clr * query2[0]['snf_clr_rate'])) / (itm.total_weight))
             # ****************8
 
 
