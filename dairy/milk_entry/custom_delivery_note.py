@@ -576,3 +576,14 @@ def delivery_shift(name=None):
 #
 # 	return doclist
 
+
+@frappe.whitelist()
+def set_fat_and_snf_rate(obj,method):
+    if obj.customer:
+        query = frappe.db.sql("""select tbm.name,tbm.milk_type,tbm.rate,tbm.snf_clr_rate from `tabBulk Milk Price List` as tbm inner join 
+                `tabBulk Milk Price List Customer` as tbc on tbc.parent = tbm.name
+                where tbm.docstatus = 1 and tbm.active = 1 and tbc.customer = %s and tbm.milk_type = %s  
+                order by tbm.creation desc limit 1""", (obj.customer,obj.milk_type), as_dict=True)
+        if query:
+            obj.fat_rate = query[0].rate
+            obj.snf_clr_rate = query[0].snf_clr_rate

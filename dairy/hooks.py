@@ -115,7 +115,8 @@ doc_events = {
         "after_insert": ["dairy.milk_entry.custom_delivery_note.calculate_crate",
                          "dairy.milk_entry.custom_delivery_note.after_save"],
         "before_save": ["dairy.milk_entry.custom_delivery_note.calculate_crate",
-                        "dairy.milk_entry.custom_delivery_note.after_save"],
+                        "dairy.milk_entry.custom_delivery_note.after_save",
+                        "dairy.milk_entry.custom_delivery_note.set_fat_and_snf_rate"],
         "on_cancel": "dairy.milk_entry.custom_delivery_note.cancel_milk_stock_ledger"
     },
     "Sales Order": {
