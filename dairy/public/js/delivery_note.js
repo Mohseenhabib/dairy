@@ -70,6 +70,23 @@ frappe.ui.form.on("Delivery Note", {
     route: function(frm){
         frm.add_fetch("route", "transporter", "transporter");
     },
+
+    customer: function(frm){
+        frappe.call({
+            method: 'dairy.milk_entry.doctype.bulk_milk_price_list.bulk_milk_price_list.fetch_data',
+            args: {
+                'doctype': 'Bulk Milk Price List',
+                'customer': frm.doc.customer
+            },
+            callback: function(r) {
+                if (!r.exc) {
+                    // code snippet
+                    frm.set_value('fat_rate', r.message.rate)
+                    frm.set_value('snf_clr_rate', r.message.snf)
+                }
+            }
+        });
+    }
 });
 
 
