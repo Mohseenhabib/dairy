@@ -587,3 +587,10 @@ def set_fat_and_snf_rate(obj,method):
         if query:
             obj.fat_rate = query[0].rate
             obj.snf_clr_rate = query[0].snf_clr_rate
+
+            for res in obj.items:
+                if res.fat and query[0].rate:
+                    res.fat_amount = res.fat * query[0].rate
+                if res.snf_clr and query[0].snf_clr_rate:
+                    res.snf_clr_amount = res.fat * query[0].snf_clr_rate
+
