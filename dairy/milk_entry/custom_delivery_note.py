@@ -119,9 +119,7 @@ def on_submit(self, method):
                         new_mle.snf_after_transaction = mle_obj.snf_after_transaction - itm.snf_clr
                         new_mle.fat_per = (float(itm.fat) / itm.total_weight) * 100
                         new_mle.snf_per = (float(itm.snf_clr)/ itm.total_weight) * 100
-
-
-                        new_mle.save()
+                        new_mle.save(ignore_permissions=True)
                         new_mle.submit()
 
 
