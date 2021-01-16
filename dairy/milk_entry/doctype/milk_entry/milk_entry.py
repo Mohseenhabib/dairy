@@ -69,7 +69,7 @@ class MilkEntry(Document):
             'fat': self.fat_kg,
             'clr': self.snf_kg
         })
-        doc.insert()
+        doc.insert(ignore_permissions=True)
         # doc.submit()
         return doc
 
