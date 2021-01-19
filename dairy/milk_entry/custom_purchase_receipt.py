@@ -227,7 +227,7 @@ def create_milk_stock_ledger(self,method):
                 new_mle.fat_per = (itm.fat / itm.total_weight) * 100
                 new_mle.snf_per = (itm.clr / itm.total_weight) * 100
                 new_mle.save()
-                new_mle.submit()
+                # new_mle.submit()
             else:
                 query = """ select name from `tabMilk Ledger Entry` where item_code = %(item_code)s and warehouse = %(warehouse)s 
                                     """
@@ -261,8 +261,8 @@ def create_milk_stock_ledger(self,method):
                         new_mle.snf_after_transaction = mle_obj.snf_after_transaction + itm.clr
                         new_mle.fat_per = ((mle_obj.fat_after_transaction + itm.fat) / (itm.total_weight + mle_obj.qty_after_transaction)) * 100
                         new_mle.snf_per = ((mle_obj.snf_after_transaction + itm.clr) / (itm.total_weight + mle_obj.qty_after_transaction)) * 100
-                        new_mle.save()
-                        new_mle.submit()
+                        new_mle.save(ignore_permissions=True)
+                        # new_mle.submit()
 
 def cancel_create_milk_stock_ledger(self,method):
     for itm in self.items:
@@ -314,8 +314,8 @@ def cancel_create_milk_stock_ledger(self,method):
                                   {'name': mle_obj.name})
                     frappe.db.commit()
 
-                    new_mle.save()
-                    new_mle.submit()
+                    new_mle.save(ignore_permissions=True)
+                    # new_mle.submit()
                     frappe.db.sql(""" update `tabMilk Ledger Entry` set is_cancelled = 1 where name = %(name)s """,
                                   {'name': new_mle.name})
                     frappe.db.commit()

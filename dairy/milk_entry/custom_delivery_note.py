@@ -120,8 +120,7 @@ def on_submit(self, method):
                         new_mle.fat_per = (float(itm.fat) / itm.total_weight) * 100
                         new_mle.snf_per = (float(itm.snf_clr)/ itm.total_weight) * 100
                         new_mle.save(ignore_permissions=True)
-                        new_mle.submit()
-
+                        # new_mle.submit()
 
 def after_save(self,method):
     if not self.get("__islocal"):
@@ -250,8 +249,8 @@ def cancel_milk_stock_ledger(self, method):
                                   {'name': mle_obj.name})
                     frappe.db.commit()
 
-                    new_mle.save()
-                    new_mle.submit()
+                    new_mle.save(ignore_permissions=True)
+                    # new_mle.submit()
                     frappe.db.sql(""" update `tabMilk Ledger Entry` set is_cancelled = 1 where name = %(name)s """,
                                   {'name': new_mle.name})
                     frappe.db.commit()
