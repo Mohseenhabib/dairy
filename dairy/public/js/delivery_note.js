@@ -88,7 +88,29 @@ frappe.ui.form.on("Delivery Note", {
         });
     }
 });
+ 
+frappe.ui.form.on("Delivery Note Item", {
+    item_code: function(frm,cdt,cdn){
+        let item = locals[cdt][cdn]
+        frappe.call({
+            method: "dairy.milk_entry.doctype.bulk_milk_price_list.bulk_milk_price_list.fetch_snf_and_fat",
+            args: {
+                "item": item.item_code,
+                "customer": frm.doc.customer
+            },
+            callback: function(resp){
+                if(resp.message){
+                    let d = resp.message
 
+                    item.fat_amount = d.rate * item.fat
+                    item.snf_clr_amount = d.snf_clr_rate * item.snf_clr
+                    frm.refresh_field('fat_amount')
+                    frm.refresh_field('snf_clr_amount')
+                }
+            }
+        })
+    }
+})
 
 //cur_frm.cscript.calculate_crate = function(frm){
 //    return cur_frm.call({

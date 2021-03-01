@@ -20,3 +20,22 @@ def fetch_data(doctype, customer):
 				'rate': doc.get("rate"),
 				'snf' : doc.get('snf_clr_rate')
 			}
+
+@frappe.whitelist()
+def fetch_snf_and_fat(item,customer):
+	doc = frappe.get_doc('Bulk Milk Price List', {'item': item, 'docstatus':'1'}, as_dict= True)
+	return {
+				'rate': doc.rate,
+				'snf_clr_rate': doc.snf_clr_rate
+			}
+	# print("******* "*20)
+	# print(doc)
+	# print(customer)
+	# if doc:
+	# 	for cust in doc.get('customer'):
+	# 		if cust.get('customer') == customer:
+	# 			d = {
+	# 				'rate': doc.rate,
+	# 				'snf_clr_rate': doc.snf_clr_rate
+	# 			}
+	# 			return d
