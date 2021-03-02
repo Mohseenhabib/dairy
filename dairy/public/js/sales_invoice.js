@@ -14,6 +14,18 @@ frappe.ui.form.on("Sales Invoice", {
             };
         });
     },
+    after_save:function(frm,cdt,cdn){
+        var d = locals[cdt][cdn];
+        console.log(d);
+        $.each(d.items, function(index, row)
+        {   
+            var a = ((row.amount)/row.total_weight) 
+            row.rate_of_stock_uom=a;
+            console.log("Rate of stock uom",a)
+            frm.refresh_field("rate_of_stock_uom")
+        });
+    },
+    
     customer:function(frm){
         return cur_frm.call({
             method:"dairy.milk_entry.custom_delivery_note.get_route_price_list",

@@ -4,6 +4,17 @@ frappe.ui.form.on("Delivery Note", {
 		frm.add_fetch("route", "price_list", "selling_price_list");
 		frm.add_fetch("route", "transporter", "transporter");
 	},
+    after_save:function(frm,cdt,cdn){
+        var d = locals[cdt][cdn];
+        console.log(d);
+        $.each(d.items, function(index, row)
+        {   
+            var a = ((row.amount)/row.total_weight) 
+            row.rate_of_stock_uom=a;
+            console.log("Rate of stock uom",a)
+            frm.refresh_field("rate_of_stock_uom")
+        });
+    },
 //	calculate_crate: function(frm){
 //	console.log("******************************************");
 ////	    cur_frm.cscript.calculate_crate()
