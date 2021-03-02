@@ -10,12 +10,13 @@
   "section_break_1",
   "active",
   "section_break_3",
+  "milk_type",
+  "item",
   "description",
   "customer",
   "column_break_5",
   "warehouse",
   "section_break_7",
-  "milk_type",
   "column_break_7",
   "rate",
   "snf_clr_rate",
@@ -61,7 +62,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Milk Type",
-   "options": "Cow\nBuffalo\nMix",
+   "options": "\nCow\nBuffalo\nMix",
    "reqd": 1
   },
   {
@@ -95,12 +96,19 @@
    "fieldtype": "Table",
    "label": "Customer",
    "options": "Bulk Milk Price List Customer"
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "Item",
+   "options": "Item",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2020-11-06 12:43:02.517673",
+ "modified": "2021-02-23 15:37:31.458207",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Bulk Milk Price List",
