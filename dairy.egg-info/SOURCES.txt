@@ -23,6 +23,9 @@ dairy/config/docs.py
 dairy/config/milk_entry.py
 dairy/config/stock.py
 dairy/dairy/__init__.py
+dairy/dairy/custom/delivery_note_item.json
+dairy/dairy/custom/sales_invoice_item.json
+dairy/dairy/custom/sales_order_item.json
 dairy/field_order/__init__.py
 dairy/field_order/doctype/__init__.py
 dairy/field_order/doctype/field_order/__init__.py

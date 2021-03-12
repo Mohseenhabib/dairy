@@ -165,24 +165,34 @@ def after_save(self,method):
 
                 # rate
                 if milk_type != "":
-
-                    query2 = frappe.db.sql(""" select bmpl.name, bmpl.rate, bmpl.snf_clr_rate 
-                                            from `tabBulk Milk Price List` bmpl, `tabBulk Milk Price List Warehouse` bmplw, `tabBulk Milk Price List Customer` bmplc
-                                            where bmplw.warehouse = %(warehouse)s and bmpl.active = 1 and bmpl.milk_type = %(milk_type)s 
-                                            and bmplc.customer = %(customer)s and bmpl.name = bmplc.parent and bmpl.name = bmplw.parent
-                                            and bmpl.docstatus =1 
-                                             order by bmpl.modified desc limit 1 """,
-                                           {'warehouse':itm.warehouse,'milk_type':milk_type,'customer':self.customer},
-                                            as_dict=True)
+                    query2 = frappe.db.sql("""select bmpl.name, bmpl.rate, bmpl.snf_clr_rate 
+                                    from `tabBulk Milk Price List` bmpl
+                                    inner join `tabBulk Milk Price List Warehouse` bmplw on bmpl.name = bmplw.parent 
+                                    inner join `tabBulk Milk Price List Customer` bmplc on bmpl.name = bmplc.parent 
+                                    inner join `tabMilk Price List Items` mpli on bmpl.name = mpli.parent 
+                                    where 
+                                    bmpl.active = 1
+                                    and bmpl.docstatus =1 
+                                    and bmplw.warehouse = %(warehouse)s
+                                    and bmpl.milk_type = %(milk_type)s 
+                                    and bmplc.customer = %(customer)s 
+                                    and mpli.item = %(item)s 
+                                    order by bmpl.modified desc limit 1""",
+                                   {'warehouse':itm.warehouse,'milk_type':milk_type,'customer':self.customer,'item':itm.item_code},as_dict=True)
                     if not query2:
-                        query3 = frappe.db.sql(""" select bmpl.name, bmpl.rate, bmpl.snf_clr_rate 
-                                                                    from `tabBulk Milk Price List` bmpl, `tabBulk Milk Price List Warehouse` bmplw, `tabBulk Milk Price List Customer` bmplc
-                                                                    where bmplw.warehouse = %(warehouse)s and bmpl.active = 1 and bmpl.milk_type = %(milk_type)s 
-                                                                    and bmpl.name = bmplw.parent and bmpl.docstatus =1 
-                                                                    order by bmpl.modified desc limit 1 """,
-                                               {'warehouse': itm.warehouse, 'milk_type': milk_type,
-                                                'customer': self.customer},
-                                               as_dict=True)
+
+                        query3 = frappe.db.sql( """select bmpl.name, bmpl.rate, bmpl.snf_clr_rate 
+                                    from `tabBulk Milk Price List` bmpl
+                                    inner join `tabBulk Milk Price List Warehouse` bmplw on bmpl.name = bmplw.parent 
+                                    inner join `tabMilk Price List Items` mpli on bmpl.name = mpli.parent 
+                                    where 
+                                    bmpl.active = 1
+                                    and bmpl.docstatus =1 
+                                    and bmplw.warehouse = %(warehouse)s
+                                    and bmpl.milk_type = %(milk_type)s 
+                                    and mpli.item = %(item)s 
+                                    order by bmpl.modified desc limit 1""",
+                                   {'warehouse': itm.warehouse, 'milk_type': milk_type,'item':itm.item_code},as_dict=True)
                         if not query3:
                             frappe.throw("No Rate Specified in Milk Ledger Price List")
                         else:
@@ -254,13 +264,6 @@ def cancel_milk_stock_ledger(self, method):
                     frappe.db.sql(""" update `tabMilk Ledger Entry` set is_cancelled = 1 where name = %(name)s """,
                                   {'name': new_mle.name})
                     frappe.db.commit()
-
-
-#     calculate total crate return
-#     crate_ret = frappe.db.sql(""" select sum(incoming_count) from `tabCrate Count Child` where parent = %(name)s """,{'name':self.name})
-#     print("*********************",crate_ret)
-#     res = frappe.db.sql(""" INSERT INTO `tabDelivery Note` (total_crate_return) values (%(crate_ret)s) where name = %(name)s""",
-#                   {'crate_ret':crate_ret[0][0],'name':self.name})
 
 
 @frappe.whitelist()
@@ -512,7 +515,6 @@ def get_route_price_list_route(doc_name=None):
                                 where parenttype ='Customer'
                                 and link_doctype ='Route Master'
                                 and link_name =%s limit 1""",(doc_name))
-        print("*************",route_name)
         if route_name:
             dic = {}
             dic['route'] = route_name[0][0]

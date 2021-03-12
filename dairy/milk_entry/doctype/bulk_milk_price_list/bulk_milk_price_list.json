@@ -11,15 +11,16 @@
   "active",
   "section_break_3",
   "milk_type",
-  "item",
   "description",
   "customer",
   "column_break_5",
   "warehouse",
   "section_break_7",
-  "column_break_7",
   "rate",
+  "column_break_12",
   "snf_clr_rate",
+  "item_list_section",
+  "items",
   "amended_from"
  ],
  "fields": [
@@ -66,10 +67,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "column_break_7",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "rate",
    "fieldtype": "Float",
    "in_list_view": 1,
@@ -98,17 +95,25 @@
    "options": "Bulk Milk Price List Customer"
   },
   {
-   "fieldname": "item",
-   "fieldtype": "Link",
-   "label": "Item",
-   "options": "Item",
-   "reqd": 1
+   "fieldname": "column_break_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "item_list_section",
+   "fieldtype": "Section Break",
+   "label": "Item List"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Milk Price List Items"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-02-23 15:37:31.458207",
+ "modified": "2021-03-12 16:30:53.725301",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Bulk Milk Price List",
