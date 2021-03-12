@@ -6,12 +6,13 @@ frappe.ui.form.on("Delivery Note", {
 	},
     after_save:function(frm,cdt,cdn){
         var d = locals[cdt][cdn];
-        console.log(d);
         $.each(d.items, function(index, row)
         {   
             var a = ((row.amount)/row.total_weight) 
             row.rate_of_stock_uom=a;
-            console.log("Rate of stock uom",a)
+            let amt = frm.snf_clr_rate * d.fat
+            row.fat_amount = amt
+            frm.refresh_field('fat_amount')
             frm.refresh_field("rate_of_stock_uom")
         });
     },
@@ -123,63 +124,3 @@ frappe.ui.form.on("Delivery Note Item", {
     }
 })
 
-//cur_frm.cscript.calculate_crate = function(frm){
-//    return cur_frm.call({
-//        method:"dairy.milk_entry.custom_delivery_note.calculate_crate",
-//        args: {
-//                doc: cur_frm
-//              },
-//        callback: function(r)
-//            {
-//               cur_frm.reload_doc();
-//            }
-//    });
-//}
-
-//frappe.ui.form.on("Delivery Note Item", {
-//	fat: function(frm,cdt,cdn) {
-//	    console.log("****************************************fat");
-//		var row = locals[cdt][cdn];
-//		if (row.snf_clr){
-//            frm.call({
-//				method: 'dairy.milk_entry.custom_delivery_note.change_rate',
-//				args: {
-//					item_code: row.item_code,
-//					warehouse: row.warehouse,
-//					posting_date: frm.doc.posting_date,
-//					fat: row.fat,
-//					snf_clr: row.snf_clr
-//				},
-//				callback: function(r) {
-//					if(r.message) {
-//					    row.rate = r.message;
-//					}
-//				}
-//			});
-//		}
-//
-//	},
-//	snf_clr: function(frm,cdt,cdn) {
-//		var row = locals[cdt][cdn];
-//		if (row.fat){
-//		    frm.call({
-//				method: 'dairy.milk_entry.custom_delivery_note.change_rate',
-//				args: {
-//					item_code: row.item_code,
-//					warehouse: row.warehouse,
-//					posting_date: frm.doc.posting_date,
-//					fat: row.fat,
-//					snf_clr: row.snf_clr
-//				},
-//				callback: function(r) {
-//					if(r.message) {
-//					    row.rate = r.message;
-//					    frm.refresh();
-//					}
-//				}
-//			});
-//		}
-//
-//	},
-//
-//});
