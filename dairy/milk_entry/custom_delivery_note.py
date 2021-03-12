@@ -124,13 +124,12 @@ def on_submit(self, method):
 
 def after_save(self,method):
     if not self.get("__islocal"):
-
         good_cow_milk = frappe.db.get_single_value("Dairy Settings", "cow_pro")
         good_buff_milk = frappe.db.get_single_value("Dairy Settings", "buf_pro")
         good_mix_milk = frappe.db.get_single_value("Dairy Settings", "mix_pro")
         milk_type = ""
+        fat_rate = snf_clr_rate = 0
         for itm in self.items:
-            # ******************8
             itm_obj = frappe.get_doc("Item", itm.item_code)
             maintain_snf_fat = itm_obj.maintain_fat_snf_clr
             itm_milk_type = itm_obj.milk_type
@@ -198,12 +197,17 @@ def after_save(self,method):
                         else:
                             # itm.rate = (((itm.fat_per * query3[0]['rate']) + (
                             #             itm.snf_clr_per * query3[0]['snf_clr_rate'])) / (itm.total_weight))
+                            fat_rate = query3[0]['rate']
+                            snf_clr_rate = query3[0]['snf_clr_rate']
                             itm.rate = (((itm.fat * query3[0]['rate']) + (
                                         itm.snf_clr * query3[0]['snf_clr_rate'])) / (itm.total_weight))
                     else:
+                        fat_rate = query2[0]['rate']
+                        snf_clr_rate = query2[0]['snf_clr_rate']
                         # itm.rate = (((itm.fat_per * query2[0]['rate']) + (itm.snf_clr_per * query2[0]['snf_clr_rate'])) / (itm.total_weight))
                         itm.rate = (((itm.fat * query2[0]['rate']) + (itm.snf_clr * query2[0]['snf_clr_rate'])) / (itm.total_weight))
-            # ****************8
+        self.fat_rate = fat_rate
+        self.snf_clr_rate = snf_clr_rate
 
 
 
@@ -586,10 +590,10 @@ def set_fat_and_snf_rate(obj,method):
         if query:
             obj.fat_rate = query[0].rate
             obj.snf_clr_rate = query[0].snf_clr_rate
-
-            for res in obj.items:
-                if res.fat and query[0].rate:
-                    res.fat_amount = res.fat * query[0].rate
-                if res.snf_clr and query[0].snf_clr_rate:
-                    res.snf_clr_amount = res.snf_clr * query[0].snf_clr_rate
+            #
+            # for res in obj.items:
+            #     if res.fat and query[0].rate:
+            #         res.fat_amount = res.fat * query[0].rate
+            #     if res.snf_clr and query[0].snf_clr_rate:
+            #         res.snf_clr_amount = res.snf_clr * query[0].snf_clr_rate
 
