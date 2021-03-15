@@ -210,7 +210,7 @@ def after_save(self,method):
                         itm.rate = (((itm.fat * query2[0]['rate']) + (itm.snf_clr * query2[0]['snf_clr_rate'])) / (itm.total_weight))
                         itm.fat_amount = itm.fat * query2[0]['rate']
                         itm.snf_clr_amount = itm.snf_clr * query2[0]['snf_clr_rate']
-                        
+
         self.fat_rate = fat_rate
         self.snf_clr_rate = snf_clr_rate
 
