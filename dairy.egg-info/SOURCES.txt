@@ -73,11 +73,6 @@ dairy/milk_entry/doctype/bulk_gate_pass_creation_tool/test_bulk_gate_pass_creati
 dairy/milk_entry/doctype/bulk_gate_pass_item/__init__.py
 dairy/milk_entry/doctype/bulk_gate_pass_item/bulk_gate_pass_item.json
 dairy/milk_entry/doctype/bulk_gate_pass_item/bulk_gate_pass_item.py
-dairy/milk_entry/doctype/bulk_milk__price_list/__init__.py
-dairy/milk_entry/doctype/bulk_milk__price_list/bulk_milk__price_list.js
-dairy/milk_entry/doctype/bulk_milk__price_list/bulk_milk__price_list.json
-dairy/milk_entry/doctype/bulk_milk__price_list/bulk_milk__price_list.py
-dairy/milk_entry/doctype/bulk_milk__price_list/test_bulk_milk__price_list.py
 dairy/milk_entry/doctype/bulk_milk_price_list/__init__.py
 dairy/milk_entry/doctype/bulk_milk_price_list/bulk_milk_price_list.js
 dairy/milk_entry/doctype/bulk_milk_price_list/bulk_milk_price_list.json
@@ -169,6 +164,9 @@ dairy/milk_entry/doctype/milk_ledger_entry/milk_ledger_entry.js
 dairy/milk_entry/doctype/milk_ledger_entry/milk_ledger_entry.json
 dairy/milk_entry/doctype/milk_ledger_entry/milk_ledger_entry.py
 dairy/milk_entry/doctype/milk_ledger_entry/test_milk_ledger_entry.py
+dairy/milk_entry/doctype/milk_price_list_items/__init__.py
+dairy/milk_entry/doctype/milk_price_list_items/milk_price_list_items.json
+dairy/milk_entry/doctype/milk_price_list_items/milk_price_list_items.py
 dairy/milk_entry/doctype/milk_rate/__init__.py
 dairy/milk_entry/doctype/milk_rate/milk_rate.js
 dairy/milk_entry/doctype/milk_rate/milk_rate.json
