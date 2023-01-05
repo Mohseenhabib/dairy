@@ -185,7 +185,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-09-07 15:54:02.727640",
+ "modified": "2023-01-05 12:23:13.811327",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Crate Reconciliation",
@@ -202,6 +202,7 @@
    "report": 1,
    "role": "Dairy",
    "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],

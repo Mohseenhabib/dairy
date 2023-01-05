@@ -166,7 +166,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-09-16 14:41:02.318312",
+ "modified": "2023-01-05 12:22:37.230306",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Route Master",
@@ -183,6 +183,20 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Dairy",
+   "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],

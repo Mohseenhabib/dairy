@@ -122,7 +122,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-05-12 12:08:58.061148",
+ "modified": "2023-01-05 12:24:27.417740",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Van Collection",
@@ -138,6 +138,20 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Dairy",
+   "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],

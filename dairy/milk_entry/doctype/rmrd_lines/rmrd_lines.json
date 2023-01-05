@@ -382,7 +382,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-06 16:26:23.540680",
+ "modified": "2023-01-05 12:25:04.679257",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "RMRD Lines",
@@ -398,6 +398,7 @@
    "report": 1,
    "role": "Dairy",
    "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],

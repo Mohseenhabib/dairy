@@ -306,7 +306,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-09-25 15:15:22.149100",
+ "modified": "2023-01-05 12:22:06.681600",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Gate Pass",
@@ -322,6 +322,20 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Dairy",
+   "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],

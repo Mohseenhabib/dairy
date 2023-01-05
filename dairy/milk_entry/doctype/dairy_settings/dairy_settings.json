@@ -111,24 +111,21 @@
   },
   {
    "fieldname": "def_buf_milk_rate",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Default Buffalow Milk Rate",
-   "reqd": 1
+   "label": "Default Buffalow Milk Rate"
   },
   {
    "fieldname": "def_cow_milk_rate",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Default Cow Milk Rate",
-   "reqd": 1
+   "label": "Default Cow Milk Rate"
   },
   {
    "fieldname": "def_mix_milk_rate",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Default Mix Milk Rate",
-   "reqd": 1
+   "label": "Default Mix Milk Rate"
   },
   {
    "fieldname": "column_break_5",
@@ -233,32 +230,32 @@
   },
   {
    "fieldname": "fat_min_cow_milk",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "reqd": 1
   },
   {
    "fieldname": "fat_min_buf_milk",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "reqd": 1
   },
   {
    "fieldname": "fat_min_mix_milk",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "reqd": 1
   },
   {
    "fieldname": "fat_max_cow_milk",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "reqd": 1
   },
   {
    "fieldname": "fat_max_mix_milk",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "reqd": 1
   },
   {
    "fieldname": "fat_max_buf_milk",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "reqd": 1
   },
   {
@@ -268,17 +265,17 @@
   },
   {
    "fieldname": "fat_interval_cow_milk",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "reqd": 1
   },
   {
    "fieldname": "fat_interval_buf_milk",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "reqd": 1
   },
   {
    "fieldname": "fat_interval_mix_milk",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "reqd": 1
   },
   {
@@ -298,17 +295,17 @@
   },
   {
    "fieldname": "snf_min_cow_milk",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "reqd": 1
   },
   {
    "fieldname": "snf_min_buf_milk",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "reqd": 1
   },
   {
    "fieldname": "snf_min_mix_milk",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "reqd": 1
   },
   {
@@ -322,17 +319,17 @@
   },
   {
    "fieldname": "snf_max_cow_milk",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "reqd": 1
   },
   {
    "fieldname": "snf_max_buf_milk",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "reqd": 1
   },
   {
    "fieldname": "snf_max_mix_milk",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "reqd": 1
   },
   {
@@ -346,17 +343,17 @@
   },
   {
    "fieldname": "snf_interval_cow_milk",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "reqd": 1
   },
   {
    "fieldname": "snf_interval_buf_milk",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "reqd": 1
   },
   {
    "fieldname": "snf_interval_mix_milk",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "reqd": 1
   },
   {
@@ -526,7 +523,7 @@
   },
   {
    "fieldname": "leakage_percentage",
-   "fieldtype": "Data",
+   "fieldtype": "Percent",
    "label": "Leakage Percentage"
   },
   {
@@ -536,7 +533,7 @@
   {
    "description": "Leakage would only be applicable on the item in sales order when the item has leakage applicable and the quantity of the item in the selected UOM is greater than what is defined here.",
    "fieldname": "leakage_qty",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "label": "Leakage Threshold Qty"
   },
   {
@@ -612,7 +609,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2020-10-03 13:45:17.348870",
+ "modified": "2023-01-05 12:05:31.603648",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",

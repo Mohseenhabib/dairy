@@ -113,7 +113,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-03-12 16:30:53.725301",
+ "modified": "2023-01-05 12:14:58.568347",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Bulk Milk Price List",
@@ -129,6 +129,20 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Dairy",
+   "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],

@@ -8,6 +8,7 @@ from frappe.model.document import Document
 from frappe.utils import flt
 
 class MilkRate(Document):
+	@frappe.whitelist()
 	def get_snf_lines(self):
 		to_remove = []
 		# if self.get("__islocal"):

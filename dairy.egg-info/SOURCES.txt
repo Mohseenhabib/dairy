@@ -55,7 +55,6 @@ dairy/milk_entry/custom/quotation_item.json
 dairy/milk_entry/custom/sales_invoice.json
 dairy/milk_entry/custom/sales_invoice_item.json
 dairy/milk_entry/custom/sales_order.json
-dairy/milk_entry/custom/sales_order_item.json
 dairy/milk_entry/custom/sales_taxes_and_charges.json
 dairy/milk_entry/custom/stock_entry.json
 dairy/milk_entry/custom/stock_entry_detail.json
@@ -296,7 +295,6 @@ dairy/order_book/custom/quotation_item.json
 dairy/order_book/custom/sales_invoice.json
 dairy/order_book/custom/sales_invoice_item.json
 dairy/order_book/custom/sales_order.json
-dairy/order_book/custom/sales_order_item.json
 dairy/order_book/custom/sales_taxes_and_charges.json
 dairy/order_book/doctype/__init__.py
 dairy/order_book/doctype/order_book/__init__.py
