@@ -2,6 +2,17 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Milk Rate', {
+    setup:function(frm){
+        frm.set_query('dcs', function(doc) {
+            return {
+                filters: {
+                    "is_dcs":1,
+                    "is_group":0
+                }
+            };
+        });
+           
+    },
 	milk_type: function(frm) {
 	    return frm.call('get_snf_lines').then(() => {
             frm.refresh_field('milk_rate_chart');
