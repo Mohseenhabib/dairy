@@ -9,14 +9,17 @@ from frappe.model.document import Document
 
 
 class VanCollection(Document):
+    @frappe.whitelist()
     def submit_van_collection(self):
         frappe.db.set(self,'status','Submitted')
 
+    @frappe.whitelist()
     def change_status_complete(self):
         frappe.db.set(self, 'status', 'Completed')
         self.flags.ignore_validate_update_after_submit = True  # ignore after submit permission
         self.save(ignore_permissions=True)
 
+    @frappe.whitelist()
     def van_start_collection(self):
         if self:
             warehouse = frappe.db.get_all("Warehouse",{

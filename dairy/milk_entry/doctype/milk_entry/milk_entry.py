@@ -13,6 +13,19 @@ from frappe.model.mapper import get_mapped_doc
 class MilkEntry(Document):
     @frappe.whitelist()
     def get_pricelist(self):
+        state_climatic_factor,state_factor = frappe.db.get_value('Warehouse',{'is_dcs':1},['state_climatic_factor','state_factor'])
+        snf =  ((self.clr/4)+(self.fat*(state_climatic_factor)+(state_factor)))
+        frappe.db.set(self, 'snf', snf)
+        print('snfffffffffffffffffff',self.snf)
+
+        item = frappe.db.get_value('Item',{'milk_type':self.milk_type},['weight_per_unit'])
+        fat_kg =  ((self.volume * (item)) * (self.fat/100))
+        frappe.db.set(self, 'fat_kg', fat_kg)
+        
+       
+        snf_kg =  ((self.volume * (item)) * (self.snf/100))
+        frappe.db.set(self, 'snf_kg', snf_kg)
+
         pricelist_name = frappe.db.sql("""
                     select milk_rate.name from `tabMilk Rate` as milk_rate 
                     inner join `tabWarehouse Child` as ware on ware.parent = milk_rate.name 
@@ -23,10 +36,9 @@ class MilkEntry(Document):
 
         frappe.db.set(self,'milk_rate', pricelist_name[0][0])
         rate = frappe.db.sql(""" select rate from `tabMilk Rate Chart` where fat >= {0} and snf_clr >= {1} 
-                   and parent = '{2}' order by fat,snf_clr asc limit 1 """.format(self.fat,self.clr,pricelist_name[0][0]))
-        
-        print('rate^^^^^^^^^^^^^^^^^^^^^',pricelist_name[0][0],self.fat,self.clr)
-        
+                   and parent = '{2}' order by fat,snf_clr asc limit 1 """.format(self.fat,self.snf,pricelist_name[0][0]))
+
+        print('rateEEEEEEEEEEEEEEEEEEEEEEEEEE',rate)
         
         if not rate:
             frappe.throw(_("Milk price not found."))
@@ -34,22 +46,10 @@ class MilkEntry(Document):
         frappe.db.set(self, 'total',(self.volume *self.unit_price))
         frappe.db.set(self, 'status','Submitted')
 
-       
-        state_climatic_factor,state_factor = frappe.db.get_value('Warehouse',{'is_dcs':1},['state_climatic_factor','state_factor'])
-        snf =  ((self.clr/4)+(self.fat*(state_climatic_factor)+(state_factor)))
-        frappe.db.set(self, 'snf', snf)
-        print('snfffffffffffffffffff',snf)
-
-        item = frappe.db.get_value('Item',{'milk_type':self.milk_type},['weight_per_unit'])
-        fat_kg =  ((self.volume * (item)) * (self.fat/100))
-        frappe.db.set(self, 'fat_kg', fat_kg)
-        
-       
-        snf_kg =  ((self.volume * (item)) * (self.snf/100))
-        frappe.db.set(self, 'snf_kg', snf_kg)
 
         
-       
+
+
     @frappe.whitelist()
     def create_purchase_receipt(self):
         purchase_receipts = frappe.db.sql("""select count(name) from `tabPurchase Receipt` 
@@ -86,7 +86,7 @@ class MilkEntry(Document):
             'clr': self.snf_kg
         })
         doc.insert(ignore_permissions=True)
-        # doc.submit()
+        doc.submit()
         return doc
 
 def _get_product(milk_type):
