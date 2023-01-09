@@ -14,12 +14,16 @@ frappe.ui.form.on('Milk Entry', {
                 }
             };
         });
+
+
+    },
+ 
+    setup : function(frm){
         let currentDate = new Date();
         let time = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
         frm.set_value("time",time)
 
     },
-
     validate: function(frm) {
 
         if(!frm.doc.dcs_id) {
@@ -104,6 +108,13 @@ frappe.ui.form.on('Milk Entry', {
 
     },
     before_save: function(frm) {
+        return frm.call('get_pricelist').then(() => {
+            frm.refresh();
+
+        });
+    },
+    on_submit: function(frm){
+        cur_frm.cscript.submit_purchase_rec()
         frappe.model.get_value('Dairy Settings', {'name': 'Dairy Settings'}, 'auto_print_milk_receipt', function(d)
         {
             if(d.auto_print_milk_receipt == 1)
@@ -111,12 +122,7 @@ frappe.ui.form.on('Milk Entry', {
                 frm.print_doc();
             }
         });
-        return frm.call('get_pricelist').then(() => {
-            frm.refresh();
-
-        });
-    },
-   
+    }
 });
 
 cur_frm.cscript.submit_purchase_rec = function(){
