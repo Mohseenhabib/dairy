@@ -36,6 +36,7 @@ class VanCollectionItems(Document):
 			self.db_update()
 		return True
 
+	@frappe.whitelist()
 	def make_stock_entry(self):
 		van_collection = frappe.get_doc("Van Collection", self.van_collection)
 		stock_entry = frappe.new_doc("Stock Entry")
