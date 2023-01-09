@@ -18,12 +18,6 @@ frappe.ui.form.on('Milk Entry', {
 
     },
  
-    setup : function(frm){
-        let currentDate = new Date();
-        let time = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
-        frm.set_value("time",time)
-
-    },
     validate: function(frm) {
 
         if(!frm.doc.dcs_id) {
@@ -105,7 +99,11 @@ frappe.ui.form.on('Milk Entry', {
 //            },__('Create'));
             frm.page.set_inner_btn_group_as_primary(__('Create'));
         }
-
+        if(frm.doc.__islocal){
+            let currentDate = new Date();
+            let time = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
+            frm.set_value("time",time)
+        }
     },
     before_save: function(frm) {
         return frm.call('get_pricelist').then(() => {
