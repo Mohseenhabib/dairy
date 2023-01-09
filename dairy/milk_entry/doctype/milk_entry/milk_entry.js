@@ -111,7 +111,7 @@ frappe.ui.form.on('Milk Entry', {
 
         });
     },
-    on_submit: function(frm){
+    before_submit: function(frm){
         cur_frm.cscript.submit_purchase_rec()
         frappe.model.get_value('Dairy Settings', {'name': 'Dairy Settings'}, 'auto_print_milk_receipt', function(d)
         {
