@@ -11,6 +11,7 @@ from datetime import datetime
 from frappe.model.mapper import get_mapped_doc
 
 class MilkEntry(Document):
+    @frappe.whitelist()
     def get_pricelist(self):
         pricelist_name = frappe.db.sql("""
                     select milk_rate.name from `tabMilk Rate` as milk_rate 
@@ -22,19 +23,34 @@ class MilkEntry(Document):
 
         frappe.db.set(self,'milk_rate', pricelist_name[0][0])
         rate = frappe.db.sql(""" select rate from `tabMilk Rate Chart` where fat >= {0} and snf_clr >= {1} 
-                    and parent = '{2}' order by fat,snf_clr asc limit 1 """.format(self.fat,self.clr,pricelist_name[0][0]))
+                   and parent = '{2}' order by fat,snf_clr asc limit 1 """.format(self.fat,self.clr,pricelist_name[0][0]))
+        
+        print('rate^^^^^^^^^^^^^^^^^^^^^',pricelist_name[0][0],self.fat,self.clr)
+        
+        
         if not rate:
             frappe.throw(_("Milk price not found."))
         frappe.db.set(self, 'unit_price', rate[0][0])
         frappe.db.set(self, 'total',(self.volume *self.unit_price))
         frappe.db.set(self, 'status','Submitted')
 
-        fat_kg = (self.volume * self.fat)/100
-        frappe.db.set(self, 'fat_kg', fat_kg)
+       
+        state_climatic_factor,state_factor = frappe.db.get_value('Warehouse',{'is_dcs':1},['state_climatic_factor','state_factor'])
+        snf =  ((self.clr/4)+(self.fat*(state_climatic_factor)+(state_factor)))
+        frappe.db.set(self, 'snf', snf)
+       
 
-        snf_kg = self.clr/4 + 0.21*(self.fat/100) + 0.36
+        item = frappe.db.get_value('Item',{'milk_type':self.milk_type},['weight_per_unit'])
+        fat_kg =  ((self.volume * (item)) * (self.fat/100))
+        frappe.db.set(self, 'fat_kg', fat_kg)
+        
+       
+        snf_kg =  ((self.volume * (item)) * (self.snf/100))
         frappe.db.set(self, 'snf_kg', snf_kg)
 
+        
+       
+    @frappe.whitelist()
     def create_purchase_receipt(self):
         purchase_receipts = frappe.db.sql("""select count(name) from `tabPurchase Receipt` 
                                             where status not in ('Cancelled') and milk_entry= %s""",(self.name))[0][0]

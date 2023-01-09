@@ -281,7 +281,7 @@
   {
    "fieldname": "sb3",
    "fieldtype": "Section Break",
-   "label": "SNF/CLR"
+   "label": "CLR"
   },
   {
    "fieldname": "head12",
@@ -609,7 +609,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-01-05 12:05:31.603648",
+ "modified": "2023-01-05 17:37:15.774709",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",

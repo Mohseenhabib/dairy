@@ -9,10 +9,14 @@ frappe.ui.form.on('Milk Entry', {
                     "is_dcs":1,
                     "is_group":0,
                     "company":frappe.defaults.get_user_default("Company"),
-                    "disabled":0
+                    "disabled":0,
+                    
                 }
             };
         });
+        let currentDate = new Date();
+        let time = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
+        frm.set_value("time",time)
 
     },
 

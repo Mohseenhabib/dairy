@@ -3,7 +3,7 @@
 
 frappe.ui.form.on('Milk Rate', {
     setup:function(frm){
-        frm.set_query('dcs', function(doc) {
+        frm.set_query('dsc_name', function(doc) {
             return {
                 filters: {
                     "is_dcs":1,
