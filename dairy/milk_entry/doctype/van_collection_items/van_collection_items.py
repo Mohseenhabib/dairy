@@ -33,7 +33,8 @@ class VanCollectionItems(Document):
 			self.cow_milk_cans = int(self.cow_milk_collected / allow_max_capacity)
 			self.buf_milk_cans = int(self.buffalow_milk_collected / allow_max_capacity)
 			self.mix_milk_cans = int(self.mix_milk_collected / allow_max_capacity)
-			self.db_update()
+			self.save(ignore_permissions=True)
+
 		return True
 
 	@frappe.whitelist()
@@ -47,6 +48,7 @@ class VanCollectionItems(Document):
 		stock_entry.van_collection_item = self.name
 
 		route = frappe.get_doc("Route Master", van_collection.route)
+		stock_entry.target_warehouse = route.source_warehouse
 
 		cost_center = frappe.get_cached_value('Company', van_collection.company, 'cost_center')
 		perpetual_inventory = frappe.get_cached_value('Company', van_collection.company, 'enable_perpetual_inventory')

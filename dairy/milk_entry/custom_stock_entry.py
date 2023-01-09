@@ -6,74 +6,76 @@ from frappe.utils import flt,cint, cstr, getdate
 
 def milk_ledger_stock_entry(self,method):
     if not self.get("__islocal"):
-        good_cow_milk = frappe.db.get_single_value("Dairy Settings", "cow_pro")
-        good_buff_milk = frappe.db.get_single_value("Dairy Settings", "buf_pro")
-        good_mix_milk = frappe.db.get_single_value("Dairy Settings", "mix_pro")
-        milk_type = ""
-        for itm in self.items:
-            if itm.s_warehouse:
-                itm_obj = frappe.get_doc("Item",itm.item_code)
-                itm_weight = float(itm_obj.weight_per_unit)
-                weight_uom = itm_obj.weight_uom
-                maintain_snf_fat = itm_obj.maintain_fat_snf_clr
-                itm_milk_type = itm_obj.milk_type
-            # ******************8
-                if itm.item_code == good_cow_milk or itm.item_code == good_buff_milk or itm.item_code == good_mix_milk or maintain_snf_fat == 1:
-                    if itm.item_code == good_cow_milk:
-                        milk_type = "Cow"
-                    elif itm.item_code == good_buff_milk:
-                        milk_type = "Buffalow"
-                    elif itm.item_code == good_mix_milk:
-                        milk_type = "Mix"
-                    elif maintain_snf_fat == 1:
-                        milk_type = itm_milk_type
-                        print("**************************************************itm mik type",milk_type)
-                    query = """ select name from `tabMilk Ledger Entry` where item_code = %(item_code)s 
-                    and warehouse = %(warehouse)s """
-                    if itm.batch_no:
-                        query += """ and batch_no = %(batch_no)s """
-                    if itm.serial_no:
-                        query += """ and serial_no = %(serial_no)s """
+        if not self.van_collection and not self.van_collection_item:
 
-                    query += """ order by modified desc limit 1 """
-                    mle = frappe.db.sql(query,
-                                        {'warehouse': itm.s_warehouse, 'item_code': itm.item_code, 'batch_no': itm.batch_no,
-                                         'serial_no': itm.serial_no}, as_dict=True)
-                    if not mle:
-                        frappe.throw("Milk Ledger Entry Not Found For This Item")
-                    if mle[0]['name']:
-                        mle_obj = frappe.get_doc("Milk Ledger Entry",mle[0]['name'])
-                        itm.fat = (mle_obj.fat_per / 100) * (itm.transfer_qty * itm_weight)
-                        itm.fat_per = mle_obj.fat_per
-                        itm.snf_clr = (mle_obj.snf_per / 100) * (itm.transfer_qty * itm_weight)
-                        itm.snf_clr_per = mle_obj.snf_per
+            good_cow_milk = frappe.db.get_single_value("Dairy Settings", "cow_pro")
+            good_buff_milk = frappe.db.get_single_value("Dairy Settings", "buf_pro")
+            good_mix_milk = frappe.db.get_single_value("Dairy Settings", "mix_pro")
+            milk_type = ""
+            for itm in self.items:
+                if itm.s_warehouse:
+                    itm_obj = frappe.get_doc("Item",itm.item_code)
+                    itm_weight = float(itm_obj.weight_per_unit)
+                    weight_uom = itm_obj.weight_uom
+                    maintain_snf_fat = itm_obj.maintain_fat_snf_clr
+                    itm_milk_type = itm_obj.milk_type
+                # ******************8
+                    if itm.item_code == good_cow_milk or itm.item_code == good_buff_milk or itm.item_code == good_mix_milk or maintain_snf_fat == 1:
+                        if itm.item_code == good_cow_milk:
+                            milk_type = "Cow"
+                        elif itm.item_code == good_buff_milk:
+                            milk_type = "Buffalow"
+                        elif itm.item_code == good_mix_milk:
+                            milk_type = "Mix"
+                        elif maintain_snf_fat == 1:
+                            milk_type = itm_milk_type
+                            print("**************************************************itm mik type",milk_type)
+                        query = """ select name from `tabMilk Ledger Entry` where item_code = %(item_code)s 
+                        and warehouse = %(warehouse)s """
+                        if itm.batch_no:
+                            query += """ and batch_no = %(batch_no)s """
+                        if itm.serial_no:
+                            query += """ and serial_no = %(serial_no)s """
 
-                    # rate
-                    if milk_type != "":
-                        print("**************************************************itm mik type", milk_type)
-                        query2 = frappe.db.sql(""" select bmpl.name, bmpl.rate, bmpl.snf_clr_rate 
-                                                from `tabBulk Milk Price List` bmpl, `tabBulk Milk Price List Warehouse` bmplw, `tabBulk Milk Price List Customer` bmplc
-                                                where bmplw.warehouse = %(warehouse)s and bmpl.active = 1 and bmpl.milk_type = %(milk_type)s 
-                                                and bmplc.customer = %(customer)s and bmpl.name = bmplc.parent and bmpl.name = bmplw.parent
-                                                and bmpl.docstatus =1 
-                                                 order by bmpl.modified desc limit 1 """,
-                                               {'warehouse':itm.s_warehouse,'milk_type':milk_type,'customer':self.customer},
-                                                as_dict=True)
-                        if not query2:
-                            query3 = frappe.db.sql(""" select bmpl.name, bmpl.rate, bmpl.snf_clr_rate 
-                                                                        from `tabBulk Milk Price List` bmpl, `tabBulk Milk Price List Warehouse` bmplw, `tabBulk Milk Price List Customer` bmplc
-                                                                        where bmplw.warehouse = %(warehouse)s and bmpl.active = 1 and bmpl.milk_type = %(milk_type)s 
-                                                                        and bmpl.name = bmplw.parent and bmpl.docstatus =1 order by bmpl.modified desc limit 1 """,
-                                                   {'warehouse': itm.s_warehouse, 'milk_type': milk_type,
-                                                    'customer': self.customer},
-                                                   as_dict=True)
-                            if not query3:
-                                frappe.throw("No Rate Specified in Bulk Milk Price List")
+                        query += """ order by modified desc limit 1 """
+                        mle = frappe.db.sql(query,
+                                            {'warehouse': itm.s_warehouse, 'item_code': itm.item_code, 'batch_no': itm.batch_no,
+                                            'serial_no': itm.serial_no}, as_dict=True)
+                        if not mle:
+                            frappe.throw("Milk Ledger Entry Not Found For This Item")
+                        if mle[0]['name']:
+                            mle_obj = frappe.get_doc("Milk Ledger Entry",mle[0]['name'])
+                            itm.fat = (mle_obj.fat_per / 100) * (itm.transfer_qty * itm_weight)
+                            itm.fat_per = mle_obj.fat_per
+                            itm.snf_clr = (mle_obj.snf_per / 100) * (itm.transfer_qty * itm_weight)
+                            itm.snf_clr_per = mle_obj.snf_per
+
+                        # rate
+                        if milk_type != "":
+                            print("**************************************************itm mik type", milk_type)
+                            query2 = frappe.db.sql(""" select bmpl.name, bmpl.rate, bmpl.snf_clr_rate 
+                                                    from `tabBulk Milk Price List` bmpl, `tabBulk Milk Price List Warehouse` bmplw, `tabBulk Milk Price List Customer` bmplc
+                                                    where bmplw.warehouse = %(warehouse)s and bmpl.active = 1 and bmpl.milk_type = %(milk_type)s 
+                                                    and bmplc.customer = %(customer)s and bmpl.name = bmplc.parent and bmpl.name = bmplw.parent
+                                                    and bmpl.docstatus =1 
+                                                    order by bmpl.modified desc limit 1 """,
+                                                {'warehouse':itm.s_warehouse,'milk_type':milk_type,'customer':self.customer},
+                                                    as_dict=True)
+                            if not query2:
+                                query3 = frappe.db.sql(""" select bmpl.name, bmpl.rate, bmpl.snf_clr_rate 
+                                                                            from `tabBulk Milk Price List` bmpl, `tabBulk Milk Price List Warehouse` bmplw, `tabBulk Milk Price List Customer` bmplc
+                                                                            where bmplw.warehouse = %(warehouse)s and bmpl.active = 1 and bmpl.milk_type = %(milk_type)s 
+                                                                            and bmpl.name = bmplw.parent and bmpl.docstatus =1 order by bmpl.modified desc limit 1 """,
+                                                    {'warehouse': itm.s_warehouse, 'milk_type': milk_type,
+                                                        'customer': self.customer},
+                                                    as_dict=True)
+                                if not query3:
+                                    frappe.throw("No Rate Specified in Bulk Milk Price List")
+                                else:
+                                    itm.rate = (((itm.fat_per * query3[0]['rate']) + (
+                                                itm.snf_clr_per * query3[0]['snf_clr_rate'])) /  (itm.transfer_qty * itm_weight))
                             else:
-                                itm.rate = (((itm.fat_per * query3[0]['rate']) + (
-                                            itm.snf_clr_per * query3[0]['snf_clr_rate'])) /  (itm.transfer_qty * itm_weight))
-                        else:
-                            itm.rate = (((itm.fat_per * query2[0]['rate']) + (itm.snf_clr_per * query2[0]['snf_clr_rate'])) /  (itm.transfer_qty * itm_weight))
+                                itm.rate = (((itm.fat_per * query2[0]['rate']) + (itm.snf_clr_per * query2[0]['snf_clr_rate'])) /  (itm.transfer_qty * itm_weight))
 
 
 
