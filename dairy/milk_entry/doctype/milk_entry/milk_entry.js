@@ -103,14 +103,7 @@ frappe.ui.form.on('Milk Entry', {
         }
 
     },
-    before_submit: function(frm) {
-        return frm.call('get_pricelist').then(() => {
-            frm.refresh();
-
-        });
-    },
-    on_submit: function(frm){
-        cur_frm.cscript.submit_purchase_rec()
+    before_save: function(frm) {
         frappe.model.get_value('Dairy Settings', {'name': 'Dairy Settings'}, 'auto_print_milk_receipt', function(d)
         {
             if(d.auto_print_milk_receipt == 1)
@@ -118,7 +111,12 @@ frappe.ui.form.on('Milk Entry', {
                 frm.print_doc();
             }
         });
-    }
+        return frm.call('get_pricelist').then(() => {
+            frm.refresh();
+
+        });
+    },
+   
 });
 
 cur_frm.cscript.submit_purchase_rec = function(){

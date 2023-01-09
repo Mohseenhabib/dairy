@@ -38,7 +38,7 @@ class MilkEntry(Document):
         state_climatic_factor,state_factor = frappe.db.get_value('Warehouse',{'is_dcs':1},['state_climatic_factor','state_factor'])
         snf =  ((self.clr/4)+(self.fat*(state_climatic_factor)+(state_factor)))
         frappe.db.set(self, 'snf', snf)
-       
+        print('snfffffffffffffffffff',snf)
 
         item = frappe.db.get_value('Item',{'milk_type':self.milk_type},['weight_per_unit'])
         fat_kg =  ((self.volume * (item)) * (self.fat/100))
