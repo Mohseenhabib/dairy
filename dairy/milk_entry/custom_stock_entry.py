@@ -82,6 +82,7 @@ def milk_ledger_stock_entry(self,method):
     # create milk ledger entry
 def on_submit(self, method):
     for itm in self.items:
+        print('itmmmmmmmmmmmmmmmmmmmmmm',self.items)
         if itm.s_warehouse:
             itm_obj = frappe.get_doc("Item", itm.item_code)
             itm_weight = float(itm_obj.weight_per_unit)

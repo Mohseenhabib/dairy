@@ -30,9 +30,9 @@ class VanCollectionItems(Document):
 			frappe.throw("Can not allow Mix Milk Collected greater then the Mix Milk Entry")
 
 		if allow_max_capacity > 0:
-			self.cow_milk_cans = int(self.cow_milk_collected / allow_max_capacity)
-			self.buf_milk_cans = int(self.buffalow_milk_collected / allow_max_capacity)
-			self.mix_milk_cans = int(self.mix_milk_collected / allow_max_capacity)
+			self.cow_milk_cans = round(self.cow_milk_collected / allow_max_capacity)
+			self.buf_milk_cans = round(self.buffalow_milk_collected / allow_max_capacity)
+			self.mix_milk_cans = round(self.mix_milk_collected / allow_max_capacity)
 			self.save(ignore_permissions=True)
 
 		return True
@@ -49,6 +49,10 @@ class VanCollectionItems(Document):
 
 		route = frappe.get_doc("Route Master", van_collection.route)
 		stock_entry.target_warehouse = route.source_warehouse
+		
+		doc1 = frappe.get_doc('Dairy Settings')
+		if doc1.quality_inspection_required_for_van_collection == 1:
+			stock_entry.inspection_required = 1
 
 		cost_center = frappe.get_cached_value('Company', van_collection.company, 'cost_center')
 		perpetual_inventory = frappe.get_cached_value('Company', van_collection.company, 'enable_perpetual_inventory')
@@ -68,6 +72,8 @@ class VanCollectionItems(Document):
 
 		if doc.mix_milk_collected > 0:
 			self.set_value_depend_milk_type(mix_item, stock_entry,doc,doc.mix_milk_collected, doc.mix_milk_fat, doc.mix_milk_clr, route, cost_center, expense_account,perpetual_inventory)
+
+		
 
 		return stock_entry
 

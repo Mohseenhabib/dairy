@@ -86,6 +86,7 @@
   "get_territory",
   "section_break_77",
   "auto_print_milk_receipt",
+  "quality_inspection_required_for_van_collection",
   "column_break_82",
   "restrict_multiple_orders_in_single_shift",
   "milk_leakage_section",
@@ -281,7 +282,7 @@
   {
    "fieldname": "sb3",
    "fieldtype": "Section Break",
-   "label": "CLR"
+   "label": "SNF"
   },
   {
    "fieldname": "head12",
@@ -604,12 +605,18 @@
    "label": "Leakage Calculated on",
    "options": "Sales Order\nGate Pass",
    "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "quality_inspection_required_for_van_collection",
+   "fieldtype": "Check",
+   "label": "Quality Inspection Required for Van Collection"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-01-05 17:37:15.774709",
+ "modified": "2023-01-10 17:00:08.150558",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",
