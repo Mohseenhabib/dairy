@@ -58,6 +58,15 @@ $ bench --site <site-name> install-app dairy
 
 ![Bastar Vehicle Log](https://user-images.githubusercontent.com/11851156/211535025-4d5bc502-3990-4c48-b58e-363302a5eb24.jpg)
 
+## Reports
+- Milk Collection Trends
+- Milk Collection vs Van Collection
+- Van Collection vs RMRD
+- Crate Reconciliation
+- Gate Pass
+- Crate Register
+
+
 ### Erpnext and our dairy management system goes hand in hand to complete and cover whole cycle of Dairy business with integration of devices used for testing the raw milk, by keeping the track of no. of crates which goes to customer at the time of sales, by maintaining the vehicle maintainance and log and with the help of different comparison reports.
 
 
