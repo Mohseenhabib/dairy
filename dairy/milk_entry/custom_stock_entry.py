@@ -44,7 +44,7 @@ def milk_ledger_stock_entry(self,method):
                         if not mle:
                             frappe.throw("Milk Ledger Entry Not Found For This Item")
                         if mle[0]['name']:
-                            mle_obj = frappe.get_doc("Milk Ledger Entry",mle[0]['name'])
+                            mle_obj = frappe.get_doc("Milk Ledger Entry",mle[0],['name'])
                             itm.fat = (mle_obj.fat_per / 100) * (itm.transfer_qty * itm_weight)
                             itm.fat_per = mle_obj.fat_per
                             itm.snf_clr = (mle_obj.snf_per / 100) * (itm.transfer_qty * itm_weight)

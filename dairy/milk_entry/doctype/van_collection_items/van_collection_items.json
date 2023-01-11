@@ -41,12 +41,16 @@
   "mix_milk_sam",
   "sb5",
   "cow_milk_fat",
-  "buf_milk_fat",
-  "mix_milk_fat",
-  "column_break_36",
   "cow_milk_clr",
+  "cow_milk_snf",
+  "column_break_36",
+  "buf_milk_fat",
   "buf_milk_clr",
+  "buffalow_milk_snf",
+  "column_break_42",
+  "mix_milk_fat",
   "mix_milk_clr",
+  "mix_milk_snf",
   "section_break_40",
   "gate_pass",
   "sb6",
@@ -293,21 +297,21 @@
    "default": "0",
    "fieldname": "cow_milk_fat",
    "fieldtype": "Float",
-   "label": "Cow Milk FAT",
+   "label": "Cow Milk FAT%",
    "read_only": 1
   },
   {
    "default": "0",
    "fieldname": "buf_milk_fat",
    "fieldtype": "Float",
-   "label": "Buffalow Milk FAT",
+   "label": "Buffalow Milk FAT%",
    "read_only": 1
   },
   {
    "default": "0",
    "fieldname": "mix_milk_fat",
    "fieldtype": "Float",
-   "label": "Mix Milk FAT",
+   "label": "Mix Milk FAT%",
    "read_only": 1
   },
   {
@@ -318,21 +322,21 @@
    "default": "0",
    "fieldname": "cow_milk_clr",
    "fieldtype": "Float",
-   "label": "Cow Milk CLR",
+   "label": "Cow Milk CLR%",
    "read_only": 1
   },
   {
    "default": "0",
    "fieldname": "buf_milk_clr",
    "fieldtype": "Float",
-   "label": "Buffalow Milk CLR",
+   "label": "Buffalow Milk CLR%",
    "read_only": 1
   },
   {
    "default": "0",
    "fieldname": "mix_milk_clr",
    "fieldtype": "Float",
-   "label": "Mix Milk CLR",
+   "label": "Mix Milk CLR%",
    "read_only": 1
   },
   {
@@ -353,10 +357,32 @@
    "hidden": 1,
    "label": "Company",
    "options": "Company"
+  },
+  {
+   "fieldname": "column_break_42",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cow_milk_snf",
+   "fieldtype": "Float",
+   "label": "Cow Milk SNF%",
+   "read_only": 1
+  },
+  {
+   "fieldname": "buffalow_milk_snf",
+   "fieldtype": "Float",
+   "label": "Buffalow Milk SNF%",
+   "read_only": 1
+  },
+  {
+   "fieldname": "mix_milk_snf",
+   "fieldtype": "Float",
+   "label": "Mix Milk SNF%",
+   "read_only": 1
   }
  ],
  "links": [],
- "modified": "2020-05-12 12:11:57.780015",
+ "modified": "2023-01-11 12:42:40.959794",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Van Collection Items",

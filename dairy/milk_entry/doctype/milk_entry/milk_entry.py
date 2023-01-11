@@ -26,6 +26,9 @@ class MilkEntry(Document):
         snf_kg =  ((self.volume * (item)) * (self.snf/100))
         frappe.db.set(self, 'snf_kg', snf_kg)
 
+        itm = frappe.db.get_value('Item',{'milk_type':self.milk_type},['stock_uom'])
+        frappe.db.set(self,'stock_uom',itm)      
+
         pricelist_name = frappe.db.sql("""
                     select milk_rate.name from `tabMilk Rate` as milk_rate 
                     inner join `tabWarehouse Child` as ware on ware.parent = milk_rate.name 

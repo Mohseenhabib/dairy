@@ -15,9 +15,11 @@
   "sb2",
   "member",
   "milk_type",
+  "snf",
   "sb3",
   "sample",
   "volume",
+  "stock_uom",
   "fat",
   "clr",
   "section_break_7",
@@ -284,12 +286,25 @@
    "fieldtype": "Link",
    "label": "Letter Head",
    "options": "Letter Head"
+  },
+  {
+   "fieldname": "snf",
+   "fieldtype": "Percent",
+   "label": "SNF%"
+  },
+  {
+   "fieldname": "stock_uom",
+   "fieldtype": "Link",
+   "ignore_user_permissions": 1,
+   "label": "Stock UOM",
+   "options": "UOM",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2023-01-05 17:04:19.944348",
+ "modified": "2023-01-11 11:43:23.697468",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Milk Entry",

@@ -88,7 +88,7 @@ class VanCollectionItems(Document):
 		se_child.fat = (milk_collected * fat)/100
 		se_child.clr = clr/4 + 0.21*(fat/100) + 0.36
 		se_child.s_warehouse = doc.dcs
-		se_child.t_warehouse = route.dest_warehouse
+		se_child.t_warehouse = route.source_warehouse
 		# in stock uom
 		se_child.transfer_qty = doc.cow_milk_collected
 		se_child.cost_center = cost_center
