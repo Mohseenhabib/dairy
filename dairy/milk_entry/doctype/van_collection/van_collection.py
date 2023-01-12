@@ -21,6 +21,8 @@ class VanCollection(Document):
 
     @frappe.whitelist()
     def van_start_collection(self):
+        state_climatic_factor,state_factor = frappe.db.get_value('Warehouse',{'is_dcs':1},['state_climatic_factor','state_factor'])
+        
         if self:
             warehouse = frappe.db.get_all("Warehouse",{
                                             "route": self.route,
@@ -45,7 +47,7 @@ class VanCollection(Document):
                         cow_volume = i.get('total_volume')
                         cow_milk_fat = i.get('fat')
                         cow_milk_clr = i.get('clr')
-
+                        
                     if i.get('milk_type') == 'Buffalow':
                         buffalow_volume = i.get('total_volume')
                         buf_milk_fat = i.get('fat')
@@ -55,6 +57,9 @@ class VanCollection(Document):
                         mix_volume =i.get('total_volume')
                         mix_milk_fat = i.get('fat')
                         mix_milk_clr = i.get('clr')
+
+                    print('IIIIIIIIIIIIIIIIIIIIIIIIIIIIII',i.get('total_volume'))
+                    print('yyyyyyyyyyyyyyyyyyyyyyy',i.get('fat'))
 
                 if cow_volume > 0 or buffalow_volume > 0 or mix_volume > 0:
                     van_collection = frappe.new_doc("Van Collection Items")
@@ -66,10 +71,14 @@ class VanCollection(Document):
 
                     van_collection.cow_milk_fat = cow_milk_fat
                     van_collection.cow_milk_clr = cow_milk_clr
+                    van_collection.cow_milk_snf = ((cow_milk_clr/4)+(cow_milk_fat*(state_climatic_factor + state_factor)))
                     van_collection.buf_milk_fat = buf_milk_fat
                     van_collection.buf_milk_clr = buf_milk_clr
+                    van_collection.buf_milk_snf = ((buf_milk_clr/4)+(buf_milk_fat*(state_climatic_factor + state_factor)))
                     van_collection.mix_milk_fat = mix_milk_fat
                     van_collection.mix_milk_clr = mix_milk_clr
+                    van_collection.mix_milk_snf = ((mix_milk_clr/4)+(mix_milk_fat*(state_climatic_factor + state_factor)))
+                    print('uuuuuuuuuuuuueeeeeeeee', van_collection.cow_milk_snf ,state_climatic_factor,state_factor)
 
                     result1 = frappe.db.sql("""Select name,milk_type from `tabSample lines` where milk_entry in
                                                            (select name from `tabMilk Entry` 
@@ -80,7 +89,7 @@ class VanCollection(Document):
                             van_collection.append("cow_milk_sam", {
                                 'sample_lines': res.get('name')
                             })
-
+                        print('res.get********************',sum([cow_milk_fat]),sum([cow_milk_clr]))
                         if res.get('milk_type') == 'Buffalow':
                             van_collection.append("buf_milk_sam", {
                                 'sample_lines': res.get('name')
@@ -90,8 +99,9 @@ class VanCollection(Document):
                             van_collection.append("mix_milk_sam", {
                                 'sample_lines': res.get('name')
                             })
-
+                            
                     van_collection.insert(ignore_permissions = True)
+                    print('van_collection**********************',van_collection)
 
             frappe.db.set(self, 'status', 'In-Progress')
             self.flags.ignore_validate_update_after_submit = True  # ignore after submit permission

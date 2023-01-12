@@ -33,7 +33,8 @@ class VanCollectionItems(Document):
 			self.cow_milk_cans = round(self.cow_milk_collected / allow_max_capacity)
 			self.buf_milk_cans = round(self.buffalow_milk_collected / allow_max_capacity)
 			self.mix_milk_cans = round(self.mix_milk_collected / allow_max_capacity)
-			self.save(ignore_permissions=True)
+			self.db_update()
+			# self.save(ignore_permissions=True)
 
 		return True
 
@@ -98,6 +99,7 @@ class VanCollectionItems(Document):
 @frappe.whitelist()
 def get_milk_entry(source_name, target_doc=None, ignore_permissions=False):
 	def get_milk_entry_data(source, target):
+		print('Chalra hai..............nahi')
 		if source.milk_type == 'Cow':
 			target.cow_milk_vol += source.volume
 			target.cow_milk_fat += source.fat
