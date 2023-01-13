@@ -52,7 +52,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Milk Type",
-   "options": "Cow\nBuffalow\nMix"
+   "options": "Cow\nBuffalo\nMix"
   },
   {
    "fieldname": "fat",
@@ -304,7 +304,7 @@
  "is_submittable": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2023-01-11 11:43:23.697468",
+ "modified": "2023-01-13 10:33:52.753768",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Milk Entry",

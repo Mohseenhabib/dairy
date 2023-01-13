@@ -87,9 +87,12 @@ class VanCollectionItems(Document):
 		se_child.stock_uom = item.stock_uom
 		se_child.qty = milk_collected
 		se_child.fat = (milk_collected * fat)/100
-		se_child.clr = clr/4 + 0.21*(fat/100) + 0.36
+		se_child.fat_per = (fat/(milk_collected * item.weight_per_unit))*100
+		se_child.snf_clr = (milk_collected * clr)/100
+		se_child.snf_clr_per = (clr/(milk_collected * item.weight_per_unit))*100
 		se_child.s_warehouse = doc.dcs
 		se_child.t_warehouse = route.source_warehouse
+		se_child.basic_rate = item.valuation_rate
 		# in stock uom
 		se_child.transfer_qty = doc.cow_milk_collected
 		se_child.cost_center = cost_center
