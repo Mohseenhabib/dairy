@@ -24,7 +24,7 @@ class VanCollectionItems(Document):
 			frappe.throw("Can not allow Cow Milk Collected greater then the Cow Milk Entry")
 
 		if self.buf_milk_vol < self.buffalow_milk_collected:
-			frappe.throw("Can not allow Buffalow Milk Collected greater then the Buffalow Milk Entry")
+			frappe.throw("Can not allow Buffalo Milk Collected greater then the Buffalo Milk Entry")
 
 		if self.mix_milk_vol < self.mix_milk_collected:
 			frappe.throw("Can not allow Mix Milk Collected greater then the Mix Milk Entry")
@@ -112,7 +112,7 @@ def get_milk_entry(source_name, target_doc=None, ignore_permissions=False):
 				target.append("cow_milk_sam",{
 					'sample_lines':result[0][0]
 				})
-		if source.milk_type == 'Buffalow':
+		if source.milk_type == 'Buffalo':
 			target.buf_milk_vol += source.volume
 			target.buf_milk_fat += source.fat
 			target.buf_milk_clr += source.clr

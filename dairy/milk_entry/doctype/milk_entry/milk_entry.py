@@ -95,7 +95,7 @@ class MilkEntry(Document):
 def _get_product(milk_type):
     if milk_type == 'Cow':
         item_code = frappe.db.get_single_value("Dairy Settings", "cow_pro")
-    elif milk_type == 'Buffalow':
+    elif milk_type == 'Buffalo':
         item_code = frappe.db.get_single_value("Dairy Settings", "buf_pro")
     elif milk_type == 'Mix':
         item_code = frappe.db.get_single_value("Dairy Settings", "mix_pro")

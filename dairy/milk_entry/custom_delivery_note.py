@@ -137,7 +137,7 @@ def after_save(self,method):
                 if itm.item_code == good_cow_milk:
                     milk_type = "Cow"
                 elif itm.item_code == good_buff_milk:
-                    milk_type = "Buffalow"
+                    milk_type = "Buffalo"
                 elif itm.item_code == good_mix_milk:
                     milk_type = "Mix"
                 elif maintain_snf_fat == 1:

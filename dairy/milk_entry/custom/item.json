@@ -821,7 +821,7 @@
    "name": "Item-milk_type",
    "no_copy": 0,
    "non_negative": 0,
-   "options": "Cow\nBuffalow\nMix",
+   "options": "Cow\nBuffalo\nMix",
    "owner": "Administrator",
    "parent": null,
    "parentfield": null,
