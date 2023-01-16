@@ -53,7 +53,7 @@ def get_columns(filters):
             "width": 100
         },
         {
-            "label": _("Buffalow Milk Cans"),
+            "label": _("Buffalo Milk Cans"),
             "fieldname": "buf_milk_cans",
             "fieldtype": "Float",
             "width": 100
@@ -74,7 +74,7 @@ def get_columns(filters):
             "width": 100
         },
         {
-            "label": _("Buffalow Sample Number"),
+            "label": _("Buffalo Sample Number"),
             "fieldname": "buf_milk_sam",
             "fieldtype": "Link",
             "options" : "Raw Milk Sample",

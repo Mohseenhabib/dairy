@@ -60,7 +60,7 @@ class RMRD(Document):
 			for res in result2:
 				if res.get('milk_type') == 'Cow':
 					doc.cow_milk_sam = res.get('sam_count')
-				if res.get('milk_type') == 'Buffalow':
+				if res.get('milk_type') == 'Buffalo':
 					doc.buf_milk_sam = res.get('sam_count')
 				if res.get('milk_type') == 'Mix':
 					doc.mix_milk_sam = res.get('sam_count')

@@ -177,7 +177,7 @@ def after_save(self,method):
                                     and bmplc.customer = %(customer)s 
                                     and mpli.item = %(item)s 
                                     order by bmpl.modified desc limit 1""",
-                                   {'warehouse':itm.warehouse,'milk_type':milk_type,'customer':self.customer,'item':itm.item_code},as_dict=True)
+                                   {'warehouse':itm.warehouse,'':milk_type,'customer':self.customer,'item':itm.item_code},as_dict=True)
                     if not query2:
 
                         query3 = frappe.db.sql( """select bmpl.name, bmpl.rate, bmpl.snf_clr_rate 

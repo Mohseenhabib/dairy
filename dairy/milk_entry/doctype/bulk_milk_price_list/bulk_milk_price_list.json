@@ -63,7 +63,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Milk Type",
-   "options": "\nCow\nBuffalo\nMix",
+   "options": "Cow\nBuffalo\nMix",
    "reqd": 1
   },
   {
@@ -113,7 +113,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-01-05 12:14:58.568347",
+ "modified": "2023-01-13 14:34:40.970679",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Bulk Milk Price List",

@@ -17,7 +17,7 @@ frappe.ui.form.on('RMRD', {
 
         frm.add_custom_button(__('Add / Edit RMRD'), function () {
             frappe.route_options = {"rmrd": frm.doc.name};
-            frappe.set_route("Report", "RMRD Lines");
+            ("Report", "RMRD Lines");
         });
 
 //        if(frm.doc.docstatus == 1 && !frm.doc.stock_entry)

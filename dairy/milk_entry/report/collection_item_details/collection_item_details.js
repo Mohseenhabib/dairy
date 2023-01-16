@@ -56,7 +56,7 @@ frappe.query_reports["Collection Item Details"] = {
 //             "options":[
 //                     { "value": "All", "label": __("") },
 //                     { "value": "Cow", "label": __("Cow Milk") },
-//                     { "value": "Buf", "label": __("Buffaow Milk") },
+//                     { "value": "Buf", "label": __("Buffao Milk") },
 //                     { "value": "Mix", "label": __("Mix Milk") },
 //             ],
 //             "default": "All"

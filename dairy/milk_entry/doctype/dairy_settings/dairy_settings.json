@@ -365,7 +365,7 @@
    "reqd": 1
   },
   {
-   "default": "Buffalow Milk",
+   "default": "Buffalo Milk",
    "fieldname": "data_52",
    "fieldtype": "Data",
    "read_only": 1,
@@ -616,7 +616,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-01-13 11:44:03.549898",
+ "modified": "2023-01-13 14:29:03.519927",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",

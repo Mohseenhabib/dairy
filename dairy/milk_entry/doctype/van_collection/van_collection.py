@@ -22,6 +22,11 @@ class VanCollection(Document):
     @frappe.whitelist()
     def van_start_collection(self):
         state_climatic_factor,state_factor = frappe.db.get_value('Warehouse',{'is_dcs':1},['state_climatic_factor','state_factor'])
+        seq =[]
+        sequence = frappe.db.get_all('Warehouse',{'is_dcs':1},['sequence'])
+        for i in sequence:
+            seq.append(i.get('sequence'))
+        print('sequence******************',seq,sorted(seq))
         tdate = date.today()
 
         if self:
@@ -130,13 +135,13 @@ class VanCollection(Document):
                     van_collection.cow_milk_snf = (cow_milk_snfin_kg /(cow_volume * item)) * 100
                     van_collection.buf_milk_fat = (buffalo_milk_fatin_kg /(buffalo_volume * item)) * 100 
                     van_collection.buf_milk_clr = (buf_milk_clr /(buffalo_volume * item)) * 100
-                    van_collection.buffalo_milk_snf = (buffalo_milk_snfin_kg /(buffalo_volume * item)) * 100
+                    van_collection.buffalow_milk_snf = (buffalo_milk_snfin_kg /(buffalo_volume * item)) * 100
                     van_collection.mix_milk_fat = (mix_milk_fatin_kg /(mix_volume * item)) * 100 
                     van_collection.mix_milk_snf = (mix_milk_snfin_kg /(mix_volume * item)) * 100
                     van_collection.cow_milk_clr = (mix_milk_clr /(mix_volume * item)) * 100
-
+                    print('van_collection**********************', van_collection.buf_milk_fat, van_collection.buf_milk_clr, van_collection.buffalow_milk_snf)
                     van_collection.insert(ignore_permissions = True)
-                    print('van_collection**********************',van_collection)
+                    
 
             frappe.db.set(self, 'status', 'In-Progress')
             self.flags.ignore_validate_update_after_submit = True  # ignore after submit permission
