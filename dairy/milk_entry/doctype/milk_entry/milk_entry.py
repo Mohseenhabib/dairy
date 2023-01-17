@@ -21,6 +21,7 @@ class MilkEntry(Document):
         item = frappe.db.get_value('Item',{'milk_type':self.milk_type},['weight_per_unit'])
         fat_kg =  ((self.volume * (item)) * (self.fat/100))
         frappe.db.set(self, 'fat_kg', fat_kg)
+        print('fat_kg**************',fat_kg,item)
         
        
         snf_kg =  ((self.volume * (item)) * (self.snf/100))
@@ -41,7 +42,7 @@ class MilkEntry(Document):
         rate = frappe.db.sql(""" select rate from `tabMilk Rate Chart` where fat >= {0} and snf_clr >= {1} 
                    and parent = '{2}' order by fat,snf_clr asc limit 1 """.format(self.fat,self.snf,pricelist_name[0][0]))
 
-        print('rateEEEEEEEEEEEEEEEEEEEEEEEEEE',rate)
+        print('rateEEEEEEEEEEEEEEEEEEEEEEEEEE',rate,pricelist_name[0][0])
         
         if not rate:
             frappe.throw(_("Milk price not found."))

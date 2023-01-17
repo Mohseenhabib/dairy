@@ -118,7 +118,7 @@ frappe.ui.form.on('Milk Entry', {
             if(d.auto_print_milk_receipt == 1)
             {
                 
-                // frappe.set_route("Print Fprmat","Milk Entry Invoice");
+                frappe.set_route("Print Format","Milk Entry Invoice");
                 frm.print_doc();
             }
         });
