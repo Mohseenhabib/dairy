@@ -22,12 +22,12 @@
    "fieldname": "milk_type",
    "fieldtype": "Select",
    "label": "Milk type",
-   "options": "Cow\nBuffalow\nMix"
+   "options": "Cow\nBuffalo\nMix"
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2020-03-31 19:19:14.721989",
+ "modified": "2023-01-16 11:46:37.679007",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Multi Row Milk Sample",

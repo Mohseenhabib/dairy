@@ -86,6 +86,7 @@
   "get_territory",
   "section_break_77",
   "auto_print_milk_receipt",
+  "quality_inspection_required_for_van_collection",
   "column_break_82",
   "restrict_multiple_orders_in_single_shift",
   "milk_leakage_section",
@@ -113,7 +114,7 @@
    "fieldname": "def_buf_milk_rate",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Default Buffalow Milk Rate"
+   "label": "Default Buffalo Milk Rate"
   },
   {
    "fieldname": "def_cow_milk_rate",
@@ -171,7 +172,7 @@
    "read_only": 1
   },
   {
-   "default": "Buffalow Milk",
+   "default": "Buffalo Milk",
    "fieldname": "data_14",
    "fieldtype": "Data",
    "label": " ",
@@ -281,7 +282,7 @@
   {
    "fieldname": "sb3",
    "fieldtype": "Section Break",
-   "label": "CLR"
+   "label": "SNF"
   },
   {
    "fieldname": "head12",
@@ -364,7 +365,7 @@
    "reqd": 1
   },
   {
-   "default": "Buffalow Milk",
+   "default": "Buffalo Milk",
    "fieldname": "data_52",
    "fieldtype": "Data",
    "read_only": 1,
@@ -391,7 +392,7 @@
   {
    "fieldname": "buf_pro",
    "fieldtype": "Link",
-   "label": "Good Buffalow Milk",
+   "label": "Good Buffalo Milk",
    "options": "Item",
    "reqd": 1
   },
@@ -457,7 +458,7 @@
   {
    "fieldname": "s_buf_milk",
    "fieldtype": "Link",
-   "label": "Sour Buffalow Milk",
+   "label": "Sour Buffalo Milk",
    "options": "Item",
    "reqd": 1
   },
@@ -491,7 +492,7 @@
   {
    "fieldname": "c_buf_milk",
    "fieldtype": "Link",
-   "label": "Curd Buffalow Milk",
+   "label": "Curd Buffalo Milk",
    "options": "Item",
    "reqd": 1
   },
@@ -604,12 +605,18 @@
    "label": "Leakage Calculated on",
    "options": "Sales Order\nGate Pass",
    "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "quality_inspection_required_for_van_collection",
+   "fieldtype": "Check",
+   "label": "Quality Inspection Required for Van Collection"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-01-05 17:37:15.774709",
+ "modified": "2023-01-13 14:29:03.519927",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",

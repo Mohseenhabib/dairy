@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
+from math import ceil
 
 class VanCollectionItems(Document):
 
@@ -24,16 +25,17 @@ class VanCollectionItems(Document):
 			frappe.throw("Can not allow Cow Milk Collected greater then the Cow Milk Entry")
 
 		if self.buf_milk_vol < self.buffalow_milk_collected:
-			frappe.throw("Can not allow Buffalow Milk Collected greater then the Buffalow Milk Entry")
+			frappe.throw("Can not allow Buffalo Milk Collected greater then the Buffalo Milk Entry")
 
 		if self.mix_milk_vol < self.mix_milk_collected:
 			frappe.throw("Can not allow Mix Milk Collected greater then the Mix Milk Entry")
 
 		if allow_max_capacity > 0:
-			self.cow_milk_cans = int(self.cow_milk_collected / allow_max_capacity)
-			self.buf_milk_cans = int(self.buffalow_milk_collected / allow_max_capacity)
-			self.mix_milk_cans = int(self.mix_milk_collected / allow_max_capacity)
-			self.save(ignore_permissions=True)
+			self.cow_milk_cans = ceil(self.cow_milk_collected / allow_max_capacity)
+			self.buf_milk_cans = ceil(self.buffalow_milk_collected / allow_max_capacity)
+			self.mix_milk_cans = ceil(self.mix_milk_collected / allow_max_capacity)
+			self.db_update()
+			# self.save(ignore_permissions=True)
 
 		return True
 
@@ -49,6 +51,10 @@ class VanCollectionItems(Document):
 
 		route = frappe.get_doc("Route Master", van_collection.route)
 		stock_entry.target_warehouse = route.source_warehouse
+		
+		doc1 = frappe.get_doc('Dairy Settings')
+		if doc1.quality_inspection_required_for_van_collection == 1:
+			stock_entry.inspection_required = 1
 
 		cost_center = frappe.get_cached_value('Company', van_collection.company, 'cost_center')
 		perpetual_inventory = frappe.get_cached_value('Company', van_collection.company, 'enable_perpetual_inventory')
@@ -61,28 +67,36 @@ class VanCollectionItems(Document):
 		doc = frappe.get_doc("Van Collection Items", self.name)
 
 		if doc.cow_milk_collected > 0:
-			self.set_value_depend_milk_type(cow_item, stock_entry, doc, doc.cow_milk_collected, doc.cow_milk_fat, doc.cow_milk_clr, route, cost_center, expense_account, perpetual_inventory)
+			self.set_value_depend_milk_type(cow_item, stock_entry, doc, doc.cow_milk_collected, doc.cow_milk_fat, doc.cow_milk_clr,doc.cow_milk_snf, route, cost_center, expense_account, perpetual_inventory)
 
 		if doc.buffalow_milk_collected > 0:
-			self.set_value_depend_milk_type(buf_item, stock_entry, doc, doc.buffalow_milk_collected, doc.buf_milk_fat, doc.buf_milk_clr, route, cost_center, expense_account, perpetual_inventory)
+			self.set_value_depend_milk_type(buf_item, stock_entry, doc, doc.buffalow_milk_collected, doc.buf_milk_fat,doc.buffalow_milk_snf,  doc.buf_milk_clr, route, cost_center, expense_account, perpetual_inventory)
 
 		if doc.mix_milk_collected > 0:
-			self.set_value_depend_milk_type(mix_item, stock_entry,doc,doc.mix_milk_collected, doc.mix_milk_fat, doc.mix_milk_clr, route, cost_center, expense_account,perpetual_inventory)
+			self.set_value_depend_milk_type(mix_item, stock_entry,doc,doc.mix_milk_collected, doc.mix_milk_fat, doc.mix_milk_clr, doc.mix_milk_snf,route, cost_center, expense_account,perpetual_inventory)
+
+		
 
 		return stock_entry
 
-	def set_value_depend_milk_type(self, item_name, stock_entry, doc, milk_collected,fat,clr, route, cost_center, expense_account, perpetual_inventory=None):
+	def set_value_depend_milk_type(self, item_name, stock_entry, doc, milk_collected,fat,clr,snf, route, cost_center, expense_account, perpetual_inventory=None):
 		item = frappe.get_doc("Item", item_name)
+		print('clr@@@@@@@@@@@@@@@@',clr,snf,fat)
 		se_child = stock_entry.append('items')
 		se_child.item_code = item.item_code
 		se_child.item_name = item.item_name
 		se_child.uom = item.stock_uom
 		se_child.stock_uom = item.stock_uom
 		se_child.qty = milk_collected
-		se_child.fat = (milk_collected * fat)/100
-		se_child.clr = clr/4 + 0.21*(fat/100) + 0.36
+		se_child.fat = (milk_collected * item.weight_per_unit) * (fat/100)
+		se_child.fat_per = fat
+		se_child.snf_clr = (milk_collected * item.weight_per_unit) * (clr/100)
+		se_child.snf_clr_per = clr
+		se_child.snf = (milk_collected * item.weight_per_unit) * (snf/100)
+		se_child.snf_per = snf
 		se_child.s_warehouse = doc.dcs
-		se_child.t_warehouse = route.dest_warehouse
+		se_child.t_warehouse = route.source_warehouse
+		se_child.basic_rate = item.valuation_rate
 		# in stock uom
 		se_child.transfer_qty = doc.cow_milk_collected
 		se_child.cost_center = cost_center
@@ -92,6 +106,7 @@ class VanCollectionItems(Document):
 @frappe.whitelist()
 def get_milk_entry(source_name, target_doc=None, ignore_permissions=False):
 	def get_milk_entry_data(source, target):
+
 		if source.milk_type == 'Cow':
 			target.cow_milk_vol += source.volume
 			target.cow_milk_fat += source.fat
@@ -101,7 +116,7 @@ def get_milk_entry(source_name, target_doc=None, ignore_permissions=False):
 				target.append("cow_milk_sam",{
 					'sample_lines':result[0][0]
 				})
-		if source.milk_type == 'Buffalow':
+		if source.milk_type == 'Buffalo':
 			target.buf_milk_vol += source.volume
 			target.buf_milk_fat += source.fat
 			target.buf_milk_clr += source.clr
@@ -126,3 +141,5 @@ def get_milk_entry(source_name, target_doc=None, ignore_permissions=False):
 		}
 	}, target_doc, get_milk_entry_data)
 	return doclist
+
+

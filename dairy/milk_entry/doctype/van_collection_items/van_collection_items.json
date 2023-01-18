@@ -16,37 +16,42 @@
   "dcs",
   "company",
   "sb2",
+  "cow_milk_collected",
+  "cow_milk_cans",
   "cow_milk_vol",
   "cb1",
-  "cow_milk_collected",
+  "cow_milk_snf",
+  "cow_milk_snfin_kg",
+  "cow_milk_fat",
+  "cow_milk_fatin_kg",
+  "cow_milk_clr",
   "cb2",
-  "cow_milk_cans",
+  "cow_milk_sam",
   "sb3",
-  "buf_milk_vol",
   "cb3",
   "buffalow_milk_collected",
-  "cb4",
   "buf_milk_cans",
-  "sb4",
-  "mix_milk_vol",
-  "column_break_18",
-  "mix_milk_collected",
-  "column_break_20",
-  "mix_milk_cans",
-  "section_break_22",
-  "cow_milk_sam",
-  "cb5",
-  "buf_milk_sam",
-  "cb6",
-  "mix_milk_sam",
-  "sb5",
-  "cow_milk_fat",
+  "buf_milk_vol",
+  "cb4",
+  "buffalow_milk_snf",
+  "buffalo_milk_snfin_kg",
   "buf_milk_fat",
-  "mix_milk_fat",
-  "column_break_36",
-  "cow_milk_clr",
+  "buffalo_milk_fatin_kg",
   "buf_milk_clr",
+  "column_break_18",
+  "buf_milk_sam",
+  "sb4",
+  "mix_milk_collected",
+  "mix_milk_cans",
+  "mix_milk_vol",
+  "column_break_20",
+  "mix_milk_snf",
+  "mix_milk_snfin_kg",
+  "mix_milk_fat",
+  "mix_milk_fatin_kg",
   "mix_milk_clr",
+  "cb5",
+  "mix_milk_sam",
   "section_break_40",
   "gate_pass",
   "sb6",
@@ -85,7 +90,7 @@
    "fieldname": "buf_milk_vol",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Buffalow Milk Entry",
+   "label": "Buffalo Milk Entry",
    "read_only": 1
   },
   {
@@ -111,7 +116,7 @@
    "fieldname": "buf_milk_cans",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Buffalow Milk Cans"
+   "label": "Buffalo Milk Cans"
   },
   {
    "allow_in_quick_entry": 1,
@@ -132,7 +137,7 @@
    "allow_in_quick_entry": 1,
    "fieldname": "buf_milk_sam",
    "fieldtype": "Table MultiSelect",
-   "label": "Buffalow Sample Number",
+   "label": "Buffalo Sample Number",
    "options": "Multi Row Milk Sample"
   },
   {
@@ -175,11 +180,6 @@
   },
   {
    "allow_in_quick_entry": 1,
-   "fieldname": "sb5",
-   "fieldtype": "Section Break"
-  },
-  {
-   "allow_in_quick_entry": 1,
    "fieldname": "cb1",
    "fieldtype": "Column Break"
   },
@@ -204,11 +204,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "allow_in_quick_entry": 1,
-   "fieldname": "cb6",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "sb6",
    "fieldtype": "Column Break"
   },
@@ -226,7 +221,7 @@
    "fieldname": "buffalow_milk_collected",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Buffalow Milk Collected"
+   "label": "Buffalo Milk Collected"
   },
   {
    "allow_in_quick_entry": 1,
@@ -245,11 +240,6 @@
    "allow_in_quick_entry": 1,
    "fieldname": "column_break_20",
    "fieldtype": "Column Break"
-  },
-  {
-   "allow_in_quick_entry": 1,
-   "fieldname": "section_break_22",
-   "fieldtype": "Section Break"
   },
   {
    "fieldname": "van_collection",
@@ -292,47 +282,43 @@
   {
    "default": "0",
    "fieldname": "cow_milk_fat",
-   "fieldtype": "Float",
-   "label": "Cow Milk FAT",
+   "fieldtype": "Percent",
+   "label": "Cow Milk FAT%",
    "read_only": 1
   },
   {
    "default": "0",
    "fieldname": "buf_milk_fat",
-   "fieldtype": "Float",
-   "label": "Buffalow Milk FAT",
+   "fieldtype": "Percent",
+   "label": "Buffalo Milk FAT%",
    "read_only": 1
   },
   {
    "default": "0",
    "fieldname": "mix_milk_fat",
-   "fieldtype": "Float",
-   "label": "Mix Milk FAT",
+   "fieldtype": "Percent",
+   "label": "Mix Milk FAT%",
    "read_only": 1
-  },
-  {
-   "fieldname": "column_break_36",
-   "fieldtype": "Column Break"
   },
   {
    "default": "0",
    "fieldname": "cow_milk_clr",
-   "fieldtype": "Float",
-   "label": "Cow Milk CLR",
+   "fieldtype": "Percent",
+   "label": "Cow Milk CLR%",
    "read_only": 1
   },
   {
    "default": "0",
    "fieldname": "buf_milk_clr",
-   "fieldtype": "Float",
-   "label": "Buffalow Milk CLR",
+   "fieldtype": "Percent",
+   "label": "Buffalo Milk CLR%",
    "read_only": 1
   },
   {
    "default": "0",
    "fieldname": "mix_milk_clr",
-   "fieldtype": "Float",
-   "label": "Mix Milk CLR",
+   "fieldtype": "Percent",
+   "label": "Mix Milk CLR%",
    "read_only": 1
   },
   {
@@ -353,10 +339,64 @@
    "hidden": 1,
    "label": "Company",
    "options": "Company"
+  },
+  {
+   "fieldname": "cow_milk_snf",
+   "fieldtype": "Percent",
+   "label": "Cow Milk SNF%",
+   "read_only": 1
+  },
+  {
+   "fieldname": "buffalow_milk_snf",
+   "fieldtype": "Percent",
+   "label": "Buffalo Milk SNF%",
+   "read_only": 1
+  },
+  {
+   "fieldname": "mix_milk_snf",
+   "fieldtype": "Percent",
+   "label": "Mix Milk SNF%",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cow_milk_fatin_kg",
+   "fieldtype": "Float",
+   "label": "Cow Milk FAT(in kg)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cow_milk_snfin_kg",
+   "fieldtype": "Float",
+   "label": "Cow Milk SNF(in kg)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "buffalo_milk_snfin_kg",
+   "fieldtype": "Float",
+   "label": "Buffalo Milk SNF(in kg)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "buffalo_milk_fatin_kg",
+   "fieldtype": "Float",
+   "label": "Buffalo Milk FAT(in kg)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "mix_milk_snfin_kg",
+   "fieldtype": "Float",
+   "label": "Mix Milk SNF(in kg)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "mix_milk_fatin_kg",
+   "fieldtype": "Float",
+   "label": "Mix Milk FAT(in kg)",
+   "read_only": 1
   }
  ],
  "links": [],
- "modified": "2020-05-12 12:11:57.780015",
+ "modified": "2023-01-12 17:25:56.454102",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Van Collection Items",

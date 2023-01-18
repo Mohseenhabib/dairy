@@ -137,7 +137,7 @@ def after_save(self,method):
                 if itm.item_code == good_cow_milk:
                     milk_type = "Cow"
                 elif itm.item_code == good_buff_milk:
-                    milk_type = "Buffalow"
+                    milk_type = "Buffalo"
                 elif itm.item_code == good_mix_milk:
                     milk_type = "Mix"
                 elif maintain_snf_fat == 1:
@@ -177,7 +177,7 @@ def after_save(self,method):
                                     and bmplc.customer = %(customer)s 
                                     and mpli.item = %(item)s 
                                     order by bmpl.modified desc limit 1""",
-                                   {'warehouse':itm.warehouse,'milk_type':milk_type,'customer':self.customer,'item':itm.item_code},as_dict=True)
+                                   {'warehouse':itm.warehouse,'':milk_type,'customer':self.customer,'item':itm.item_code},as_dict=True)
                     if not query2:
 
                         query3 = frappe.db.sql( """select bmpl.name, bmpl.rate, bmpl.snf_clr_rate 

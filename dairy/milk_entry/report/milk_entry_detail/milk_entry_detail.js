@@ -49,7 +49,7 @@ frappe.query_reports["Milk Entry Detail"] = {
 			"options":[
 			        { "value": "All", "label": __("") },
 			        { "value": "Cow", "label": __("Cow Milk") },
-				    { "value": "Buf", "label": __("Buffaow Milk") },
+				    { "value": "Buf", "label": __("Buffalo Milk") },
 				    { "value": "Mix", "label": __("Mix Milk") },
 			],
 			"default": "All"

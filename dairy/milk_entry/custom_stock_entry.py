@@ -24,7 +24,7 @@ def milk_ledger_stock_entry(self,method):
                         if itm.item_code == good_cow_milk:
                             milk_type = "Cow"
                         elif itm.item_code == good_buff_milk:
-                            milk_type = "Buffalow"
+                            milk_type = "Buffalo"
                         elif itm.item_code == good_mix_milk:
                             milk_type = "Mix"
                         elif maintain_snf_fat == 1:
@@ -45,6 +45,7 @@ def milk_ledger_stock_entry(self,method):
                             frappe.throw("Milk Ledger Entry Not Found For This Item")
                         if mle[0]['name']:
                             mle_obj = frappe.get_doc("Milk Ledger Entry",mle[0]['name'])
+                            print('mle_obj*************************',mle_obj)
                             itm.fat = (mle_obj.fat_per / 100) * (itm.transfer_qty * itm_weight)
                             itm.fat_per = mle_obj.fat_per
                             itm.snf_clr = (mle_obj.snf_per / 100) * (itm.transfer_qty * itm_weight)
@@ -82,6 +83,7 @@ def milk_ledger_stock_entry(self,method):
     # create milk ledger entry
 def on_submit(self, method):
     for itm in self.items:
+        print('itmmmmmmmmmmmmmmmmmmmmmm',self.items)
         if itm.s_warehouse:
             itm_obj = frappe.get_doc("Item", itm.item_code)
             itm_weight = float(itm_obj.weight_per_unit)
@@ -272,12 +274,11 @@ def cancel_create_milk_stock_ledger(self,method):
                         new_mle.qty_after_transaction = mle_obj.qty_after_transaction - (itm.transfer_qty * itm_weight)
                         new_mle.fat_after_transaction = mle_obj.fat_after_transaction - itm.fat
                         new_mle.snf_after_transaction = mle_obj.snf_after_transaction - itm.snf_clr
-                        new_mle.fat_per = ((mle_obj.fat_after_transaction - itm.fat) / (
-                                    mle_obj.qty_after_transaction - (itm.transfer_qty * itm_weight))) * 100
-                        new_mle.snf_per = ((mle_obj.snf_after_transaction - itm.snf_clr) / (
-                                    mle_obj.qty_after_transaction - (itm.transfer_qty * itm_weight))) * 100
+                        if (mle_obj.qty_after_transaction - (itm.transfer_qty * itm_weight))>0:
+                            new_mle.fat_per = ((mle_obj.fat_after_transaction - itm.fat) / (mle_obj.qty_after_transaction - (itm.transfer_qty * itm_weight))) * 100
+                            new_mle.snf_per = ((mle_obj.snf_after_transaction - itm.snf_clr) / (mle_obj.qty_after_transaction - (itm.transfer_qty * itm_weight))) * 100
 
-
+                       
                         frappe.db.sql(""" update `tabMilk Ledger Entry` set is_cancelled = 1 where name = %(name)s """,
                                       {'name': mle_obj.name})
                         frappe.db.commit()
@@ -287,6 +288,8 @@ def cancel_create_milk_stock_ledger(self,method):
                         frappe.db.sql(""" update `tabMilk Ledger Entry` set is_cancelled = 1 where name = %(name)s """,
                                       {'name': new_mle.name})
                         frappe.db.commit()
+                        print('self itmmmmmmmmm********************',self.items)
+        
 
         if itm.s_warehouse:
             itm_obj = frappe.get_doc("Item", itm.item_code)
@@ -347,8 +350,22 @@ def cancel_create_milk_stock_ledger(self,method):
                         frappe.db.sql(""" update `tabMilk Ledger Entry` set is_cancelled = 1 where name = %(name)s """,
                                       {'name': new_mle.name})
                         frappe.db.commit()
-
+                                      
+    vci = frappe.get_all('Van Collection Items',{'gate_pass':self.name},['name'])
+    for i in vci:
+        doc=frappe.get_doc("Van Collection Items",i.name)
+        doc.db_set("gate_pass","")
 @frappe.whitelist()
 def get_item_weight(item_code):
     obj = frappe.get_doc("Item",item_code)
     return obj.weight_per_unit
+
+
+# def before_cancel(self):
+#     vci = frappe.get_all('Van Collection items',{'gate_pass':self.name},['gate_pass'])
+#     print('vci****************************',vci)
+#     # doc=frappe.get_doc("Stock Entry",self.name)
+#     if doc.cancel():
+#         d = frappe.delete_doc('Milk Ledger Entry',)
+#     else:
+#         vci=""

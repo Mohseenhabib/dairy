@@ -50,7 +50,7 @@ class MilkRate(Document):
 					fat_min_cow_milk += fat_interval_cow_milk
 				snf_min_cow_milk += snf_interval_cow_milk
 
-		if self.milk_type =='Buffalow':
+		if self.milk_type =='Buffalo':
 			fat_min = fat_min_buf_milk
 			while snf_min_buf_milk <= snf_max_buf_milk:
 				fat_min_buf_milk = fat_min
