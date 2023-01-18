@@ -86,7 +86,9 @@ class VanCollection(Document):
                     van_collection.mix_milk_vol = mix_volume
                     van_collection.van_collection = self.name
 
-                    
+                    van_collection.cow_milk_fat = cow_milk_fat
+                    van_collection.cow_milk_clr = cow_milk_clr
+                    van_collection.cow_milk_snf = cow_milk_snf
                     van_collection.cow_milk_snfin_kg = cow_milk_snfin_kg
                     van_collection.cow_milk_fatin_kg = cow_milk_fatin_kg
                     van_collection.buffalo_milk_snfin_kg = buffalo_milk_snfin_kg
@@ -98,7 +100,7 @@ class VanCollection(Document):
                     van_collection.mix_milk_fat = mix_milk_fat
                     van_collection.mix_milk_clr = mix_milk_clr
                     
-                    print('uuuuuuuuuuuuueeeeeeeee',state_climatic_factor,state_factor)
+                    print('uuuuuuuuuuuuueeeeeeeee',state_climatic_factor,state_factor, van_collection.cow_milk_fat, van_collection.cow_milk_clr,van_collection.cow_milk_snf)
                    
                     item = frappe.db.get_value('Item',{'milk_type':i.get('milk_type')},['weight_per_unit']) 
                     print('item***************************',item) 

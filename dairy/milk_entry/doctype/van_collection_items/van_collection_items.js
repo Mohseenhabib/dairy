@@ -11,7 +11,7 @@ frappe.ui.form.on('Van Collection Items', {
 	 cow_milk_collected: function(frm) {
 	     cur_frm.cscript.calculate_milk_cans()
 	 },
-	 buffalo_milk_collected: function(frm) {
+	 buffalow_milk_collected: function(frm) {
 	     cur_frm.cscript.calculate_milk_cans()
 	 },
 	 mix_milk_collected: function(frm) {

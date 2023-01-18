@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
+from math import ceil
 
 class VanCollectionItems(Document):
 
@@ -30,9 +31,9 @@ class VanCollectionItems(Document):
 			frappe.throw("Can not allow Mix Milk Collected greater then the Mix Milk Entry")
 
 		if allow_max_capacity > 0:
-			self.cow_milk_cans = round(self.cow_milk_collected / allow_max_capacity)
-			self.buf_milk_cans = round(self.buffalow_milk_collected / allow_max_capacity)
-			self.mix_milk_cans = round(self.mix_milk_collected / allow_max_capacity)
+			self.cow_milk_cans = ceil(self.cow_milk_collected / allow_max_capacity)
+			self.buf_milk_cans = ceil(self.buffalow_milk_collected / allow_max_capacity)
+			self.mix_milk_cans = ceil(self.mix_milk_collected / allow_max_capacity)
 			self.db_update()
 			# self.save(ignore_permissions=True)
 
@@ -87,12 +88,12 @@ class VanCollectionItems(Document):
 		se_child.uom = item.stock_uom
 		se_child.stock_uom = item.stock_uom
 		se_child.qty = milk_collected
-		se_child.fat = (milk_collected * fat)/100
-		se_child.fat_per = (se_child.fat/(milk_collected * item.weight_per_unit))*100
-		se_child.snf_clr = (milk_collected * clr)/100
-		se_child.snf_clr_per = (se_child.snf_clr/(milk_collected * item.weight_per_unit))*100
-		se_child.snf = (milk_collected * snf)/100
-		se_child.snf_per = (se_child.snf/(milk_collected * item.weight_per_unit))*100
+		se_child.fat = (milk_collected * item.weight_per_unit) * (fat/100)
+		se_child.fat_per = fat
+		se_child.snf_clr = (milk_collected * item.weight_per_unit) * (clr/100)
+		se_child.snf_clr_per = clr
+		se_child.snf = (milk_collected * item.weight_per_unit) * (snf/100)
+		se_child.snf_per = snf
 		se_child.s_warehouse = doc.dcs
 		se_child.t_warehouse = route.source_warehouse
 		se_child.basic_rate = item.valuation_rate
@@ -140,3 +141,5 @@ def get_milk_entry(source_name, target_doc=None, ignore_permissions=False):
 		}
 	}, target_doc, get_milk_entry_data)
 	return doclist
+
+
