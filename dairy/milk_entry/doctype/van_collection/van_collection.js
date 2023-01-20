@@ -33,8 +33,15 @@ frappe.ui.form.on('Van Collection', {
         }
     },
     before_submit: function(frm) {
-        return frm.call('submit_van_collection').then(() => {
-            frm.refresh_field('status');
+        // return frm.call('submit_van_collection').then(() => {
+        //     frm.refresh_field('status');
+        // });
+        return frappe.call({
+            doc: frm.doc,
+            method: 'submit_van_collection',
+            callback: function(r) {
+                frm.refresh_field('status');
+            }
         });
     },
     onload: function(frm){
