@@ -72,7 +72,7 @@ class VanCollection(Document):
                         buffalo_milk_snf = i.get('snf')
                         buffalo_milk_snfin_kg = i.get('snf_kg')
                         buffalo_milk_fatin_kg = i.get('fat_kg')
-
+                
                     if i.get('milk_type') == 'Mix':
                         mix_volume =i.get('total_volume')
                         mix_milk_fat = i.get('fat')
@@ -109,13 +109,13 @@ class VanCollection(Document):
                    
                     item = frappe.db.get_value('Item',{'milk_type':i.get('milk_type')},['weight_per_unit']) 
                    
-
+                    print('buffalo volume8*****************',buffalo_volume)
                     van_collection.cow_milk_fat = (cow_milk_fatin_kg /(cow_volume * item)) * 100 
                     van_collection.cow_milk_clr = (cow_milk_clr /(cow_volume * item)) * 100 
                     van_collection.cow_milk_snf = (cow_milk_snfin_kg /(cow_volume * item)) * 100
-                    van_collection.buf_milk_fat = (buffalo_milk_fatin_kg /(buffalo_volume * item)) * 100 
-                    van_collection.buf_milk_clr = (buf_milk_clr /(buffalo_volume * item)) * 100
-                    van_collection.buffalow_milk_snf = (buffalo_milk_snfin_kg /(buffalo_volume * item)) * 100
+                    van_collection.buf_milk_fat = (buffalo_milk_fatin_kg /(buffalo_volume  * item)) * 100 
+                    van_collection.buf_milk_clr = (buf_milk_clr /(buffalo_volume  * item)) * 100
+                    van_collection.buffalow_milk_snf = (buffalo_milk_snfin_kg /(buffalo_volume  * item)) * 100
                     van_collection.mix_milk_fat = (mix_milk_fatin_kg /(mix_volume * item)) * 100 
                     van_collection.mix_milk_snf = (mix_milk_snfin_kg /(mix_volume * item)) * 100
                     van_collection.cow_milk_clr = (mix_milk_clr /(mix_volume * item)) * 100 
