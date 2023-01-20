@@ -19,7 +19,7 @@ def milk_ledger_stock_entry(self,method):
                     weight_uom = itm_obj.weight_uom
                     maintain_snf_fat = itm_obj.maintain_fat_snf_clr
                     itm_milk_type = itm_obj.milk_type
-                # ******************8
+                
                     if itm.item_code == good_cow_milk or itm.item_code == good_buff_milk or itm.item_code == good_mix_milk or maintain_snf_fat == 1:
                         if itm.item_code == good_cow_milk:
                             milk_type = "Cow"
@@ -29,7 +29,7 @@ def milk_ledger_stock_entry(self,method):
                             milk_type = "Mix"
                         elif maintain_snf_fat == 1:
                             milk_type = itm_milk_type
-                            print("**************************************************itm mik type",milk_type)
+                            
                         query = """ select name from `tabMilk Ledger Entry` where item_code = %(item_code)s 
                         and warehouse = %(warehouse)s """
                         if itm.batch_no:
@@ -53,7 +53,7 @@ def milk_ledger_stock_entry(self,method):
 
                         # rate
                         if milk_type != "":
-                            print("**************************************************itm mik type", milk_type)
+                            
                             query2 = frappe.db.sql(""" select bmpl.name, bmpl.rate, bmpl.snf_clr_rate 
                                                     from `tabBulk Milk Price List` bmpl, `tabBulk Milk Price List Warehouse` bmplw, `tabBulk Milk Price List Customer` bmplc
                                                     where bmplw.warehouse = %(warehouse)s and bmpl.active = 1 and bmpl.milk_type = %(milk_type)s 
@@ -83,7 +83,7 @@ def milk_ledger_stock_entry(self,method):
     # create milk ledger entry
 def on_submit(self, method):
     for itm in self.items:
-        print('itmmmmmmmmmmmmmmmmmmmmmm',self.items)
+      
         if itm.s_warehouse:
             itm_obj = frappe.get_doc("Item", itm.item_code)
             itm_weight = float(itm_obj.weight_per_unit)
@@ -288,7 +288,7 @@ def cancel_create_milk_stock_ledger(self,method):
                         frappe.db.sql(""" update `tabMilk Ledger Entry` set is_cancelled = 1 where name = %(name)s """,
                                       {'name': new_mle.name})
                         frappe.db.commit()
-                        print('self itmmmmmmmmm********************',self.items)
+                        
         
 
         if itm.s_warehouse:
@@ -361,11 +361,3 @@ def get_item_weight(item_code):
     return obj.weight_per_unit
 
 
-# def before_cancel(self):
-#     vci = frappe.get_all('Van Collection items',{'gate_pass':self.name},['gate_pass'])
-#     print('vci****************************',vci)
-#     # doc=frappe.get_doc("Stock Entry",self.name)
-#     if doc.cancel():
-#         d = frappe.delete_doc('Milk Ledger Entry',)
-#     else:
-#         vci=""

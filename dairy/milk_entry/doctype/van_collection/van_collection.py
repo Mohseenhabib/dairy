@@ -107,19 +107,6 @@ class VanCollection(Document):
                     
                   
                    
-                    item = frappe.db.get_value('Item',{'milk_type':i.get('milk_type')},['weight_per_unit']) 
-                   
-                    print('buffalo volume8*****************',buffalo_volume)
-                    van_collection.cow_milk_fat = (cow_milk_fatin_kg /(cow_volume * item)) * 100 
-                    van_collection.cow_milk_clr = (cow_milk_clr /(cow_volume * item)) * 100 
-                    van_collection.cow_milk_snf = (cow_milk_snfin_kg /(cow_volume * item)) * 100
-                    van_collection.buf_milk_fat = (buffalo_milk_fatin_kg /(buffalo_volume  * item)) * 100 
-                    van_collection.buf_milk_clr = (buf_milk_clr /(buffalo_volume  * item)) * 100
-                    van_collection.buffalow_milk_snf = (buffalo_milk_snfin_kg /(buffalo_volume  * item)) * 100
-                    van_collection.mix_milk_fat = (mix_milk_fatin_kg /(mix_volume * item)) * 100 
-                    van_collection.mix_milk_snf = (mix_milk_snfin_kg /(mix_volume * item)) * 100
-                    van_collection.cow_milk_clr = (mix_milk_clr /(mix_volume * item)) * 100 
-
                     result1 = frappe.db.sql("""Select name,milk_type from `tabSample lines` where milk_entry in
                                                            (select name from `tabMilk Entry` 
                                                            where docstatus =1 and dcs_id = %s and shift = %s and date = %s 
@@ -143,7 +130,22 @@ class VanCollection(Document):
                             })     
                     
                    
-                   
+                    item = frappe.db.get_value('Item',{'milk_type':i.get('milk_type')},['weight_per_unit']) 
+
+                    print('buffalo volume8*****************',buffalo_volume)
+                    if cow_volume > 0:
+                        van_collection.cow_milk_fat = (cow_milk_fatin_kg /(cow_volume * item)) * 100 
+                        van_collection.cow_milk_clr = (cow_milk_clr /(cow_volume * item)) * 100 
+                        van_collection.cow_milk_snf = (cow_milk_snfin_kg /(cow_volume * item)) * 100
+                    if buffalo_volume > 0:
+                        van_collection.buf_milk_fat = (buffalo_milk_fatin_kg /(buffalo_volume  * item)) * 100 
+                        van_collection.buf_milk_clr = (buf_milk_clr /(buffalo_volume  * item)) * 100
+                        van_collection.buffalow_milk_snf = (buffalo_milk_snfin_kg /(buffalo_volume  * item)) * 100
+                    
+                    if mix_volume > 0:
+                        van_collection.mix_milk_fat = (mix_milk_fatin_kg /(mix_volume * item)) * 100 
+                        van_collection.mix_milk_snf = (mix_milk_snfin_kg /(mix_volume * item)) * 100
+                        van_collection.cow_milk_clr = (mix_milk_clr /(mix_volume * item)) * 100 
                     van_collection.insert(ignore_permissions = True)
                     
 
