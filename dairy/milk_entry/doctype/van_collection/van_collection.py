@@ -57,6 +57,9 @@ class VanCollection(Document):
                 buffalo_milk_fatin_kg = 0.0
                 mix_milk_snfin_kg = 0.0
                 mix_milk_fatin_kg = 0.0
+                cow_milk_snfin_kg=0.0
+                cow_milk_fatin_kg=0.0
+
 
                 for i in result:
                     if i.get('milk_type') == 'Cow':
