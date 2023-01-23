@@ -8,6 +8,8 @@ from frappe import _
 from frappe.model.document import Document
 from datetime import date
 
+from frappe.utils.data import flt
+
 class VanCollection(Document):
     @frappe.whitelist()
     def submit_van_collection(self):
@@ -55,6 +57,9 @@ class VanCollection(Document):
                 buffalo_milk_fatin_kg = 0.0
                 mix_milk_snfin_kg = 0.0
                 mix_milk_fatin_kg = 0.0
+                cow_milk_snfin_kg=0.0
+                cow_milk_fatin_kg=0.0
+
 
                 for i in result:
                     if i.get('milk_type') == 'Cow':
@@ -129,20 +134,26 @@ class VanCollection(Document):
                                 'sample_lines': res.get('name')
                             })     
                     
-                   
-                    item = frappe.db.get_value('Item',{'milk_type':i.get('milk_type')},['weight_per_unit']) 
+                    doc=frappe.get_doc("Dairy Settings")
+                    item=0.0
+                    if i.get("milk_type")=="Cow":
+                        item = frappe.db.get_value('Item',{"name":doc.cow_pro},['weight_per_unit'])
+                    if i.get("milk_type")=="Buffalo":
+                        item = frappe.db.get_value('Item',{"name":doc.buf_pro},['weight_per_unit'])
+                    if i.get("milk_type")=="Mix":
+                        item = frappe.db.get_value('Item',{"name":doc.mix_pro},['weight_per_unit'])
 
                     print('buffalo volume8*****************',buffalo_volume)
-                    if cow_volume > 0:
+                    if flt(cow_volume) > 0:
                         van_collection.cow_milk_fat = (cow_milk_fatin_kg /(cow_volume * item)) * 100 
                         van_collection.cow_milk_clr = (cow_milk_clr /(cow_volume * item)) * 100 
                         van_collection.cow_milk_snf = (cow_milk_snfin_kg /(cow_volume * item)) * 100
-                    if buffalo_volume > 0:
+                    if flt(buffalo_volume) > 0:
                         van_collection.buf_milk_fat = (buffalo_milk_fatin_kg /(buffalo_volume  * item)) * 100 
                         van_collection.buf_milk_clr = (buf_milk_clr /(buffalo_volume  * item)) * 100
                         van_collection.buffalow_milk_snf = (buffalo_milk_snfin_kg /(buffalo_volume  * item)) * 100
                     
-                    if mix_volume > 0:
+                    if flt(mix_volume) > 0:
                         van_collection.mix_milk_fat = (mix_milk_fatin_kg /(mix_volume * item)) * 100 
                         van_collection.mix_milk_snf = (mix_milk_snfin_kg /(mix_volume * item)) * 100
                         van_collection.cow_milk_clr = (mix_milk_clr /(mix_volume * item)) * 100 
