@@ -131,6 +131,11 @@ cur_frm.cscript.submit_purchase_rec = function(){
         method: 'create_purchase_receipt',
         callback: function(r) {
             cur_frm.refresh();
+            frappe.call({
+                method: 'dairy.milk_entry.doctype.dairy_settings.dairy_settings.purchase_invoice',
+                // args: {employee: frm.doc.employee, fieldname: property},
+            });
         }
     });
+
 }
