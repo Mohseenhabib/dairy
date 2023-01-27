@@ -131,11 +131,11 @@ cur_frm.cscript.submit_purchase_rec = function(){
         method: 'create_purchase_receipt',
         callback: function(r) {
             cur_frm.refresh();
-            frappe.call({
-                method: 'dairy.milk_entry.doctype.dairy_settings.dairy_settings.purchase_invoice',
-                // args:{'name':frm.doc.name,'dsc_id':frm.doc.dcs_id,'member':frm.doc.member}
-                // args: {employee: frm.doc.employee, fieldname: property},
-            });
+            // frappe.call({
+            //     method: 'dairy.milk_entry.doctype.dairy_settings.dairy_settings.purchase_invoice',
+            //     // args:{'name':frm.doc.name,'dsc_id':frm.doc.dcs_id,'member':frm.doc.member}
+            //     // args: {employee: frm.doc.employee, fieldname: property},
+            // });
         }
     });
 

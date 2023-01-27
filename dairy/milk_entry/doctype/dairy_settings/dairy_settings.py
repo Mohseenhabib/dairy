@@ -71,7 +71,7 @@ def purchase_invoice():
 			d1 = getdate(days_after)
 			d2 = getdate(date.today())
 			# d = pd.date_range(d1, d2)
-			print('dddddddddddddddddddddddddddddddddd',d2,p_inv.previous_sync_date)
+			
 
 			query =frappe.db.sql("""select dcs_id,member,milk_type,name,volume,date
 										from `tabMilk Entry` 

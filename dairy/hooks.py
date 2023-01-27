@@ -165,23 +165,23 @@ has_permission = {
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
+scheduler_events = {
 # 	"all": [
 # 		"dairy.tasks.all"
 # 	],
 # 	"daily": [
 # 		"dairy.tasks.daily"
 # 	],
-# 	"hourly": [
-# 		"dairy.tasks.hourly"
-# 	],
+	"hourly": [
+		"dairy.milk_entry.doctype.dairy_settings.dairy_settings.purchase_invoice",
+	],
 # 	"weekly": [
 # 		"dairy.tasks.weekly"
 # 	]
 # 	"monthly": [
 # 		"dairy.tasks.monthly"
 # 	]
-# }
+}
 
 # Testing
 # -------
