@@ -77,6 +77,8 @@
   "default_payment",
   "default_payment_type",
   "days",
+  "column_break_73",
+  "previous_sync_date",
   "section_break_60",
   "order_locking_time",
   "morning_locking_time",
@@ -611,12 +613,22 @@
    "fieldname": "quality_inspection_required_for_van_collection",
    "fieldtype": "Check",
    "label": "Quality Inspection Required for Van Collection"
+  },
+  {
+   "fieldname": "column_break_73",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "previous_sync_date",
+   "fieldtype": "Date",
+   "label": "Previous Sync Date",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-01-13 14:29:03.519927",
+ "modified": "2023-01-25 11:20:46.981247",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",

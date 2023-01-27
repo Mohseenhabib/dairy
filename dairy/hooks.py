@@ -43,7 +43,7 @@ doctype_js = {
     "Vehicle": "public/js/vehicle.js",
     "Customer": "public/js/customer.js",
     "Sales Invoice": "public/js/sales_invoice.js",
-    "Supplier": "public/js/supplier.js",
+    # "Supplier": "public/js/supplier.js",
     "Item": "public/js/item.js",
     "Stock Entry": "public/js/stock_entry.js",
     "Purchase Receipt": "public/js/purchase_receipt.js"
@@ -51,7 +51,7 @@ doctype_js = {
 
 doctype_list_js = {
                     "Warehouse": "public/js/utils/warehouse_list.js",
-                    "Supplier": "public/js/supplier_list.js"
+                    # "Supplier": "public/js/supplier_list.js"
                   }
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}

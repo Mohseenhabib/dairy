@@ -19,17 +19,11 @@ frappe.ui.form.on('Dairy Settings', {
 
     },
     set_property: function(frm) {
-        if(frm.doc.default_payment_type =="Daily")
-         {
-            frappe.call({
-                method: 'dairy.milk_entry.doctype.dairy_settings.dairy_settings.purchase_invoice',
-                // args: {employee: frm.doc.employee, fieldname: property},
-            });
-            console.log('purchase_incoiveEEEEEEEEEEEEEEEEEEEE')
-         }
+        
          if(frm.doc.default_payment_type =="Days")
          {
             frm.set_df_property("days", "reqd", 1);
+            
          }
          else
          {

@@ -111,7 +111,7 @@ frappe.ui.form.on('Milk Entry', {
 
         });
     },
-    before_submit: function(frm){
+    on_submit: function(frm){
         cur_frm.cscript.submit_purchase_rec()
         frappe.model.get_value('Dairy Settings', {'name': 'Dairy Settings'}, 'auto_print_milk_receipt', function(d)
         {
@@ -133,6 +133,7 @@ cur_frm.cscript.submit_purchase_rec = function(){
             cur_frm.refresh();
             frappe.call({
                 method: 'dairy.milk_entry.doctype.dairy_settings.dairy_settings.purchase_invoice',
+                // args:{'name':frm.doc.name,'dsc_id':frm.doc.dcs_id,'member':frm.doc.member}
                 // args: {employee: frm.doc.employee, fieldname: property},
             });
         }
