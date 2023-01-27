@@ -621,14 +621,13 @@
   {
    "fieldname": "previous_sync_date",
    "fieldtype": "Date",
-   "label": "Previous Sync Date",
-   "read_only": 1
+   "label": "Previous Sync Date"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-01-25 11:20:46.981247",
+ "modified": "2023-01-27 14:49:39.617502",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",
