@@ -7,7 +7,6 @@ import frappe
 from frappe.model.document import Document
 from datetime import date
 from datetime import date, timedelta
-import pandas as pd
 from frappe.utils import (flt, getdate, get_url, now,
                           nowtime, get_time, today, get_datetime, add_days, datetime)
 
