@@ -58,7 +58,7 @@ def purchase_invoice():
 								}
 							)
 
-						pi.save(ignore_permissions= True)
+						pi.save(ignore_permissions = True)
 
 	if p_inv.default_payment_type == 'Days':	
 		days_after = ((getdate(frappe.utils.nowdate()))-timedelta(days=p_inv.days)).isoformat() 
@@ -110,13 +110,11 @@ def purchase_invoice():
 										'stock_uom': itm.stock_uom,
 										'rate': itm.unit_price,
 										'warehouse': k.dcs_id,
-										'fat': k.fat_kg,
-										'clr': k.snf_kg,
 										'purchase_receipt': j.name
 									}
 								)
 
-							pi.save(ignore_permissions= True)
+							pi.save(ignore_permissions = True)
 							p_inv.db_set('previous_sync_date',str(dt))
 						
 	if p_inv.default_payment_type == 'Weekly':
@@ -169,11 +167,9 @@ def purchase_invoice():
 										'stock_uom': itm.stock_uom,
 										'rate': itm.unit_price,
 										'warehouse': k.dcs_id,
-										'fat': k.fat_kg,
-										'clr': k.snf_kg,
 										'purchase_receipt': j.name
 									}
 								)
 
-							pi.save(ignore_permissions= True)
+							pi.save(ignore_permissions = True)
 							p_inv.db_set('previous_sync_date',str(dt))
