@@ -19,7 +19,7 @@ def purchase_invoice():
 	p_inv = frappe.get_doc('Dairy Settings')
 	if p_inv.default_payment_type == 'Daily':
 		ware = frappe.get_all('Warehouse',{'is_dcs':1},['supplier','name','is_third_party_dcs'])
-		print('ware daily&&&&&&&&&&&&&&&&&&&',ware)
+		
 
 		for wh in ware:
 			query =frappe.db.sql("""select dcs_id,member,milk_type,name,volume
@@ -27,7 +27,7 @@ def purchase_invoice():
 										where docstatus =1  and dcs_id = '{0}' and date = '{1}' 
 										""".format(wh.name,tdate), as_dict =True)
 
-			print('query************************',query)
+			
 
 		
 			for k in query:
@@ -38,7 +38,7 @@ def purchase_invoice():
 					pr =  frappe.get_doc('Purchase Receipt',j.name)
 					pur_inv = frappe.db.get_value('Purchase Invoice Item',{'purchase_receipt':j.name},["parent"])
 					if not pur_inv:
-						print('dailyyyyyyyyyyyyyyyyyyyyyy',item)
+						
 						pi = frappe.new_doc("Purchase Invoice")
 						for itm in pr.items:
 							pi.supplier = k.get('member') if  wh.is_third_party_dcs == 0 else wh.get("supplier")
@@ -73,15 +73,14 @@ def purchase_invoice():
 			d2 = getdate(date.today())
 			
 			ware = frappe.get_all('Warehouse',{'is_dcs':1},['supplier','name','is_third_party_dcs'])
-			print('ware days^^^^^^^^^^^^^^^^',ware)
-
+			
 			for wh in ware:
 				query =frappe.db.sql("""select dcs_id,member,milk_type,name,volume,date
 											from `tabMilk Entry` 
 											where docstatus =1 and dcs_id = '{0}' and date BETWEEN  '{1}' and '{2}'
 											""".format(wh.name,p_inv.previous_sync_date,d2), as_dict =True)
 
-				print('query***********************',query)
+				
 			
 			
 			
@@ -92,15 +91,15 @@ def purchase_invoice():
 					for j in pr:
 						pr =  frappe.get_doc('Purchase Receipt',j.name)
 
-						print('jjjjjjjjjjjjjjjjjjjj',j)
+						
 						pur_inv = frappe.db.get_value('Purchase Invoice Item',{'purchase_receipt':j.name,"docstatus":1},["parent"])
 						print('pur inv in days$$$$$$$$$$$$$$$',pur_inv )
 						if not pur_inv:
-							print('okkkkkkkkkkkkkkkkkkk')
+							
 							pi = frappe.new_doc("Purchase Invoice")
-							# print('new doc##################',item)
+							
 							for itm in pr.items:
-								print('piiiiiiiiiiiiiiiiiiiii')
+								
 								pi.supplier = k.get('member') if  wh.is_third_party_dcs == 0 else wh.get("supplier")
 								pi.name = k.get('name')
 								pi.append(
@@ -133,7 +132,7 @@ def purchase_invoice():
 			d2 = getdate(date.today())
 
 			ware = frappe.get_all('Warehouse',{'is_dcs':1},['supplier','name','is_third_party_dcs'])
-			print('ware weekly !!!!!!!!!!!!!!!!!!!!!!',ware)
+			
 
 			for wh in ware:
 				query =frappe.db.sql("""select dcs_id,member,milk_type,name,volume,date
@@ -141,7 +140,7 @@ def purchase_invoice():
 											where docstatus =1 and dcs_id = '{0}' and date BETWEEN  '{1}' and '{2}'
 											""".format(wh.name,p_inv.previous_sync_date,d2), as_dict =True)
 
-				print('query***********************',query)
+				
 			
 			
 			
@@ -150,7 +149,7 @@ def purchase_invoice():
 					pr =  frappe.db.get_all('Purchase Receipt',{'milk_entry':k.name,"docstatus":1},['*'])
 					for j in pr:
 						pr =  frappe.get_doc('Purchase Receipt',j.name)
-						print('jjjjjjjjjjjjjjjjjjjj',j)
+					
 						pur_inv = frappe.db.get_value('Purchase Invoice Item',{'purchase_receipt':j.name},["parent"])
 						if not pur_inv:
 							pi = frappe.new_doc("Purchase Invoice")
