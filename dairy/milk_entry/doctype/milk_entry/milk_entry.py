@@ -90,7 +90,7 @@ class MilkEntry(Document):
             'clr': self.snf_kg
         })
         doc.insert(ignore_permissions=True)
-        #doc.submit()
+        doc.submit()
         return doc
 
 def _get_product(milk_type):

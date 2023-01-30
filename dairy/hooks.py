@@ -157,7 +157,7 @@ has_permission = {
 
 # doc_events={
 #     "Milk Entry": {
-#  		"onload": "dairy.milk_entry.doctype.milk_entry.milk_entry.filters_to_quick_entry"
+#  		"before_save" :"dairy.milk_entry.doctype.dairy_settings.dairy_settings.purchase_invoice"
 # 	}
 # }
 
@@ -166,22 +166,22 @@ has_permission = {
 # ---------------
 
 scheduler_events = {
-# 	"all": [
-# 		"dairy.tasks.all"
-# 	],
-# 	"daily": [
-# 		"dairy.tasks.daily"
-# 	],
+# # 	"all": [
+# # 		"dairy.tasks.all"
+# # 	],
+# # 	"daily": [
+# # 		"dairy.tasks.daily"
+# # 	],
 	"hourly": [
 		"dairy.milk_entry.doctype.dairy_settings.dairy_settings.purchase_invoice",
 	],
-# 	"weekly": [
-# 		"dairy.tasks.weekly"
-# 	]
-# 	"monthly": [
-# 		"dairy.tasks.monthly"
-# 	]
-}
+# # 	"weekly": [
+# # 		"dairy.tasks.weekly"
+# # 	]
+# # 	"monthly": [
+# # 		"dairy.tasks.monthly"
+# # 	]
+ }
 
 # Testing
 # -------
