@@ -13,7 +13,7 @@ class VanCollectionItems(Document):
 	def validate(self):
 		if self.get('__islocal'):
 			result = frappe.db.sql("""select * from `tabVan Collection Items` where dcs =%s and shift =%s
-							and date=%s""",(self.dcs,self.shift,self.date))
+							and date=%s and docstatus = 1""",(self.dcs,self.shift,self.date))
 			if result:
 				frappe.throw("You can not create duplicate entry on same date and same DCS")
 
