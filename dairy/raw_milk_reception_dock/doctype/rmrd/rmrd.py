@@ -12,6 +12,7 @@ class RMRD(Document):
 		if result and self.get('__islocal'):
 			frappe.throw("you can not create duplicate entry with same DCS,Date and Shift.")
 
+	@frappe.whitelist()
 	def start_rmrd(self):
 		result1 = frappe.db.sql("""select sum(cow_milk_collected) as cow_collected,
 								sum(buffalow_milk_collected) as buf_collected,

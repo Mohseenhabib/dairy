@@ -111,15 +111,15 @@ frappe.ui.form.on('Milk Entry', {
 
         });
     },
-    before_submit: function(frm){
+    on_submit: function(frm){
         cur_frm.cscript.submit_purchase_rec()
         frappe.model.get_value('Dairy Settings', {'name': 'Dairy Settings'}, 'auto_print_milk_receipt', function(d)
         {
             if(d.auto_print_milk_receipt == 1)
             {
                 
-                frappe.set_route("Print Format","Milk Entry Invoice");
-                frm.print_doc();
+                // frappe.set_route('List',"Print Format","");
+                frm.print_doc('Milk Entry Invoice');
             }
         });
     }
@@ -131,6 +131,12 @@ cur_frm.cscript.submit_purchase_rec = function(){
         method: 'create_purchase_receipt',
         callback: function(r) {
             cur_frm.refresh();
+            // frappe.call({
+            //     method: 'dairy.milk_entry.doctype.dairy_settings.dairy_settings.purchase_invoice',
+            //     // args:{'name':frm.doc.name,'dsc_id':frm.doc.dcs_id,'member':frm.doc.member}
+            //     // args: {employee: frm.doc.employee, fieldname: property},
+            // });
         }
     });
+
 }

@@ -43,7 +43,7 @@ doctype_js = {
     "Vehicle": "public/js/vehicle.js",
     "Customer": "public/js/customer.js",
     "Sales Invoice": "public/js/sales_invoice.js",
-    "Supplier": "public/js/supplier.js",
+    # "Supplier": "public/js/supplier.js",
     "Item": "public/js/item.js",
     "Stock Entry": "public/js/stock_entry.js",
     "Purchase Receipt": "public/js/purchase_receipt.js"
@@ -51,7 +51,7 @@ doctype_js = {
 
 doctype_list_js = {
                     "Warehouse": "public/js/utils/warehouse_list.js",
-                    "Supplier": "public/js/supplier_list.js"
+                    # "Supplier": "public/js/supplier_list.js"
                   }
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -157,7 +157,7 @@ has_permission = {
 
 # doc_events={
 #     "Milk Entry": {
-#  		"onload": "dairy.milk_entry.doctype.milk_entry.milk_entry.filters_to_quick_entry"
+#  		"before_save" :"dairy.milk_entry.doctype.dairy_settings.dairy_settings.purchase_invoice"
 # 	}
 # }
 
@@ -165,23 +165,23 @@ has_permission = {
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"dairy.tasks.all"
-# 	],
-# 	"daily": [
-# 		"dairy.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"dairy.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"dairy.tasks.weekly"
-# 	]
-# 	"monthly": [
-# 		"dairy.tasks.monthly"
-# 	]
-# }
+scheduler_events = {
+# # 	"all": [
+# # 		"dairy.tasks.all"
+# # 	],
+# # 	"daily": [
+# # 		"dairy.tasks.daily"
+# # 	],
+	"hourly": [
+		"dairy.milk_entry.doctype.dairy_settings.dairy_settings.purchase_invoice",
+	],
+# # 	"weekly": [
+# # 		"dairy.tasks.weekly"
+# # 	]
+# # 	"monthly": [
+# # 		"dairy.tasks.monthly"
+# # 	]
+ }
 
 # Testing
 # -------

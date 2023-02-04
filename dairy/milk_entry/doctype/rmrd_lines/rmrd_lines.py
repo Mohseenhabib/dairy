@@ -3,10 +3,11 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
-# import frappe
+import frappe
 from frappe.model.document import Document
 
 class RMRDLines(Document):
+	@frappe.whitelist()
 	def calculate_total_cans_wt(self):
 		g_cow_milk = self.g_cow_milk if self.g_cow_milk else 0
 		g_buf_milk = self.g_buf_milk if self.g_buf_milk else 0

@@ -8,14 +8,17 @@ from frappe import _
 from frappe.model.document import Document
 from datetime import date
 
+from frappe.utils.data import flt
+
 class VanCollection(Document):
     @frappe.whitelist()
     def submit_van_collection(self):
-        frappe.db.set(self,'status','Submitted')
+        self.db_set('status','Submitted')
+       
 
     @frappe.whitelist()
     def change_status_complete(self):
-        frappe.db.set(self, 'status', 'Completed')
+        self.db_set('status', 'Completed')
         self.flags.ignore_validate_update_after_submit = True  # ignore after submit permission
         self.save(ignore_permissions=True)
 
@@ -49,6 +52,14 @@ class VanCollection(Document):
                 mix_volume = 0.0
                 cow_milk_fat = buf_milk_fat = mix_milk_fat = 0.0
                 cow_milk_clr = buf_milk_clr = mix_milk_clr = 0.0
+                cow_milk_snf = buffalow_milk_snf = mix_milk_snf = 0.0
+                buffalo_milk_snfin_kg = 0.0
+                buffalo_milk_fatin_kg = 0.0
+                mix_milk_snfin_kg = 0.0
+                mix_milk_fatin_kg = 0.0
+                cow_milk_snfin_kg=0.0
+                cow_milk_fatin_kg=0.0
+
 
                 for i in result:
                     if i.get('milk_type') == 'Cow':
@@ -66,7 +77,7 @@ class VanCollection(Document):
                         buffalo_milk_snf = i.get('snf')
                         buffalo_milk_snfin_kg = i.get('snf_kg')
                         buffalo_milk_fatin_kg = i.get('fat_kg')
-
+                
                     if i.get('milk_type') == 'Mix':
                         mix_volume =i.get('total_volume')
                         mix_milk_fat = i.get('fat')
@@ -75,8 +86,7 @@ class VanCollection(Document):
                         mix_milk_snfin_kg = i.get('snf_kg')
                         mix_milk_fatin_kg = i.get('fat_kg')
 
-                    print('IIIIIIIIIIIIIIIIIIIIIIIIIIIIII',i.get('total_volume'),i.get('snf_kg'),i.get('fat_kg'))
-                    print('yyyyyyyyyyyyyyyyyyyyyyy',i.get('fat'))
+                   
 
                 if cow_volume > 0 or buffalo_volume > 0 or mix_volume > 0:
                     van_collection = frappe.new_doc("Van Collection Items")
@@ -100,33 +110,20 @@ class VanCollection(Document):
                     van_collection.mix_milk_fat = mix_milk_fat
                     van_collection.mix_milk_clr = mix_milk_clr
                     
-                    print('uuuuuuuuuuuuueeeeeeeee',state_climatic_factor,state_factor, van_collection.cow_milk_fat, van_collection.cow_milk_clr,van_collection.cow_milk_snf)
+                  
                    
-                    item = frappe.db.get_value('Item',{'milk_type':i.get('milk_type')},['weight_per_unit']) 
-                    print('item***************************',item) 
-
-                    van_collection.cow_milk_fat = (cow_milk_fatin_kg /(cow_volume * item)) * 100 
-                    van_collection.cow_milk_clr = (cow_milk_clr /(cow_volume * item)) * 100 
-                    van_collection.cow_milk_snf = (cow_milk_snfin_kg /(cow_volume * item)) * 100
-                    van_collection.buf_milk_fat = (buffalo_milk_fatin_kg /(buffalo_volume * item)) * 100 
-                    van_collection.buf_milk_clr = (buf_milk_clr /(buffalo_volume * item)) * 100
-                    van_collection.buffalow_milk_snf = (buffalo_milk_snfin_kg /(buffalo_volume * item)) * 100
-                    van_collection.mix_milk_fat = (mix_milk_fatin_kg /(mix_volume * item)) * 100 
-                    van_collection.mix_milk_snf = (mix_milk_snfin_kg /(mix_volume * item)) * 100
-                    van_collection.cow_milk_clr = (mix_milk_clr /(mix_volume * item)) * 100 
-
                     result1 = frappe.db.sql("""Select name,milk_type from `tabSample lines` where milk_entry in
                                                            (select name from `tabMilk Entry` 
                                                            where docstatus =1 and dcs_id = %s and shift = %s and date = %s 
                                                            )""", (res.name, self.shift, self.date), as_dict=True)
-                    print('result^^^^^^^^^^^^^^^^^',result1)
+                  
 
                     for res in result1:
                         if res.get('milk_type') == 'Cow':
                             van_collection.append("cow_milk_sam", {
                                 'sample_lines': res.get('name')
                             })
-                        print('res.get********************',sum([cow_milk_fat]),sum([cow_milk_clr]))
+                      
                         if res.get('milk_type') == 'Buffalo':
                             van_collection.append("buf_milk_sam", {
                                 'sample_lines': res.get('name')
@@ -137,12 +134,33 @@ class VanCollection(Document):
                                 'sample_lines': res.get('name')
                             })     
                     
-                   
-                    print('van_collection**********************', van_collection.buf_milk_fat, van_collection.buf_milk_clr, van_collection.buffalow_milk_snf)
+                    doc=frappe.get_doc("Dairy Settings")
+                    item=0.0
+                    if i.get("milk_type")=="Cow":
+                        item = frappe.db.get_value('Item',{"name":doc.cow_pro},['weight_per_unit'])
+                    if i.get("milk_type")=="Buffalo":
+                        item = frappe.db.get_value('Item',{"name":doc.buf_pro},['weight_per_unit'])
+                    if i.get("milk_type")=="Mix":
+                        item = frappe.db.get_value('Item',{"name":doc.mix_pro},['weight_per_unit'])
+
+                    print('buffalo volume8*****************',buffalo_volume)
+                    if flt(cow_volume) > 0:
+                        van_collection.cow_milk_fat = (cow_milk_fatin_kg /(cow_volume * item)) * 100 
+                        van_collection.cow_milk_clr = (cow_milk_clr /(cow_volume * item)) * 100 
+                        van_collection.cow_milk_snf = (cow_milk_snfin_kg /(cow_volume * item)) * 100
+                    if flt(buffalo_volume) > 0:
+                        van_collection.buf_milk_fat = (buffalo_milk_fatin_kg /(buffalo_volume  * item)) * 100 
+                        van_collection.buf_milk_clr = (buf_milk_clr /(buffalo_volume  * item)) * 100
+                        van_collection.buffalow_milk_snf = (buffalo_milk_snfin_kg /(buffalo_volume  * item)) * 100
+                    
+                    if flt(mix_volume) > 0:
+                        van_collection.mix_milk_fat = (mix_milk_fatin_kg /(mix_volume * item)) * 100 
+                        van_collection.mix_milk_snf = (mix_milk_snfin_kg /(mix_volume * item)) * 100
+                        van_collection.cow_milk_clr = (mix_milk_clr /(mix_volume * item)) * 100 
                     van_collection.insert(ignore_permissions = True)
                     
 
-            frappe.db.set(self, 'status', 'In-Progress')
+            self.db_set('status', 'In-Progress')
             self.flags.ignore_validate_update_after_submit = True  # ignore after submit permission
             self.save(ignore_permissions=True)
         return True

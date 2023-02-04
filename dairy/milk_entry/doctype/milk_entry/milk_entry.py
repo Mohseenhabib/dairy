@@ -15,20 +15,20 @@ class MilkEntry(Document):
     def get_pricelist(self):
         state_climatic_factor,state_factor = frappe.db.get_value('Warehouse',{'is_dcs':1},['state_climatic_factor','state_factor'])
         snf =  ((self.clr/4)+(self.fat*(state_climatic_factor)+(state_factor)))
-        frappe.db.set(self, 'snf', snf)
+        self.db_set('snf', snf)
         print('snfffffffffffffffffff',self.snf)
 
         item = frappe.db.get_value('Item',{'milk_type':self.milk_type},['weight_per_unit'])
         fat_kg =  ((self.volume * (item)) * (self.fat/100))
-        frappe.db.set(self, 'fat_kg', fat_kg)
+        self.db_set('fat_kg', fat_kg)
         print('fat_kg**************',fat_kg,item)
         
        
         snf_kg =  ((self.volume * (item)) * (self.snf/100))
-        frappe.db.set(self, 'snf_kg', snf_kg)
+        self.db_set('snf_kg', snf_kg)
 
         itm = frappe.db.get_value('Item',{'milk_type':self.milk_type},['stock_uom'])
-        frappe.db.set(self,'stock_uom',itm)      
+        self.db_set('stock_uom',itm)      
 
         pricelist_name = frappe.db.sql("""
                     select milk_rate.name from `tabMilk Rate` as milk_rate 
@@ -38,7 +38,7 @@ class MilkEntry(Document):
         if not pricelist_name:
             frappe.throw(_("Milk Rate not found."))
 
-        frappe.db.set(self,'milk_rate', pricelist_name[0][0])
+        self.db_set('milk_rate', pricelist_name[0][0])
         rate = frappe.db.sql(""" select rate from `tabMilk Rate Chart` where fat >= {0} and snf_clr >= {1} 
                    and parent = '{2}' order by fat,snf_clr asc limit 1 """.format(self.fat,self.snf,pricelist_name[0][0]))
 
@@ -46,9 +46,9 @@ class MilkEntry(Document):
         
         if not rate:
             frappe.throw(_("Milk price not found."))
-        frappe.db.set(self, 'unit_price', rate[0][0])
-        frappe.db.set(self, 'total',(self.volume *self.unit_price))
-        frappe.db.set(self, 'status','Submitted')
+        self.db_set('unit_price', rate[0][0])
+        self.db_set('total',(self.volume *self.unit_price))
+        self.db_set('status','Submitted')
 
 
         
@@ -90,7 +90,7 @@ class MilkEntry(Document):
             'clr': self.snf_kg
         })
         doc.insert(ignore_permissions=True)
-        #doc.submit()
+        doc.submit()
         return doc
 
 def _get_product(milk_type):
