@@ -2,11 +2,12 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('RMRD Lines', {
+
 	after_save: function(frm) {
-//	    if(frm.doc.__islocal)
-//	    {
+	    if(frm.doc.__islocal)
+	    {
 	         cur_frm.cscript.calculate_total_cans_wt()
-//	    }
+	    }
 	 },
 	 g_cow_milk: function(frm) {
 	     cur_frm.cscript.calculate_total_cans_wt()
@@ -64,7 +65,43 @@ frappe.ui.form.on('RMRD Lines', {
 	 c_mix_milk_can: function(frm) {
 	     cur_frm.cscript.calculate_total_cans_wt()
 	 },
+
+	 refresh: function(frm) {
+		if(frm.doc.docstatus == 1 && !frm.doc.stock_entry)
+		       {
+		           frm.add_custom_button(__('Make Stock Entry'),function() {
+		               return frappe.call({
+		                   doc: frm.doc,
+		                   method: 'make_stock_entry',
+		                   callback: function(r) {
+		                       var doc = frappe.model.sync(r.message);
+		                       frappe.set_route("Form", doc[0].doctype, doc[0].name);
+		                   }
+		               });
+		           }).addClass('btn-primary');
+		       }
+
+	},
+	onload:function(frm){
+        frm.set_query('rmrd', function(doc) {
+            return {
+                filters: {
+                    "status":"In-Progress"
+                }
+            };
+        });
+
+        // frm.set_query('dcs', function(doc) {
+        //     return {
+        //         filters: {
+        //              "route": frm.doc.route,
+        //              "is_dcs": 1
+        //         }
+        //     };
+        // });
+     }
 });
+
 
 cur_frm.cscript.calculate_total_cans_wt = function(){
     return frappe.call({

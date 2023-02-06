@@ -45,6 +45,7 @@ class VanCollectionItems(Document):
 		stock_entry = frappe.new_doc("Stock Entry")
 		stock_entry.purpose = "Material Transfer"
 		stock_entry.stock_entry_type = "Material Transfer"
+		stock_entry.posting_date = van_collection.date
 		stock_entry.company = van_collection.company
 		stock_entry.van_collection = van_collection.name
 		stock_entry.van_collection_item = self.name

@@ -26,6 +26,7 @@
   "fat_kg",
   "column_break_9",
   "snf_kg",
+  "clr_kg",
   "sb4",
   "milk_rate",
   "cb5",
@@ -58,7 +59,7 @@
    "fieldname": "fat",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "FAT"
+   "label": "FAT%"
   },
   {
    "allow_in_quick_entry": 1,
@@ -166,7 +167,7 @@
    "fieldname": "clr",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "CLR"
+   "label": "CLR%"
   },
   {
    "collapsible": 1,
@@ -290,7 +291,8 @@
   {
    "fieldname": "snf",
    "fieldtype": "Percent",
-   "label": "SNF%"
+   "label": "SNF%",
+   "read_only": 1
   },
   {
    "fieldname": "stock_uom",
@@ -299,12 +301,18 @@
    "label": "Stock UOM",
    "options": "UOM",
    "read_only": 1
+  },
+  {
+   "fieldname": "clr_kg",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "CLR in kg"
   }
  ],
  "is_submittable": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2023-01-13 10:33:52.753768",
+ "modified": "2023-02-02 12:55:19.287933",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Milk Entry",

@@ -121,8 +121,14 @@
   }
  ],
  "is_submittable": 1,
- "links": [],
- "modified": "2023-01-05 12:24:27.417740",
+ "links": [
+  {
+   "group": "Van Collection Items",
+   "link_doctype": "Van Collection Items",
+   "link_fieldname": "dcs"
+  }
+ ],
+ "modified": "2023-02-03 15:20:31.773503",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Van Collection",
