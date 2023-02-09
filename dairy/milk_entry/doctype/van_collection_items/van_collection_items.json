@@ -19,39 +19,41 @@
   "cow_milk_collected",
   "cow_milk_cans",
   "cow_milk_vol",
+  "cow_milk_sam",
   "cb1",
   "cow_milk_snf",
   "cow_milk_snfin_kg",
+  "cb2",
   "cow_milk_fat",
   "cow_milk_fatin_kg",
-  "cow_milk_clr",
-  "cb2",
-  "cow_milk_sam",
-  "sb3",
   "cb3",
+  "cow_milk_clr",
+  "sb3",
   "buffalow_milk_collected",
   "buf_milk_cans",
   "buf_milk_vol",
+  "buf_milk_sam",
   "cb4",
   "buffalow_milk_snf",
   "buffalo_milk_snfin_kg",
+  "column_break_18",
   "buf_milk_fat",
   "buffalo_milk_fatin_kg",
+  "column_break_34",
   "buf_milk_clr",
-  "column_break_18",
-  "buf_milk_sam",
   "sb4",
   "mix_milk_collected",
   "mix_milk_cans",
   "mix_milk_vol",
+  "mix_milk_sam",
   "column_break_20",
   "mix_milk_snf",
   "mix_milk_snfin_kg",
+  "cb5",
   "mix_milk_fat",
   "mix_milk_fatin_kg",
+  "column_break_47",
   "mix_milk_clr",
-  "cb5",
-  "mix_milk_sam",
   "section_break_40",
   "gate_pass",
   "sb6",
@@ -73,6 +75,7 @@
    "in_standard_filter": 1,
    "label": "DCS",
    "options": "Warehouse",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -108,7 +111,8 @@
    "fieldname": "cow_milk_cans",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Cow Milk Cans"
+   "label": "Cow Milk Cans",
+   "read_only": 1
   },
   {
    "allow_in_quick_entry": 1,
@@ -116,7 +120,8 @@
    "fieldname": "buf_milk_cans",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Buffalo Milk Cans"
+   "label": "Buffalo Milk Cans",
+   "read_only": 1
   },
   {
    "allow_in_quick_entry": 1,
@@ -124,7 +129,8 @@
    "fieldname": "mix_milk_cans",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Mix Milk Cans"
+   "label": "Mix Milk Cans",
+   "read_only": 1
   },
   {
    "allow_in_quick_entry": 1,
@@ -247,6 +253,7 @@
    "in_standard_filter": 1,
    "label": "Van Collection",
    "options": "Van Collection",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -393,10 +400,18 @@
    "fieldtype": "Float",
    "label": "Mix Milk FAT(in kg)",
    "read_only": 1
+  },
+  {
+   "fieldname": "column_break_34",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_47",
+   "fieldtype": "Column Break"
   }
  ],
  "links": [],
- "modified": "2023-01-12 17:25:56.454102",
+ "modified": "2023-02-02 13:10:15.538417",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Van Collection Items",

@@ -12,6 +12,7 @@
   "company",
   "vehicle",
   "column_break_3",
+  "status",
   "date",
   "shift",
   "inspection_required",
@@ -145,14 +146,14 @@
    "default": "0",
    "fieldname": "t_g_buf_can",
    "fieldtype": "Int",
-   "label": "Total Good Buffalow Milk Can",
+   "label": "Total Good Buffalo Milk Can",
    "read_only": 1
   },
   {
    "default": "0.0",
    "fieldname": "t_g_buf_wt",
    "fieldtype": "Float",
-   "label": "Total Good Buffalow Milk Weight",
+   "label": "Total Good Buffalo Milk Weight",
    "read_only": 1
   },
   {
@@ -186,12 +187,12 @@
   {
    "fieldname": "t_s_buf_can",
    "fieldtype": "Int",
-   "label": "Total Sour Buffalow Milk Can"
+   "label": "Total Sour Buffalo Milk Can"
   },
   {
    "fieldname": "t_s_buf_wt",
    "fieldtype": "Float",
-   "label": "Total  Sour Buffalow Milk Weight"
+   "label": "Total  Sour Buffalo Milk Weight"
   },
   {
    "fieldname": "column_break_27",
@@ -230,12 +231,12 @@
   {
    "fieldname": "t_c_buf_can",
    "fieldtype": "Int",
-   "label": "Total Curd Buffalow Milk Can"
+   "label": "Total Curd Buffalo Milk Can"
   },
   {
    "fieldname": "t_c_buf_wt",
    "fieldtype": "Float",
-   "label": "Total  Curd Buffalow Milk Weight"
+   "label": "Total  Curd Buffalo Milk Weight"
   },
   {
    "fieldname": "column_break_38",
@@ -271,7 +272,7 @@
   {
    "fieldname": "t_buf_m_fat",
    "fieldtype": "Float",
-   "label": "Total Buffalow Milk Fat"
+   "label": "Total Buffalo Milk Fat"
   },
   {
    "fieldname": "t_mix_m_fat",
@@ -290,7 +291,7 @@
   {
    "fieldname": "t_buf_m_clr",
    "fieldtype": "Float",
-   "label": "Total Buffalow Milk CLR"
+   "label": "Total Buffalo Milk CLR"
   },
   {
    "fieldname": "t_mix_m_clr",
@@ -315,7 +316,7 @@
   {
    "fieldname": "t_buf_sam",
    "fieldtype": "Int",
-   "label": "Total Buffalow Milk Sample"
+   "label": "Total Buffalo Milk Sample"
   },
   {
    "fieldname": "cb35",
@@ -371,11 +372,19 @@
    "hidden": 1,
    "label": "Vehicle",
    "options": "Vehicle"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Draft\nSubmitted\nIn-Progress\nCompleted\nCancelled",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-06 16:26:01.949542",
+ "modified": "2023-02-03 13:16:45.513516",
  "modified_by": "Administrator",
  "module": "Raw Milk Reception Dock",
  "name": "RMRD",

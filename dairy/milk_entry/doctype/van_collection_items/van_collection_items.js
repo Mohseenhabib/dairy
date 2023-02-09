@@ -9,14 +9,22 @@ frappe.ui.form.on('Van Collection Items', {
 	    }
 	 },
 	 cow_milk_collected: function(frm) {
+        if(frm.doc. cow_milk_collected){
 	     cur_frm.cscript.calculate_milk_cans()
+        }
 	 },
 	 buffalow_milk_collected: function(frm) {
+        if(frm.doc. buffalow_milk_collected){
 	     cur_frm.cscript.calculate_milk_cans()
+        }
 	 },
 	 mix_milk_collected: function(frm) {
+        if(frm.doc. mix_milk_collected){
 	     cur_frm.cscript.calculate_milk_cans()
+        }
 	 },
+
+    
      refresh: function(frm, dt, dn) {
         if(!frm.doc.__islocal && !frm.doc.gate_pass)
         {

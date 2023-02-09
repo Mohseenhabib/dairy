@@ -27,6 +27,9 @@ class MilkEntry(Document):
         snf_kg =  ((self.volume * (item)) * (self.snf/100))
         self.db_set('snf_kg', snf_kg)
 
+        clr_kg =  ((self.volume * (item)) * (self.clr/100))
+        self.db_set('clr_kg', clr_kg)
+
         itm = frappe.db.get_value('Item',{'milk_type':self.milk_type},['stock_uom'])
         self.db_set('stock_uom',itm)      
 

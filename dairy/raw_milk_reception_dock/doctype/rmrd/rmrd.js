@@ -3,7 +3,8 @@
 
 frappe.ui.form.on('RMRD', {
 	 refresh: function(frm) {
-        if (!frm.doc.__islocal && frm.doc.docstatus == 0 && !frm.doc.hide_start_rmrd_button){
+        // if (!frm.doc.__islocal && frm.doc.docstatus == 0 && !frm.doc.hide_start_rmrd_button){
+        if (frm.doc.status=='Submitted'){  
             frm.add_custom_button(__('Start RMRD'), function () {
                 return frappe.call({
                     doc: frm.doc,
@@ -14,14 +15,14 @@ frappe.ui.form.on('RMRD', {
                 });
             }).addClass("btn-primary");
         }
-
-        frm.add_custom_button(__('Add / Edit RMRD'), function () {
-            frappe.route_options = {"rmrd": frm.doc.name};
-            ("Report", "RMRD Lines");
+        if (frm.doc.status=='In-Progress'){
+            frm.add_custom_button(__('Add / Edit RMRD'), function () {
+                frappe.route_options = {"rmrd": frm.doc.name};
+                frappe.set_route("Report", "RMRD Lines");
         });
 
 //        if(frm.doc.docstatus == 1 && !frm.doc.stock_entry)
-//        {
+// //        {
 //            frm.add_custom_button(__('Make Stock Entry'),function() {
 //                return frappe.call({
 //                    doc: frm.doc,
@@ -33,7 +34,15 @@ frappe.ui.form.on('RMRD', {
 //                });
 //            }).addClass('btn-primary');
 //        }
+         }
 	 },
+
+     before_submit: function(frm) {
+        return frm.call('submit_rmrd').then(() => {
+            frm.refresh_field('status');
+        });
+    },
+    
 	 onload: function(frm){
         frm.set_query('route', function(doc) {
             return {
