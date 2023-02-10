@@ -52,31 +52,30 @@ def milk_ledger_stock_entry(self,method):
                             itm.snf_clr_per = mle_obj.snf_per
 
                         # rate
-                        if milk_type != "":
-                            
-                            query2 = frappe.db.sql(""" select bmpl.name, bmpl.rate, bmpl.snf_clr_rate 
-                                                    from `tabBulk Milk Price List` bmpl, `tabBulk Milk Price List Warehouse` bmplw, `tabBulk Milk Price List Customer` bmplc
-                                                    where bmplw.warehouse = %(warehouse)s and bmpl.active = 1 and bmpl.milk_type = %(milk_type)s 
-                                                    and bmplc.customer = %(customer)s and bmpl.name = bmplc.parent and bmpl.name = bmplw.parent
-                                                    and bmpl.docstatus =1 
-                                                    order by bmpl.modified desc limit 1 """,
-                                                {'warehouse':itm.s_warehouse,'milk_type':milk_type,'customer':self.customer},
-                                                    as_dict=True)
-                            if not query2:
-                                query3 = frappe.db.sql(""" select bmpl.name, bmpl.rate, bmpl.snf_clr_rate 
-                                                                            from `tabBulk Milk Price List` bmpl, `tabBulk Milk Price List Warehouse` bmplw, `tabBulk Milk Price List Customer` bmplc
-                                                                            where bmplw.warehouse = %(warehouse)s and bmpl.active = 1 and bmpl.milk_type = %(milk_type)s 
-                                                                            and bmpl.name = bmplw.parent and bmpl.docstatus =1 order by bmpl.modified desc limit 1 """,
-                                                    {'warehouse': itm.s_warehouse, 'milk_type': milk_type,
-                                                        'customer': self.customer},
-                                                    as_dict=True)
-                                if not query3:
-                                    frappe.throw("No Rate Specified in Bulk Milk Price List")
-                                else:
-                                    itm.rate = (((itm.fat_per * query3[0]['rate']) + (
-                                                itm.snf_clr_per * query3[0]['snf_clr_rate'])) /  (itm.transfer_qty * itm_weight))
-                            else:
-                                itm.rate = (((itm.fat_per * query2[0]['rate']) + (itm.snf_clr_per * query2[0]['snf_clr_rate'])) /  (itm.transfer_qty * itm_weight))
+                        # if milk_type != "":
+                        #     print('milk type**********************')
+                        #     query2 = frappe.db.sql(""" select bmpl.name, bmpl.rate, bmpl.snf_clr_rate 
+                        #                             from `tabBulk Milk Price List` bmpl, `tabBulk Milk Price List Warehouse` bmplw
+                        #                             where bmplw.warehouse = %(warehouse)s and bmpl.active = 1 and bmpl.milk_type = %(milk_type)s 
+                        #                             and bmpl.name = bmplw.parent
+                        #                             and bmpl.docstatus =1 
+                        #                             order by bmpl.modified desc limit 1 """,
+                        #                         {'warehouse':itm.s_warehouse,'milk_type':milk_type},
+                        #                             as_dict=True)
+                        #     if not query2:
+                        #         query3 = frappe.db.sql(""" select bmpl.name, bmpl.rate, bmpl.snf_clr_rate 
+                        #                                                     from `tabBulk Milk Price List` bmpl, `tabBulk Milk Price List Warehouse` bmplw
+                        #                                                     where bmplw.warehouse = %(warehouse)s and bmpl.active = 1 and bmpl.milk_type = %(milk_type)s 
+                        #                                                     and bmpl.name = bmplw.parent and bmpl.docstatus =1 order by bmpl.modified desc limit 1 """,
+                        #                             {'warehouse': itm.s_warehouse, 'milk_type': milk_type},
+                        #                             as_dict=True)
+                        #         if not query3:
+                        #             frappe.throw("No Rate Specified in Bulk Milk Price List")
+                        #         else:
+                        #             itm.rate = (((itm.fat_per * query3[0]['rate']) + (
+                        #                         itm.snf_clr_per * query3[0]['snf_clr_rate'])) /  (itm.transfer_qty * itm_weight))
+                        #     else:
+                        #         itm.rate = (((itm.fat_per * query2[0]['rate']) + (itm.snf_clr_per * query2[0]['snf_clr_rate'])) /  (itm.transfer_qty * itm_weight))
 
 
 

@@ -38,26 +38,30 @@ def execute(filters=None):
 				# stock_value = sle.stock_value
 
 			sle.update({
-				"qty_after_transaction": actual_qty
+				"qty_after_transaction": abs(actual_qty)
 				# "stock_value": stock_value
 			})
-
+		a = max(sle.actual_qty, 0)
+		b =  min(sle.actual_qty, 0)
 		sle.update({
-			"in_qty": max(sle.actual_qty, 0),
-			"out_qty": min(sle.actual_qty, 0)
+			"in_wt": abs(a),
+			"out_wt": abs(b)
 		})
-
+		e = max(sle.fat, 0)
+		f = min(sle.fat, 0)
 		sle.update({
-			"in_fat": max(sle.fat, 0),
-			"out_fat": min(sle.fat, 0)
+			"in_fat": abs(e),
+			"out_fat": abs(f)
 		})
-
+		c =  max(sle.snf, 0)
+		d = min(sle.snf, 0)
 		sle.update({
-			"in_snf": max(sle.snf, 0),
-			"out_snf": min(sle.snf, 0)
+			"in_snf": abs(c),
+			"out_snf": abs(d)
 		})
-
+	
 		data.append(sle)
+		print('data*************************8',sle)
 
 		if include_uom:
 			conversion_factors.append(item_detail.conversion_factor)
@@ -75,12 +79,12 @@ def get_columns():
 		{"label": _("In Fat"), "fieldname": "in_fat", "fieldtype": "float", "width": 90},
 		{"label": _("Out Fat"), "fieldname": "out_fat", "fieldtype": "float", "width": 90},
 		{"label": _("Balance Fat (in Kg)"), "fieldname": "fat_after_transaction", "fieldtype": "float", "width": 120},
-		{"label": _("In SNF/CLR"), "fieldname": "in_snf", "fieldtype": "float", "width": 90},
-		{"label": _("Out SNF/CLR"), "fieldname": "out_snf", "fieldtype": "float", "width": 90},
-		{"label": _("Balance SNF/CLR (in Kg)"), "fieldname": "snf_after_transaction", "fieldtype": "float", "width": 120},
-		{"label": _("In Qty"), "fieldname": "in_qty", "fieldtype": "Float", "width": 80, "convertible": "qty"},
-		{"label": _("Out Qty"), "fieldname": "out_qty", "fieldtype": "Float", "width": 80, "convertible": "qty"},
-		{"label": _("Balance Qty"), "fieldname": "qty_after_transaction", "fieldtype": "Float", "width": 100, "convertible": "qty"},
+		{"label": _("In SNF"), "fieldname": "in_snf", "fieldtype": "float", "width": 90},
+		{"label": _("Out SNF"), "fieldname": "out_snf", "fieldtype": "float", "width": 90},
+		{"label": _("Balance SNF (in Kg)"), "fieldname": "snf_after_transaction", "fieldtype": "float", "width": 120},
+		{"label": _("In wt"), "fieldname": "in_wt", "fieldtype": "Float", "width": 80, "convertible": "qty"},
+		{"label": _("Out wt"), "fieldname": "out_wt", "fieldtype": "Float", "width": 80, "convertible": "qty"},
+		{"label": _("Balance wt"), "fieldname": "qty_after_transaction", "fieldtype": "Float", "width": 100, "convertible": "qty"},
 		{"label": _("Voucher #"), "fieldname": "voucher_no", "fieldtype": "Dynamic Link", "options": "voucher_type", "width": 150},
 		{"label": _("Warehouse"), "fieldname": "warehouse", "fieldtype": "Link", "options": "Warehouse", "width": 150},
 		{"label": _("Item Group"), "fieldname": "item_group", "fieldtype": "Link", "options": "Item Group", "width": 100},

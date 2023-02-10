@@ -25,23 +25,37 @@ class RMRD(Document):
 								sum(cow_milk_cans) as cow_m_cans,
 								sum(buf_milk_cans) as buf_m_cans,
 								sum(mix_milk_cans) as mix_m_cans,
-								sum(cow_milk_fat) as cow_milk_fat,
-								sum(buf_milk_fat) as buf_milk_fat,
-								sum(mix_milk_fat) as mix_milk_fat,
-								sum(cow_milk_clr) as cow_milk_clr,
-								sum(buf_milk_clr) as buf_milk_clr,
-								sum(mix_milk_clr) as mix_milk_clr,
+
 								dcs 
 								from `tabVan Collection Items` 
 								where route =%s and shift =%s and date =%s and gate_pass is not null
 								group by dcs
 								""", (self.route, self.shift, self.date), as_dict=True)
 
+		
+
+
 		print('result1*^^^^^^^^^^^^^^^^^^^',result1)						
 		if not result1:
 			frappe.throw("Collection Not found!")
 
+		
+
 		for res in result1:
+			clrs = frappe.db.sql("""select 
+								(sed.fat_per) ,
+								(sed.snf),
+								(sed.fat),
+								(sed.snf_clr),
+								(sed.snf_clr_per),
+								(sed.snf_per),
+								itm.milk_type,
+								sed.s_warehouse
+								from `tabStock Entry Detail` as sed 
+								join `tabStock Entry` as se on se.name = sed.parent 
+								join `tabItem` as itm on itm.name = sed.item_code
+								where se.posting_date =%s and sed.s_warehouse = %s
+								""", ( self.date ,res.get('dcs')), as_dict=True)
 			doc = frappe.new_doc("RMRD Lines")
 			doc.g_cow_milk = res.get('cow_collected')
 			doc.g_buf_milk = res.get('buf_collected')
@@ -50,16 +64,35 @@ class RMRD(Document):
 			doc.g_buf_milk_can = res.get('buf_m_cans')
 			doc.g_mix_milk_can = res.get('mix_m_cans')
 
-			doc.cow_milk_fat = res.get('cow_milk_fat')
-			doc.buf_milk_fat = res.get('buf_milk_fat')
-			doc.mix_milk_fat = res.get('mix_milk_fat')
-
-			doc.cow_milk_clr = res.get('cow_milk_clr')
-			doc.buf_milk_clr = res.get('buf_milk_clr')
-			doc.mix_milk_clr = res.get('mix_milk_clr')
-
 			doc.dcs = res.get('dcs')
+			print("dcssss***************************",res.get('dcs'))
 			doc.rmrd = self.name
+			for c in clrs:
+				if doc.dcs == c.get('s_warehouse'):
+					print('c warehouse********************',c.get('s_warehouse'))
+					if c.get('milk_type') == 'Cow':
+						doc.cow_milk_fat = c.get('fat_per')
+						doc.cow_milk_fat_kg = c.get('fat')
+						doc.cow_milk_snf_kg = c.get('snf_clr')
+						doc.cow_milk_snf = c.get('snf_clr_per')
+						doc.cow_milk_clr = c.get('snf_per')
+						doc.cow_milk_clr_kg = c.get('snf')
+
+					if c.get('milk_type') == 'Buffalo':
+						doc.buf_milk_fat = c.get('fat_per')
+						doc.buf_milk_fat_kg = c.get('fat')
+						doc.buf_milk_snf_kg = c.get('snf_clr')
+						doc.buf_milk_snf = c.get('snf_clr_per')
+						doc.buf_milk_clr = c.get('snf_per')
+						doc.buffalo_milk_clr_kg = c.get('snf')
+
+					if c.get('milk_type') == 'Mix':
+						doc.mix_milk_fat = c.get('fat_per')
+						doc.mix_milk_fat_kg = c.get('fat')
+						doc.mix_milk_snf_kg = c.get('snf_clr')
+						doc.mix_milk_snf = c.get('snf_clr_per')
+						doc.mix_milk_clr = c.get('snf_per')
+						doc.mix_milk_clr_kg = c.get('snf')
 
 			result2 = frappe.db.sql("""select count(*) as sam_count,milk_type from `tabMulti Row Milk Sample` where parent in
 									(select name from `tabVan Collection Items`
@@ -74,9 +107,9 @@ class RMRD(Document):
 					doc.mix_milk_sam = res.get('sam_count')
 			doc.insert(ignore_permissions=True)
 			doc.calculate_total_cans_wt()
-		self.db_set('status', 'In-Progress')
-		self.flags.ignore_validate_update_after_submit = True  # ignore after submit permission
-		self.save(ignore_permissions=True)
+			self.db_set('status', 'In-Progress')
+			self.flags.ignore_validate_update_after_submit = True  # ignore after submit permission
+			self.save(ignore_permissions=True)
 		# self.hide_start_rmrd_button = 1
 		return True
 		# self.db_update()
