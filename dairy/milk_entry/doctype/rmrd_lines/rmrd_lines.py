@@ -5,6 +5,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
+from math import ceil
 
 class RMRDLines(Document):
 	@frappe.whitelist()
@@ -54,15 +55,60 @@ class RMRDLines(Document):
 	# def on_submit(self):
 	# 	self.make_stock_entry()
 	# 	# self.create_materail_receipt()
+	@frappe.whitelist()
+	def rmrd_calculate_can(self):
+		allow_max_capacity = float(frappe.db.get_single_value("Dairy Settings", "max_allowed"))
+
+		sum_cow_milk = self.rmrd_good_cow_milk + self.s_cow_milk + self.c_cow_milk
+		print('sum_cow_milk@@@@@@@@@@@@@@@@@@',sum_cow_milk)
+
+		sum_buffalo_milk = self.rmrd_good_buf_milk + self.s_buf_milk + self.c_buf_milk
+		print('sum_buffalo_milk$$$$$$$$$$$$$$$$$$$$',sum_buffalo_milk)
+
+		sum_mix_milk = self.rmrd_good_mix_milk + self.s_mix_milk + self.c_mix_milk
+		print('sum_mix_milk#######################',sum_mix_milk)
+
+		if self.g_cow_milk < self.rmrd_good_cow_milk:
+			frappe.throw("Can not allow More Milk than the Cow Milk Collected")
+
+		if self.g_cow_milk < sum_cow_milk:
+			frappe.throw("Can not allow Cow Milk Collected greater than the Cow Milk Collected")
+
+		if self.g_buf_milk < self.rmrd_good_buf_milk:
+			frappe.throw("Can not allow Buffalo Milk Collected greater than the Buffalo Milk Collected")
+
+		if self.g_buf_milk < sum_buffalo_milk:
+			frappe.throw("Can not allow Cow Milk Collected greater than the Cow Milk Collected")
+
+
+		if self.g_mix_milk < self.rmrd_good_mix_milk:
+			frappe.throw("Can not allow Mix Milk Collected greater than the Mix Milk Collected")
+
+		if self.g_mix_milk < sum_mix_milk:
+			frappe.throw("Can not allow Cow Milk Collected greater than the Cow Milk Collected")
+
+
+		if allow_max_capacity > 0:
+			self.rmrd_cow_milk_can = ceil(self.rmrd_good_cow_milk / allow_max_capacity)
+			self.rmrd_buf_milk_can = ceil(self.rmrd_good_buf_milk / allow_max_capacity)
+			self.rmrd_mix_milk_can = ceil(self.rmrd_good_mix_milk / allow_max_capacity)
+			self.db_update()
+			# self.save(ignore_permissions=True)
+
+
 
 	@frappe.whitelist()
 	def make_stock_entry(self):
 		rmrd = frappe.get_doc("RMRD", self.rmrd)
-		print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+		print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',rmrd.date)
 		# if rmrd.t_g_cow_wt > 0 or rmrd.t_g_buf_wt > 0 or rmrd.t_g_mix_wt > 0:
 		stock_entry = frappe.new_doc("Stock Entry")
 		stock_entry.purpose = "Material Transfer"
 		stock_entry.stock_entry_type = "Material Transfer"
+		stock_entry.set_posting_time = 1
+		stock_entry.posting_date = rmrd.date
+		# stock_entry.set_posting_time = 0
+
 		stock_entry.company = rmrd.company
 		stock_entry.rmrd = rmrd.name
 
@@ -96,9 +142,16 @@ class RMRDLines(Document):
 
 		print('clr make stock entry*********************',rmrd.t_cow_m_clr,rmrd.t_buf_m_clr,rmrd.t_mix_m_clr)
 		stock_entry.insert()
+		# stock_entry.db_update()
 		# if not self.inspection_required:
 		# stock_entry.submit()
 
+
+		result = frappe.db.sql("""select sed.* from `tabStock Entry` as se 
+								join `tabStock Entry Detail` as sed on sed.parent = se.name
+								where se.rmrd = '{0}' and posting_date = '{1}'""".format(self.rmrd,self.date), as_dict=True)
+
+		print('result make stock entry************************',result)
 		return stock_entry
 
 	def create_materail_receipt(self):
@@ -108,6 +161,7 @@ class RMRDLines(Document):
 		stock_entry = frappe.new_doc("Stock Entry")
 		stock_entry.purpose = "Material Receipt"
 		stock_entry.stock_entry_type = "Material Receipt"
+		stock_entry.posting_date = rmrd.date
 		stock_entry.company = rmrd.company
 		stock_entry.rmrd = rmrd.name
 

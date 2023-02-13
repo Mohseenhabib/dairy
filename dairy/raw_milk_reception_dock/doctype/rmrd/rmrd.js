@@ -21,20 +21,20 @@ frappe.ui.form.on('RMRD', {
                 frappe.set_route("Report", "RMRD Lines");
         });
 
-//        if(frm.doc.docstatus == 1 && !frm.doc.stock_entry)
-// //        {
-//            frm.add_custom_button(__('Make Stock Entry'),function() {
-//                return frappe.call({
-//                    doc: frm.doc,
-//                    method: 'make_stock_entry',
-//                    callback: function(r) {
-//                        var doc = frappe.model.sync(r.message);
-//                        frappe.set_route("Form", doc[0].doctype, doc[0].name);
-//                    }
-//                });
-//            }).addClass('btn-primary');
-//        }
+            frm.add_custom_button(__('Complete'), function () {
+                 return frappe.call({
+                    doc: frm.doc,
+                    method: 'change_status_complete1',
+                    callback: function(r) {
+                        frm.refresh();
+                    }
+                });
+            }).addClass("btn-primary");
+
+
          }
+
+         
 	 },
 
      before_submit: function(frm) {

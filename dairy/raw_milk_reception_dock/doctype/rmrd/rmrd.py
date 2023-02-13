@@ -16,7 +16,7 @@ class RMRD(Document):
 	@frappe.whitelist()
 	def submit_rmrd(self):
 		self.db_set('status','Submitted')
-
+		
 	@frappe.whitelist()
 	def start_rmrd(self):
 		result1 = frappe.db.sql("""select sum(cow_milk_collected) as cow_collected,
@@ -35,7 +35,7 @@ class RMRD(Document):
 		
 
 
-		print('result1*^^^^^^^^^^^^^^^^^^^',result1)						
+		# print('result1*^^^^^^^^^^^^^^^^^^^',result1)						
 		if not result1:
 			frappe.throw("Collection Not found!")
 
@@ -114,7 +114,8 @@ class RMRD(Document):
 		return True
 		# self.db_update()
 
-	def before_submit(self):
+	@frappe.whitelist()
+	def change_status_complete1(self):
 		result = frappe.db.sql("""select sum(g_cow_milk) as g_cow,
 								sum(g_buf_milk) as g_buf,
 								sum(g_mix_milk) as g_mix, 
@@ -189,6 +190,9 @@ class RMRD(Document):
 			self.t_buf_m_clr = res.get('buf_milk_clr')
 			self.t_mix_m_clr = res.get('mix_milk_clr')
 			self.db_update()
+			self.db_set('status', 'Completed')
+			self.flags.ignore_validate_update_after_submit = True  # ignore after submit permission
+			self.save(ignore_permissions=True)
 
 		line_ids = frappe.db.sql("""select name from `tabRMRD Lines` where rmrd =%s""", (self.name), as_dict =True)
 		for res in line_ids:

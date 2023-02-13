@@ -17,6 +17,8 @@
   "good_milk_section",
   "g_cow_milk",
   "g_cow_milk_can",
+  "rmrd_good_cow_milk",
+  "rmrd_cow_milk_can",
   "cow_milk_fat",
   "cow_milk_fat_kg",
   "column_break_5",
@@ -32,6 +34,8 @@
   "sour_milk_section",
   "g_buf_milk",
   "g_buf_milk_can",
+  "rmrd_good_buf_milk",
+  "rmrd_buf_milk_can",
   "buf_milk_fat",
   "buf_milk_fat_kg",
   "column_break_14",
@@ -47,6 +51,8 @@
   "cusd_milk_section",
   "g_mix_milk",
   "g_mix_milk_can",
+  "rmrd_good_mix_milk",
+  "rmrd_mix_milk_can",
   "mix_milk_fat",
   "mix_milk_fat_kg",
   "cb45",
@@ -90,7 +96,7 @@
    "fieldname": "g_cow_milk",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Good Cow Milk",
+   "label": "Van Good Cow Milk",
    "read_only": 1,
    "reqd": 1
   },
@@ -110,7 +116,7 @@
    "fieldname": "g_buf_milk",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Good Buffalo Milk",
+   "label": "Van Good Buffalo Milk",
    "read_only": 1,
    "reqd": 1
   },
@@ -130,7 +136,7 @@
    "fieldname": "g_mix_milk",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Good Mix Milk",
+   "label": "Van Good Mix Milk",
    "read_only": 1,
    "reqd": 1
   },
@@ -472,11 +478,41 @@
    "fieldtype": "Float",
    "label": "Mix Milk CLR ( In Kg)",
    "read_only": 1
+  },
+  {
+   "fieldname": "rmrd_good_cow_milk",
+   "fieldtype": "Float",
+   "label": "RMRD Good Cow Milk"
+  },
+  {
+   "fieldname": "rmrd_cow_milk_can",
+   "fieldtype": "Int",
+   "label": "RMRD Cow Milk Can"
+  },
+  {
+   "fieldname": "rmrd_good_buf_milk",
+   "fieldtype": "Float",
+   "label": "RMRD Good Buffalo Milk"
+  },
+  {
+   "fieldname": "rmrd_buf_milk_can",
+   "fieldtype": "Int",
+   "label": "RMRD Buffalo Milk Can"
+  },
+  {
+   "fieldname": "rmrd_good_mix_milk",
+   "fieldtype": "Float",
+   "label": "RMRD Good Mix Milk"
+  },
+  {
+   "fieldname": "rmrd_mix_milk_can",
+   "fieldtype": "Int",
+   "label": "RMRD Mix Milk Can"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-02-08 16:19:04.268449",
+ "modified": "2023-02-13 14:39:22.755698",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "RMRD Lines",

@@ -66,6 +66,24 @@ frappe.ui.form.on('RMRD Lines', {
 	     cur_frm.cscript.calculate_total_cans_wt()
 	 },
 
+	 rmrd_good_cow_milk: function(frm) {
+        if(frm.doc. rmrd_good_cow_milk){
+	     cur_frm.cscript.rmrd_calculate_can()
+        }
+	 },
+
+	 rmrd_good_buf_milk: function(frm) {
+        if(frm.doc. rmrd_good_buf_milk){
+	     cur_frm.cscript.rmrd_calculate_can()
+        }
+	 },
+
+	 rmrd_good_mix_milk: function(frm) {
+        if(frm.doc. rmrd_good_mix_milk){
+	     cur_frm.cscript.rmrd_calculate_can()
+        }
+	 },
+
 	 refresh: function(frm) {
 		if(frm.doc.docstatus == 1 && !frm.doc.stock_entry)
 		       {
