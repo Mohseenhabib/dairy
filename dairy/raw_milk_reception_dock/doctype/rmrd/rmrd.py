@@ -19,12 +19,23 @@ class RMRD(Document):
 		
 	@frappe.whitelist()
 	def start_rmrd(self):
+		# result1 = frappe.db.sql("""select sum(cow_milk_collected) as cow_collected,
+		# 						sum(buffalow_milk_collected) as buf_collected,
+		# 						sum(mix_milk_collected) as mix_collected,
+		# 						sum(cow_milk_cans) as cow_m_cans,
+		# 						sum(buf_milk_cans) as buf_m_cans,
+		# 						sum(mix_milk_cans) as mix_m_cans,
+
+		# 						dcs 
+		# 						from `tabVan Collection Items` 
+		# 						where route =%s and shift =%s and date =%s and gate_pass is not null
+		# 						group by dcs
+		# 						""", (self.route, self.shift, self.date), as_dict=True)
+
 		result1 = frappe.db.sql("""select sum(cow_milk_collected) as cow_collected,
 								sum(buffalow_milk_collected) as buf_collected,
 								sum(mix_milk_collected) as mix_collected,
-								sum(cow_milk_cans) as cow_m_cans,
-								sum(buf_milk_cans) as buf_m_cans,
-								sum(mix_milk_cans) as mix_m_cans,
+								
 
 								dcs 
 								from `tabVan Collection Items` 
@@ -32,7 +43,6 @@ class RMRD(Document):
 								group by dcs
 								""", (self.route, self.shift, self.date), as_dict=True)
 
-		
 
 
 		# print('result1*^^^^^^^^^^^^^^^^^^^',result1)						
@@ -60,9 +70,9 @@ class RMRD(Document):
 			doc.g_cow_milk = res.get('cow_collected')
 			doc.g_buf_milk = res.get('buf_collected')
 			doc.g_mix_milk = res.get('mix_collected')
-			doc.g_cow_milk_can = res.get('cow_m_cans')
-			doc.g_buf_milk_can = res.get('buf_m_cans')
-			doc.g_mix_milk_can = res.get('mix_m_cans')
+			# doc.g_cow_milk_can = res.get('cow_m_cans')
+			# doc.g_buf_milk_can = res.get('buf_m_cans')
+			# doc.g_mix_milk_can = res.get('mix_m_cans')
 
 			doc.dcs = res.get('dcs')
 			print("dcssss***************************",res.get('dcs'))
@@ -148,6 +158,14 @@ class RMRD(Document):
 								sum(cow_milk_clr) as cow_milk_clr,
 								sum(buf_milk_clr) as buf_milk_clr,
 								sum(mix_milk_clr) as mix_milk_clr,
+
+								sum(cow_milk_clr_kg) as cow_milk_clr_kg,
+								sum(cow_milk_fat_kg) as cow_milk_fat_kg,
+								sum(buffalo_milk_clr_kg) as buf_milk_clr_kg,
+								sum(buf_milk_fat_kg) as buf_milk_fat_kg,
+								sum(mix_milk_clr_kg) as mix_milk_clr_kg,
+								sum(mix_milk_fat_kg) as mix_milk_fat_kg,
+
 								rmrd
 								from `tabRMRD Lines` where rmrd =%s
 								group by rmrd""",(self.name), as_dict=True)
@@ -183,12 +201,18 @@ class RMRD(Document):
 			self.t_mix_sam = res.get('mix_milk_sam')
 
 			self.t_cow_m_fat = res.get('cow_milk_fat')
+			self.t_cow_m_fat_kg = res.get('cow_milk_fat_kg')
 			self.t_buf_m_fat = res.get('buf_milk_fat')
+			self.t_buf_m_fat_kg = res.get('buf_milk_fat_kg')
 			self.t_mix_m_fat = res.get('mix_milk_fat')
+			self.t_mix_m_fat_kg = res.get('mix_milk_fat_kg')
 
 			self.t_cow_m_clr = res.get('cow_milk_clr')
+			self.t_cow_m_clr_kg = res.get('cow_milk_clr_kg')
 			self.t_buf_m_clr = res.get('buf_milk_clr')
+			self.t_buf_m_clr_kg = res.get('buf_milk_clr_kg')
 			self.t_mix_m_clr = res.get('mix_milk_clr')
+			self.t_mix_m_clr_kg = res.get('mix_milk_clr_kg')
 			self.db_update()
 			self.db_set('status', 'Completed')
 			self.flags.ignore_validate_update_after_submit = True  # ignore after submit permission

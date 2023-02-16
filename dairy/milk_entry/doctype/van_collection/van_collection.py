@@ -14,12 +14,29 @@ class VanCollection(Document):
     @frappe.whitelist()
     def submit_van_collection(self):
         self.db_set('status','Submitted')
-       
 
+    def on_cancel(self):
+        milk_entry = frappe.get_all('Milk Entry',{'date':self.date},['name','van_collection_completed','date'])
+        for me in milk_entry:
+            if self.date == me.date:
+                vcc = frappe.get_doc('Milk Entry',me.name) 
+                vcc.db_set("van_collection_completed",0)
+                vci = frappe.get_all('Van Collection Items',{'van_collection':self.name},['name'])
+                for dl in vci:
+                    dlt = frappe.delete_doc('Van Collection Items',dl.name)
+
+        
     @frappe.whitelist()
     def change_status_complete(self):
         self.db_set('status', 'Completed')
         self.flags.ignore_validate_update_after_submit = True  # ignore after submit permission
+        milk_entry = frappe.get_all('Milk Entry',{'date':self.date},['name','van_collection_completed','date'])
+        for me in milk_entry:
+            if self.date == me.date:
+                vcc = frappe.get_doc('Milk Entry',me.name)
+                if self.status == "Completed":
+                    vcc.db_set("van_collection_completed", 1)
+        
         self.save(ignore_permissions=True)
 
     @frappe.whitelist()

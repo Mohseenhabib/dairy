@@ -351,9 +351,13 @@ def cancel_create_milk_stock_ledger(self,method):
                         frappe.db.commit()
                                       
     vci = frappe.get_all('Van Collection Items',{'gate_pass':self.name},['name'])
+    print('vciiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii')
     for i in vci:
         doc=frappe.get_doc("Van Collection Items",i.name)
+        se_del = doc.gate_pass
         doc.db_set("gate_pass","")
+        self.van_collection_item = ""
+        frappe.db.sql("""DELETE FROM `tabStock Entry` where name = '{0}' """.format(se_del))
 @frappe.whitelist()
 def get_item_weight(item_code):
     obj = frappe.get_doc("Item",item_code)

@@ -51,12 +51,19 @@
   "t_mix_sam",
   "section_break_46",
   "t_cow_m_fat",
-  "t_buf_m_fat",
-  "t_mix_m_fat",
-  "column_break_50",
+  "t_cow_m_fat_kg",
   "t_cow_m_clr",
+  "t_cow_m_clr_kg",
+  "column_break_60",
   "t_buf_m_clr",
+  "t_buf_m_clr_kg",
+  "t_buf_m_fat",
+  "t_buf_m_fat_kg",
+  "column_break_50",
   "t_mix_m_clr",
+  "t_mix_m_clr_kg",
+  "t_mix_m_fat",
+  "t_mix_m_fat_kg",
   "section_break_42",
   "amended_from",
   "cb50",
@@ -380,11 +387,45 @@
    "label": "Status",
    "options": "Draft\nSubmitted\nIn-Progress\nCompleted\nCancelled",
    "read_only": 1
+  },
+  {
+   "fieldname": "column_break_60",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "t_cow_m_fat_kg",
+   "fieldtype": "Float",
+   "label": "Total Cow Milk Fat( In Kg)"
+  },
+  {
+   "fieldname": "t_cow_m_clr_kg",
+   "fieldtype": "Float",
+   "label": "Total Cow Milk Fat( In Kg)"
+  },
+  {
+   "fieldname": "t_buf_m_clr_kg",
+   "fieldtype": "Float",
+   "label": "Total Buffalo Milk CLR( In kg)"
+  },
+  {
+   "fieldname": "t_buf_m_fat_kg",
+   "fieldtype": "Float",
+   "label": "Total Buffalo Milk FAT( In Kg)"
+  },
+  {
+   "fieldname": "t_mix_m_clr_kg",
+   "fieldtype": "Float",
+   "label": "Total Mix Milk CLR( In Kg)"
+  },
+  {
+   "fieldname": "t_mix_m_fat_kg",
+   "fieldtype": "Float",
+   "label": "Total Mix Milk Fat( in Kg)"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-02-03 13:16:45.513516",
+ "modified": "2023-02-14 12:45:33.678268",
  "modified_by": "Administrator",
  "module": "Raw Milk Reception Dock",
  "name": "RMRD",

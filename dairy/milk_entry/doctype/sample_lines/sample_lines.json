@@ -17,7 +17,8 @@
   "fat",
   "cb2",
   "clr",
-  "raw_milk_sample"
+  "raw_milk_sample",
+  "dcs"
  ],
  "fields": [
   {
@@ -101,11 +102,17 @@
    "in_list_view": 1,
    "label": "SNF in Kg ",
    "read_only": 1
+  },
+  {
+   "fetch_from": "raw_milk_sample.dcs_id",
+   "fieldname": "dcs",
+   "fieldtype": "Data",
+   "label": "DCS"
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2023-01-13 10:49:09.810457",
+ "modified": "2023-02-16 13:31:44.151106",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Sample lines",

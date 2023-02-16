@@ -89,12 +89,13 @@ class RMRDLines(Document):
 
 
 		if allow_max_capacity > 0:
-			self.rmrd_cow_milk_can = ceil(self.rmrd_good_cow_milk / allow_max_capacity)
-			self.rmrd_buf_milk_can = ceil(self.rmrd_good_buf_milk / allow_max_capacity)
-			self.rmrd_mix_milk_can = ceil(self.rmrd_good_mix_milk / allow_max_capacity)
+			self.g_cow_milk_can = ceil(self.rmrd_good_cow_milk / allow_max_capacity)
+			self.g_buf_milk_can = ceil(self.rmrd_good_buf_milk / allow_max_capacity)
+			self.g_mix_milk_can = ceil(self.rmrd_good_mix_milk / allow_max_capacity)
 			self.db_update()
 			# self.save(ignore_permissions=True)
 
+		return True
 
 
 	@frappe.whitelist()
@@ -131,8 +132,8 @@ class RMRDLines(Document):
 			self.set_value_depend_milk_type(g_cow_item, stock_entry, self.g_cow_milk, self.cow_milk_fat,
 											self.cow_milk_snf,self.cow_milk_clr , route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory,self.dcs)
 
-		if self.g_mix_milk> 0:
-			self.set_value_depend_milk_type(g_buf_item, stock_entry, self.g_mix_milk, self.buf_milk_fat,
+		if self.g_buf_milk> 0:
+			self.set_value_depend_milk_type(g_buf_item, stock_entry, self.g_buf_milk, self.buf_milk_fat,
 											self.buf_milk_snf,self.buf_milk_clr, route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory,self.dcs)
 
 		if self.g_mix_milk > 0:
@@ -147,11 +148,11 @@ class RMRDLines(Document):
 		# stock_entry.submit()
 
 
-		result = frappe.db.sql("""select sed.* from `tabStock Entry` as se 
-								join `tabStock Entry Detail` as sed on sed.parent = se.name
-								where se.rmrd = '{0}' and posting_date = '{1}'""".format(self.rmrd,self.date), as_dict=True)
+		# result = frappe.db.sql("""select sed.* from `tabStock Entry` as se 
+		# 						join `tabStock Entry Detail` as sed on sed.parent = se.name
+		# 						where se.rmrd = '{0}' and posting_date = '{1}'""".format(self.rmrd,self.date), as_dict=True)
 
-		print('result make stock entry************************',result)
+		# print('result make stock entry************************',result)
 		return stock_entry
 
 	def create_materail_receipt(self):

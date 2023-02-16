@@ -15,10 +15,9 @@
   "date",
   "naming_series",
   "good_milk_section",
-  "g_cow_milk",
-  "g_cow_milk_can",
   "rmrd_good_cow_milk",
-  "rmrd_cow_milk_can",
+  "g_cow_milk_can",
+  "g_cow_milk",
   "cow_milk_fat",
   "cow_milk_fat_kg",
   "column_break_5",
@@ -32,10 +31,9 @@
   "cow_milk_snf",
   "cow_milk_snf_kg",
   "sour_milk_section",
-  "g_buf_milk",
-  "g_buf_milk_can",
   "rmrd_good_buf_milk",
-  "rmrd_buf_milk_can",
+  "g_buf_milk_can",
+  "g_buf_milk",
   "buf_milk_fat",
   "buf_milk_fat_kg",
   "column_break_14",
@@ -49,10 +47,9 @@
   "buf_milk_snf",
   "buf_milk_snf_kg",
   "cusd_milk_section",
-  "g_mix_milk",
-  "g_mix_milk_can",
   "rmrd_good_mix_milk",
-  "rmrd_mix_milk_can",
+  "g_mix_milk_can",
+  "g_mix_milk",
   "mix_milk_fat",
   "mix_milk_fat_kg",
   "cb45",
@@ -104,9 +101,8 @@
    "fieldname": "g_cow_milk_can",
    "fieldtype": "Int",
    "in_list_view": 1,
-   "label": "Good Cow Milk Can",
-   "read_only": 1,
-   "reqd": 1
+   "label": "RMRD Good Cow Milk Can",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_5",
@@ -124,9 +120,8 @@
    "fieldname": "g_buf_milk_can",
    "fieldtype": "Int",
    "in_list_view": 1,
-   "label": "Good Buffalo Milk Can",
-   "read_only": 1,
-   "reqd": 1
+   "label": "RMRD Good Buffalo Milk Can",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_8",
@@ -144,9 +139,8 @@
    "fieldname": "g_mix_milk_can",
    "fieldtype": "Int",
    "in_list_view": 1,
-   "label": "Good Mix Milk Can",
-   "read_only": 1,
-   "reqd": 1
+   "label": "RMRD Good Mix Milk Can",
+   "read_only": 1
   },
   {
    "fieldname": "sour_milk_section",
@@ -485,34 +479,19 @@
    "label": "RMRD Good Cow Milk"
   },
   {
-   "fieldname": "rmrd_cow_milk_can",
-   "fieldtype": "Int",
-   "label": "RMRD Cow Milk Can"
-  },
-  {
    "fieldname": "rmrd_good_buf_milk",
    "fieldtype": "Float",
    "label": "RMRD Good Buffalo Milk"
   },
   {
-   "fieldname": "rmrd_buf_milk_can",
-   "fieldtype": "Int",
-   "label": "RMRD Buffalo Milk Can"
-  },
-  {
    "fieldname": "rmrd_good_mix_milk",
    "fieldtype": "Float",
    "label": "RMRD Good Mix Milk"
-  },
-  {
-   "fieldname": "rmrd_mix_milk_can",
-   "fieldtype": "Int",
-   "label": "RMRD Mix Milk Can"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-02-13 14:39:22.755698",
+ "modified": "2023-02-14 16:04:17.613946",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "RMRD Lines",

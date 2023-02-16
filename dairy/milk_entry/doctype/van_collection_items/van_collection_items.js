@@ -80,6 +80,30 @@ frappe.ui.form.on('Van Collection Items', {
                 }
             };
         });
+        frm.set_query('buf_milk_sam', function(doc) {
+            return {
+                filters: {
+                     "milk_type": "Buffalo",
+                     "dcs": frm.doc.dcs
+                }
+            };
+        });
+
+        frm.set_query('cow_milk_sam', function(doc) {
+            return {
+                filters: {
+                     "milk_type": "Cow"
+                }
+            };
+        });
+
+        frm.set_query('mix_milk_sam', function(doc) {
+            return {
+                filters: {
+                     "milk_type": "Mix"
+                }
+            };
+        });
      }
 });
 

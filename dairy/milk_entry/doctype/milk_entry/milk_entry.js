@@ -33,9 +33,9 @@ frappe.ui.form.on('Milk Entry', {
         if(!frm.doc.fat) {
             frappe.throw(__('Please provide FAT.'));
         }
-        if(!frm.doc.clr) {
-            frappe.throw(__('Please provide CLR.'));
-        }
+        // if(!frm.doc.clr) {
+        //     frappe.throw(__('Please provide CLR.'));
+        // }
 
         if(frm.doc.volume <= 0) {
             frappe.throw(__('Milk Volume less than or equal to zero is not allowed.'));
@@ -43,9 +43,9 @@ frappe.ui.form.on('Milk Entry', {
         if(frm.doc.fat <= 0) {
             frappe.throw(__('Milk FAT less than or equal to zero is not allowed.'));
         }
-        if(frm.doc.clr <= 0) {
-            frappe.throw(__('Milk CLR less than or equal to zero is not allowed.'));
-        }
+        // if(frm.doc.clr <= 0) {
+        //     frappe.throw(__('Milk CLR less than or equal to zero is not allowed.'));
+        // }
     },
 
     dcs_id: function(frm) {
@@ -61,7 +61,7 @@ frappe.ui.form.on('Milk Entry', {
     },
 
     refresh: function(frm) {
-         if (frm.doc.status=='draft' && frm.doc.member != undefined)
+         if (frm.doc.status=='Draft' && frm.doc.member != undefined)
          {
             frm.add_custom_button(__('Accounting Ledger'), function () {
 				frappe.set_route('query-report', 'General Ledger',
@@ -74,7 +74,7 @@ frappe.ui.form.on('Milk Entry', {
 			}, __("View"));
 
          }
-        if (frm.doc.status=="Submitted" || frm.doc.status=="To Sample"|| frm.doc.status=="To Post and Sample") {
+        if (frm.doc.status=="To Bill" || frm.doc.status=="Submitted" || frm.doc.status=="To Sample" || frm.doc.status=="To Post and Sample") {
             frappe.model.with_doc("Warehouse",frm.doc.dcs_id, () => {
                 let dcs = frappe.model.get_doc("Warehouse",frm.doc.dcs_id);
                 let is_collector = dcs.sample_collector
@@ -86,6 +86,13 @@ frappe.ui.form.on('Milk Entry', {
                         })
                     }, __('Create'));
                 }
+
+                if (frm.doc.docstatus == 1 && is_collector == 1){
+                    frm.doc.status=="To Sample and Bill"
+                }
+                
+
+
             });
 //            frm.add_custom_button(__('Purchase Receipt'),function() {
 //                return frappe.call({

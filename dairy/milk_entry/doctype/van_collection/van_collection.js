@@ -37,6 +37,7 @@ frappe.ui.form.on('Van Collection', {
             frm.refresh_field('status');
         });
     },
+    
     onload: function(frm){
         frm.set_query('route', function(doc) {
             return {
