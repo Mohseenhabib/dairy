@@ -72,6 +72,7 @@
   "total_milk_can",
   "column_break_40",
   "total_milk_wt",
+  "stock_entry",
   "amended_from"
  ],
  "fields": [
@@ -260,7 +261,6 @@
    "in_standard_filter": 1,
    "label": "RMRD",
    "options": "RMRD",
-   "read_only": 1,
    "reqd": 1
   },
   {
@@ -487,11 +487,18 @@
    "fieldname": "rmrd_good_mix_milk",
    "fieldtype": "Float",
    "label": "RMRD Good Mix Milk"
+  },
+  {
+   "fieldname": "stock_entry",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Stock Entry",
+   "options": "Stock Entry"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-02-14 16:04:17.613946",
+ "modified": "2023-02-17 10:47:55.111169",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "RMRD Lines",

@@ -9,15 +9,29 @@ frappe.ui.form.on('RMRD Lines', {
 	         cur_frm.cscript.calculate_total_cans_wt()
 	    }
 	 },
-	 g_cow_milk: function(frm) {
-	     cur_frm.cscript.calculate_total_cans_wt()
+	//  g_cow_milk: function(frm) {
+	//      cur_frm.cscript.calculate_total_cans_wt()
+	//  },
+	//  g_buf_milk: function(frm) {
+	//      cur_frm.cscript.calculate_total_cans_wt()
+	//  },
+	//  g_mix_milk: function(frm) {
+	//      cur_frm.cscript.calculate_total_cans_wt()
+	//  },
+	 rmrd_good_cow_milk: function(frm) {
+	    cur_frm.cscript.calculate_total_cans_wt()
 	 },
-	 g_buf_milk: function(frm) {
-	     cur_frm.cscript.calculate_total_cans_wt()
+
+	 rmrd_good_buf_milk: function(frm) {
+		cur_frm.cscript.calculate_total_cans_wt()
+        
 	 },
-	 g_mix_milk: function(frm) {
-	     cur_frm.cscript.calculate_total_cans_wt()
+
+	 rmrd_good_mix_milk: function(frm) {
+	    cur_frm.cscript.calculate_total_cans_wt()
+        
 	 },
+
 	 g_cow_milk_can: function(frm) {
 	     cur_frm.cscript.calculate_total_cans_wt()
 	 },
@@ -66,26 +80,8 @@ frappe.ui.form.on('RMRD Lines', {
 	     cur_frm.cscript.calculate_total_cans_wt()
 	 },
 
-	 rmrd_good_cow_milk: function(frm) {
-        if(frm.doc. rmrd_good_cow_milk){
-	     cur_frm.cscript.rmrd_calculate_can()
-        }
-	 },
-
-	 rmrd_good_buf_milk: function(frm) {
-        if(frm.doc. rmrd_good_buf_milk){
-	     cur_frm.cscript.rmrd_calculate_can()
-        }
-	 },
-
-	 rmrd_good_mix_milk: function(frm) {
-        if(frm.doc. rmrd_good_mix_milk){
-	     cur_frm.cscript.rmrd_calculate_can()
-        }
-	 },
-
 	 refresh: function(frm) {
-		if(frm.doc.docstatus == 1 && !frm.doc.stock_entry)
+		if(!frm.doc.__islocal && !frm.doc.stock_entry)
 		       {
 		           frm.add_custom_button(__('Make Stock Entry'),function() {
 		               return frappe.call({
@@ -109,14 +105,14 @@ frappe.ui.form.on('RMRD Lines', {
             };
         });
 
-        // frm.set_query('dcs', function(doc) {
-        //     return {
-        //         filters: {
-        //              "route": frm.doc.route,
-        //              "is_dcs": 1
-        //         }
-        //     };
-        // });
+        frm.set_query('dcs', function(doc) {
+            return {
+                filters: {
+                     "route": frm.doc.route,
+                     "is_dcs": 1
+                }
+            };
+        });
      }
 });
 
@@ -130,3 +126,4 @@ cur_frm.cscript.calculate_total_cans_wt = function(){
             }
     });
 }
+

@@ -67,7 +67,6 @@
   "section_break_42",
   "amended_from",
   "cb50",
-  "stock_entry",
   "hide_start_rmrd_button"
  ],
  "fields": [
@@ -347,13 +346,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "stock_entry",
-   "fieldtype": "Link",
-   "hidden": 1,
-   "label": "Stock Entry",
-   "options": "Stock Entry"
-  },
-  {
    "fieldname": "cb50",
    "fieldtype": "Column Break"
   },
@@ -425,7 +417,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-02-14 12:45:33.678268",
+ "modified": "2023-02-17 10:46:32.015578",
  "modified_by": "Administrator",
  "module": "Raw Milk Reception Dock",
  "name": "RMRD",

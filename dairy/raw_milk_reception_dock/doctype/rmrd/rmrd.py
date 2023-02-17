@@ -8,15 +8,24 @@ from frappe.model.document import Document
 
 class RMRD(Document):
 	def validate(self):
-		result = frappe.db.sql("""select * from `tabRMRD` where route =%s and date =%s and shift =%s and docstatus = 1""",(self.route,self.date,self.shift))
+		result = frappe.db.sql("""select name from `tabRMRD` where route =%s and date =%s and shift =%s and docstatus = 1 """,(self.route,self.date,self.shift))
 		# if result and self.get('__islocal'):
 		if result:
+			print('rmrd error^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',result)
 			frappe.throw("you can not create duplicate entry with same DCS,Date and Shift.")
 
 	@frappe.whitelist()
 	def submit_rmrd(self):
 		self.db_set('status','Submitted')
-		
+
+	def before_cancel(self):
+		rl = frappe.get_all('RMRD Lines',{'rmrd':self.name},['name'])
+		for dl in rl:
+			dlt = frappe.delete_doc('RMRD Lines',dl.name)
+		stock = frappe.get_all('Stock Entry',{'rmrd':self.name},['name'])
+		for se in stock:
+			stock_dlt = frappe.delete_doc('Stock Entry',se.name)
+
 	@frappe.whitelist()
 	def start_rmrd(self):
 		# result1 = frappe.db.sql("""select sum(cow_milk_collected) as cow_collected,
@@ -117,6 +126,7 @@ class RMRD(Document):
 					doc.mix_milk_sam = res.get('sam_count')
 			doc.insert(ignore_permissions=True)
 			doc.calculate_total_cans_wt()
+			self.db_update()
 			self.db_set('status', 'In-Progress')
 			self.flags.ignore_validate_update_after_submit = True  # ignore after submit permission
 			self.save(ignore_permissions=True)
@@ -126,9 +136,9 @@ class RMRD(Document):
 
 	@frappe.whitelist()
 	def change_status_complete1(self):
-		result = frappe.db.sql("""select sum(g_cow_milk) as g_cow,
-								sum(g_buf_milk) as g_buf,
-								sum(g_mix_milk) as g_mix, 
+		result = frappe.db.sql("""select sum(rmrd_good_cow_milk) as g_cow,
+								sum(rmrd_good_buf_milk) as g_buf,
+								sum(rmrd_good_mix_milk) as g_mix, 
 								sum(g_cow_milk_can) as g_cow_can, 
 								sum(g_buf_milk_can) as g_buf_can, 
 								sum(g_mix_milk_can) as g_mix_can,

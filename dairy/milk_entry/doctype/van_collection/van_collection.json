@@ -125,10 +125,10 @@
   {
    "group": "Van Collection Items",
    "link_doctype": "Van Collection Items",
-   "link_fieldname": "dcs"
+   "link_fieldname": "van_collection"
   }
  ],
- "modified": "2023-02-03 15:20:31.773503",
+ "modified": "2023-02-16 16:14:27.253843",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Van Collection",
