@@ -34,9 +34,272 @@ frappe.ui.form.on('RMRD', {
 
          }
 	 },
-    //  on_submit: function (frm){
-       
-    //  },
+     on_submit: function (frm){
+        if (frm.doc.t_g_cow_can <=0){
+            frm.set_df_property("t_g_cow_can", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_g_cow_can", "hidden", 0);
+
+        }
+        if (frm.doc.t_g_cow_wt <=0){
+            frm.set_df_property("t_g_cow_wt", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_g_cow_wt", "hidden", 0);
+
+        }
+        if (frm.doc.t_g_buf_can <=0){
+            frm.set_df_property("t_g_buf_can", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_g_buf_can", "hidden", 0);
+
+        }
+        if (frm.doc.t_g_buf_wt <=0){
+            frm.set_df_property("t_g_buf_wt", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_g_buf_wt", "hidden", 0);
+
+        }
+        if (frm.doc.t_g_mix_can <=0){
+            frm.set_df_property("t_g_mix_can", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_g_mix_can", "hidden", 0);
+
+        }
+        if (frm.doc.t_g_mix_wt <=0){
+            frm.set_df_property("t_g_mix_wt", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_g_mix_wt", "hidden", 0);
+
+        }
+        if (frm.doc.t_s_cow_can <=0){
+            frm.set_df_property("t_s_cow_can", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_s_cow_can", "hidden", 0);
+
+        }
+        if (frm.doc.t_s_cow_wt <=0){
+            frm.set_df_property("t_s_cow_wt", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_s_cow_wt", "hidden", 0);
+
+        }
+        if (frm.doc.t_s_buf_can <=0){
+            frm.set_df_property("t_s_buf_can", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_s_buf_can", "hidden", 0);
+
+        }
+        if (frm.doc.t_s_buf_wt <=0){
+            frm.set_df_property("t_s_buf_wt", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_s_buf_wt", "hidden", 0);
+
+        }
+        if (frm.doc.t_s_mix_can <=0){
+            frm.set_df_property("t_s_mix_can", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_s_mix_can", "hidden", 0);
+
+        }
+        if (frm.doc.t_s_mix_wt <=0){
+            frm.set_df_property("t_s_mix_wt", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_s_mix_wt", "hidden", 0);
+
+        }
+        if (frm.doc.t_c_cow_can <=0){
+            frm.set_df_property("t_c_cow_can", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_c_cow_can", "hidden", 0);
+
+        }
+        if (frm.doc.t_c_cow_wt <=0){
+            frm.set_df_property("t_c_cow_wt", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_c_cow_wt", "hidden", 0);
+
+        }
+        if (frm.doc.t_c_buf_can <=0){
+            frm.set_df_property("t_c_buf_can", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_c_buf_can", "hidden", 0);
+
+        }
+        if (frm.doc.t_c_buf_wt <=0){
+            frm.set_df_property("t_c_buf_wt", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_c_buf_wt", "hidden", 0);
+
+        }
+        if (frm.doc.t_c_mix_can <=0){
+            frm.set_df_property("t_c_mix_can", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_c_mix_can", "hidden", 0);
+
+        }
+        if (frm.doc.t_c_mix_wt <=0){
+            frm.set_df_property("t_c_mix_wt", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_c_mix_wt", "hidden", 0);
+
+        }
+        if (frm.doc.t_cow_sam <=0){
+            frm.set_df_property("t_cow_sam", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_cow_sam", "hidden", 0);
+
+        }
+        if (frm.doc.t_buf_sam <=0){
+            frm.set_df_property("t_buf_sam", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_buf_sam", "hidden", 0);
+
+        }
+        if (frm.doc.t_mix_sam <=0){
+            frm.set_df_property("t_mix_sam", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_mix_sam", "hidden", 0);
+
+        }
+        if (frm.doc.t_cow_m_fat <=0){
+            frm.set_df_property("t_cow_m_fat", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_cow_m_fat", "hidden", 0);
+
+        }
+        if (frm.doc.t_cow_m_fat_kg <=0){
+            frm.set_df_property("t_cow_m_fat_kg", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_cow_m_fat_kg", "hidden", 0);
+
+        }
+        if (frm.doc.t_cow_m_clr <=0){
+            frm.set_df_property("t_cow_m_clr", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_cow_m_clr", "hidden", 0);
+
+        }
+        if (frm.doc.t_cow_m_clr_kg <=0){
+            frm.set_df_property("t_cow_m_clr_kg", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_cow_m_clr_kg", "hidden", 0);
+
+        }
+        if (frm.doc.t_buf_m_fat <=0){
+            frm.set_df_property("t_buf_m_fat", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_buf_m_fat", "hidden", 0);
+
+        }
+        if (frm.doc.t_buf_m_fat_kg <=0){
+            frm.set_df_property("t_buf_m_fat_kg", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_buf_m_fat_kg", "hidden", 0);
+
+        }
+        if (frm.doc.t_buf_m_clr <=0){
+            frm.set_df_property("t_buf_m_clr", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_buf_m_clr", "hidden", 0);
+
+        }
+        if (frm.doc.t_buf_m_clr_kg <=0){
+            frm.set_df_property("t_buf_m_clr_kg", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_buf_m_clr_kg", "hidden", 0);
+
+        }
+        if (frm.doc.t_mix_m_fat <=0){
+            frm.set_df_property("t_mix_m_fat", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_mix_m_fat", "hidden", 0);
+
+        }
+        if (frm.doc.t_mix_m_fat_kg <=0){
+            frm.set_df_property("t_mix_m_fat_kg", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_mix_m_fat_kg", "hidden", 0);
+
+        }
+        if (frm.doc.t_mix_m_clr <=0){
+            frm.set_df_property("t_mix_m_clr", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_mix_m_clr", "hidden", 0);
+
+        }
+        if (frm.doc.t_mix_m_clr_kg <=0){
+            frm.set_df_property("t_mix_m_clr_kg", "hidden", 1);
+
+        }
+        else{
+            frm.set_df_property("t_mix_m_clr_kg", "hidden", 0);
+
+        }
+     },
 
      before_submit: function(frm) {
         return frm.call('submit_rmrd').then(() => {

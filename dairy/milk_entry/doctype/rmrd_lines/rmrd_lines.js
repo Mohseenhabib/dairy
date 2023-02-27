@@ -80,7 +80,7 @@ frappe.ui.form.on('RMRD Lines', {
 	     cur_frm.cscript.calculate_total_cans_wt()
 	 },
 
-	 refresh: function(frm) {
+	 on_submit: function(frm) {
 		console.log('Stock entry',frm.doc.stock_entry)
 		if(!frm.doc.__islocal && !frm.doc.stock_entry)
 		       {
