@@ -125,7 +125,7 @@ class RMRD(Document):
 				if res.get('milk_type') == 'Mix':
 					doc.mix_milk_sam = res.get('sam_count')
 			doc.insert(ignore_permissions=True)
-			doc.calculate_total_cans_wt()
+			# doc.calculate_total_cans_wt()
 			self.db_update()
 			self.db_set('status', 'In-Progress')
 			self.flags.ignore_validate_update_after_submit = True  # ignore after submit permission

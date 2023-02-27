@@ -133,35 +133,37 @@ class RMRDLines(Document):
 
 		if self.g_cow_milk >= 0:
 			self.set_value_depend_milk_type(s_cow_item, stock_entry, self.s_cow_milk, self.cow_milk_fat,
-											self.cow_milk_snf,self.cow_milk_clr , route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory)
+											self.cow_milk_snf,self.cow_milk_clr , route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory,self.dcs)
 
 		if self.g_buf_milk >= 0:
 			self.set_value_depend_milk_type(s_buf_item, stock_entry,self.s_buf_milk,self.buf_milk_fat,
-											self.buf_milk_snf,self.buf_milk_clr, route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory)
+											self.buf_milk_snf,self.buf_milk_clr, route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory,self.dcs)
 
 		if self.g_mix_milk >= 0:
 			self.set_value_depend_milk_type(s_mix_item, stock_entry, self.s_mix_milk, self.mix_milk_fat,
-											self.mix_milk_snf, self.mix_milk_clr, route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory)
+											self.mix_milk_snf, self.mix_milk_clr, route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory,self.dcs)
 
 		if self.g_cow_milk >= 0:
 			self.set_value_depend_milk_type(c_cow_item, stock_entry, self.c_cow_milk, self.cow_milk_fat,
-											self.cow_milk_snf,self.cow_milk_clr, route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory)
+											self.cow_milk_snf,self.cow_milk_clr, route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory,self.dcs)
 
 		if self.g_buf_milk >= 0:
 			self.set_value_depend_milk_type(c_buf_item, stock_entry, self.c_buf_milk, self.buf_milk_fat,
-											self.buf_milk_snf,self.buf_milk_clr, route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory)
+											self.buf_milk_snf,self.buf_milk_clr, route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory,self.dcs)
 
 		if self.g_mix_milk >= 0:
 			self.set_value_depend_milk_type(c_mix_item, stock_entry, self.c_mix_milk, self.mix_milk_fat,
-											self.mix_milk_snf, self.mix_milk_clr, route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory)
+											self.mix_milk_snf, self.mix_milk_clr, route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory,self.dcs)
 
 
 		print('clr make stock entry*********************',rmrd.t_cow_m_clr,rmrd.t_buf_m_clr,rmrd.t_mix_m_clr)
+		print('stock entry^^^^^^^^^^^^^^^^^^^^^^^',stock_entry.name)
 		stock_entry.insert()
 		stock_entry.db_update()
+		
 		if not rmrd.inspection_required:
 			stock_entry.submit()
-
+		self.db_set('stock_entry',stock_entry.name)
 
 		# result = frappe.db.sql("""select sed.* from `tabStock Entry` as se 
 		# 						join `tabStock Entry Detail` as sed on sed.parent = se.name
@@ -173,6 +175,7 @@ class RMRDLines(Document):
 
 	def set_value_depend_milk_type(self, item_name, stock_entry, milk_collected, fat, clr,snf, route, source_warehouse,cost_center, expense_account, dcs,perpetual_inventory=None):
 		# doc = frappe.get_all("Van Collection Items",{'dcs':1} ,['dcs'])
+		rmrd = frappe.get_doc("RMRD", self.rmrd)
 		item = frappe.get_doc("Item", item_name)
 		print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',cost_center,clr)
 		se_child = stock_entry.append('items')
@@ -190,8 +193,8 @@ class RMRDLines(Document):
 		se_child.snf = (milk_collected * item.weight_per_unit) * (clr/100)
 		se_child.snf_per = clr
 		if stock_entry.purpose == "Material Transfer":
-			se_child.s_warehouse = self.dcs
-		se_child.t_warehouse = route.source_warehouse
+			se_child.s_warehouse = route.source_warehouse
+		se_child.t_warehouse = rmrd.target_warehouse
 		
 		# in stock uom
 		se_child.transfer_qty = milk_collected

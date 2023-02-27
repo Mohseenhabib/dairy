@@ -25,6 +25,14 @@ class VanCollection(Document):
                 for dl in vci:
                     dlt = frappe.delete_doc('Van Collection Items',dl.name)
 
+        # stock_entry = frappe.get_all('Stock Entry',{'posting_date':self.date},['name','date'])
+        # print('seeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',stock_entry)
+        # for se in stock_entry:
+            
+        #     if self.date == se.posting_date:
+        #         se_dlt = frappe.delete_doc('Stock Entry',se.name)
+        #         print('delete stock entry&&&&&&&&&&&&&&&&&&&&&')
+
         
     @frappe.whitelist()
     def change_status_complete(self):

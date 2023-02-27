@@ -81,6 +81,7 @@ frappe.ui.form.on('RMRD Lines', {
 	 },
 
 	 refresh: function(frm) {
+		console.log('Stock entry',frm.doc.stock_entry)
 		if(!frm.doc.__islocal && !frm.doc.stock_entry)
 		       {
 		           frm.add_custom_button(__('Make Stock Entry'),function() {
