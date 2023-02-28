@@ -118,15 +118,15 @@ class RMRDLines(Document):
 		doc = frappe.get_all("Van Collection Items", ['name'])
 
 
-		if self.g_cow_milk > 0:
+		if self.g_cow_milk >= 0:
 			self.set_value_depend_milk_type(g_cow_item, stock_entry, self.rmrd_good_cow_milk, self.cow_milk_fat,
 											self.cow_milk_snf,self.cow_milk_clr , route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory,self.dcs)
 
-		if self.g_buf_milk > 0:
+		if self.g_buf_milk >= 0:
 			self.set_value_depend_milk_type(g_buf_item, stock_entry, self.rmrd_good_buf_milk, self.buf_milk_fat,
 											self.buf_milk_snf,self.buf_milk_clr, route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory,self.dcs)
 
-		if self.g_mix_milk > 0:
+		if self.g_mix_milk >= 0:
 			self.set_value_depend_milk_type(g_mix_item, stock_entry, self.rmrd_good_mix_milk, self.mix_milk_fat,
 											self.mix_milk_snf, self.mix_milk_clr,route, rmrd.target_warehouse, cost_center, expense_account, perpetual_inventory,self.dcs)
 

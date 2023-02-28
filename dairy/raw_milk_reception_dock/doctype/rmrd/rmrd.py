@@ -73,7 +73,7 @@ class RMRD(Document):
 								from `tabStock Entry Detail` as sed 
 								join `tabStock Entry` as se on se.name = sed.parent 
 								join `tabItem` as itm on itm.name = sed.item_code
-								where se.posting_date =%s and sed.s_warehouse = %s
+								where se.posting_date =%s and sed.s_warehouse = %s and se.docstatus = 1
 								""", ( self.date ,res.get('dcs')), as_dict=True)
 			doc = frappe.new_doc("RMRD Lines")
 			doc.g_cow_milk = res.get('cow_collected')
