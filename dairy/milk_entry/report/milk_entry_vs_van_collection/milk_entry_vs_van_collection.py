@@ -70,12 +70,12 @@ def get_columns(filters, trans):
 	return conditions
 
 def validate_filters(filters):
-	for f in ["Fiscal Year", "Based On", "Period", "Company"]:
+	for f in ["From Date","To Date", "Based On", "Period", "Company"]:
 		if not filters.get(f.lower().replace(" ", "_")):
 			frappe.throw(_("{0} is mandatory").format(f))
 
-	if not frappe.db.exists("Fiscal Year", filters.get("fiscal_year")):
-		frappe.throw(_("Fiscal Year: {0} does not exists").format(filters.get("fiscal_year")))
+	# if not frappe.db.exists("Fiscal Year", filters.get("fiscal_year")):
+	# 	frappe.throw(_("Fiscal Year: {0} does not exists").format(filters.get("fiscal_year")))
 
 	if filters.get("based_on") == filters.get("group_by"):
 		frappe.throw(_("'Based On' and 'Group By' can not be same"))
@@ -107,7 +107,7 @@ def based_wise_columns_query(based_on, trans):
 def period_wise_columns_query(filters, trans):
 	query_details = ''
 	pwc = []
-	bet_dates = get_period_date_ranges(filters.get("period"), filters.get("fiscal_year"))
+	bet_dates = get_period_date_ranges(filters.get("period"),filters,filters.get("from_date"),filters.get("to_date"))
 
 	if trans in ['Van Collection Items']:
 		trans_date = 'date'
@@ -121,21 +121,23 @@ def period_wise_columns_query(filters, trans):
 			get_period_wise_columns(dt, filters.get("period"), pwc)
 			query_details = get_period_wise_query(dt, trans_date, query_details)
 	else:
-		pwc = [_(filters.get("fiscal_year")) + " ("+ _("Cow Milk Entry") + "):Float:120",
-			_(filters.get("fiscal_year")) + " ("+ _("Cow Milk Collected") + "):Float:120",
-			_(filters.get("fiscal_year")) + " ("+ _("Cow Milk Cans") + "):Float:120",
-			_(filters.get("fiscal_year")) + " ("+ _("Cow Milk FAT") + "):Float:120",
-			_(filters.get("fiscal_year")) + " ("+ _("Cow Milk CLR") + "):Float:120",
-			_(filters.get("fiscal_year")) + " ("+ _("Buffalo Milk Entry") + "):Float:120",
-			_(filters.get("fiscal_year")) + " ("+ _("Buffalo Milk Collected") + "):Float:120",
-			_(filters.get("fiscal_year")) + " ("+ _("Buffalo Milk Cans") + "):Float:120",
-			_(filters.get("fiscal_year")) + " ("+ _("Buffalo Milk FAT") + "):Float:120",
-			_(filters.get("fiscal_year")) + " ("+ _("Buffalo Milk CLR") + "):Float:120",
-			_(filters.get("fiscal_year")) + " ("+ _("Mix Milk Entry") + "):Float:120",
-			_(filters.get("fiscal_year")) + " ("+ _("Mix Milk Collected") + "):Float:120",
-			_(filters.get("fiscal_year")) + " ("+ _("Mix Milk Cans") + "):Float:120",
-			_(filters.get("fiscal_year")) + " ("+ _("Mix Milk FAT") + "):Float:120",
-			_(filters.get("fiscal_year")) + " ("+ _("Mix Milk CLR") + "):Float:120"]
+		pwc = [_(filters.get("from_date")) + " ("+ _("Cow Milk Entry") + "):Float:120",
+			_(filters.get("from_date")) + " ("+ _("Cow Milk Collected") + "):Float:120",
+			_(filters.get("from_date")) + " ("+ _("Cow Milk Cans") + "):Float:120",
+			_(filters.get("from_date")) + " ("+ _("Cow Milk FAT") + "):Float:120",
+			_(filters.get("from_date")) + " ("+ _("Cow Milk CLR") + "):Float:120",
+			_(filters.get("from_date")) + " ("+ _("Buffalo Milk Entry") + "):Float:120",
+			_(filters.get("from_date")) + " ("+ _("Buffalo Milk Collected") + "):Float:120",
+			_(filters.get("from_date")) + " ("+ _("Buffalo Milk Cans") + "):Float:120",
+			_(filters.get("from_date")) + " ("+ _("Buffalo Milk FAT") + "):Float:120",
+			_(filters.get("from_date")) + " ("+ _("Buffalo Milk CLR") + "):Float:120",
+			_(filters.get("from_date")) + " ("+ _("Mix Milk Entry") + "):Float:120",
+			_(filters.get("from_date")) + " ("+ _("Mix Milk Collected") + "):Float:120",
+			_(filters.get("from_date")) + " ("+ _("Mix Milk Cans") + "):Float:120",
+			_(filters.get("from_date")) + " ("+ _("Mix Milk FAT") + "):Float:120",
+			_(filters.get("from_date")) + " ("+ _("Mix Milk CLR") + "):Float:120"]
+
+		print('rom_datewc^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',pwc)
 
 		query_details = """SUM(t1.cow_milk_vol),SUM(t1.cow_milk_collected),SUM(t1.cow_milk_cans),SUM(t1.cow_milk_fat),SUM(t1.cow_milk_clr),
 					SUM(t1.buf_milk_vol),SUM(t1.buffalow_milk_collected),SUM(t1.buf_milk_cans),SUM(t1.buf_milk_fat),SUM(t1.buf_milk_clr),
@@ -147,12 +149,12 @@ def period_wise_columns_query(filters, trans):
 	return pwc, query_details
 
 @frappe.whitelist(allow_guest=True)
-def get_period_date_ranges(period, fiscal_year=None, year_start_date=None):
+def get_period_date_ranges(period,filters,year_start_date,year_end_date):
 	from dateutil.relativedelta import relativedelta
 
 	if not year_start_date:
-		year_start_date, year_end_date = frappe.db.get_value("Fiscal Year",
-			fiscal_year, ["year_start_date", "year_end_date"])
+		year_start_date = filters.get("from_date")
+		year_end_date = filters.get("to_date")
 
 	increment = {
 		"Monthly": 1,
@@ -164,10 +166,11 @@ def get_period_date_ranges(period, fiscal_year=None, year_start_date=None):
 	period_date_ranges = []
 	for i in range(1, 13, increment):
 		period_end_date = getdate(year_start_date) + relativedelta(months=increment, days=-1)
+		print('period_end_date************************',type(period_end_date),year_start_date,type(year_end_date),(relativedelta(days=1)))
 		if period_end_date > getdate(year_end_date):
 			period_end_date = year_end_date
 		period_date_ranges.append([year_start_date, period_end_date])
-		year_start_date = period_end_date + relativedelta(days=1)
+		year_start_date = getdate(period_end_date )+ (relativedelta(days=1))
 		if period_end_date == year_end_date:
 			break
 
@@ -255,9 +258,9 @@ def get_data(filters, conditions):
 		if filters.period_based_on:
 			posting_date = 't1.'+filters.period_based_on
 
-	year_start_date, year_end_date = frappe.db.get_value("Fiscal Year",
-		filters.get('fiscal_year'), ["year_start_date", "year_end_date"])
-
+	year_start_date = filters.get("from_date")
+	year_end_date = filters.get("to_date")
+	
 	if filters.get("group_by"):
 		sel_col = ''
 		ind = conditions["columns"].index(conditions["grbc"][0])

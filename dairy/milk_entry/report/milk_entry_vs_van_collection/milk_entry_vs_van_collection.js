@@ -24,14 +24,29 @@ frappe.query_reports["Milk Entry vs Van Collection"] = {
 			],
 			"default": "Monthly"
 		},
+		// {
+		// 	"fieldname":"fiscal_year",
+		// 	"label": __("Fiscal Year"),
+		// 	"fieldtype": "Link",
+		// 	"options":'Fiscal Year',
+		// 	"reqd": 1,
+		// 	"default": frappe.sys_defaults.fiscal_year
+		// },
 		{
-			"fieldname":"fiscal_year",
-			"label": __("Fiscal Year"),
-			"fieldtype": "Link",
-			"options":'Fiscal Year',
+			"fieldname":"from_date",
+			"label": __("From Date"),
+			"fieldtype": "Date",
 			"reqd": 1,
-			"default": frappe.sys_defaults.fiscal_year
+			"default": frappe.datetime.add_months(frappe.datetime.get_today(), -1),
 		},
+		{
+			"fieldname":"to_date",
+			"label": __("To Date"),
+			"fieldtype": "Date",
+			"reqd": 1,
+			"default": frappe.datetime.get_today(),
+		},
+
 		{
 			"fieldname":"based_on",
 			"label": __("Based On"),
