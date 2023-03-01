@@ -490,17 +490,16 @@
   },
   {
    "allow_in_quick_entry": 1,
+   "allow_on_submit": 1,
    "fieldname": "stock_entry",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Stock Entry",
-   "options": "Stock Entry",
-   "read_only": 1
+   "options": "Stock Entry"
   }
  ],
- "is_submittable": 1,
  "links": [],
- "modified": "2023-02-24 17:14:20.696805",
+ "modified": "2023-03-01 18:09:14.815566",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "RMRD Lines",
@@ -516,7 +515,6 @@
    "report": 1,
    "role": "Dairy",
    "share": 1,
-   "submit": 1,
    "write": 1
   }
  ],

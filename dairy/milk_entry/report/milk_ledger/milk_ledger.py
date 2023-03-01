@@ -16,7 +16,7 @@ def execute(filters=None):
 	item_details = get_item_details(items, sl_entries, include_uom)
 	opening_row = get_opening_balance(filters, columns)
 	precision = cint(frappe.db.get_single_value("System Settings", "float_precision"))
-
+	
 	data = []
 	conversion_factors = []
 	if opening_row:
@@ -25,6 +25,7 @@ def execute(filters=None):
 	# actual_qty = stock_value = 0
 
 	for sle in sl_entries:
+		
 		item_detail = item_details[sle.item_code]
 
 		sle.update(item_detail)
@@ -59,6 +60,22 @@ def execute(filters=None):
 			"in_snf": abs(c),
 			"out_snf": abs(d)
 		})
+		# g =  max(new.actual_qty, 0)
+		# h = min(new.actual_qty, 0)
+		# i = (new.qty_after_transaction,0)
+		stock = frappe.get_all('Stock Ledger Entry',{'item_code':sle.item_code,'warehouse':sle.warehouse},['actual_qty','qty_after_transaction','voucher_no'])
+		for new in stock:
+			if new.actual_qty >0:
+				sle.update({
+				"in_qty": max(new.actual_qty , 0)
+				})
+			else:
+				sle.update({
+				"out_qty": min(0,new.actual_qty)
+				
+			})
+			print('actual qty************************',new.actual_qty,max(new.actual_qty , 0),min(0,new.actual_qty),new.voucher_no)
+			
 	
 		data.append(sle)
 		print('data*************************8',sle)
@@ -85,6 +102,9 @@ def get_columns():
 		{"label": _("In wt"), "fieldname": "in_wt", "fieldtype": "Float", "width": 80, "convertible": "qty"},
 		{"label": _("Out wt"), "fieldname": "out_wt", "fieldtype": "Float", "width": 80, "convertible": "qty"},
 		{"label": _("Balance wt"), "fieldname": "qty_after_transaction", "fieldtype": "Float", "width": 100, "convertible": "qty"},
+		{"label": _("In Qty"), "fieldname": "in_qty", "fieldtype": "Float", "width": 80, "convertible": "qty"},
+		{"label": _("Out Qty"), "fieldname": "out_qty", "fieldtype": "Float", "width": 80, "convertible": "qty"},
+		{"label": _("Balance Qty"), "fieldname": "qty_after_transaction", "fieldtype": "Float", "width": 100, "convertible": "qty"},
 		{"label": _("Voucher #"), "fieldname": "voucher_no", "fieldtype": "Dynamic Link", "options": "voucher_type", "width": 150},
 		{"label": _("Warehouse"), "fieldname": "warehouse", "fieldtype": "Link", "options": "Warehouse", "width": 150},
 		{"label": _("Item Group"), "fieldname": "item_group", "fieldtype": "Link", "options": "Item Group", "width": 100},
@@ -136,6 +156,7 @@ def get_stock_ledger_entries(filters, items):
 		""".format(sle_conditions=get_sle_conditions(filters), item_conditions_sql=item_conditions_sql),
 		filters, as_dict=1)
 
+	print('sl entries************************************', sl_entries)
 	return sl_entries
 
 
