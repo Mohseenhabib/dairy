@@ -37,7 +37,11 @@ class MilkEntry(Document):
         self.db_set('clr_kg', clr_kg)
 
         itm = frappe.db.get_value('Item',{'milk_type':self.milk_type},['stock_uom'])
-        self.db_set('stock_uom',itm)      
+        self.db_set('stock_uom',itm) 
+
+        litre = ((self.volume * (item)))
+        self.db_set('litre', litre)
+  
 
         pricelist_name = frappe.db.sql("""
                     select milk_rate.name from `tabMilk Rate` as milk_rate 
