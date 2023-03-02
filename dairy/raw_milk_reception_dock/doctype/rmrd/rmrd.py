@@ -233,3 +233,5 @@ class RMRD(Document):
 			doc =frappe.get_doc("RMRD Lines",res.get("name"))
 			if doc:
 				doc.submit()	
+
+

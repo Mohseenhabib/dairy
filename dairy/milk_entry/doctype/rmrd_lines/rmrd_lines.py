@@ -90,6 +90,8 @@ class RMRDLines(Document):
 		stock_entry.stock_entry_type = "Material Transfer"
 		stock_entry.set_posting_time = 1
 		stock_entry.posting_date = self.date
+		stock_entry.rmrd = rmrd.name
+		stock_entry.rmrd_lines = self.name
 		# stock_entry.set_posting_time = 0
 
 		stock_entry.company = rmrd.company
@@ -175,6 +177,7 @@ class RMRDLines(Document):
 
 	def set_value_depend_milk_type(self, item_name, stock_entry, milk_collected, fat, clr,snf, route, source_warehouse,cost_center, expense_account, dcs,perpetual_inventory=None):
 		# doc = frappe.get_all("Van Collection Items",{'dcs':1} ,['dcs'])
+		item = frappe.get_doc("Item", item_name)
 		if milk_collected > 0:
 			rmrd = frappe.get_doc("RMRD", self.rmrd)
 			item = frappe.get_doc("Item", item_name)
@@ -196,7 +199,7 @@ class RMRDLines(Document):
 			if stock_entry.purpose == "Material Transfer":
 				se_child.s_warehouse = route.source_warehouse
 			se_child.t_warehouse = rmrd.target_warehouse
-			
+			se_child.basic_rate = item.valuation_rate
 			# in stock uom
 			se_child.transfer_qty = milk_collected
 			print('Printtttttttttttttttttt',cost_center,clr)
