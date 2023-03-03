@@ -72,22 +72,28 @@ frappe.query_reports["Milk Ledger"] = {
 	],
 	"formatter": function (value, row, column, data, default_formatter) {
 		value = default_formatter(value, row, column, data);
-		if (column.fieldname == "out_qty" && data.out_qty < 0 ) {
+		if (column.fieldname == "out_qty" && data.out_qty > 0 ) {
 			value = "<span style='color:red'>" + value + "</span>";
 		}
 		else if (column.fieldname == "in_qty" && data.in_qty > 0) {
 			value = "<span style='color:green'>" + value + "</span>";
 		}
-        if (column.fieldname == "out_fat" && data.out_fat < 0) {
+        if (column.fieldname == "out_fat" && data.out_fat > 0) {
 			value = "<span style='color:red'>" + value + "</span>";
 		}
 		else if (column.fieldname == "in_fat" && data.in_fat > 0) {
 			value = "<span style='color:green'>" + value + "</span>";
 		}
-		if (column.fieldname == "out_snf" && data.out_snf < 0) {
+		if (column.fieldname == "out_snf" && data.out_snf > 0) {
 			value = "<span style='color:red'>" + value + "</span>";
 		}
 		else if (column.fieldname == "in_snf" && data.in_snf > 0) {
+			value = "<span style='color:green'>" + value + "</span>";
+		}
+		if (column.fieldname == "out_wt" && data.out_qty > 0 ) {
+			value = "<span style='color:red'>" + value + "</span>";
+		}
+		else if (column.fieldname == "in_wt" && data.in_qty > 0) {
 			value = "<span style='color:green'>" + value + "</span>";
 		}
 		return value;

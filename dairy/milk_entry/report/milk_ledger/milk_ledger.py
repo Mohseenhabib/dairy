@@ -42,8 +42,8 @@ def execute(filters=None):
 				"qty_after_transaction": abs(actual_qty)
 				# "stock_value": stock_value
 			})
-		a = max(sle.actual_qty, 0)
-		b =  min(sle.actual_qty, 0)
+		a = max(sle.mle_act_qty, 0)
+		b =  min(sle.mle_act_qty, 0)
 		sle.update({
 			"in_wt": abs(a),
 			"out_wt": abs(b)
@@ -60,22 +60,14 @@ def execute(filters=None):
 			"in_snf": abs(c),
 			"out_snf": abs(d)
 		})
-		# g =  max(new.actual_qty, 0)
-		# h = min(new.actual_qty, 0)
-		# i = (new.qty_after_transaction,0)
-		stock = frappe.get_all('Stock Ledger Entry',{'item_code':sle.item_code,'warehouse':sle.warehouse},['actual_qty','qty_after_transaction','voucher_no'])
-		for new in stock:
-			if new.actual_qty >0:
-				sle.update({
-				"in_qty": max(new.actual_qty , 0)
-				})
-			else:
-				sle.update({
-				"out_qty": min(0,new.actual_qty)
-				
-			})
-			print('actual qty************************',new.actual_qty,max(new.actual_qty , 0),min(0,new.actual_qty),new.voucher_no)
-			
+		
+		h =  max(sle.sle_act_qty ,0)
+		i = min(sle.sle_act_qty,0)
+		sle.update({
+			"in_qty": abs(h),
+			"out_qty": abs(i)
+		})
+		
 	
 		data.append(sle)
 		print('data*************************8',sle)
@@ -104,7 +96,7 @@ def get_columns():
 		{"label": _("Balance wt"), "fieldname": "qty_after_transaction", "fieldtype": "Float", "width": 100, "convertible": "qty"},
 		{"label": _("In Qty"), "fieldname": "in_qty", "fieldtype": "Float", "width": 80, "convertible": "qty"},
 		{"label": _("Out Qty"), "fieldname": "out_qty", "fieldtype": "Float", "width": 80, "convertible": "qty"},
-		{"label": _("Balance Qty"), "fieldname": "qty_after_transaction", "fieldtype": "Float", "width": 100, "convertible": "qty"},
+		{"label": _("Balance Qty"), "fieldname": "balance_qty", "fieldtype": "Float", "width": 100, "convertible": "qty"},
 		{"label": _("Voucher #"), "fieldname": "voucher_no", "fieldtype": "Dynamic Link", "options": "voucher_type", "width": 150},
 		{"label": _("Warehouse"), "fieldname": "warehouse", "fieldtype": "Link", "options": "Warehouse", "width": 150},
 		{"label": _("Item Group"), "fieldname": "item_group", "fieldtype": "Link", "options": "Item Group", "width": 100},
@@ -127,32 +119,37 @@ def get_stock_ledger_entries(filters, items):
 
 	sl_entries = frappe.db.sql("""
 		SELECT
-			concat_ws(" ", posting_date, posting_time) AS date,
-			item_code,
-			warehouse,
-			actual_qty,
-			qty_after_transaction,
+			concat_ws(" ", mle.posting_date, mle.posting_time) AS date,
+			mle.item_code,
+			mle.warehouse,
+			mle.actual_qty as mle_act_qty,
+			mle.qty_after_transaction,
 			# stock_value,
-			voucher_type,
-			voucher_no,
-			batch_no,
-			serial_no,
-			company,
-			project,
-			fat,
-			snf,
-			fat_after_transaction,
-			qty_after_transaction,
-			snf_after_transaction
+			mle.voucher_type,
+			mle.voucher_no,
+			mle.batch_no,
+			mle.serial_no,
+			mle.company,
+			mle.project,
+			mle.fat,
+			mle.snf,
+			mle.fat_after_transaction,
+			mle.qty_after_transaction,
+			mle.snf_after_transaction,
+			sle.actual_qty as sle_act_qty,
+			sle.qty_after_transaction as balance_qty
 		FROM
-			`tabMilk Ledger Entry` sle
+			`tabMilk Ledger Entry` as mle
+		join `tabStock Ledger Entry` as sle
+
 		WHERE
-			company = %(company)s
-				AND posting_date BETWEEN %(from_date)s AND %(to_date)s
+			mle.company = %(company)s
+				AND mle.posting_date BETWEEN %(from_date)s AND %(to_date)s
 				{sle_conditions}
-				{item_conditions_sql}
+				{item_conditions_sql} and sle.warehouse = mle.warehouse and sle.item_code = mle.item_code and sle.posting_date = mle.posting_date
+				
 		ORDER BY
-			posting_date asc, posting_time asc, creation asc
+			mle.posting_date asc, mle.posting_time asc, mle.creation asc
 		""".format(sle_conditions=get_sle_conditions(filters), item_conditions_sql=item_conditions_sql),
 		filters, as_dict=1)
 
@@ -214,14 +211,14 @@ def get_sle_conditions(filters):
 		if warehouse_condition:
 			conditions.append(warehouse_condition)
 	if filters.get("voucher_no"):
-		conditions.append("voucher_no=%(voucher_no)s")
+		conditions.append("sle.voucher_no=%(voucher_no)s")
 	if filters.get("batch_no"):
-		conditions.append("batch_no=%(batch_no)s")
+		conditions.append("sle.batch_no=%(batch_no)s")
 	if filters.get("project"):
-		conditions.append("project=%(project)s")
+		conditions.append("sle.project=%(project)s")
 
 	if not filters.get("show_cancelled_entries"):
-		conditions.append("is_cancelled = 0")
+		conditions.append("sle.is_cancelled = 0")
 
 	return "and {}".format(" and ".join(conditions)) if conditions else ""
 
