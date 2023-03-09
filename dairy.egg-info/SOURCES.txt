@@ -45,7 +45,6 @@ dairy/milk_entry/custom/delivery_note_item.json
 dairy/milk_entry/custom/delivery_stop.json
 dairy/milk_entry/custom/delivery_trip.json
 dairy/milk_entry/custom/item.json
-dairy/milk_entry/custom/item_barcode.json
 dairy/milk_entry/custom/payment_entry.json
 dairy/milk_entry/custom/purchase_invoice.json
 dairy/milk_entry/custom/purchase_receipt.json
