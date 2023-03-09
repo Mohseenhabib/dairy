@@ -136,6 +136,7 @@ doc_events = {
         "before_save": "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry",
         "before_submit": "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry",
         "on_submit": "dairy.milk_entry.custom_stock_entry.on_submit",
+        "on_submit": "dairy.milk_entry.custom_stock_entry.update_vc_status",
         "on_cancel": "dairy.milk_entry.custom_stock_entry.cancel_create_milk_stock_ledger"
     },
     "Purchase Receipt":{

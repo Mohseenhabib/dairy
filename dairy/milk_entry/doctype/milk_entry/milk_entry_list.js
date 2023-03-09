@@ -13,9 +13,9 @@
  		{
  			return [__("Closed"), "green", "status,=,Closed"];
  		}
- 		else if (doc.status === "To Post and Sample")
+ 		else if (doc.status === "To Sample and Bill")
  		{
- 			return [__("To Post and Sample"), "green", "status,=,To Post and Sample"];
+ 			return [__("To Sample and Bill"), "green", "status,=,To sample and Bill"];
  		}
  		else if (doc.status === "To Sample")
  		{
@@ -25,9 +25,9 @@
  		{
  			return [__("To Post"), "green", "status,=,To Post"];
  		}
- 		else if (doc.status === "Posted")
+ 		else if (doc.status === "Billed")
  		{
- 			return [__("Posted"), "green", "status,=,Posted"];
+ 			return [__("Billed"), "green", "status,=,Billed"];
  		}
  	},
  	onload: function(frm){

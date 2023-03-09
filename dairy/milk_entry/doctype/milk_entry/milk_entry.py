@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Copyright (c) 2019, Dexciss Technology Pvt Ltd and contributors
-# For license information, please see license.txt
+# For license information, please see license.
 
 from __future__ import unicode_literals
 # import frappe
@@ -14,11 +14,25 @@ class MilkEntry(Document):
     @frappe.whitelist()
     def get_pricelist(self):
         state_climatic_factor,state_factor = frappe.db.get_value('Warehouse',{'is_dcs':1},['state_climatic_factor','state_factor'])
-        snf =  ((self.clr/4)+(self.fat*(state_climatic_factor)+(state_factor)))
-        self.db_set('snf', snf)
-        print('snfffffffffffffffffff',self.snf)
+        if self.snf == 0 or not self.snf:
+            snf =  ((self.clr/4)+(self.fat*(state_climatic_factor)+(state_factor)))
+            self.db_set('snf', snf)
+            print('snfffffffffffffffffff',self.snf)
 
-        item = frappe.db.get_value('Item',{'milk_type':self.milk_type},['weight_per_unit'])
+        if self.clr == 0 or not self.clr:
+            clr = ((self.snf/4)+(self.fat*(state_climatic_factor)+(state_factor)))
+            self.db_set('clr', clr)
+            print('clrrrrrrrrrrrrrrrrrrrr',clr)
+        
+        doc=frappe.get_doc("Dairy Settings")
+        item=0.0
+        if i.get("milk_type")=="Cow":
+            item = frappe.db.get_value('Item',{"name":doc.cow_pro},['weight_per_unit'])
+        if i.get("milk_type")=="Buffalo":
+            item = frappe.db.get_value('Item',{"name":doc.buf_pro},['weight_per_unit'])
+        if i.get("milk_type")=="Mix":
+            item = frappe.db.get_value('Item',{"name":doc.mix_pro},['weight_per_unit'])
+
         fat_kg =  ((self.volume * (item)) * (self.fat/100))
         self.db_set('fat_kg', fat_kg)
         print('fat_kg**************',fat_kg,item)
@@ -30,8 +44,19 @@ class MilkEntry(Document):
         clr_kg =  ((self.volume * (item)) * (self.clr/100))
         self.db_set('clr_kg', clr_kg)
 
-        itm = frappe.db.get_value('Item',{'milk_type':self.milk_type},['stock_uom'])
-        self.db_set('stock_uom',itm)      
+        doc=frappe.get_doc("Dairy Settings")
+        if i.get("milk_type")=="Cow":
+            itm = frappe.db.get_value('Item',{"name":doc.cow_pro},['stock_uom'])
+        if i.get("milk_type")=="Buffalo":
+            itm = frappe.db.get_value('Item',{"name":doc.buf_pro},['stock_uom'])
+        if i.get("milk_type")=="Mix":
+            itm = frappe.db.get_value('Item',{"name":doc.mix_pro},['stock_uom'])
+        
+        self.db_set('stock_uom',itm) 
+
+        litre = ((self.volume * (item)))
+        self.db_set('litre', litre)
+  
 
         pricelist_name = frappe.db.sql("""
                     select milk_rate.name from `tabMilk Rate` as milk_rate 
@@ -52,6 +77,11 @@ class MilkEntry(Document):
         self.db_set('unit_price', rate[0][0])
         self.db_set('total',(self.volume *self.unit_price))
         self.db_set('status','Submitted')
+
+    
+
+    # def check_status_rms(self):
+    #     raw_milk_sample = 
 
 
         
@@ -109,33 +139,43 @@ def _get_product(milk_type):
 
 @frappe.whitelist()
 def create_raw_sample(source_name, target_doc=None):
-    def update_item(obj, target, source_parent):
-        obj.sample_created = True
-        nameing_series = frappe.db.sql(""" select options from `tabDocField` where fieldname='naming_series' and parent='Sample lines' """)
-        target.append('sample_lines', {
-            'naming_series':nameing_series[0][0],
-            'milk_entry': obj.name,
-            'member_id': obj.member,
-            'milk_type': obj.milk_type,
-            'fat': obj.fat_kg,
-            'clr': obj.snf_kg})
+    doc=frappe.db.get_value("Sample lines",{'milk_entry':source_name},'name')
+    if not doc:
+        def update_item(obj, target, source_parent):
+            print('target&&&&&&&&&&&&&&&&&&&&&',source_name,obj.name,target)
+            raw_sample = frappe.get_all('Raw Milk Sample',['name'])
+            obj.sample_created = True
+            nameing_series = frappe.db.sql(""" select options from `tabDocField` where fieldname='naming_series' and parent='Sample lines' """)
+            target.append('sample_lines', {
+                'naming_series':nameing_series[0][0],
+                'milk_entry': obj.name,
+                'member_id': obj.member,
+                'milk_type': obj.milk_type,
+                'fat': obj.fat_kg,
+                'clr': obj.snf_kg})
 
-    fields = {
-        "Milk Entry": {
-            "doctype": "Sample lines"
-        },
-        "Milk Entry": {
-            "doctype": "Raw Milk Sample",
-            "field_map": {
-                "name": "raw_milk_sample",
+        fields = {
+            "Milk Entry": {
+                "doctype": "Sample lines"
             },
-            "postprocess": update_item,
-        },
-    }
-    doclist = get_mapped_doc("Milk Entry", source_name,fields,	{
-    }, target_doc)
+            "Milk Entry": {
+                "doctype": "Raw Milk Sample",
+                "field_map": {
+                    "name": "raw_milk_sample",
+                },
+                "postprocess": update_item,
+            },
+        }
+        doclist = get_mapped_doc("Milk Entry", source_name,fields,	{
+        }, target_doc)
 
-    return doclist
+        
+        print('doclist$$$$$$$$$$$$$$$$$$$$$$$$$$$$',doclist,source_name)
+
+        return doclist
+
+    else:
+        frappe.throw('Raw sample {0} already exist against milk entry {1}'.format(doc,source_name))
 
 @frappe.whitelist()
 def make_sample(source_name, target_doc=None):
@@ -162,6 +202,8 @@ def make_sample(source_name, target_doc=None):
             "doctype": "Sample lines",
         }
     }, target_doc, set_missing_values)
+
+    print('doclist*********************88888',doclist)
 
     return doclist
 

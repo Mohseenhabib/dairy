@@ -14,12 +14,37 @@ class VanCollection(Document):
     @frappe.whitelist()
     def submit_van_collection(self):
         self.db_set('status','Submitted')
-       
 
+    def on_cancel(self):
+        milk_entry = frappe.get_all('Milk Entry',{'date':self.date},['name','van_collection_completed','date'])
+        for me in milk_entry:
+            if self.date == me.date:
+                vcc = frappe.get_doc('Milk Entry',me.name) 
+                vcc.db_set("van_collection_completed",0)
+                vci = frappe.get_all('Van Collection Items',{'van_collection':self.name},['name'])
+                for dl in vci:
+                    dlt = frappe.delete_doc('Van Collection Items',dl.name)
+
+        # stock_entry = frappe.get_all('Stock Entry',{'posting_date':self.date},['name','date'])
+        # print('seeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',stock_entry)
+        # for se in stock_entry:
+            
+        #     if self.date == se.posting_date:
+        #         se_dlt = frappe.delete_doc('Stock Entry',se.name)
+        #         print('delete stock entry&&&&&&&&&&&&&&&&&&&&&')
+
+        
     @frappe.whitelist()
     def change_status_complete(self):
         self.db_set('status', 'Completed')
         self.flags.ignore_validate_update_after_submit = True  # ignore after submit permission
+        milk_entry = frappe.get_all('Milk Entry',{'date':self.date},['name','van_collection_completed','date'])
+        for me in milk_entry:
+            if self.date == me.date:
+                vcc = frappe.get_doc('Milk Entry',me.name)
+                if self.status == "Completed":
+                    vcc.db_set("van_collection_completed", 1)
+        
         self.save(ignore_permissions=True)
 
     @frappe.whitelist()
@@ -181,7 +206,8 @@ def change_van_collection_status(st,method):
         doc = frappe.get_doc("Van Collection Items", st.van_collection_item)
         doc.gate_pass =st.name
         doc.db_update()
-    if st.rmrd:
-        doc = frappe.get_doc("RMRD", st.rmrd)
+    print('st******************************8', st.rmrd_lines)
+    if st.rmrd_lines:
+        doc = frappe.get_doc("RMRD Lines", st.rmrd_lines)
         doc.stock_entry = st.name
         doc.db_update()

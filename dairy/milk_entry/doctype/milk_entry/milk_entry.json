@@ -16,6 +16,7 @@
   "member",
   "milk_type",
   "snf",
+  "van_collection_completed",
   "sb3",
   "sample",
   "volume",
@@ -29,6 +30,7 @@
   "clr_kg",
   "sb4",
   "milk_rate",
+  "litre",
   "cb5",
   "unit_price",
   "total",
@@ -214,7 +216,7 @@
   },
   {
    "default": "Draft",
-   "fetch_from": "purchase_receipt.status",
+   "fetch_if_empty": 1,
    "fieldname": "status",
    "fieldtype": "Select",
    "in_standard_filter": 1,
@@ -226,10 +228,10 @@
    "search_index": 1
   },
   {
+   "allow_on_submit": 1,
    "default": "0",
    "fieldname": "sample_created",
    "fieldtype": "Check",
-   "hidden": 1,
    "label": "Sample Created"
   },
   {
@@ -290,9 +292,8 @@
   },
   {
    "fieldname": "snf",
-   "fieldtype": "Percent",
-   "label": "SNF%",
-   "read_only": 1
+   "fieldtype": "Float",
+   "label": "SNF%"
   },
   {
    "fieldname": "stock_uom",
@@ -307,12 +308,25 @@
    "fieldtype": "Float",
    "hidden": 1,
    "label": "CLR in kg"
+  },
+  {
+   "default": "0",
+   "fieldname": "van_collection_completed",
+   "fieldtype": "Check",
+   "label": "Van Collection Completed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "litre",
+   "fieldtype": "Float",
+   "label": "Litre",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2023-02-02 12:55:19.287933",
+ "modified": "2023-03-02 17:16:06.859170",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Milk Entry",

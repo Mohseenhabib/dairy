@@ -29,9 +29,9 @@ def purchase_invoice():
 
 			
 
-		
+			
 			for k in query:
-				
+				print('query^^^^^^^^^^^^^^^^^^^^^^^^^',k.name)
 				pr =  frappe.db.get_all('Purchase Receipt',{'milk_entry':k.name,"docstatus":1},['*'])
 				
 				for j in pr:
@@ -58,9 +58,10 @@ def purchase_invoice():
 									'purchase_receipt':j.name
 								}
 							)
-
 						pi.save(ignore_permissions = True)
 						pi.submit()
+						if (pi.docstatus == 1):
+							k.db_set('status','Billed')
 
 
 
@@ -120,6 +121,8 @@ def purchase_invoice():
 
 							pi.save(ignore_permissions = True)
 							pi.submit()
+							if (pi.docstatus == 1):
+								k.db_set('status','Billed')
 							p_inv.db_set('previous_sync_date',str(date.today()))
 
 
@@ -174,4 +177,6 @@ def purchase_invoice():
 
 							pi.save(ignore_permissions = True)
 							pi.submit()
+							if (pi.docstatus == 1):
+								k.db_set('status','Billed')
 							p_inv.db_set('previous_sync_date',str(date.today()))

@@ -6,7 +6,8 @@
  "engine": "InnoDB",
  "field_order": [
   "sample_lines",
-  "milk_type"
+  "milk_type",
+  "dcs"
  ],
  "fields": [
   {
@@ -23,11 +24,17 @@
    "fieldtype": "Select",
    "label": "Milk type",
    "options": "Cow\nBuffalo\nMix"
+  },
+  {
+   "fetch_from": "sample_lines.dcs",
+   "fieldname": "dcs",
+   "fieldtype": "Data",
+   "label": "DCS"
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2023-01-16 11:46:37.679007",
+ "modified": "2023-02-16 13:33:04.408422",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Multi Row Milk Sample",
