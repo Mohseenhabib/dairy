@@ -26,11 +26,11 @@ class MilkEntry(Document):
         
         doc=frappe.get_doc("Dairy Settings")
         item=0.0
-        if i.get("milk_type")=="Cow":
+        if self.get("milk_type")=="Cow":
             item = frappe.db.get_value('Item',{"name":doc.cow_pro},['weight_per_unit'])
-        if i.get("milk_type")=="Buffalo":
+        if self.get("milk_type")=="Buffalo":
             item = frappe.db.get_value('Item',{"name":doc.buf_pro},['weight_per_unit'])
-        if i.get("milk_type")=="Mix":
+        if self.get("milk_type")=="Mix":
             item = frappe.db.get_value('Item',{"name":doc.mix_pro},['weight_per_unit'])
 
         fat_kg =  ((self.volume * (item)) * (self.fat/100))
@@ -45,11 +45,11 @@ class MilkEntry(Document):
         self.db_set('clr_kg', clr_kg)
 
         doc=frappe.get_doc("Dairy Settings")
-        if i.get("milk_type")=="Cow":
+        if self.get("milk_type")=="Cow":
             itm = frappe.db.get_value('Item',{"name":doc.cow_pro},['stock_uom'])
-        if i.get("milk_type")=="Buffalo":
+        if self.get("milk_type")=="Buffalo":
             itm = frappe.db.get_value('Item',{"name":doc.buf_pro},['stock_uom'])
-        if i.get("milk_type")=="Mix":
+        if self.get("milk_type")=="Mix":
             itm = frappe.db.get_value('Item',{"name":doc.mix_pro},['stock_uom'])
         
         self.db_set('stock_uom',itm) 
