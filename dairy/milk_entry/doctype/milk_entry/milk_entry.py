@@ -20,7 +20,7 @@ class MilkEntry(Document):
             print('snfffffffffffffffffff',self.snf)
 
         if self.clr == 0 or not self.clr:
-            clr = ((self.snf/4)+(self.fat*(state_climatic_factor)+(state_factor)))
+            clr = (self.snf - (state_factor) - ((state_climatic_factor)*self.fat)) * 4
             self.db_set('clr', clr)
             print('clrrrrrrrrrrrrrrrrrrrr',clr)
         
