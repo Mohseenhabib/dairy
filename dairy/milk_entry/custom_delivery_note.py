@@ -132,7 +132,7 @@ def after_save(self,method):
         for itm in self.items:
             itm_obj = frappe.get_doc("Item", itm.item_code)
             maintain_snf_fat = itm_obj.maintain_fat_snf_clr
-            itm_milk_type = itm_obj.milk_type
+            # itm_milk_type = itm_obj.milk_type
             if itm.item_code == good_cow_milk or itm.item_code == good_buff_milk or itm.item_code == good_mix_milk or maintain_snf_fat == 1:
                 if itm.item_code == good_cow_milk:
                     milk_type = "Cow"
@@ -140,8 +140,8 @@ def after_save(self,method):
                     milk_type = "Buffalo"
                 elif itm.item_code == good_mix_milk:
                     milk_type = "Mix"
-                elif maintain_snf_fat == 1:
-                    milk_type = itm_milk_type
+                # elif maintain_snf_fat == 1:
+                #     milk_type = itm_milk_type
                 query = """ select name from `tabMilk Ledger Entry` where item_code = %(item_code)s 
                 and warehouse = %(warehouse)s """
                 if itm.batch_no:
