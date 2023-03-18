@@ -14,7 +14,10 @@ frappe.ui.form.on('Milk Entry', {
                 }
             };
         });
+        return frm.call('stock_data').then(() => {
+            frm.refresh();
 
+        });
 
     },
  

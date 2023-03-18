@@ -14,36 +14,79 @@ class MilkEntry(Document):
     @frappe.whitelist()
     def get_pricelist(self):
         state_climatic_factor,state_factor = frappe.db.get_value('Warehouse',{'is_dcs':1},['state_climatic_factor','state_factor'])
-        if self.snf == 0 or not self.snf:
-            snf =  ((self.clr/4)+(self.fat*(state_climatic_factor)+(state_factor)))
-            self.db_set('snf', snf)
-            print('snfffffffffffffffffff',self.snf)
+        if self.clr != 0 or self.snf !=0:
+            if self.snf == 0 or not self.snf:
+                snf =  ((self.clr/4)+(self.fat*(state_climatic_factor)+(state_factor)))
+                self.db_set('snf', snf)
+                print('snfffffffffffffffffff',self.snf)
 
-        if self.clr == 0 or not self.clr:
-            clr = (self.snf - (state_factor) - ((state_climatic_factor)*self.fat)) * 4
-            self.db_set('clr', clr)
-            print('clrrrrrrrrrrrrrrrrrrrr',clr)
+            if self.clr == 0 or not self.clr:
+                clr = (self.snf - (state_factor) - ((state_climatic_factor)*self.fat)) * 4
+                self.db_set('clr', clr)
+                print('clrrrrrrrrrrrrrrrrrrrr',clr)
+            
+            doc=frappe.get_doc("Dairy Settings")
+            item=0.0
+            if self.get("milk_type")=="Cow":
+                item = frappe.db.get_value('Item',{"name":doc.cow_pro},['weight_per_unit'])
+            if self.get("milk_type")=="Buffalo":
+                item = frappe.db.get_value('Item',{"name":doc.buf_pro},['weight_per_unit'])
+            if self.get("milk_type")=="Mix":
+                item = frappe.db.get_value('Item',{"name":doc.mix_pro},['weight_per_unit'])
+
+            fat_kg =  ((self.volume * (item)) * (self.fat/100))
+            self.db_set('fat_kg', fat_kg)
+            print('fat_kg**************',fat_kg,item)
+            
         
-        doc=frappe.get_doc("Dairy Settings")
-        item=0.0
-        if self.get("milk_type")=="Cow":
-            item = frappe.db.get_value('Item',{"name":doc.cow_pro},['weight_per_unit'])
-        if self.get("milk_type")=="Buffalo":
-            item = frappe.db.get_value('Item',{"name":doc.buf_pro},['weight_per_unit'])
-        if self.get("milk_type")=="Mix":
-            item = frappe.db.get_value('Item',{"name":doc.mix_pro},['weight_per_unit'])
+            snf_kg =  ((self.volume * (item)) * (self.snf/100))
+            self.db_set('snf_kg', snf_kg)
 
-        fat_kg =  ((self.volume * (item)) * (self.fat/100))
-        self.db_set('fat_kg', fat_kg)
-        print('fat_kg**************',fat_kg,item)
-        
-       
-        snf_kg =  ((self.volume * (item)) * (self.snf/100))
-        self.db_set('snf_kg', snf_kg)
+            clr_kg =  ((self.volume * (item)) * (self.clr/100))
+            self.db_set('clr_kg', clr_kg)
 
-        clr_kg =  ((self.volume * (item)) * (self.clr/100))
-        self.db_set('clr_kg', clr_kg)
+            # doc=frappe.get_doc("Dairy Settings")
+            # if self.get("milk_type")=="Cow":
+            #     itm = frappe.db.get_value('Item',{"name":doc.cow_pro},['stock_uom'])
+            # if self.get("milk_type")=="Buffalo":
+            #     itm = frappe.db.get_value('Item',{"name":doc.buf_pro},['stock_uom'])
+            # if self.get("milk_type")=="Mix":
+            #     itm = frappe.db.get_value('Item',{"name":doc.mix_pro},['stock_uom'])
+            
+            # self.db_set('stock_uom',itm) 
 
+            litre = ((self.volume * (item)))
+            self.db_set('litre', litre)
+    
+
+            pricelist_name = frappe.db.sql("""
+                        select milk_rate.name from `tabMilk Rate` as milk_rate 
+                        inner join `tabWarehouse Child` as ware on ware.parent = milk_rate.name 
+                        where milk_rate.milk_type = '{0}' and ware.warehouse_id = '{1}' 
+                        and milk_rate.docstatus = 1 and milk_rate.effective_date <= '{2}' limit 1  """.format(self.milk_type,self.dcs_id,self.date))
+            if not pricelist_name:
+                frappe.throw(_("Milk Rate not found."))
+
+            self.db_set('milk_rate', pricelist_name[0][0])
+            rate = frappe.db.sql(""" select rate from `tabMilk Rate Chart` where fat >= {0} and snf_clr >= {1} 
+                    and parent = '{2}' order by fat,snf_clr asc limit 1 """.format(self.fat,self.snf,pricelist_name[0][0]))
+
+            print('rateEEEEEEEEEEEEEEEEEEEEEEEEEE',rate,pricelist_name[0][0])
+            
+            if not rate:
+                frappe.throw(_("Milk price not found."))
+            self.db_set('unit_price', rate[0][0])
+            self.db_set('total',(self.volume *self.unit_price))
+            self.db_set('status','Submitted')
+
+    
+
+    # def check_status_rms(self):
+    #     raw_milk_sample = 
+
+
+    @frappe.whitelist()
+    def stock_data(self):
         doc=frappe.get_doc("Dairy Settings")
         if self.get("milk_type")=="Cow":
             itm = frappe.db.get_value('Item',{"name":doc.cow_pro},['stock_uom'])
@@ -52,39 +95,7 @@ class MilkEntry(Document):
         if self.get("milk_type")=="Mix":
             itm = frappe.db.get_value('Item',{"name":doc.mix_pro},['stock_uom'])
         
-        self.db_set('stock_uom',itm) 
-
-        litre = ((self.volume * (item)))
-        self.db_set('litre', litre)
-  
-
-        pricelist_name = frappe.db.sql("""
-                    select milk_rate.name from `tabMilk Rate` as milk_rate 
-                    inner join `tabWarehouse Child` as ware on ware.parent = milk_rate.name 
-                    where milk_rate.milk_type = '{0}' and ware.warehouse_id = '{1}' 
-                    and milk_rate.docstatus = 1 and milk_rate.effective_date <= '{2}' limit 1  """.format(self.milk_type,self.dcs_id,self.date))
-        if not pricelist_name:
-            frappe.throw(_("Milk Rate not found."))
-
-        self.db_set('milk_rate', pricelist_name[0][0])
-        rate = frappe.db.sql(""" select rate from `tabMilk Rate Chart` where fat >= {0} and snf_clr >= {1} 
-                   and parent = '{2}' order by fat,snf_clr asc limit 1 """.format(self.fat,self.snf,pricelist_name[0][0]))
-
-        print('rateEEEEEEEEEEEEEEEEEEEEEEEEEE',rate,pricelist_name[0][0])
-        
-        if not rate:
-            frappe.throw(_("Milk price not found."))
-        self.db_set('unit_price', rate[0][0])
-        self.db_set('total',(self.volume *self.unit_price))
-        self.db_set('status','Submitted')
-
-    
-
-    # def check_status_rms(self):
-    #     raw_milk_sample = 
-
-
-        
+        self.db_set('stock_uom',itm)    
 
 
     @frappe.whitelist()
@@ -206,4 +217,7 @@ def make_sample(source_name, target_doc=None):
     print('doclist*********************88888',doclist)
 
     return doclist
+
+
+
 

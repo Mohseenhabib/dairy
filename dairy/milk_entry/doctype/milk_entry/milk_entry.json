@@ -232,7 +232,8 @@
    "default": "0",
    "fieldname": "sample_created",
    "fieldtype": "Check",
-   "label": "Sample Created"
+   "label": "Sample Created",
+   "read_only": 1
   },
   {
    "default": "Today",
@@ -326,11 +327,12 @@
  "is_submittable": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2023-03-02 17:16:06.859170",
+ "modified": "2023-03-17 17:46:56.358163",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Milk Entry",
  "name_case": "Title Case",
+ "naming_rule": "By \"Naming Series\" field",
  "nsm_parent_field": "parent_milk_entry",
  "owner": "Administrator",
  "permissions": [
@@ -364,5 +366,6 @@
  "search_fields": "member,milk_rate,milk_type",
  "show_name_in_global_search": 1,
  "sort_field": "modified",
- "sort_order": "DESC"
+ "sort_order": "DESC",
+ "states": []
 }

@@ -2,7 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
-from frappe import _
+from frappe import _, _dict
 
 TRANSLATIONS = frappe._dict()
 
@@ -18,7 +18,7 @@ def get_columns():
 	columns = [
 		{"label": _("Date"), "fieldname": "date", "fieldtype": "Datetime", "width": 150},
 		{"label": _("Shift"), "fieldname": "shift", "fieldtype": "Data", "width": 150},
-		{"label": _("Ltr"), "fieldname": "litre", "fieldtype": "Float", "width": 150},
+		{"label": _("Ltr"), "fieldname": "volume", "fieldtype": "Float", "width": 150},
 		{"label": _("Fat"), "fieldname": "fat", "fieldtype": "Percent", "width": 150},
 		{"label": _("SNF"), "fieldname": "snf", "fieldtype": "Percent", "width": 150},
 		{"label": _("Rate"), "fieldname": "unit_price", "fieldtype": "Currency", "width": 150},
@@ -34,7 +34,7 @@ def get_data(filters, columns):
 	member = filters.get('member')
 	
 	
-	result = frappe.db.sql("""select date,shift,litre,fat, snf,unit_price,total
+	result = frappe.db.sql("""select date,shift,volume,fat, snf,unit_price,total
                                     from `tabMilk Entry` 
                                     where member = '{0}' and date between '{1}' and '{2}'
                                     """.format(member,from_date,to_date ), as_dict=True)
@@ -54,7 +54,7 @@ def get_totals_dict():
 	def add_total(label):
 		return _dict(
 			date = "'{0}'".format(label),
-			litre = 0.0,
+			volume = 0.0,
 			fat = 0,
 			snf = 0,
 			rate = 0,

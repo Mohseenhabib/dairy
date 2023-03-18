@@ -18,13 +18,15 @@ class RMRD(Document):
 	def submit_rmrd(self):
 		self.db_set('status','Submitted')
 
-	def before_cancel(self):
+	def on_cancel(self):
 		rl = frappe.get_all('RMRD Lines',{'rmrd':self.name},['name'])
 		for dl in rl:
 			dlt = frappe.delete_doc('RMRD Lines',dl.name)
+			print('dlt**************',dlt)
 		stock = frappe.get_all('Stock Entry',{'rmrd':self.name},['name'])
 		for se in stock:
 			stock_dlt = frappe.delete_doc('Stock Entry',se.name)
+			print('stock_dlt^^^^^^^^^^^^^^^^',stock_dlt)
 
 	@frappe.whitelist()
 	def start_rmrd(self):
