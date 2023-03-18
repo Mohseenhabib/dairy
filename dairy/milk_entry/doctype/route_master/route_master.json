@@ -15,12 +15,14 @@
   "company",
   "route_type",
   "transporter",
+  "transporter_name",
   "source_warehouse",
   "dest_warehouse",
   "sb2",
   "vehicle",
   "cb1",
   "driver",
+  "driver_name",
   "section_break_17",
   "vehicle_html",
   "column_break_19",
@@ -162,15 +164,32 @@
    "label": "Transporter",
    "mandatory_depends_on": "eval:doc.route_type==\"Milk Marketing\"",
    "options": "Supplier"
+  },
+  {
+   "fetch_from": "transporter.supplier_name",
+   "fieldname": "transporter_name",
+   "fieldtype": "Link",
+   "label": "Transporter Name",
+   "options": "Supplier",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "driver.full_name",
+   "fieldname": "driver_name",
+   "fieldtype": "Link",
+   "label": "Driver Name",
+   "options": "Driver",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-01-05 12:22:37.230306",
+ "modified": "2023-03-18 15:08:56.738934",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Route Master",
  "name_case": "Title Case",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
@@ -202,5 +221,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }

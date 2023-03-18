@@ -137,7 +137,7 @@
    "fieldname": "crate",
    "fieldtype": "Table",
    "hidden": 1,
-   "label": "Crate",
+   "label": "Outgoing Crate Count",
    "options": "Gate Pass Crate Count"
   },
   {
@@ -306,10 +306,11 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-01-05 12:22:06.681600",
+ "modified": "2023-03-18 16:24:55.620433",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Gate Pass",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -341,5 +342,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }

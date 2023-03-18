@@ -137,14 +137,12 @@
   {
    "fieldname": "can_volume",
    "fieldtype": "Data",
-   "label": "Can Volume",
-   "reqd": 1
+   "label": "Can Volume"
   },
   {
    "fieldname": "max_allowed",
    "fieldtype": "Data",
-   "label": "Max Allowed Capacity",
-   "reqd": 1
+   "label": "Max Allowed Capacity"
   },
   {
    "fieldname": "section_break_8",
@@ -222,8 +220,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Default Payments",
-   "options": "Daily\nWeekly\nDays",
-   "reqd": 1
+   "options": "Daily\nWeekly\nDays"
   },
   {
    "depends_on": "eval:doc.default_payment_type == 'Days'",
@@ -233,33 +230,27 @@
   },
   {
    "fieldname": "fat_min_cow_milk",
-   "fieldtype": "Float",
-   "reqd": 1
+   "fieldtype": "Float"
   },
   {
    "fieldname": "fat_min_buf_milk",
-   "fieldtype": "Float",
-   "reqd": 1
+   "fieldtype": "Float"
   },
   {
    "fieldname": "fat_min_mix_milk",
-   "fieldtype": "Float",
-   "reqd": 1
+   "fieldtype": "Float"
   },
   {
    "fieldname": "fat_max_cow_milk",
-   "fieldtype": "Float",
-   "reqd": 1
+   "fieldtype": "Float"
   },
   {
    "fieldname": "fat_max_mix_milk",
-   "fieldtype": "Float",
-   "reqd": 1
+   "fieldtype": "Float"
   },
   {
    "fieldname": "fat_max_buf_milk",
-   "fieldtype": "Float",
-   "reqd": 1
+   "fieldtype": "Float"
   },
   {
    "fieldname": "fat_interval",
@@ -268,18 +259,15 @@
   },
   {
    "fieldname": "fat_interval_cow_milk",
-   "fieldtype": "Float",
-   "reqd": 1
+   "fieldtype": "Float"
   },
   {
    "fieldname": "fat_interval_buf_milk",
-   "fieldtype": "Float",
-   "reqd": 1
+   "fieldtype": "Float"
   },
   {
    "fieldname": "fat_interval_mix_milk",
-   "fieldtype": "Float",
-   "reqd": 1
+   "fieldtype": "Float"
   },
   {
    "fieldname": "sb3",
@@ -298,18 +286,15 @@
   },
   {
    "fieldname": "snf_min_cow_milk",
-   "fieldtype": "Float",
-   "reqd": 1
+   "fieldtype": "Float"
   },
   {
    "fieldname": "snf_min_buf_milk",
-   "fieldtype": "Float",
-   "reqd": 1
+   "fieldtype": "Float"
   },
   {
    "fieldname": "snf_min_mix_milk",
-   "fieldtype": "Float",
-   "reqd": 1
+   "fieldtype": "Float"
   },
   {
    "fieldname": "cb16",
@@ -322,18 +307,15 @@
   },
   {
    "fieldname": "snf_max_cow_milk",
-   "fieldtype": "Float",
-   "reqd": 1
+   "fieldtype": "Float"
   },
   {
    "fieldname": "snf_max_buf_milk",
-   "fieldtype": "Float",
-   "reqd": 1
+   "fieldtype": "Float"
   },
   {
    "fieldname": "snf_max_mix_milk",
-   "fieldtype": "Float",
-   "reqd": 1
+   "fieldtype": "Float"
   },
   {
    "fieldname": "cb17",
@@ -346,39 +328,33 @@
   },
   {
    "fieldname": "snf_interval_cow_milk",
-   "fieldtype": "Float",
-   "reqd": 1
+   "fieldtype": "Float"
   },
   {
    "fieldname": "snf_interval_buf_milk",
-   "fieldtype": "Float",
-   "reqd": 1
+   "fieldtype": "Float"
   },
   {
    "fieldname": "snf_interval_mix_milk",
-   "fieldtype": "Float",
-   "reqd": 1
+   "fieldtype": "Float"
   },
   {
    "default": "Cow Milk",
    "fieldname": "cow_1",
    "fieldtype": "Data",
-   "read_only": 1,
-   "reqd": 1
+   "read_only": 1
   },
   {
    "default": "Buffalo Milk",
    "fieldname": "data_52",
    "fieldtype": "Data",
-   "read_only": 1,
-   "reqd": 1
+   "read_only": 1
   },
   {
    "default": "Mix Milk",
    "fieldname": "date_53",
    "fieldtype": "Data",
-   "read_only": 1,
-   "reqd": 1
+   "read_only": 1
   },
   {
    "fieldname": "cb11",
@@ -388,15 +364,13 @@
    "fieldname": "cow_pro",
    "fieldtype": "Link",
    "label": "Good Cow Milk",
-   "options": "Item",
-   "reqd": 1
+   "options": "Item"
   },
   {
    "fieldname": "buf_pro",
    "fieldtype": "Link",
    "label": "Good Buffalo Milk",
-   "options": "Item",
-   "reqd": 1
+   "options": "Item"
   },
   {
    "fieldname": "cb6",
@@ -406,8 +380,7 @@
    "fieldname": "mix_pro",
    "fieldtype": "Link",
    "label": " Good Mix Milk",
-   "options": "Item",
-   "reqd": 1
+   "options": "Item"
   },
   {
    "fieldname": "section_break_14",
@@ -450,8 +423,7 @@
    "fieldname": "s_cow_milk",
    "fieldtype": "Link",
    "label": "Sour Cow Milk",
-   "options": "Item",
-   "reqd": 1
+   "options": "Item"
   },
   {
    "fieldname": "cb22",
@@ -461,8 +433,7 @@
    "fieldname": "s_buf_milk",
    "fieldtype": "Link",
    "label": "Sour Buffalo Milk",
-   "options": "Item",
-   "reqd": 1
+   "options": "Item"
   },
   {
    "fieldname": "cb23",
@@ -472,8 +443,7 @@
    "fieldname": "s_mix_milk",
    "fieldtype": "Link",
    "label": "Sour Mix Milk",
-   "options": "Item",
-   "reqd": 1
+   "options": "Item"
   },
   {
    "fieldname": "sb22",
@@ -484,8 +454,7 @@
    "fieldname": "c_cow_milk",
    "fieldtype": "Link",
    "label": "Curd Cow Milk",
-   "options": "Item",
-   "reqd": 1
+   "options": "Item"
   },
   {
    "fieldname": "cb25",
@@ -495,8 +464,7 @@
    "fieldname": "c_buf_milk",
    "fieldtype": "Link",
    "label": "Curd Buffalo Milk",
-   "options": "Item",
-   "reqd": 1
+   "options": "Item"
   },
   {
    "fieldname": "cb26",
@@ -506,8 +474,7 @@
    "fieldname": "c_mix_milk",
    "fieldtype": "Link",
    "label": "Curd Mix Milk",
-   "options": "Item",
-   "reqd": 1
+   "options": "Item"
   },
   {
    "fieldname": "section_break_77",
@@ -544,8 +511,7 @@
    "fieldname": "applicable_on",
    "fieldtype": "Select",
    "label": "Leakage Applicable on",
-   "options": "Stock UOM\nOrder UOM",
-   "reqd": 1
+   "options": "Stock UOM\nOrder UOM"
   },
   {
    "default": "0",
@@ -605,8 +571,7 @@
    "fieldname": "leakage_calculated_on",
    "fieldtype": "Select",
    "label": "Leakage Calculated on",
-   "options": "Sales Order\nGate Pass",
-   "reqd": 1
+   "options": "Sales Order\nGate Pass"
   },
   {
    "default": "0",
@@ -627,7 +592,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-01-27 14:49:39.617502",
+ "modified": "2023-03-18 16:30:16.028825",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",
@@ -654,5 +619,6 @@
  "show_name_in_global_search": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }

@@ -453,6 +453,33 @@ def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
 
 	return doclist
 
+
+@frappe.whitelist()
+def make_sales_invoice(source_name, target_doc=None, skip_item_mapping=False):
+	doclist = get_mapped_doc("Sales Invoice", source_name, {
+		"Sales invoice": {
+			"doctype": "Gate Pass",
+			"validation": {
+				"docstatus": ["=", 1]
+				# "material_request_type": ["=", "Purchase"]
+			}
+		},
+		"Sales Invoice Item": {
+			"doctype": "Gate Pass Item",
+			"field_map": [
+				["stock_qty", 'qty'],
+				["item_code", "item_code"],
+				["stock_uom", "uom"],
+				["sales_invoice_item","name"],
+				["is_free_item", "is_free_item"],
+				["weight_per_unit","weight_per_unit"],
+				["total_weight","total_weight"]
+			]
+		}
+	}, target_doc)
+
+	return doclist
+
 @frappe.whitelist()
 def calculate_crate(doc_name = None):
 	doc = frappe.get_doc("Gate Pass",doc_name)

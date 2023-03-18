@@ -65,7 +65,36 @@ frappe.ui.form.on('Gate Pass', {
 //                            indicator: 'green',
 //                            message: __('After getting item. Save the document to see item details...')
 //                        });
+					
+					
+					}, __("Get items from"));
 
+					frm.add_custom_button(__('Sales Invoice'),
+					function() {
+						erpnext.utils.map_current_doc({
+							method: "dairy.milk_entry.doctype.gate_pass.gate_pass. make_sales_invoice",
+							source_doctype: "Sales Invoice",
+							target: me.frm,
+							setters: {
+							posting_date: frm.doc.date || undefined,
+							route: frm.doc.route || undefined,
+							shift: frm.doc.shift || undefined,
+							transporter: frm.doc.transporter || undefined
+							},
+
+							get_query_filters: {
+								docstatus: 1,
+								status: ["=", ["To Bill"]],
+                                // crate_gate_pass_done:0
+							}
+						})
+//						frappe.msgprint({
+//                            title: __('Note'),
+//                            indicator: 'green',
+//                            message: __('After getting item. Save the document to see item details...')
+//                        });
+					
+					
 					}, __("Get items from"));
 			}
 			}

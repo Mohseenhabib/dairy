@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "autoname": "naming_series:",
  "creation": "2019-11-05 16:52:51.592859",
  "doctype": "DocType",
@@ -98,11 +99,12 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-01-13 16:15:18.284498",
+ "modified": "2023-03-17 15:46:25.679465",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Milk Rate",
  "name_case": "Title Case",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -148,5 +150,6 @@
  "search_fields": "milk_rate_name,milk_type,effective_date",
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "title_field": "milk_rate_name"
 }
