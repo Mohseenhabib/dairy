@@ -85,33 +85,36 @@ def del_note_total(del_note):
 @frappe.whitelist()
 def total_supp_qty_based_on_itm_grp(gate_pass):
 	itm_grp = frappe.db.sql(""" select item_group_name from `tabItem Group` where is_total_supplier_quantity_item_group_ = 1 """,as_dict=True)
-	based_itm_grp =  itm_grp[0]['item_group_name']
-
-	total_qty = frappe.db.sql(""" select sum(total_weight) from `tabMerge Gate Pass Item` where parent = %(gate_pass)s and 
+	if itm_grp:
+		based_itm_grp =  itm_grp[0]['item_group_name']
+		if total_qty:
+			total_qty = frappe.db.sql(""" select sum(total_weight) from `tabMerge Gate Pass Item` where parent = %(gate_pass)s and 
 	 								item_group = %(item_group)s """,{'gate_pass':gate_pass,'item_group':based_itm_grp})
-	final_total_qty = total_qty[0][0]
+			final_total_qty = total_qty[0][0]
 
-	return final_total_qty
+			return final_total_qty
 
 @frappe.whitelist()
 def warehouse_address(warehouse):
+	print("&&&&&&&&&&&&&&&&&&&&&")
 	lst = []
-	org_warehouse = warehouse.split(" ")
+	org_warehouse = warehouse
 	print("*************************",org_warehouse)
 	address =  frappe.db.sql(""" select address_line_1, address_line_2, city, state, pin, phone_no, mobile_no 
-	 				from `tabWarehouse` where warehouse_name = %(warehouse)s """,{'warehouse':org_warehouse[0]},as_dict=True)
+	 				from `tabWarehouse` where name = '{0}' """.format(org_warehouse),as_dict=True)
 	print("*******************",address)
-	add = ''
-	for f in ['address_line_1', 'address_line_2', 'city', 'state', 'pin']:
-		if address[0][f]:
-			add += address[0][f] + " "
-	lst.append(add)
-	cont = ''
-	for f in ['phone_no', 'mobile_no']:
-		if address[0][f]:
-			cont += address[0][f] + "  "
-	lst.append(cont)
-	print("**********************************",lst)
-	return lst
+	if address:
+		add = ''
+		for f in ['address_line_1', 'address_line_2', 'city', 'state', 'pin']:
+			if address[0][f]:
+				add += address[0][f] + " "
+		lst.append(add)
+		cont = ''
+		for f in ['phone_no', 'mobile_no']:
+			if address[0][f]:
+				cont += address[0][f] + "  "
+		lst.append(cont)
+		print("**********************************",lst)
+		return lst
 
 
