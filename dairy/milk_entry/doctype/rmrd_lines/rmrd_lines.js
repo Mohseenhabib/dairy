@@ -81,6 +81,9 @@ frappe.ui.form.on('RMRD Lines', {
 	 },
 
 	 refresh: function(frm) {
+		frm.set_df_property("rmrd_good_cow_milk", "read_only", frm.is_new() ? 0 : 1);
+		frm.set_df_property("rmrd_good_buf_milk", "read_only", frm.is_new() ? 0 : 1);
+		frm.set_df_property("rmrd_good_mix_milk", "read_only", frm.is_new() ? 0 : 1);
 		console.log('Stock entry',frm.doc.stock_entry)
 		if(!frm.doc.__islocal && !frm.doc.stock_entry)
 		       {

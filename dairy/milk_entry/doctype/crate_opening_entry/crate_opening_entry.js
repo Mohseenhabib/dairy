@@ -10,14 +10,27 @@ frappe.ui.form.on('Crate Opening Entry', {
 			return frm.call({
 				doc: frm.doc,
 				btn: $(btn_primary),
-				method: "make_log",
-				freeze: 1,
-				freeze_message: __("Creating {0} Invoice", [frm.doc.invoice_type]),
+				method: "make_crate_log",
+				// freeze: 1,
+				// freeze_message: __("Creating {0} Crate Log", [frm.doc.invoice_type]),
 			});
 		});
 
-		// if (frm.doc.create_missing_party) {
-		// 	frm.set_df_property("party", "fieldtype", "Data", frm.doc.name, "invoices");
-		// }
+		
 	},
+	
+});
+frappe.ui.form.on('Party Crate Opening', {
+	customer : function(frm,cdt,cdn){
+		var child = locals[cdt][cdn];
+		if (child.customer){
+			frappe.db.get_doc('Customer',child.customer).then(cust => {
+				var dl = cust.links
+				for (let d in dl){
+					frappe.model.set_value(cdt,cdn,"route",dl[d]["link_name"])
+				}
+			})
+		}
+	}
+
 });

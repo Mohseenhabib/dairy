@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe import _
+
 @frappe.whitelist()
 def get_jinja_data(doc):
 	res =frappe.db.sql("""

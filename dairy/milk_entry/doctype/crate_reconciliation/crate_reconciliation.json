@@ -106,8 +106,7 @@
    "fieldname": "total_incoming",
    "fieldtype": "Float",
    "in_standard_filter": 1,
-   "label": "Total Incoming",
-   "read_only": 1
+   "label": "Total Incoming"
   },
   {
    "fieldname": "column_break_14",
@@ -117,8 +116,7 @@
    "fieldname": "total_damaged",
    "fieldtype": "Float",
    "in_standard_filter": 1,
-   "label": "Total Damaged",
-   "read_only": 1
+   "label": "Total Damaged"
   },
   {
    "fieldname": "column_break_16",
@@ -185,11 +183,12 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-01-05 12:23:13.811327",
+ "modified": "2023-03-20 11:25:24.585008",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Crate Reconciliation",
  "name_case": "Title Case",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -208,5 +207,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }
