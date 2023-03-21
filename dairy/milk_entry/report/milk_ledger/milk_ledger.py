@@ -118,7 +118,7 @@ def get_stock_ledger_entries(filters, items):
 			.format(', '.join([frappe.db.escape(i) for i in items]))
 
 	sl_entries = frappe.db.sql("""
-		SELECT
+		SELECT mle.voucher_no,
 			concat_ws(" ", mle.posting_date, mle.posting_time) AS date,
 			mle.item_code,
 			mle.warehouse,
@@ -126,7 +126,7 @@ def get_stock_ledger_entries(filters, items):
 			mle.qty_after_transaction,
 			# stock_value,
 			mle.voucher_type,
-			mle.voucher_no,
+			
 			mle.batch_no,
 			mle.serial_no,
 			mle.company,
@@ -146,8 +146,8 @@ def get_stock_ledger_entries(filters, items):
 			mle.company = %(company)s
 				AND mle.posting_date BETWEEN %(from_date)s AND %(to_date)s
 				{sle_conditions}
-				{item_conditions_sql} and sle.warehouse = mle.warehouse and sle.item_code = mle.item_code and sle.posting_date = mle.posting_date
-				
+				{item_conditions_sql} and sle.warehouse = mle.warehouse and sle.item_code = mle.item_code and sle.posting_date = mle.posting_date 
+				and  sle.voucher_no = mle.voucher_no
 		ORDER BY
 			mle.posting_date asc, mle.posting_time asc, mle.creation asc
 		""".format(sle_conditions=get_sle_conditions(filters), item_conditions_sql=item_conditions_sql),

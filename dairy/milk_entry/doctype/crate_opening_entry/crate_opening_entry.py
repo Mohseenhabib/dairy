@@ -2,15 +2,17 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe import _
 from frappe.model.document import Document
+from frappe.utils.data import getdate, today
 
 class CrateOpeningEntry(Document):
 	@frappe.whitelist()
-	def make_crate_log(self):
+	def make_crate_log(self , co =0):
 
 		if frappe.db.get_single_value("Dairy Settings", "crate_reconciliation_based_on") == "Gate Pass":
-			for crate in self.party_crate_opening:
 
+			for crate in self.party_crate_opening:
 				log = frappe.new_doc("Crate Log")
 				customer_route = frappe.get_doc('Customer',{'customer_name':crate.customer})
 				print('customer&&&&&&&&&&&&&&&&&&&&&',customer_route)
@@ -19,50 +21,46 @@ class CrateOpeningEntry(Document):
 					print('customer route&&&&&&&&&&&&&&&&&&&&&7',doc)
 					route = frappe.get_all('Route Master',{'name':j.link_name},['*'])
 					for k in route:
-						print('route^^^^^^^^^^^^^^^^^^',k)
+
 						log.transporter = k.transporter
 						log.vehicle = k.vehicle
 						log.route = doc.name
+						log.customer = crate.customer
 						# log.shift = self.shift
-						log.date = frappe.utils.nowdate()
+						log.date = self.date
 						log.company = self.company
-						# log.voucher_type = "Crate Opening Entry"
-						# log.voucher = self.name
-						# log.damaged = sums[0]['damaged_crate']
-						# log.crate_issue = sums[0]['crate']
-						# log.crate_return = sums[0]['crate_ret']
+						
+						log.crate_opening = crate.crate_opening
+						log.crate_balance = crate.crate_opening
 						log.crate_type = crate.crate_type
 						log.source_warehouse = k.source_warehouse
-						# log.note = "Entry Created From Gate pass"
-						openning_cnt = frappe.db.sql(""" select count(*) from `tabCrate Log`  
-														where company = %(company)s and docstatus = 1 	
-															order by date desc """,
-															{'company': self.company}, as_dict=1)
-						if openning_cnt[0]['count(*)'] > 0:
+						log.note = "Entry Created From Crate Opening Entry"
+						
+						crate_log = frappe.db.get_value('Crate Log',{'customer':crate.customer,'crate_type':crate.crate_type,"docstatus":1},['name'],"creation desc")
 
-							openning = frappe.db.sql(""" select crate_balance from `tabCrate Log`  
-														where
-														company = %(company)s and  docstatus = 1 order by date desc limit 1 """,
-														{'company':self.company},as_dict=1)
+						if crate_log:
+							doc=frappe.get_doc("Crate Log",crate_log)
+							
+							if getdate(doc.date) >= getdate(self.date):
+								frappe.throw(
+									_("Crate Date Does Not Future Date {0} Date").format(today()))
+							if getdate(doc.date) < getdate(self.date) and doc.customer == crate.customer and doc.crate_type == crate.crate_type:
+								log.crate_opening = doc.crate_balance
 
-						# 	log.crate_opening = int(openning[0]['crate_balance'])
-						# 	log.crate_balance = openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret'])
-						# 	self.append("crate_summary", {
-						# 		"crate_opening": openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret']),
-						# 		"crate_issue": sums[0]['crate'],
-						# 		"crate_return": sums[0]['crate_ret'],
-						# 		"crate_balance": openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret'])
-						# 	})
+								log.crate_balance = crate.crate_opening
+								opening =  crate.crate_opening - doc.crate_balance
+								
+							
+								if int(opening) > 0:
+									log.crate_issue = int(opening)
+									
+								if opening<0:
+									log.crate_return = abs(opening)
 
-						# else:
-						# 	log.crate_opening = int(0)
-						# 	log.crate_balance = int(0) - (sums[0]['crate'] + sums[0]['crate_ret'])
-						# 	self.append("crate_summary", {
-						# 		"crate_opening": int(0) - (sums[0]['crate'] + sums[0]['crate_ret']),
-						# 		"crate_issue": sums[0]['crate'],
-						# 		"crate_return": sums[0]['crate_ret'],
-						# 		"crate_balance": int(0) - (sums[0]['crate'] + sums[0]['crate_ret'])
-						# 	})
-						log.save()
-						log.submit()
+
+							
+						
+					log.save()
+					log.submit()
+					frappe.msgprint("Crate Log Created.")
 

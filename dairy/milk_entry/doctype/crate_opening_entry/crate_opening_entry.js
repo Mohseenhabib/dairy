@@ -6,6 +6,7 @@ frappe.ui.form.on('Crate Opening Entry', {
 		frm.disable_save();
 		!frm.doc.import_in_progress && frm.trigger("make_dashboard");
 		frm.page.set_primary_action(__('Create Crate Log'), () => {
+			
 			let btn_primary = frm.page.btn_primary.get(0);
 			return frm.call({
 				doc: frm.doc,
