@@ -74,7 +74,7 @@ frappe.ui.form.on('Gate Pass', {
 					frm.add_custom_button(__('Sales Invoice'),
 					function() {
 						erpnext.utils.map_current_doc({
-							method: "dairy.milk_entry.doctype.gate_pass.gate_pass. make_sales_invoice",
+							method: "dairy.milk_entry.doctype.gate_pass.gate_pass.make_sales_invoice",
 							source_doctype: "Sales Invoice",
 							target: me.frm,
 							setters: {
