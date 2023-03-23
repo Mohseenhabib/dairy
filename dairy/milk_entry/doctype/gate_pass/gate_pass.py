@@ -458,6 +458,7 @@ def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
 
 @frappe.whitelist()
 def make_sales_invoice(source_name, target_doc=None, skip_item_mapping=False):
+	print('make_sales_invoice^^^^^^^^^^^^',source_name, target_doc)
 	doclist = get_mapped_doc("Sales Invoice", source_name, {
 		"Sales Invoice": {
 			"doctype": "Gate Pass",
