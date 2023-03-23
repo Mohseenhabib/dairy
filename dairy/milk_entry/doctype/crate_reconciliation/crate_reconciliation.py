@@ -194,10 +194,13 @@ def make_delivery_note(source_name, target_doc=None, ignore_permissions=False):
 def make_crate_log(source_name, target_doc=None, ignore_permissions=False):
 	def set_item_in_sales_invoice(source, target):
 		del_note = frappe.get_doc(source)
+		print("$$$$$$$$$$$$$$$$$$$$$$$$$$",del_note)
 		crate_recl = frappe.get_doc(target)
 		crate_recl.append("delivery_info",{
 			"delivery_date": del_note.date,
 			"crate_log": del_note.name,
+			"delivery_note":del_note.voucher,
+			"customer":del_note.customer,
 			"transporter": del_note.transporter,
 			"route": del_note.route,
 			"crate_type": del_note.crate_type,

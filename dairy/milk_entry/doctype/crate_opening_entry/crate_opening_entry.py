@@ -29,7 +29,8 @@ class CrateOpeningEntry(Document):
 						# log.shift = self.shift
 						log.date = self.date
 						log.company = self.company
-						
+						log.voucher_type = "Crate Opening Entry"
+						log.voucher = self.name
 						log.crate_opening = crate.crate_opening
 						log.crate_balance = crate.crate_opening
 						log.crate_type = crate.crate_type

@@ -511,6 +511,7 @@ def get_route_price_list(doc_name=None):
         if route_name:
             dic ={}
             doc = frappe.get_doc("Route Master",route_name[0][0])
+            print('Doc************************',doc)
             dic['route'] = doc.name
             dic['p_list'] = doc.price_list
             dic['warehouse'] = doc.source_warehouse
@@ -527,6 +528,7 @@ def get_route_price_list_route(doc_name=None):
         if route_name:
             dic = {}
             dic['route'] = route_name[0][0]
+            print('dic^^^^^^^^^^^^^^^^^^^^',dic)
             return dic
         return False
 
