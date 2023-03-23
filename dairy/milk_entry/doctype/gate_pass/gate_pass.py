@@ -216,6 +216,7 @@ class GatePass(Document):
 					log.vehicle = sales.vehicle
 					log.route = sales.route
 					log.shift = sales.shift
+					log.customer=sales.customer
 					log.date = frappe.utils.nowdate()
 					log.company = sales.company
 					log.voucher_type = "Gate Pass"
@@ -446,7 +447,8 @@ def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
 				["delivery_note_item","name"],
 				["is_free_item", "is_free_item"],
 				["weight_per_unit","weight_per_unit"],
-				["total_weight","total_weight"]
+				["total_weight","total_weight"],
+				["description","description"]
 			]
 		}
 	}, target_doc)
@@ -457,7 +459,7 @@ def make_delivery_note(source_name, target_doc=None, skip_item_mapping=False):
 @frappe.whitelist()
 def make_sales_invoice(source_name, target_doc=None, skip_item_mapping=False):
 	doclist = get_mapped_doc("Sales Invoice", source_name, {
-		"Sales invoice": {
+		"Sales Invoice": {
 			"doctype": "Gate Pass",
 			"validation": {
 				"docstatus": ["=", 1]
@@ -468,6 +470,7 @@ def make_sales_invoice(source_name, target_doc=None, skip_item_mapping=False):
 			"doctype": "Gate Pass Item",
 			"field_map": [
 				["stock_qty", 'qty'],
+				["description","description"],
 				["item_code", "item_code"],
 				["stock_uom", "uom"],
 				["sales_invoice_item","name"],
