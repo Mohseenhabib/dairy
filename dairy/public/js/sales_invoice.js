@@ -34,6 +34,20 @@ frappe.ui.form.on("Sales Invoice", {
     },
     
     customer:function(frm){
+        frappe.call({
+            method: 'dairy.milk_entry.doctype.bulk_milk_price_list.bulk_milk_price_list.fetch_data',
+            args: {
+                'doctype': 'Bulk Milk Price List',
+                'customer': frm.doc.customer
+            },
+            callback: function(r) {
+                if (!r.exc) {
+                    // code snippet
+                    frm.set_value('fat_rate', r.message.rate)
+                    frm.set_value('snf_clr_rate', r.message.snf)
+                }
+            }
+        });
         return cur_frm.call({
             method:"dairy.milk_entry.custom_delivery_note.get_route_price_list",
             args: {
@@ -44,7 +58,9 @@ frappe.ui.form.on("Sales Invoice", {
                    if(r.message)
                    {
                     frm.set_value("route",r.message.route);
+                    frm.refresh_field("route")
                      frm.set_value("selling_price_list",r.message.p_list);
+                     frm.refresh_field("selling_price_list")
 
                    }
                 }
@@ -71,26 +87,13 @@ frappe.ui.form.on("Sales Invoice", {
     
     },
 
-    customer: function(frm){
-        frappe.call({
-            method: 'dairy.milk_entry.doctype.bulk_milk_price_list.bulk_milk_price_list.fetch_data',
-            args: {
-                'doctype': 'Bulk Milk Price List',
-                'customer': frm.doc.customer
-            },
-            callback: function(r) {
-                if (!r.exc) {
-                    // code snippet
-                    frm.set_value('fat_rate', r.message.rate)
-                    frm.set_value('snf_clr_rate', r.message.snf)
-                }
-            }
-        });
-    }
+    // customer: function(frm){
+        
+    // },
     // calculate_crate: function(frm){
     //     	console.log("******************************************");
     //     //	    cur_frm.cscript.calculate_crate()
-    //     	    frm.call({
+    //     frm.call({
     //            method:"dairy.milk_entry.custom_sales_invoice.calculate_crate",
     //            args: {
     //                    doc: cur_frm

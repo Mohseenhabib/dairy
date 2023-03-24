@@ -18,6 +18,10 @@ class GatePass(Document):
 				del_note = frappe.get_doc("Delivery Note",i.delivery_note)
 				del_note.crate_gate_pass_done = 1
 				del_note.db_update()
+			if i.sales_invoice:
+				si = frappe.get_doc("Sales Invoice",i.sales_invoice)
+				si.gate_pass = 1
+				si.db_update()
 
 	def on_cancel(self):
 		frappe.db.sql("delete from `tabMerge Gate Pass Item` where parent = %(name)s", {'name': self.name})
@@ -28,6 +32,12 @@ class GatePass(Document):
 		for i in self.item:
 			if i.delivery_note:
 				frappe.db.sql(""" update `tabDelivery Note` set crate_gate_pass_done = 0 where name = %(name)s """,{'name': i.delivery_note})
+				frappe.db.commit()
+				frappe.db.sql(""" update `tabGate Pass` set gate_crate_cal_done = " " where name = %(name)s """,
+							  {'name': self.name})
+				frappe.db.commit()
+			if i.sales_invoice:
+				frappe.db.sql(""" update `tabSales Invoice` set gate_pass = 0 where name = %(name)s """,{'name': i.sales_invoice})
 				frappe.db.commit()
 				frappe.db.sql(""" update `tabGate Pass` set gate_crate_cal_done = " " where name = %(name)s """,
 							  {'name': self.name})
@@ -252,22 +262,22 @@ class GatePass(Document):
 													 'vehicle':sales.vehicle,'transporter':sales.transporter, 'shift':sales.shift},as_dict=1)
 
 						log.crate_opening = int(openning[0]['crate_balance'])
-						log.crate_balance = openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret'])
+						log.crate_balance = openning[0]['crate_balance'] +(sums[0]['crate'] - sums[0]['crate_ret'])
 						sales.append("crate_summary", {
-							"crate_opening": openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret']),
+							"crate_opening": openning[0]['crate_balance'] + (sums[0]['crate'] - sums[0]['crate_ret']),
 							"crate_issue": sums[0]['crate'],
 							"crate_return": sums[0]['crate_ret'],
-							"crate_balance": openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret'])
+							"crate_balance": openning[0]['crate_balance'] + (sums[0]['crate'] - sums[0]['crate_ret'])
 						})
 
 					else:
 						log.crate_opening = int(0)
-						log.crate_balance = int(0) - (sums[0]['crate'] + sums[0]['crate_ret'])
+						log.crate_balance = int(0) + (sums[0]['crate'] - sums[0]['crate_ret'])
 						sales.append("crate_summary", {
-							"crate_opening": int(0) - (sums[0]['crate'] + sums[0]['crate_ret']),
+							"crate_opening": int(0) + (sums[0]['crate'] - sums[0]['crate_ret']),
 							"crate_issue": sums[0]['crate'],
 							"crate_return": sums[0]['crate_ret'],
-							"crate_balance": int(0) - (sums[0]['crate'] + sums[0]['crate_ret'])
+							"crate_balance": int(0) +(sums[0]['crate'] -sums[0]['crate_ret'])
 						})
 					log.save()
 					log.submit()
@@ -343,22 +353,22 @@ class GatePass(Document):
 														'vehicle':sales.vehicle,'transporter':sales.transporter, 'shift':sales.shift},as_dict=1)
 
 							log.crate_opening = int(openning[0]['crate_balance'])
-							log.crate_balance = openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret'])
+							log.crate_balance = openning[0]['crate_balance'] + (sums[0]['crate'] - sums[0]['crate_ret'])
 							sales.append("crate_summary", {
-								"crate_opening": openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret']),
+								"crate_opening": openning[0]['crate_balance'] + (sums[0]['crate'] - sums[0]['crate_ret']),
 								"crate_issue": sums[0]['crate'],
 								"crate_return": sums[0]['crate_ret'],
-								"crate_balance": openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret'])
+								"crate_balance": openning[0]['crate_balance'] + (sums[0]['crate'] - sums[0]['crate_ret'])
 							})
 
 						else:
 							log.crate_opening = int(0)
-							log.crate_balance = int(0) - (sums[0]['crate'] + sums[0]['crate_ret'])
+							log.crate_balance = int(0) +(sums[0]['crate'] - sums[0]['crate_ret'])
 							sales.append("crate_summary", {
-								"crate_opening": int(0) - (sums[0]['crate'] + sums[0]['crate_ret']),
+								"crate_opening": int(0) +(sums[0]['crate'] - sums[0]['crate_ret']),
 								"crate_issue": sums[0]['crate'],
 								"crate_return": sums[0]['crate_ret'],
-								"crate_balance": int(0) - (sums[0]['crate'] + sums[0]['crate_ret'])
+								"crate_balance": int(0) + (sums[0]['crate'] - sums[0]['crate_ret'])
 							})
 						# del_note.db_update()
 						log.save()
@@ -437,9 +447,9 @@ class GatePass(Document):
 														'vehicle':sales.vehicle,'transporter':sales.transporter, 'shift':sales.shift},as_dict=1)
 
 							log.crate_opening = int(openning[0]['crate_balance'])
-							log.crate_balance = openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret'])
+							log.crate_balance = openning[0]['crate_balance'] + (sums[0]['crate'] - sums[0]['crate_ret'])
 							sales.append("crate_summary", {
-								"crate_opening": openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret']),
+								"crate_opening": openning[0]['crate_balance'] + (sums[0]['crate'] - sums[0]['crate_ret']),
 								"crate_issue": sums[0]['crate'],
 								"crate_return": sums[0]['crate_ret'],
 								"crate_balance": openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret'])
@@ -447,12 +457,12 @@ class GatePass(Document):
 
 						else:
 							log.crate_opening = int(0)
-							log.crate_balance = int(0) - (sums[0]['crate'] + sums[0]['crate_ret'])
+							log.crate_balance = int(0) + (sums[0]['crate'] - sums[0]['crate_ret'])
 							sales.append("crate_summary", {
-								"crate_opening": int(0) - (sums[0]['crate'] + sums[0]['crate_ret']),
+								"crate_opening": int(0) + (sums[0]['crate'] - sums[0]['crate_ret']),
 								"crate_issue": sums[0]['crate'],
 								"crate_return": sums[0]['crate_ret'],
-								"crate_balance": int(0) - (sums[0]['crate'] + sums[0]['crate_ret'])
+								"crate_balance": int(0) +(sums[0]['crate'] -sums[0]['crate_ret'])
 							})
 						# del_note.db_update()
 						log.save()

@@ -240,6 +240,7 @@ def calculate_crate(obj,method=None):
             doc.total_free_qty = total_free_qty
             doc.crate_cal_done = "Done"
             doc.save(ignore_permissions=True)
+            doc.db_update()            
             return dict_create_type
 
 
@@ -332,10 +333,6 @@ def get_route_price_list_route(doc_name=None):
             return dic
         return False
 
-@frappe.whitelist()
-def delivery_shift(name=None):
-    shift = frappe.db.sql("""select delivery_shift from `tabSales Order` where name = %(name)s""",{'name':name})
-    return shift
 
 
 # @frappe.whitelist()

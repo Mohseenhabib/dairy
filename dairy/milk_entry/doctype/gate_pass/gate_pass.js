@@ -42,7 +42,9 @@ frappe.ui.form.on('Gate Pass', {
             //     frm.set_df_property("loose_crate_section", "hidden", 0);
 	        // }
 	        if ((frm.is_new())) {
-            if (frm.doc.docstatus===0) {
+            if (frm.doc.docstatus===0 ) {
+			frappe.db.get_doc('Dairy Settings').then(t => {
+			if(t.crate_reconciliation_based_on=="Delivery Note" || t.crate_reconciliation_based_on=="Gate Pass"){
 				frm.add_custom_button(__('Delivery Note'),
 					function() {
 						erpnext.utils.map_current_doc({
@@ -50,7 +52,6 @@ frappe.ui.form.on('Gate Pass', {
 							source_doctype: "Delivery Note",
 							target: me.frm,
 							setters: {
-							posting_date: frm.doc.date || undefined,
 							route: frm.doc.route || undefined,
 							shift: frm.doc.shift || undefined,
 							transporter: frm.doc.transporter || undefined
@@ -59,7 +60,8 @@ frappe.ui.form.on('Gate Pass', {
 							get_query_filters: {
 								docstatus: 1,
 								status: ["=", ["To Bill"]],
-                                crate_gate_pass_done:0
+                                crate_gate_pass_done:0,
+								posting_date: frm.doc.date
 							}
 						})
 //						frappe.msgprint({
@@ -70,16 +72,17 @@ frappe.ui.form.on('Gate Pass', {
 					
 					
 					}, __("Get items from"));
-
+				}
+			})
+				frappe.db.get_doc('Dairy Settings').then(t => {
+					if(t.crate_reconciliation_based_on=="Sales Invoice" || t.crate_reconciliation_based_on=="Gate Pass"){
 					frm.add_custom_button(__('Sales Invoice'),
 					function() {
-						console.log('route^^^^^^^^^^^^^^^',frm.doc.route)
 						erpnext.utils.map_current_doc({
 							method: "dairy.milk_entry.doctype.gate_pass.gate_pass.make_sales_invoice",
 							source_doctype: "Sales Invoice",
 							target: me.frm,
 							setters: {
-							posting_date: frm.doc.date || undefined,
 							route: frm.doc.route || undefined,
 							delivery_shift: frm.doc.shift || undefined,
 							transporter: frm.doc.transporter || undefined
@@ -88,6 +91,8 @@ frappe.ui.form.on('Gate Pass', {
 							get_query_filters: {
 								docstatus: 1,
 								status: ["=", ["To Bill"]],
+								gate_pass:0,
+								posting_date: frm.doc.date 
                                 // crate_gate_pass_done:0
 							}
 						})
@@ -99,6 +104,9 @@ frappe.ui.form.on('Gate Pass', {
 					
 					
 					}, __("Get items from"));
+				}
+				})
+			
 			}
 			}
 	 },
