@@ -14,11 +14,14 @@
   "weight_per_unit",
   "column_break_5",
   "total_weight",
+  "crate_type",
   "free_qty",
   "out_crate",
   "in_crate",
+  "damaged_crate",
   "warehouse",
   "delivery_note",
+  "sales_invoice",
   "is_free_item"
  ],
  "fields": [
@@ -108,11 +111,31 @@
    "fieldtype": "Link",
    "label": "Item Group",
    "options": "Item Group"
+  },
+  {
+   "fieldname": "crate_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Crate Type",
+   "options": "Crate Type",
+   "read_only": 1
+  },
+  {
+   "fieldname": "damaged_crate",
+   "fieldtype": "Int",
+   "label": "Damaged Crate"
+  },
+  {
+   "fieldname": "sales_invoice",
+   "fieldtype": "Link",
+   "label": "Sales Invoice",
+   "options": "Sales Invoice",
+   "read_only": 1
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2020-09-25 10:54:08.978072",
+ "modified": "2023-03-24 14:36:00.678037",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Gate Pass Item",
@@ -121,5 +144,6 @@
  "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }
