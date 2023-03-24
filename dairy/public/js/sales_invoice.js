@@ -3,6 +3,8 @@ frappe.ui.form.on("Sales Invoice", {
 		frm.add_fetch("route", "price_list", "selling_price_list");
 	},
 	onload: function(frm){
+        // frm.set_df_property("crate_count", "hidden",1);
+        // frm.set_df_property("loose_crate_", "hidden",1);
 
         frm.set_query('route', function(doc) {
             return {
@@ -24,6 +26,11 @@ frappe.ui.form.on("Sales Invoice", {
             console.log("Rate of stock uom",a)
             frm.refresh_field("rate_of_stock_uom")
         });
+       
+        // frm.set_df_property("crate_count", "hidden",0);
+        // frm.set_df_property("loose_crate_", "hidden",0);
+        // cur_frm.reload_doc();
+      
     },
     
     customer:function(frm){
@@ -44,6 +51,7 @@ frappe.ui.form.on("Sales Invoice", {
         });
     },
     route:function(frm){
+        frm.add_fetch("route", "transporter", "transporter");
 	         return cur_frm.call({
             method:"dairy.milk_entry.custom_sales_order.set_territory",
             args: {
@@ -60,7 +68,40 @@ frappe.ui.form.on("Sales Invoice", {
                    }
                 }
         });
+    
+    },
+
+    customer: function(frm){
+        frappe.call({
+            method: 'dairy.milk_entry.doctype.bulk_milk_price_list.bulk_milk_price_list.fetch_data',
+            args: {
+                'doctype': 'Bulk Milk Price List',
+                'customer': frm.doc.customer
+            },
+            callback: function(r) {
+                if (!r.exc) {
+                    // code snippet
+                    frm.set_value('fat_rate', r.message.rate)
+                    frm.set_value('snf_clr_rate', r.message.snf)
+                }
+            }
+        });
     }
+    // calculate_crate: function(frm){
+    //     	console.log("******************************************");
+    //     //	    cur_frm.cscript.calculate_crate()
+    //     	    frm.call({
+    //            method:"dairy.milk_entry.custom_sales_invoice.calculate_crate",
+    //            args: {
+    //                    doc: cur_frm
+    //                  },
+    //            callback: function(r)
+    //                {
+    //                   frm.refresh_field("crate_count")
+    //                }
+    //            });
+        
+    //     	},
 })
 
 frappe.ui.form.on("Sales Invoice Item", {

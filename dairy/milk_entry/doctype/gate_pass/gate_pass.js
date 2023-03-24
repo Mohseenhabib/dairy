@@ -25,22 +25,22 @@ frappe.ui.form.on('Gate Pass', {
      },
 
 	 refresh: function(frm) {
-	        if(! frm.doc.__islocal){
-	            frm.set_df_property("items_section", "hidden", 1);
-				frm.set_df_property("merge_items", "read_only", frm.is_new() ? 0 : 1);
-	        }
-	        if( frm.doc.__islocal){
-	            frm.set_df_property("item", "reqd", 1);
-	            frm.set_df_property("merge_items", "hidden", 1);
-	            frm.set_df_property("crate_count_section", "hidden", 1);
-                frm.set_df_property("loose_crate_section", "hidden", 1);
+	        // if(! frm.doc.__islocal){
+	        //     frm.set_df_property("items_section", "hidden", 1);
+			// 	frm.set_df_property("merge_items", "read_only", frm.is_new() ? 0 : 1);
+	        // }
+	        // if( frm.doc.__islocal){
+	        //     frm.set_df_property("item", "reqd", 1);
+	        //     frm.set_df_property("merge_items", "hidden", 1);
+	        //     frm.set_df_property("crate_count_section", "hidden", 1);
+            //     frm.set_df_property("loose_crate_section", "hidden", 1);
 
-	        }
-	        else{
-	            frm.set_df_property("merge_items", "hidden", 0);
-	            frm.set_df_property("crate_count_section", "hidden", 0);
-                frm.set_df_property("loose_crate_section", "hidden", 0);
-	        }
+	        // }
+	        // else{
+	        //     frm.set_df_property("merge_items", "hidden", 0);
+	        //     frm.set_df_property("crate_count_section", "hidden", 0);
+            //     frm.set_df_property("loose_crate_section", "hidden", 0);
+	        // }
 	        if ((frm.is_new())) {
             if (frm.doc.docstatus===0) {
 				frm.add_custom_button(__('Delivery Note'),

@@ -112,9 +112,8 @@
   {
    "fieldname": "item",
    "fieldtype": "Table",
-   "hidden": 1,
    "ignore_user_permissions": 1,
-   "label": "Item",
+   "label": "Gate Pass Item",
    "options": "Gate Pass Item"
   },
   {
@@ -125,7 +124,7 @@
   {
    "fieldname": "merge_item",
    "fieldtype": "Table",
-   "label": "Item",
+   "label": "Merge Gate Pass Item",
    "options": "Merge Gate Pass Item"
   },
   {
@@ -136,7 +135,6 @@
   {
    "fieldname": "crate",
    "fieldtype": "Table",
-   "hidden": 1,
    "label": "Outgoing Crate Count",
    "options": "Gate Pass Crate Count"
   },
@@ -306,7 +304,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-18 16:24:55.620433",
+ "modified": "2023-03-23 19:06:53.451035",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Gate Pass",

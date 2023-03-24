@@ -129,6 +129,9 @@ doc_events = {
     },
     "Sales Invoice": {
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
+        "before_submit": "dairy.milk_entry.custom_sales_invoice.before_submit",
+        "after_insert": "dairy.milk_entry.custom_sales_invoice.calculate_crate",
+        "before_save": "dairy.milk_entry.custom_sales_invoice.calculate_crate",
     },
     "Stock Entry":{
         "after_insert": ["dairy.milk_entry.doctype.van_collection.van_collection.change_van_collection_status",
@@ -146,6 +149,7 @@ doc_events = {
                       "dairy.milk_entry.custom_purchase_receipt.create_milk_stock_ledger"],
 
     }
+  
 }
 
 permission_query_conditions = {
