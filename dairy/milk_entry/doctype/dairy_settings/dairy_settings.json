@@ -100,7 +100,13 @@
   "crate_section",
   "crate_reconciliation_based_on",
   "column_break_91",
-  "crate_loss_billed_to"
+  "crate_loss_billed_to",
+  "section_break_jsl50",
+  "add_fat",
+  "remove_fat",
+  "column_break_ypomu",
+  "add_snf",
+  "remove_snf"
  ],
  "fields": [
   {
@@ -587,12 +593,44 @@
    "fieldname": "previous_sync_date",
    "fieldtype": "Date",
    "label": "Previous Sync Date"
+  },
+  {
+   "fieldname": "section_break_jsl50",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "add_fat",
+   "fieldtype": "Link",
+   "label": "Add Fat",
+   "options": "Item"
+  },
+  {
+   "fieldname": "remove_fat",
+   "fieldtype": "Link",
+   "label": "Remove Fat",
+   "options": "Item"
+  },
+  {
+   "fieldname": "add_snf",
+   "fieldtype": "Link",
+   "label": "Add SNF",
+   "options": "Item"
+  },
+  {
+   "fieldname": "remove_snf",
+   "fieldtype": "Link",
+   "label": "Remove SNF",
+   "options": "Item"
+  },
+  {
+   "fieldname": "column_break_ypomu",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-03-18 16:30:16.028825",
+ "modified": "2023-03-24 18:28:44.204723",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",

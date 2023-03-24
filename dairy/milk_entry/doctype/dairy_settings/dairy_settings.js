@@ -18,6 +18,49 @@ frappe.ui.form.on('Dairy Settings', {
         }
 
     },
+
+    setup:function(frm){
+        frm.set_query("add_fat",function(frm){
+            return{
+                filters:{
+                    'maintain_fat_snf_clr' : 1,
+                    'disabled' : 0
+                }
+            }
+        }
+    ),
+    frm.set_query("remove_fat",function(frm){
+        return{
+            filters:{
+                'maintain_fat_snf_clr' : 1,
+                'disabled' : 0
+            }
+        }
+    }
+    ),
+    frm.set_query("add_snf",function(frm){
+        return{
+            filters:{
+                'maintain_fat_snf_clr' : 1,
+                'disabled' : 0
+            }
+        }
+    }
+    ),
+    frm.set_query("remove_snf",function(frm){
+        return{
+            filters:{
+                'maintain_fat_snf_clr' : 1,
+                'disabled' : 0
+            }
+        }
+    }
+    )
+
+    },
+
+       
+  
     set_property: function(frm) {
         
          if(frm.doc.default_payment_type =="Days")

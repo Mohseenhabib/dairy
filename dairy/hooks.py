@@ -19,13 +19,52 @@ app_license = "Dexciss"
 # include js, css files in header of desk.html
 # app_include_css = "/assets/dairy/css/dairy.css"
 
+fixtures = [
+		{"dt":"Custom Field", "filters": [["name", "in",("Timesheet-approved","Timesheet Detail-sales_order",
+                "Timesheet Detail-approved","Employee-employee_costing_rate","Employee Group-group_lead","Employee Group-department","Employee Group-column_break_3",
+                "Employee Group-group_lead_name","Employee Group-hod","Issue-test_session","Issue-task","Issue-base_estimated_cost","Issue-currency","Issue-estimated_cost",
+                "Issue-department_","Issue-section_break_45","Issue-doctype_name","Issue-screenshot","Issue-console_log_description","Issue-if_issue_type_customisation_request_cr",
+                "Issue-step_to_reproduce","Issue-task_created","Issue-estimated_cost_in_words","Issue-print_settings","Issue-heading","Issue-resolution_required",
+                "Issue-section_break_16","Issue-employee_group","Issue-primary_consultant","Issue-project_lead","Issue-primary_consultant_name","Issue-project_lead_name",
+                "Issue-column_break_20","Issue-grand_total","Issue-grand__total_cost_in_words","Issue-billing_section","Issue-column_break_17",
+                "Task-employee_group","Task-primary_consultant","Task-is_billable",
+                "Task-project_lead","Task-primary_consultant_name","Task-project_lead_name","Task-duration_per_day_in_hours",
+                "Task-total_duration_in_days","Task-employee_group_section","Task-column_break_25","Project-currency","Project-auto_submit_invoice",
+                "Project-billing_based_on","Project-start_date","Project-total_project_value_excluding_taxes","Project-billing_frequency","Project-milestone_section",
+                "Project-milestone","Project-auto_creation_doctype","Project-auto_submit_order","Project-recurring_charges","Project-recurring_item","Project-timesheet_item",
+                "Project-timesheet_days","Project-billing_charges_based_on_activity_cost","Project-billing_charges_based_on_project_timesheet_charges","Project-team_details",
+                "Project-employee_group","Project-project_lead","Project-project_lead_name","Project-column_break_25","Project-primary_consultant","Project-primary_consultant_name",
+                "Project-sales_taxes_charges_template","Project-terms","Project-project_billing_rate","Project-sales_order_naming_series","Project-sales_invoice_naming_series",
+                "Project-cr_last_billing_date","Project-cr_item","Project-price_list","Project-last_billing_date","Project-allocation_item",
+                "Sales Order-project_allocation_bill","Sales Invoice-project_allocation_bill","Issue-sales_invoice","Issue-sales_order","Issue-completed_on","Task-ticket","Sales Invoice-ticket"),]]}
+
+    ]
 
 
 # -----------------------quick entry temporay removed  -sid----------------------
 app_include_js = "/assets/js/vehicle.min.js"
 
 
-
+fixtures = fixtures = [
+		{"dt":"Custom Field", "filters": [["name", "in",(
+            "BOM-standard_fat" ,
+            "BOM-standard_snf",
+            "BOM-item_fat" ,
+            "BOM-item_snf",
+            "BOM-weight_details",
+            "BOM-fg_weight",
+            "BOM-total_rm_weight",
+            "BOM-total_rm_fat",
+            "BOM-total_rm_snf",
+            "Item-standar_fat",
+            "Item-standard_snf",
+            "BOM Item-weight",
+            "BOM Item-standard_fat",
+            "BOM Item-bom_fat",
+            "BOM Item-standard_snf",
+            "BOM Item-bom_snf"
+        )]]}
+]
 
 # include js, css files in header of web template
 # web_include_css = "/assets/dairy/css/dairy.css"
@@ -46,7 +85,8 @@ doctype_js = {
     # "Supplier": "public/js/supplier.js",
     "Item": "public/js/item.js",
     "Stock Entry": "public/js/stock_entry.js",
-    "Purchase Receipt": "public/js/purchase_receipt.js"
+    "Purchase Receipt": "public/js/purchase_receipt.js",
+    "BOM":"public/js/custom_bom.js"
     }
 
 doctype_list_js = {
@@ -144,7 +184,9 @@ doc_events = {
         "on_cancel": ["dairy.milk_entry.custom_purchase_receipt.cancel_create_milk_stock_ledger"],
         "on_submit": ["dairy.milk_entry.custom_purchase_receipt.change_milk_status",
                       "dairy.milk_entry.custom_purchase_receipt.create_milk_stock_ledger"],
-
+    },
+    "BOM":{
+    "before_save": "dairy.dairy.custom_bom.before_save"
     }
 }
 
