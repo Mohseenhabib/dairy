@@ -238,7 +238,6 @@
    "fetch_from": "transporter.supplier_name",
    "fieldname": "transporter_name",
    "fieldtype": "Data",
-   "hidden": 1,
    "label": "Transporter Name"
   },
   {
@@ -304,7 +303,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-25 12:55:28.321635",
+ "modified": "2023-03-25 17:55:08.867200",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Gate Pass",
