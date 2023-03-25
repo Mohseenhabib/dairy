@@ -41,9 +41,11 @@ class MilkEntry(Document):
         
             snf_kg =  ((self.volume * (item)) * (self.snf/100))
             self.db_set('snf_kg', snf_kg)
+            print('snfYYYYYYYYYYYYYYYYY',snf_kg)
 
             clr_kg =  ((self.volume * (item)) * (self.clr/100))
             self.db_set('clr_kg', clr_kg)
+            print('clr%%%%%%%%%%%%%%%%%%',clr_kg)
 
             # doc=frappe.get_doc("Dairy Settings")
             # if self.get("milk_type")=="Cow":

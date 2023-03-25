@@ -25,8 +25,10 @@
   "clr",
   "section_break_7",
   "fat_kg",
+  "fat_deduction",
   "column_break_9",
   "snf_kg",
+  "snf_deduction",
   "clr_kg",
   "sb4",
   "milk_rate",
@@ -322,12 +324,22 @@
    "fieldtype": "Float",
    "label": "Litre",
    "read_only": 1
+  },
+  {
+   "fieldname": "fat_deduction",
+   "fieldtype": "Currency",
+   "label": "FAT Deduction"
+  },
+  {
+   "fieldname": "snf_deduction",
+   "fieldtype": "Currency",
+   "label": "SNF Deduction"
   }
  ],
  "is_submittable": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2023-03-17 17:46:56.358163",
+ "modified": "2023-03-25 12:55:38.047134",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Milk Entry",

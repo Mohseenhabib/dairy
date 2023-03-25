@@ -26,22 +26,3 @@ frappe.ui.form.on("Customer", {
         }
     }
 });
-// frappe.ui.form.on('Dynamic Link', {
-//     link_doctype:function(frm,cdt,cdn){
-//         console.log('%%%%%%%%%%%%%%%%')
-//         var child = locals[cdt][cdn]
-//         if(child.link_doctype){
-//             var sub = 0;
-//             frappe.db.get_doc('DocType',child.link_doctype).then(ld => {
-//                 if (ld.is_submittable == 1){
-//                     var sub = 1
-//                 }
-//             })
-//             if(sub == 1){
-            
-//         }
-            
-//         }
-//     }
-    
-// });
