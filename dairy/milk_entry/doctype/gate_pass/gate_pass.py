@@ -264,7 +264,7 @@ class GatePass(Document):
 						log.crate_opening = int(openning[0]['crate_balance'])
 						log.crate_balance = openning[0]['crate_balance'] +(sums[0]['crate'] - sums[0]['crate_ret'])
 						sales.append("crate_summary", {
-							"crate_opening": openning[0]['crate_balance'] + (sums[0]['crate'] - sums[0]['crate_ret']),
+							"crate_opening": openning[0]['crate_balance'],
 							"crate_issue": sums[0]['crate'],
 							"crate_return": sums[0]['crate_ret'],
 							"crate_balance": openning[0]['crate_balance'] + (sums[0]['crate'] - sums[0]['crate_ret'])
@@ -274,7 +274,7 @@ class GatePass(Document):
 						log.crate_opening = int(0)
 						log.crate_balance = int(0) + (sums[0]['crate'] - sums[0]['crate_ret'])
 						sales.append("crate_summary", {
-							"crate_opening": int(0) + (sums[0]['crate'] - sums[0]['crate_ret']),
+							"crate_opening": int(0),
 							"crate_issue": sums[0]['crate'],
 							"crate_return": sums[0]['crate_ret'],
 							"crate_balance": int(0) +(sums[0]['crate'] -sums[0]['crate_ret'])
@@ -356,7 +356,7 @@ class GatePass(Document):
 							log.crate_opening = int(openning[0]['crate_balance'])
 							log.crate_balance = openning[0]['crate_balance'] + (sums[0]['crate'] - sums[0]['crate_ret'])
 							sales.append("crate_summary", {
-								"crate_opening": openning[0]['crate_balance'] + (sums[0]['crate'] - sums[0]['crate_ret']),
+								"crate_opening": openning[0]['crate_balance'],
 								"crate_issue": sums[0]['crate'],
 								"crate_return": sums[0]['crate_ret'],
 								"crate_balance": openning[0]['crate_balance'] + (sums[0]['crate'] - sums[0]['crate_ret'])
@@ -366,7 +366,7 @@ class GatePass(Document):
 							log.crate_opening = int(0)
 							log.crate_balance = int(0) +(sums[0]['crate'] - sums[0]['crate_ret'])
 							sales.append("crate_summary", {
-								"crate_opening": int(0) +(sums[0]['crate'] - sums[0]['crate_ret']),
+								"crate_opening": int(0),
 								"crate_issue": sums[0]['crate'],
 								"crate_return": sums[0]['crate_ret'],
 								"crate_balance": int(0) + (sums[0]['crate'] - sums[0]['crate_ret'])
@@ -451,17 +451,17 @@ class GatePass(Document):
 							log.crate_opening = int(openning[0]['crate_balance'])
 							log.crate_balance = openning[0]['crate_balance'] + (sums[0]['crate'] - sums[0]['crate_ret'])
 							sales.append("crate_summary", {
-								"crate_opening": openning[0]['crate_balance'] + (sums[0]['crate'] - sums[0]['crate_ret']),
+								"crate_opening": openning[0]['crate_balance'],
 								"crate_issue": sums[0]['crate'],
 								"crate_return": sums[0]['crate_ret'],
-								"crate_balance": openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret'])
+								"crate_balance": openning[0]['crate_balance'] +(sums[0]['crate'] - sums[0]['crate_ret'])
 							})
 
 						else:
 							log.crate_opening = int(0)
 							log.crate_balance = int(0) + (sums[0]['crate'] - sums[0]['crate_ret'])
 							sales.append("crate_summary", {
-								"crate_opening": int(0) + (sums[0]['crate'] - sums[0]['crate_ret']),
+								"crate_opening": int(0),
 								"crate_issue": sums[0]['crate'],
 								"crate_return": sums[0]['crate_ret'],
 								"crate_balance": int(0) +(sums[0]['crate'] -sums[0]['crate_ret'])
@@ -716,11 +716,12 @@ def calculate_crate(doc_name = None):
 								'item_code': itm.item_code
 							})
 						count = 1
+	print("$$$$$$$$$$$$$$$$$$$",total_crate)
 	doc.total_crate = total_crate
 	doc.gate_crate_cal_done = "Done"
 
 
-
+	total_crate = 0
 	for itm in doc.item:
 		# warehouse = itm.warehouse
 		if itm.qty:
