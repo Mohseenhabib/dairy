@@ -114,29 +114,7 @@
  "custom_perms": [],
  "doctype": "Vehicle",
  "property_setters": [
-  {
-   "_assign": null,
-   "_comments": null,
-   "_liked_by": null,
-   "_user_tags": null,
-   "creation": "2020-03-26 13:58:16.327057",
-   "default_value": null,
-   "doc_type": "Vehicle",
-   "docstatus": 0,
-   "doctype_or_field": "DocType",
-   "field_name": null,
-   "idx": 0,
-   "modified": "2020-03-26 13:58:16.327057",
-   "modified_by": "Administrator",
-   "name": "Vehicle-quick_entry",
-   "owner": "Administrator",
-   "parent": null,
-   "parentfield": null,
-   "parenttype": null,
-   "property": "quick_entry",
-   "property_type": "Check",
-   "value": "0"
-  }
+  
  ],
  "sync_on_migrate": 1
 }
