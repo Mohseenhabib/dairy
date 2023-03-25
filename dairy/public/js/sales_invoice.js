@@ -91,8 +91,6 @@ frappe.ui.form.on("Sales Invoice", {
         
     // },
     // calculate_crate: function(frm){
-    //     	console.log("******************************************");
-    //     //	    cur_frm.cscript.calculate_crate()
     //     frm.call({
     //            method:"dairy.milk_entry.custom_sales_invoice.calculate_crate",
     //            args: {

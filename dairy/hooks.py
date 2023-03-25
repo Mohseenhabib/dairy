@@ -213,9 +213,13 @@ jinja = {
 
 		"dairy.milk_entry.custom_delivery_trip.get_jinja_data",
         "dairy.milk_entry.custom_delivery_trip.get_jinja_data_del_note",
+        "dairy.milk_entry.custom_delivery_trip.get_jinja_data_si",
         "dairy.milk_entry.custom_delivery_trip.get_jinja_data_del_note_item",
+         "dairy.milk_entry.custom_delivery_trip.get_jinja_data_si_item",
         "dairy.milk_entry.custom_delivery_trip.del_note_total",
+         "dairy.milk_entry.custom_delivery_trip.si_note_total",
         "dairy.milk_entry.custom_delivery_trip.del_note_details",
+         "dairy.milk_entry.custom_delivery_trip.si_note_details",
         "dairy.milk_entry.custom_delivery_trip.total_supp_qty_based_on_itm_grp",
 	]
 }
