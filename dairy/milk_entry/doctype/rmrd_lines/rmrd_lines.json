@@ -13,6 +13,7 @@
   "column_break_2",
   "rmrd",
   "date",
+  "shift",
   "naming_series",
   "good_milk_section",
   "rmrd_good_cow_milk",
@@ -497,13 +498,21 @@
    "label": "Stock Entry",
    "options": "Stock Entry",
    "read_only": 1
+  },
+  {
+   "fetch_from": "rmrd.shift",
+   "fieldname": "shift",
+   "fieldtype": "Select",
+   "label": "Shift",
+   "options": "\nMorning\nEvening"
   }
  ],
  "links": [],
- "modified": "2023-03-02 10:37:48.341487",
+ "modified": "2023-03-25 14:34:05.610720",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "RMRD Lines",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -521,6 +530,7 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "title_field": "dcs",
  "track_changes": 1
 }

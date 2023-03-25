@@ -90,9 +90,9 @@ frappe.ui.form.on('Milk Entry', {
                     }, __('Create'));
                 }
 
-                if (frm.doc.docstatus == 1 && is_collector == 1){
-                    frm.doc.status=="To Sample and Bill"
-                }
+                // if (frm.doc.docstatus == 1 && is_collector == 0){
+                //     frm.doc.status=="To Sample and Bill"
+                // }
                 
 
 
