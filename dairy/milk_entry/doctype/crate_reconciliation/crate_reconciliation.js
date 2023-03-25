@@ -4,7 +4,7 @@
 frappe.ui.form.on('Crate Reconciliation', {
 	 refresh: function(frm, dt, dn) {
 	 frappe.db.get_value("Dairy Settings", "Dairy Settings", "crate_reconciliation_based_on", (r) => {
-        if (r && r.crate_reconciliation_based_on == "Delivery Note" || r.crate_reconciliation_based_on == "") {
+        if (r && r.crate_reconciliation_based_on == "Delivery Note" || r.crate_reconciliation_based_on == ""||r.crate_reconciliation_based_on == "Sales Invoice") {
             frm.set_df_property("transporter","hidden",1);
             frm.set_df_property("customer","reqd",1);
             }else {

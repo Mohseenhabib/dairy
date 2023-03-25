@@ -292,6 +292,7 @@ class GatePass(Document):
 			print('delivery*******************',delivery)
 
 			for delv in delivery:
+				dn=frappe.get_doc("Delivery Note",delv)
 				dist_cratetype = frappe.db.sql(""" select distinct(crate_type)
 													from `tabGate Pass Item` 
 													where parent = %(name)s and delivery_note = %(delivery_note)s""",{'name':sales.name,'delivery_note':delv})
@@ -322,7 +323,7 @@ class GatePass(Document):
 						log.vehicle = sales.vehicle
 						log.route = sales.route
 						log.shift = sales.shift
-						log.customer=sales.customer
+						log.customer=dn.customer
 						log.date = frappe.utils.nowdate()
 						log.company = sales.company
 						log.voucher_type = "Delivery Note"
@@ -386,6 +387,7 @@ class GatePass(Document):
 			print('invoice*******************',invoice)
 
 			for inv in invoice:
+				si=frappe.get_doc("Sales Invoice",inv.get("sales_invoice"))
 				dist_cratetype = frappe.db.sql(""" select distinct(crate_type)
 													from `tabGate Pass Item` 
 													where parent = '{0}' and sales_invoice = '{1}'""".format(sales.name,inv.get("sales_invoice")))
@@ -416,7 +418,7 @@ class GatePass(Document):
 						log.vehicle = sales.vehicle
 						log.route = sales.route
 						log.shift = sales.shift
-						log.customer=sales.customer
+						log.customer=si.customer
 						log.date = frappe.utils.nowdate()
 						log.company = sales.company
 						log.voucher_type = "Sales Invoice"
