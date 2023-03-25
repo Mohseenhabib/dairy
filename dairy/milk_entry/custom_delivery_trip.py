@@ -88,7 +88,7 @@ def get_jinja_data_si_item(del_note):
 	on A.item_code = B.item_code
 	where 
 		A.parent = %(name)s and B.parent = %(name)s and A.is_free_item = 0 """, {"name": del_note}, as_dict=True)
-
+	print("&&&&&&&&&&&&&&&&&&&&",res)
 	dist_itm = frappe.db.sql(""" select distinct(item_code) from `tabSales Invoice Item` where parent = %(name)s """,
 							 {'name':del_note})
 	for itm in dist_itm:
@@ -101,7 +101,7 @@ def get_jinja_data_si_item(del_note):
 			for i in range(0, len(res2)):
 				res.append(res2[i])
 
-
+	print("7&&&&54444444444444444",res)
 	return res
 
 @frappe.whitelist()

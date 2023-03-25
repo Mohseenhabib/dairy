@@ -36,6 +36,9 @@ class CrateReconciliation(Document):
 				"difference": difference
 			})
 
+
+	# def 
+
 	def calculate_total_count(self):
 		total_outgoing = 0.0
 		total_incoming = 0.0

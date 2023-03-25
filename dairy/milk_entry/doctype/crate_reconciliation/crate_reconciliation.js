@@ -80,7 +80,7 @@ frappe.ui.form.on('Crate Reconciliation', {
 //            })
 
         }
-        if (frm.doc.docstatus ==1)
+        if (frm.doc.docstatus ==1 && frm.doc.difference>0)
         {
             frm.add_custom_button(__('Create Invoice'),function() {
                 return frappe.call({
@@ -110,17 +110,17 @@ frappe.ui.form.on('Crate Reconciliation', {
 			}
 		});
      },
-     before_submit: function(frm)
-     {
-         return frappe.call({
-            doc: frm.doc,
-            method: 'calculate_crate_type_summary',
-            callback: function(r) {
-//                frm.refresh_field('crate_type_summary_section');
-//                frm.refresh_field('crate_type_summary');
-            }
-        });
-     }
+//      before_submit: function(frm)
+//      {
+//          return frappe.call({
+//             doc: frm.doc,
+//             method: 'calculate_crate_type_summary',
+//             callback: function(r) {
+// //                frm.refresh_field('crate_type_summary_section');
+// //                frm.refresh_field('crate_type_summary');
+//             }
+//         });
+//      }
 });
 
 frappe.ui.form.on("Crate Reconciliation Child", {
