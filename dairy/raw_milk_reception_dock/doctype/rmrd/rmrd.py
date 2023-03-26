@@ -27,6 +27,7 @@ class RMRD(Document):
 		for se in stock:
 			stock_dlt = frappe.delete_doc('Stock Entry',se.name)
 			print('stock_dlt^^^^^^^^^^^^^^^^',stock_dlt)
+			
 
 	@frappe.whitelist()
 	def start_rmrd(self):

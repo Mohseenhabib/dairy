@@ -7,6 +7,9 @@ frappe.ui.form.on('Van Collection Items', {
 	    {
 	         cur_frm.cscript.calculate_milk_cans()
 	    }
+        frm.set_df_property("Cow_milk_collected", "read_only", frm.is_new() ? 0 : 1);
+        frm.set_df_property("buffalow_milk_collected", "read_only", frm.is_new() ? 0 : 1);
+        frm.set_df_property("mix_milk_collected", "read_only", frm.is_new() ? 0 : 1);
 	 },
 	 cow_milk_collected: function(frm) {
         if(frm.doc. cow_milk_collected){

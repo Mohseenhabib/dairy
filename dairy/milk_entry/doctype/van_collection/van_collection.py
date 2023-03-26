@@ -20,18 +20,12 @@ class VanCollection(Document):
         for me in milk_entry:
             if self.date == me.date:
                 vcc = frappe.get_doc('Milk Entry',me.name) 
-                vcc.db_set("van_collection_completed",0)
+                vcc.van_collection_completed = 0
+                vcc.db_update()
                 vci = frappe.get_all('Van Collection Items',{'van_collection':self.name},['name'])
                 for dl in vci:
                     dlt = frappe.delete_doc('Van Collection Items',dl.name)
-
-        # stock_entry = frappe.get_all('Stock Entry',{'posting_date':self.date},['name','date'])
-        # print('seeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',stock_entry)
-        # for se in stock_entry:
             
-        #     if self.date == se.posting_date:
-        #         se_dlt = frappe.delete_doc('Stock Entry',se.name)
-        #         print('delete stock entry&&&&&&&&&&&&&&&&&&&&&')
 
         
     @frappe.whitelist()
@@ -43,7 +37,8 @@ class VanCollection(Document):
             if self.date == me.date:
                 vcc = frappe.get_doc('Milk Entry',me.name)
                 if self.status == "Completed":
-                    vcc.db_set("van_collection_completed", 1)
+                    vcc.van_collection_completed = 1
+                    vcc.db_update()
         
         self.save(ignore_permissions=True)
 

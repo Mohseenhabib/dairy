@@ -41,9 +41,8 @@ def milk_ledger_stock_entry(self,method):
                         mle = frappe.db.sql(query,
                                             {'warehouse': itm.s_warehouse, 'item_code': itm.item_code, 'batch_no': itm.batch_no,
                                             'serial_no': itm.serial_no}, as_dict=True)
-                        # if not mle:
-                        #     frappe.throw("Milk Ledger Entry Not Found For This Item")
-                        if mle[0]['name']:
+                       
+                        if mle:
                             mle_obj = frappe.get_doc("Milk Ledger Entry",mle[0]['name'])
                             print('mle_obj*************************',mle_obj)
                             itm.fat = (mle_obj.fat_per / 100) * (itm.transfer_qty * itm_weight)
@@ -392,3 +391,6 @@ def update_vc_status(self,method):
             rmrd.db_set('status','Completed')
             rmrd.db_update()
             print('van collection satus *************************')
+            
+
+

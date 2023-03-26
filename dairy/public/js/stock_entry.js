@@ -1,6 +1,7 @@
 frappe.provide("erpnext.stock");
 
 frappe.ui.form.on('Stock Entry', {
+	
 
 })
 

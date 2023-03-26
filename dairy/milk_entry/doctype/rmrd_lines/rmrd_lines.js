@@ -8,7 +8,17 @@ frappe.ui.form.on('RMRD Lines', {
 	    {
 	         cur_frm.cscript.calculate_total_cans_wt()
 	    }
+		frm.set_df_property("rmrd_good_cow_milk", "read_only", frm.is_new() ? 0 : 1);
+		frm.set_df_property("rmrd_good_buf_milk", "read_only", frm.is_new() ? 0 : 1);
+		frm.set_df_property("rmrd_good_mix_milk", "read_only", frm.is_new() ? 0 : 1);
+		frm.set_df_property("s_cow_milk", "read_only", frm.is_new() ? 0 : 1);
+		frm.set_df_property("s_buf_milk", "read_only", frm.is_new() ? 0 : 1);
+		frm.set_df_property("s_mix_milk", "read_only", frm.is_new() ? 0 : 1);
+		frm.set_df_property("c_cow_milk", "read_only", frm.is_new() ? 0 : 1);
+		frm.set_df_property("c_buf_milk", "read_only", frm.is_new() ? 0 : 1);
+		frm.set_df_property("c_mix_milk", "read_only", frm.is_new() ? 0 : 1);
 	 },
+	 
 	//  g_cow_milk: function(frm) {
 	//      cur_frm.cscript.calculate_total_cans_wt()
 	//  },
@@ -79,11 +89,10 @@ frappe.ui.form.on('RMRD Lines', {
 	 c_mix_milk_can: function(frm) {
 	     cur_frm.cscript.calculate_total_cans_wt()
 	 },
+	 
 
 	 refresh: function(frm) {
-		frm.set_df_property("rmrd_good_cow_milk", "read_only", frm.is_new() ? 0 : 1);
-		frm.set_df_property("rmrd_good_buf_milk", "read_only", frm.is_new() ? 0 : 1);
-		frm.set_df_property("rmrd_good_mix_milk", "read_only", frm.is_new() ? 0 : 1);
+		
 		console.log('Stock entry',frm.doc.stock_entry)
 		if(!frm.doc.__islocal && !frm.doc.stock_entry)
 		       {

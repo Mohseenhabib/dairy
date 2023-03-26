@@ -156,10 +156,9 @@
   {
    "allow_in_quick_entry": 1,
    "fieldname": "gate_pass",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Gate Pass",
-   "options": "Stock Entry",
    "read_only": 1
   },
   {
@@ -410,7 +409,7 @@
   }
  ],
  "links": [],
- "modified": "2023-03-25 14:12:55.342188",
+ "modified": "2023-03-26 11:51:55.028958",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Van Collection Items",
