@@ -36,6 +36,9 @@ class CrateReconciliation(Document):
 				"difference": difference
 			})
 
+
+	# def 
+
 	def calculate_total_count(self):
 		total_outgoing = 0.0
 		total_incoming = 0.0
@@ -68,7 +71,10 @@ class CrateReconciliation(Document):
 				crate_log = frappe.get_doc("Crate Log", i.crate_log)
 				crate_log.crate_reconsilliation_done = 1
 				crate_log.db_update()
-
+			if i.sales_invoice:
+				si = frappe.get_doc("Sales Invoice", i.sales_invoice)
+				si.crate_reconcilation_done = 1
+				si.db_update()
 	def on_cancel(self):
 		for i in self.delivery_info:
 			if i.delivery_note:
@@ -83,7 +89,11 @@ class CrateReconciliation(Document):
 				crate_log = frappe.get_doc("Crate Log", i.crate_log)
 				crate_log.crate_reconsilliation_done = 0
 				crate_log.db_update()
-
+			if i.sales_invoice:
+				si = frappe.get_doc("Sales Invoice", i.sales_invoice)
+				si.crate_reconcilation_done = 0
+				si.db_update()
+	@frappe.whitelist()
 	def calculate_crate_type_summary(self):
 		if self:
 			frappe.db.sql("delete from `tabCrate Type Summary Child` where parent = %s", (self.name))
@@ -98,7 +108,8 @@ class CrateReconciliation(Document):
 			self.flags.ignore_validate_update_after_submit = True   #ignore after submit permission
 			self.save(ignore_permissions=True)
 		return True
-
+	
+	@frappe.whitelist()
 	def make_sales_invoice(self):
 		si = frappe.new_doc("Sales Invoice")
 		si.company = self.company
@@ -194,24 +205,54 @@ def make_delivery_note(source_name, target_doc=None, ignore_permissions=False):
 def make_crate_log(source_name, target_doc=None, ignore_permissions=False):
 	def set_item_in_sales_invoice(source, target):
 		del_note = frappe.get_doc(source)
-		print("$$$$$$$$$$$$$$$$$$$$$$$$$$",del_note)
 		crate_recl = frappe.get_doc(target)
-		crate_recl.append("delivery_info",{
-			"delivery_date": del_note.date,
-			"crate_log": del_note.name,
-			"delivery_note":del_note.voucher,
-			"customer":del_note.customer,
-			"transporter": del_note.transporter,
-			"route": del_note.route,
-			"crate_type": del_note.crate_type,
-			"vehicle": del_note.vehicle,
-			"outgoing": del_note.crate_issue,
-			"incoming": del_note.crate_return,
-			"damaged": del_note.damaged,
-			"difference": del_note.crate_issue - del_note.crate_return,
-			"gate_pass": del_note.voucher,
-			"customer":del_note.customer
-		})
+		if del_note.voucher_type=="Sales Invoice":
+			crate_recl.append("delivery_info",{
+				"delivery_date": del_note.date,
+				"crate_log": del_note.name,
+				"transporter": del_note.transporter,
+				"customer":del_note.customer,
+				"sales_invoice":del_note.voucher,
+				"route": del_note.route,
+				"crate_type": del_note.crate_type,
+				"vehicle": del_note.vehicle,
+				"outgoing": del_note.crate_issue,
+				"incoming": del_note.crate_return,
+				"damaged": del_note.damaged,
+				"difference": del_note.crate_issue - del_note.crate_return,
+				"gate_pass": del_note.gate_pass
+			})
+		if del_note.voucher_type=="Delivery Note":
+			crate_recl.append("delivery_info",{
+				"delivery_date": del_note.date,
+				"crate_log": del_note.name,
+				"transporter": del_note.transporter,
+				"customer":del_note.customer,
+				"delivery_note":del_note.voucher,
+				"route": del_note.route,
+				"crate_type": del_note.crate_type,
+				"vehicle": del_note.vehicle,
+				"outgoing": del_note.crate_issue,
+				"incoming": del_note.crate_return,
+				"damaged": del_note.damaged,
+				"difference": del_note.crate_issue - del_note.crate_return,
+				"gate_pass": del_note.gate_pass
+			})
+		if del_note.voucher_type=="Gate Pass":
+			crate_recl.append("delivery_info",{
+				"delivery_date": del_note.date,
+				"crate_log": del_note.name,
+				"transporter": del_note.transporter,
+				"customer":del_note.customer,
+				"route": del_note.route,
+				"crate_type": del_note.crate_type,
+				"vehicle": del_note.vehicle,
+				"outgoing": del_note.crate_issue,
+				"incoming": del_note.crate_return,
+				"damaged": del_note.damaged,
+				"difference": del_note.crate_issue - del_note.crate_return,
+				"gate_pass": del_note.gate_pass
+			})
 
 	doclist = get_mapped_doc("Crate Log", source_name, {
 		"Crate Log": {

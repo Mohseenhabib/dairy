@@ -49,6 +49,7 @@
  ],
  "fields": [
   {
+   "default": "Today",
    "fieldname": "date",
    "fieldtype": "Date",
    "label": "Date",
@@ -112,9 +113,8 @@
   {
    "fieldname": "item",
    "fieldtype": "Table",
-   "hidden": 1,
    "ignore_user_permissions": 1,
-   "label": "Item",
+   "label": "Gate Pass Item",
    "options": "Gate Pass Item"
   },
   {
@@ -125,7 +125,7 @@
   {
    "fieldname": "merge_item",
    "fieldtype": "Table",
-   "label": "Item",
+   "label": "Merge Gate Pass Item",
    "options": "Merge Gate Pass Item"
   },
   {
@@ -136,7 +136,6 @@
   {
    "fieldname": "crate",
    "fieldtype": "Table",
-   "hidden": 1,
    "label": "Outgoing Crate Count",
    "options": "Gate Pass Crate Count"
   },
@@ -181,7 +180,6 @@
   {
    "fieldname": "total_crate",
    "fieldtype": "Int",
-   "hidden": 1,
    "label": "Total Crate"
   },
   {
@@ -240,7 +238,6 @@
    "fetch_from": "transporter.supplier_name",
    "fieldname": "transporter_name",
    "fieldtype": "Data",
-   "hidden": 1,
    "label": "Transporter Name"
   },
   {
@@ -306,7 +303,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-18 16:24:55.620433",
+ "modified": "2023-03-25 17:55:08.867200",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Gate Pass",

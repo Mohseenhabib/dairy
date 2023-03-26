@@ -3,6 +3,8 @@ frappe.ui.form.on("Sales Invoice", {
 		frm.add_fetch("route", "price_list", "selling_price_list");
 	},
 	onload: function(frm){
+        // frm.set_df_property("crate_count", "hidden",1);
+        // frm.set_df_property("loose_crate_", "hidden",1);
 
         frm.set_query('route', function(doc) {
             return {
@@ -13,8 +15,47 @@ frappe.ui.form.on("Sales Invoice", {
                 }
             };
         });
+         if(!frm.doc.__islocal){
+        frm.add_custom_button(__("Calculate Crate"),function(){
+        frm.call({
+            method:"dairy.milk_entry.custom_sales_invoice.calculate_crate_save",
+            args: {
+                    name:frm.doc.name
+                  },
+            callback: function(r)
+                {
+                    // $.each(r.message, function(index, row)
+                    // {   
+                       
+                    // });
+                    frm.set_value("crate_count",r.message)
+                   frm.refresh_fields("crate_count")
+                   frm.save()
+                }
+            });
+        })
+    }
+         
     },
-    after_save:function(frm,cdt,cdn){
+    before_submit:function(frm){
+        frm.call({
+            method:"dairy.milk_entry.custom_sales_invoice.calculate_crate_save",
+            args: {
+                    name:frm.doc.name
+                  },
+            callback: function(r)
+                {
+                    // $.each(r.message, function(index, row)
+                    // {   
+                       
+                    // });
+                    frm.set_value("crate_count",r.message)
+                   frm.refresh_fields("crate_count")
+                //    frm.save()
+                }
+            });
+    },
+    before_save:function(frm,cdt,cdn){
         var d = locals[cdt][cdn];
         console.log(d);
         $.each(d.items, function(index, row)
@@ -24,9 +65,44 @@ frappe.ui.form.on("Sales Invoice", {
             console.log("Rate of stock uom",a)
             frm.refresh_field("rate_of_stock_uom")
         });
+        frm.call({
+            method:"dairy.milk_entry.custom_sales_invoice.calculate_crate_save",
+            args: {
+                    name:frm.doc.name
+                  },
+            callback: function(r)
+                {
+                    // $.each(r.message, function(index, row)
+                    // {   
+                       
+                    // });
+                    frm.set_value("crate_count",r.message)
+                   frm.refresh_fields("crate_count")
+                //    frm.save()
+                }
+            });
+       
+        // frm.set_df_property("crate_count", "hidden",0);
+        // frm.set_df_property("loose_crate_", "hidden",0);
+        // cur_frm.reload_doc();
+      
     },
     
     customer:function(frm){
+        frappe.call({
+            method: 'dairy.milk_entry.doctype.bulk_milk_price_list.bulk_milk_price_list.fetch_data',
+            args: {
+                'doctype': 'Bulk Milk Price List',
+                'customer': frm.doc.customer
+            },
+            callback: function(r) {
+                if (!r.exc) {
+                    // code snippet
+                    frm.set_value('fat_rate', r.message.rate)
+                    frm.set_value('snf_clr_rate', r.message.snf)
+                }
+            }
+        });
         return cur_frm.call({
             method:"dairy.milk_entry.custom_delivery_note.get_route_price_list",
             args: {
@@ -37,13 +113,16 @@ frappe.ui.form.on("Sales Invoice", {
                    if(r.message)
                    {
                     frm.set_value("route",r.message.route);
+                    frm.refresh_field("route")
                      frm.set_value("selling_price_list",r.message.p_list);
+                     frm.refresh_field("selling_price_list")
 
                    }
                 }
         });
     },
     route:function(frm){
+        frm.add_fetch("route", "transporter", "transporter");
 	         return cur_frm.call({
             method:"dairy.milk_entry.custom_sales_order.set_territory",
             args: {
@@ -60,7 +139,13 @@ frappe.ui.form.on("Sales Invoice", {
                    }
                 }
         });
-    }
+    
+    },
+
+    // customer: function(frm){
+        
+    // },
+   
 })
 
 frappe.ui.form.on("Sales Invoice Item", {

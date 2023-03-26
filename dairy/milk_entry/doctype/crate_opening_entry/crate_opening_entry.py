@@ -10,7 +10,7 @@ class CrateOpeningEntry(Document):
 	@frappe.whitelist()
 	def make_crate_log(self , co =0):
 
-		if frappe.db.get_single_value("Dairy Settings", "crate_reconciliation_based_on") == "Gate Pass":
+		if frappe.db.get_single_value("Dairy Settings", "crate_reconciliation_based_on") == "Crate Opening Entry":
 
 			for crate in self.party_crate_opening:
 				log = frappe.new_doc("Crate Log")

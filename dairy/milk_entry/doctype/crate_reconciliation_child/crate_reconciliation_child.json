@@ -8,6 +8,7 @@
   "delivery_date",
   "delivery_note",
   "gate_pass",
+  "sales_invoice",
   "crate_log",
   "customer",
   "transporter",
@@ -33,7 +34,8 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Delivery Note",
-   "options": "Delivery Note"
+   "options": "Delivery Note",
+   "read_only": 1
   },
   {
    "fieldname": "customer",
@@ -96,7 +98,8 @@
    "fieldname": "gate_pass",
    "fieldtype": "Link",
    "label": "Gate Pass",
-   "options": "Gate Pass"
+   "options": "Gate Pass",
+   "read_only": 1
   },
   {
    "fieldname": "transporter",
@@ -109,11 +112,18 @@
    "fieldtype": "Link",
    "label": "Crate Log",
    "options": "Crate Log"
+  },
+  {
+   "fieldname": "sales_invoice",
+   "fieldtype": "Link",
+   "label": "Sales Invoice",
+   "options": "Sales Invoice",
+   "read_only": 1
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2020-09-07 15:21:59.583092",
+ "modified": "2023-03-24 19:05:50.030643",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Crate Reconciliation Child",
@@ -122,5 +132,6 @@
  "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }

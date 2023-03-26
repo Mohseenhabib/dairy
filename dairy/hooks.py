@@ -169,6 +169,9 @@ doc_events = {
     },
     "Sales Invoice": {
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
+        "before_submit": "dairy.milk_entry.custom_sales_invoice.before_submit",
+        "after_insert": "dairy.milk_entry.custom_sales_invoice.calculate_crate"
+        # "before_save": "dairy.milk_entry.custom_sales_invoice.calculate_crate_save"
     },
     "Stock Entry":{
         "after_insert": ["dairy.milk_entry.doctype.van_collection.van_collection.change_van_collection_status",
@@ -188,6 +191,7 @@ doc_events = {
     "BOM":{
     "before_save": "dairy.dairy.custom_bom.before_save"
     }
+  
 }
 
 permission_query_conditions = {
@@ -251,9 +255,13 @@ jinja = {
 
 		"dairy.milk_entry.custom_delivery_trip.get_jinja_data",
         "dairy.milk_entry.custom_delivery_trip.get_jinja_data_del_note",
+        "dairy.milk_entry.custom_delivery_trip.get_jinja_data_si",
         "dairy.milk_entry.custom_delivery_trip.get_jinja_data_del_note_item",
+         "dairy.milk_entry.custom_delivery_trip.get_jinja_data_si_item",
         "dairy.milk_entry.custom_delivery_trip.del_note_total",
+         "dairy.milk_entry.custom_delivery_trip.si_note_total",
         "dairy.milk_entry.custom_delivery_trip.del_note_details",
+         "dairy.milk_entry.custom_delivery_trip.si_note_details",
         "dairy.milk_entry.custom_delivery_trip.total_supp_qty_based_on_itm_grp",
 	]
 }
