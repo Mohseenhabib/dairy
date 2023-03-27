@@ -42,13 +42,13 @@ def milk_ledger_stock_entry(self,method):
                                             {'warehouse': itm.s_warehouse, 'item_code': itm.item_code, 'batch_no': itm.batch_no,
                                             'serial_no': itm.serial_no}, as_dict=True)
                        
-                        if mle:
-                            mle_obj = frappe.get_doc("Milk Ledger Entry",mle[0]['name'])
-                            print('mle_obj*************************',mle_obj)
-                            itm.fat = (mle_obj.fat_per / 100) * (itm.transfer_qty * itm_weight)
-                            itm.fat_per = mle_obj.fat_per
-                            itm.snf_clr = (mle_obj.snf_per / 100) * (itm.transfer_qty * itm_weight)
-                            itm.snf_clr_per = mle_obj.snf_per
+                        # if mle:
+                        #     mle_obj = frappe.get_doc("Milk Ledger Entry",mle[0]['name'])
+                        #     print('mle_obj*************************',mle_obj)
+                        #     itm.fat = (mle_obj.fat_per / 100) * (itm.transfer_qty * itm_weight)
+                        #     itm.fat_per = mle_obj.fat_per
+                        #     itm.snf_clr = (mle_obj.snf_per / 100) * (itm.transfer_qty * itm_weight)
+                        #     itm.snf_clr_per = mle_obj.snf_per
 
                         # rate
                         # if milk_type != "":
@@ -367,6 +367,24 @@ def cancel_create_milk_stock_ledger(self,method):
         self.rmrd = ""
         print('se dlt*****************************************')
         frappe.db.sql("""DELETE FROM `tabStock Entry` where name = '{0}' """.format(se_dlt))
+
+    
+    
+    if self.van_collection and self.van_collection_item:
+        vci = frappe.get_doc('Van Collection Items',self.van_collection_item)
+        if vci.van_collection == self.van_collection:
+            vc = frappe.get_doc('Van Collection',self.van_collection)
+            vc.db_set('status','In-Progress')
+            vc.db_update()
+            print('van collection satus *************************')
+
+    if self.rmrd and self.rmrd_lines:
+        r_lines = frappe.get_doc('RMRD Lines',self.rmrd_lines)
+        if r_lines.rmrd == self.rmrd:
+            rmrd = frappe.get_doc('RMRD',self.rmrd)
+            rmrd.db_set('status','In-Progress')
+            rmrd.db_update()
+            print('van collection satus *************************')
 
 
 @frappe.whitelist()

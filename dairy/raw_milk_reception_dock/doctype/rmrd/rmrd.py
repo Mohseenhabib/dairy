@@ -18,7 +18,7 @@ class RMRD(Document):
 	def submit_rmrd(self):
 		self.db_set('status','Submitted')
 
-	def on_cancel(self):
+	def before_cancel(self):
 		rl = frappe.get_all('RMRD Lines',{'rmrd':self.name},['name'])
 		for dl in rl:
 			dlt = frappe.delete_doc('RMRD Lines',dl.name)
@@ -31,6 +31,7 @@ class RMRD(Document):
 
 	@frappe.whitelist()
 	def start_rmrd(self):
+		entry = frappe.get_doc('Dairy Settings')
 		# result1 = frappe.db.sql("""select sum(cow_milk_collected) as cow_collected,
 		# 						sum(buffalow_milk_collected) as buf_collected,
 		# 						sum(mix_milk_collected) as mix_collected,
@@ -56,8 +57,7 @@ class RMRD(Document):
 								""", (self.route, self.shift, self.date), as_dict=True)
 
 
-
-		# print('result1*^^^^^^^^^^^^^^^^^^^',result1)						
+					
 		if not result1:
 			frappe.throw("Collection Not found!")
 
@@ -71,13 +71,15 @@ class RMRD(Document):
 								(sed.snf_clr),
 								(sed.snf_clr_per),
 								(sed.snf_per),
-								itm.milk_type,
+								itm.name,
 								sed.s_warehouse
 								from `tabStock Entry Detail` as sed 
 								join `tabStock Entry` as se on se.name = sed.parent 
 								join `tabItem` as itm on itm.name = sed.item_code
 								where se.posting_date =%s and sed.s_warehouse = %s and se.docstatus = 1
 								""", ( self.date ,res.get('dcs')), as_dict=True)
+			
+			print('clrs**************************************',clrs)
 			doc = frappe.new_doc("RMRD Lines")
 			doc.g_cow_milk = res.get('cow_collected')
 			doc.g_buf_milk = res.get('buf_collected')
@@ -91,16 +93,18 @@ class RMRD(Document):
 			doc.rmrd = self.name
 			for c in clrs:
 				if doc.dcs == c.get('s_warehouse'):
-					print('c warehouse********************',c.get('s_warehouse'))
-					if c.get('milk_type') == 'Cow':
+					print('c warehouse********************',c.get('s_warehouse'),c.get('name'))
+					if c.get('name') == entry.cow_pro:
 						doc.cow_milk_fat = c.get('fat_per')
 						doc.cow_milk_fat_kg = c.get('fat')
 						doc.cow_milk_snf_kg = c.get('snf_clr')
 						doc.cow_milk_snf = c.get('snf_clr_per')
 						doc.cow_milk_clr = c.get('snf_per')
 						doc.cow_milk_clr_kg = c.get('snf')
+					
+					print('milkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk',)
 
-					if c.get('milk_type') == 'Buffalo':
+					if c.get('name') == entry.buf_pro:
 						doc.buf_milk_fat = c.get('fat_per')
 						doc.buf_milk_fat_kg = c.get('fat')
 						doc.buf_milk_snf_kg = c.get('snf_clr')
@@ -108,7 +112,9 @@ class RMRD(Document):
 						doc.buf_milk_clr = c.get('snf_per')
 						doc.buffalo_milk_clr_kg = c.get('snf')
 
-					if c.get('milk_type') == 'Mix':
+					print('milkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkhhhhhhhhhhhhhhhhhhh')
+
+					if c.get('name') == entry.mix_pro:
 						doc.mix_milk_fat = c.get('fat_per')
 						doc.mix_milk_fat_kg = c.get('fat')
 						doc.mix_milk_snf_kg = c.get('snf_clr')
@@ -232,7 +238,9 @@ class RMRD(Document):
 			self.save(ignore_permissions=True)
 
 		line_ids = frappe.db.sql("""select name from `tabRMRD Lines` where rmrd =%s""", (self.name), as_dict =True)
+		print('line****************************************',line_ids)
 		for res in line_ids:
+		
 			doc =frappe.get_doc("RMRD Lines",res.get("name"))
 			if doc:
 				doc.submit()	
