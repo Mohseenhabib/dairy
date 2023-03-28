@@ -47,7 +47,8 @@ frappe.ui.form.on('BOM Item', {
         frappe.call({
             method : 'dairy.dairy.custom_bom.bom_item_child',
             args:{
-                item_code : child.item_code
+                item_code : child.item_code,
+                qty : child.qty,
             },
             callback:function(resp){
                 child.weight  = resp.message[0]

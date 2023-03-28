@@ -43,7 +43,7 @@ def milk_ledger_stock_entry(self,method):
                                             'serial_no': itm.serial_no}, as_dict=True)
                         # if not mle:
                         #     frappe.throw("Milk Ledger Entry Not Found For This Item")
-                        if mle[0]['name']:
+                        if mle:
                             mle_obj = frappe.get_doc("Milk Ledger Entry",mle[0]['name'])
                             print('mle_obj*************************',mle_obj)
                             itm.fat = (mle_obj.fat_per / 100) * (itm.transfer_qty * itm_weight)
@@ -392,3 +392,58 @@ def update_vc_status(self,method):
             rmrd.db_set('status','Completed')
             rmrd.db_update()
             print('van collection satus *************************')
+
+
+def calculate_wfs(self,method):
+    if self.item:
+        doc=frappe.get_doc("Item",self.item)
+        if doc.maintain_fat_snf_clr:
+            self.required_fat=doc.standard_fat
+            self.required_snf=doc.standard_snf
+            self.total_fat_in_kg=(self.fg_completed_qty*doc.weight_per_unit)*doc.standard_fat/100
+            self.total_snf_in_kg=(self.fg_completed_qty*doc.weight_per_unit)*doc.standard_fat/100
+        
+
+        total_rm_fat=[]
+        total_rm_snf=[]
+        total_fat_in_kg=[]
+        total_snf_in_kg=[]
+        for i in self.items:
+            item=frappe.get_doc("Item",i.item_code)
+            if doc.maintain_fat_snf_clr:
+                total_rm_fat.append(item.standard_fat)
+                total_rm_snf.append(item.standard_snf)
+                total_fat_in_kg.append((i.qty*item.weight_per_unit)*item.standard_fat/100)
+                total_snf_in_kg.append((i.qty*item.weight_per_unit)*item.standard_snf/100)
+        if len(total_rm_fat)>0:
+            self.total_rm_fat=sum(total_rm_fat)/len(self.items)
+
+        if len(total_rm_snf)>0:
+            self.total_rm_snf=sum(total_rm_snf)/len(self.items)
+        if len(total_fat_in_kg)>0:
+            self.total_rm_fats_in_kg=sum(total_fat_in_kg)
+        if len(total_snf_in_kg)>0:
+            self.total_rm_snfs_in_kg=sum(total_snf_in_kg)
+        
+
+        self.total_diff_fat=self.required_fat- self.total_rm_fat
+        self.total_diff_snf=self.required_snf-self.total_diff_snf
+        self.total_diff_fat_in_kg=self.total_fat_in_kg-self.total_rm_fats_in_kg
+        self.total_diff_snf_in_kg=self.total_snf_in_kg-self.total_rm_snfs_in_kg
+
+
+    
+
+
+
+@frappe.whitelist()
+def get_val(name):
+    doc=frappe.get_doc("Dairy Settings")
+    items=[]
+    for i in doc.items_to_add_fat:
+        doc=frappe.get_doc("Item",i.item)
+        items.append({"item_code":doc.name,"item_name":doc.item_name,"qty":1,"uom":doc.stock_uom,
+                      "fat":doc.standard_fat,"snf":doc.standard_snf,"total_fat_in_kg":0,"total_snf_in_kg":0})
+    return items
+        
+        

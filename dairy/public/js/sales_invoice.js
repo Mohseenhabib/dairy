@@ -65,6 +65,7 @@ frappe.ui.form.on("Sales Invoice", {
             console.log("Rate of stock uom",a)
             frm.refresh_field("rate_of_stock_uom")
         });
+        if(frm.doc.__islocal){
         frm.call({
             method:"dairy.milk_entry.custom_sales_invoice.calculate_crate_save",
             args: {
@@ -81,7 +82,7 @@ frappe.ui.form.on("Sales Invoice", {
                 //    frm.save()
                 }
             });
-       
+        }
         // frm.set_df_property("crate_count", "hidden",0);
         // frm.set_df_property("loose_crate_", "hidden",0);
         // cur_frm.reload_doc();

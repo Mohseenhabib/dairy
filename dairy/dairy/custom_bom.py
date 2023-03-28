@@ -31,6 +31,8 @@ def get_required_fat_snf(item_code, quantity):
 
 @frappe.whitelist()
 def bom_item_child_table(item_code, qty):
+    if not qty:
+        qty=1
     print("QTY ===============================",qty)
     reqd_fat = frappe.get_doc("Item",{'name' : item_code})
     if reqd_fat.maintain_fat_snf_clr == 1:
@@ -50,8 +52,8 @@ def bom_item_child_table(item_code, qty):
 
 
 @frappe.whitelist()
-def bom_item_child(item_code):
-    qty=1
+def bom_item_child(item_code,qty):
+    
     print("QTY ===============================",qty)
     reqd_fat = frappe.get_doc("Item",{'name' : item_code})
     if reqd_fat.maintain_fat_snf_clr == 1:
@@ -65,7 +67,6 @@ def bom_item_child(item_code):
             print("ITEM CODE ON CHILD TABLE CODE =========",item_code)
             print("ITEM FAT ON TABLE = ",BOM_fat)
             print("ITEM SNF ON TABLE = ",BOM_snf)
-
             return [weight,reqd_fat.standard_fat, BOM_fat, reqd_fat.standard_snf, BOM_snf]
         
 
@@ -97,3 +98,6 @@ def before_save(self,method):
 
 
     
+# def before_submit(self,method):
+#     if self.total_rm_fat!=self.item_fat or  self.total_rm_snf!=self.item_snf:
+#         frappe.throw("Total RM Fat or Snf Not Equal To  Prouction Item Fat or snf")

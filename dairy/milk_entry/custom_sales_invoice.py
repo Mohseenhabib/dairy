@@ -66,8 +66,7 @@ def before_submit(self,method):
 
 @frappe.whitelist()
 def calculate_crate(obj,method=None):
-    print('calculate crate^^^^^^^^^^^^^^^^^^^^^6')
-    if not obj.get("__islocal") and obj.crate_cal_done != "Done":
+    if not obj.get("__islocal") and obj.crate_cal_done != "Done" and obj.is_return==0:
         doc_name = obj.name
         if doc_name:
             doc = frappe.get_doc("Sales Invoice",doc_name)
@@ -250,6 +249,7 @@ def calculate_crate(obj,method=None):
 @frappe.whitelist()
 def calculate_crate_save(name):
     print('calculate crate^^^^^^^^^^^^^^^^^^^^^6')
+    
     c_count=[]
     
     doc_name = name
@@ -588,3 +588,26 @@ def set_fat_and_snf_rate(obj,method):
                     res.snf_clr_amount = res.snf_clr * query[0].snf_clr_rate
 
 
+
+# @frappe.whitelist()
+# def get_party_bal(doc_name, customer_name=None):
+#     if not customer_name:
+#         frappe.throw(_("Please select customer"))
+#     else:
+#         doc = frappe.get_doc("Sales Invoice", doc_name)
+#         cust_name = customer_name
+#         doctype = "Customer"
+#         loyalty_program = None
+#         party_bal = get_dashboard_info(doctype, cust_name, loyalty_program)
+#         if cust_name and party_bal:
+#             doc._party_balance = party_bal[0]['total_unpaid']
+#             doc.db_update()
+#     return True
+
+# def get_party_bals(sale, meth):
+#     cust_name = sale.customer_name
+#     doctype = "Customer"
+#     loyalty_program = None
+#     party_bal = get_dashboard_info(doctype, cust_name, loyalty_program)
+#     if cust_name and party_bal:
+#         sale._party_balance = party_bal[0]['total_unpaid']
