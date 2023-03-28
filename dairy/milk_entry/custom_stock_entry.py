@@ -437,13 +437,54 @@ def calculate_wfs(self,method):
 
 
 @frappe.whitelist()
-def get_val(name):
+def get_add_fat(name):
     doc=frappe.get_doc("Dairy Settings")
     items=[]
     for i in doc.items_to_add_fat:
         doc=frappe.get_doc("Item",i.item)
         items.append({"item_code":doc.name,"item_name":doc.item_name,"qty":1,"uom":doc.stock_uom,
-                      "fat":doc.standard_fat,"snf":doc.standard_snf,"total_fat_in_kg":0,"total_snf_in_kg":0})
+                      "fat":doc.standard_fat,"snf":doc.standard_snf,
+                      "total_fat_in_kg":(1*doc.weight_per_unit)*doc.standard_fat/100,"total_snf_in_kg":(1*doc.weight_per_unit)*doc.standard_fat/100})
     return items
         
         
+@frappe.whitelist()
+def get_add_snf(name):
+    doc=frappe.get_doc("Dairy Settings")
+    items=[]
+    for i in doc.items_to_add_fat:
+        doc=frappe.get_doc("Item",i.item)
+        items.append({"item_code":doc.name,"item_name":doc.item_name,"qty":1,"uom":doc.stock_uom,
+                      "fat":doc.standard_fat,"snf":doc.standard_snf,
+                      "total_fat_in_kg":(1*doc.weight_per_unit)*doc.standard_fat/100,"total_snf_in_kg":(1*doc.weight_per_unit)*doc.standard_fat/100})
+    return items
+        
+@frappe.whitelist()
+def get_remove_snf(name):
+    doc=frappe.get_doc("Dairy Settings")
+    items=[]
+    for i in doc.items_to_add_fat:
+        doc=frappe.get_doc("Item",i.item)
+        items.append({"item_code":doc.name,"item_name":doc.item_name,"qty":1,"uom":doc.stock_uom,
+                      "fat":doc.standard_fat,"snf":doc.standard_snf,
+                      "total_fat_in_kg":(1*doc.weight_per_unit)*doc.standard_fat/100,"total_snf_in_kg":(1*doc.weight_per_unit)*doc.standard_fat/100})
+    return items
+        
+
+@frappe.whitelist()
+def get_remove_fat(name):
+    doc=frappe.get_doc("Dairy Settings")
+    items=[]
+    for i in doc.items_to_add_fat:
+        doc=frappe.get_doc("Item",i.item)
+        items.append({"item_code":doc.name,"item_name":doc.item_name,"qty":1,"uom":doc.stock_uom,
+                      "fat":doc.standard_fat,"snf":doc.standard_snf,
+                      "total_fat_in_kg":(1*doc.weight_per_unit)*doc.standard_fat/100,"total_snf_in_kg":(1*doc.weight_per_unit)*doc.standard_fat/100})
+    return items
+        
+
+
+@frappe.whitelist()
+def append_item(values,name):
+    se=frappe
+    pass

@@ -35,7 +35,7 @@ frappe.ui.form.on('Stock Entry', {
 	},
 	add_fat_button:function(frm){
 		frappe.call({
-			method:"dairy.milk_entry.custom_stock_entry.get_val",
+			method:"dairy.milk_entry.custom_stock_entry.get_add_fat",
 			args:{
 				"name":frm.doc.name
 			},
@@ -118,15 +118,22 @@ frappe.ui.form.on('Stock Entry', {
 				},
 				fields: child_table
 			}],
-			primary_action: function (value) {
-				console.log(value)
+			primary_action: function (values) {
+				console.log(values)
 				frappe.call({
-					method:"",
+					method:"dairy.milk_entry.custom_stock_entry.append_item",
+					args:{
+						values:values,
+						name:frm.doc.name
+
+					},
+					callback:function(frm){
+						frm.refresh_field("items")
+					}
 					
 				})
 				dialog.hide();
 				
-				// console.log(" thi is done Primary")
 			},
 			primary_action_label: __('Submit'),
 

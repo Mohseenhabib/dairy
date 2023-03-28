@@ -55,6 +55,23 @@ frappe.ui.form.on("Sales Invoice", {
                 }
             });
     },
+    // update_party_balance: function(frm){
+	// 	frappe.call({
+	// 		method: 'on_update_party_balance',
+	// 		args:{
+    //             self:frm.doc.name,
+    //         },
+	// 		callback: function(r) {
+	// 			// frm.reload_doc();
+	// 			if (r.message){
+	// 				// console.log(" this is call from Commited", r.message[0].outstanding)
+
+	// 				frm.set_value("_party_balance", r.message[0].outstanding)
+	// 				frm.refresh_field("_party_balance")
+	// 			}
+	// 		}
+	// 	})
+	// },
     before_save:function(frm,cdt,cdn){
         var d = locals[cdt][cdn];
         console.log(d);
@@ -65,7 +82,7 @@ frappe.ui.form.on("Sales Invoice", {
             console.log("Rate of stock uom",a)
             frm.refresh_field("rate_of_stock_uom")
         });
-        if(frm.doc.__islocal){
+        if(!frm.doc.__islocal){
         frm.call({
             method:"dairy.milk_entry.custom_sales_invoice.calculate_crate_save",
             args: {
