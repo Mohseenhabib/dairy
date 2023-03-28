@@ -8,6 +8,14 @@ from frappe.model.document import Document
 from math import ceil
 
 class RMRDLines(Document):
+	def validate(self):
+		if self.get('__islocal'):
+			result = frappe.db.sql("""select * from `tabRMRD Lines` where dcs =%s and shift =%s
+							and date=%s and docstatus = 1""",(self.dcs,self.shift,self.date))
+			if result:
+				frappe.throw("You can not create duplicate entry on same date and same DCS")
+	
+	
 	@frappe.whitelist()
 	def calculate_total_cans_wt(self):
 		allow_max_capacity = float(frappe.db.get_single_value("Dairy Settings", "max_allowed"))

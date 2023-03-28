@@ -237,7 +237,7 @@ def cancel_create_milk_stock_ledger(self,method):
             vc.db_update()
             print('van collection satus *************************')
 
-    if self.rmrd and self.rmrd_lines:
+    if self.rmrd or self.rmrd_lines:
         r_lines = frappe.get_doc('RMRD Lines',self.rmrd_lines)
         if r_lines.rmrd == self.rmrd:
             rmrd = frappe.get_doc('RMRD',self.rmrd)

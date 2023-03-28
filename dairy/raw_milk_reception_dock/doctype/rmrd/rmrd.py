@@ -7,12 +7,6 @@ import frappe
 from frappe.model.document import Document
 
 class RMRD(Document):
-	def validate(self):
-		result = frappe.db.sql("""select name from `tabRMRD` where route =%s and date =%s and shift =%s and docstatus = 1 """,(self.route,self.date,self.shift))
-		# if result and self.get('__islocal'):
-		if result:
-			print('rmrd error^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',result)
-			frappe.throw("you can not create duplicate entry with same DCS,Date and Shift.")
 
 	@frappe.whitelist()
 	def submit_rmrd(self):
