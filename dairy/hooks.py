@@ -189,7 +189,7 @@ doc_events = {
     "Sales Invoice": {
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
         "before_submit": "dairy.milk_entry.custom_sales_invoice.before_submit",
-        "after_insert": "dairy.milk_entry.custom_sales_invoice.calculate_crate"
+        # "after_insert": "dairy.milk_entry.custom_sales_invoice.calculate_crate"
         # "before_save": "dairy.milk_entry.custom_sales_invoice.calculate_crate_save"
     },
     "Stock Entry":{
