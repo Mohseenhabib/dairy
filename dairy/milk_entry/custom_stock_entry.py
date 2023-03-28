@@ -229,6 +229,21 @@ def on_submit(self, method):
                             # new_mle.submit()
 
 def cancel_create_milk_stock_ledger(self,method):
+    if self.van_collection or self.van_collection_item:
+        vci = frappe.get_doc('Van Collection Items',self.van_collection_item)
+        if vci.van_collection == self.van_collection:
+            vc = frappe.get_doc('Van Collection',self.van_collection)
+            vc.db_set('status','In-Progress')
+            vc.db_update()
+            print('van collection satus *************************')
+
+    if self.rmrd and self.rmrd_lines:
+        r_lines = frappe.get_doc('RMRD Lines',self.rmrd_lines)
+        if r_lines.rmrd == self.rmrd:
+            rmrd = frappe.get_doc('RMRD',self.rmrd)
+            rmrd.db_set('status','In-Progress')
+            rmrd.db_update()
+            print('van collection satus *************************')
     for itm in self.items:
         if itm.t_warehouse:
             itm_obj = frappe.get_doc("Item", itm.item_code)
@@ -368,23 +383,8 @@ def cancel_create_milk_stock_ledger(self,method):
         print('se dlt*****************************************')
         frappe.db.sql("""DELETE FROM `tabStock Entry` where name = '{0}' """.format(se_dlt))
 
-    
-    
-    if self.van_collection and self.van_collection_item:
-        vci = frappe.get_doc('Van Collection Items',self.van_collection_item)
-        if vci.van_collection == self.van_collection:
-            vc = frappe.get_doc('Van Collection',self.van_collection)
-            vc.db_set('status','In-Progress')
-            vc.db_update()
-            print('van collection satus *************************')
 
-    if self.rmrd and self.rmrd_lines:
-        r_lines = frappe.get_doc('RMRD Lines',self.rmrd_lines)
-        if r_lines.rmrd == self.rmrd:
-            rmrd = frappe.get_doc('RMRD',self.rmrd)
-            rmrd.db_set('status','In-Progress')
-            rmrd.db_update()
-            print('van collection satus *************************')
+    
 
 
 @frappe.whitelist()
@@ -412,3 +412,4 @@ def update_vc_status(self,method):
             
 
 
+   

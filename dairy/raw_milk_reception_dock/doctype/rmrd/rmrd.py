@@ -102,7 +102,6 @@ class RMRD(Document):
 						doc.cow_milk_clr = c.get('snf_per')
 						doc.cow_milk_clr_kg = c.get('snf')
 					
-					print('milkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk',)
 
 					if c.get('name') == entry.buf_pro:
 						doc.buf_milk_fat = c.get('fat_per')
@@ -112,7 +111,6 @@ class RMRD(Document):
 						doc.buf_milk_clr = c.get('snf_per')
 						doc.buffalo_milk_clr_kg = c.get('snf')
 
-					print('milkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkhhhhhhhhhhhhhhhhhhh')
 
 					if c.get('name') == entry.mix_pro:
 						doc.mix_milk_fat = c.get('fat_per')
