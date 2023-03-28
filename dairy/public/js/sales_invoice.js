@@ -15,7 +15,7 @@ frappe.ui.form.on("Sales Invoice", {
                 }
             };
         });
-         if(!frm.doc.__islocal){
+         if(!frm.doc.__islocal && frm.doc.docstatus==0 && frm.doc.is_return==0){
         frm.add_custom_button(__("Calculate Crate"),function(){
         frm.call({
             method:"dairy.milk_entry.custom_sales_invoice.calculate_crate_save",
@@ -24,10 +24,6 @@ frappe.ui.form.on("Sales Invoice", {
                   },
             callback: function(r)
                 {
-                    // $.each(r.message, function(index, row)
-                    // {   
-                       
-                    // });
                     frm.set_value("crate_count",r.message)
                    frm.refresh_fields("crate_count")
                    frm.save()
