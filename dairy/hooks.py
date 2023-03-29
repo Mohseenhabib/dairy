@@ -84,7 +84,8 @@ fixtures = fixtures = [
             "Sales Order-_party_balance",
             "Sales Order-update_party_balance",
             "Sales Invoice-_party_balance",
-            "Sales Invoice-update_party_balance"
+            "Sales Invoice-update_party_balance",
+            "Item Tax Template-tax_rate"
             
         )]]}
 ]
