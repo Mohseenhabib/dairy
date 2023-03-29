@@ -41,6 +41,10 @@ frappe.ui.form.on("Work Order", {
         })
     },
     refresh:function(frm){
+        frm.remove_custom_button("Start")
+        frm.remove_custom_button("Create Pick List")
+        frm.remove_custom_button("Close","Status")
+        frm.remove_custom_button("Stop","Status")
     frappe.db.get_value(
         "Item",
         frm.doc.production_item,
