@@ -51,23 +51,21 @@ frappe.ui.form.on("Sales Invoice", {
                 }
             });
     },
-    // update_party_balance: function(frm){
-	// 	frappe.call({
-	// 		method: 'on_update_party_balance',
-	// 		args:{
-    //             self:frm.doc.name,
-    //         },
-	// 		callback: function(r) {
-	// 			// frm.reload_doc();
-	// 			if (r.message){
-	// 				// console.log(" this is call from Commited", r.message[0].outstanding)
+    update_party_balance: function(frm){
+		frappe.call({
+			method:'dairy.milk_entry.custom_sales_invoice.get_party_bal',
+            args:{
+                customer:frm.doc.customer
+            },
+			callback: function(r) {
+				if (r.message){
 
-	// 				frm.set_value("_party_balance", r.message[0].outstanding)
-	// 				frm.refresh_field("_party_balance")
-	// 			}
-	// 		}
-	// 	})
-	// },
+					frm.set_value("_party_balance", r.message)
+					frm.refresh_field("_party_balance")
+				}
+			}
+		})
+	},
     before_save:function(frm,cdt,cdn){
         var d = locals[cdt][cdn];
         console.log(d);

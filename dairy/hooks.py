@@ -79,7 +79,11 @@ fixtures = fixtures = [
             "Stock Entry-add_snf_button",
             "Stock Entry-column_break_jxbbt",
             "Stock Entry-remove_fat_button",
-            "Stock Entry-remove_snf_button"
+            "Stock Entry-remove_snf_button",
+            "Sales Order-_party_balance",
+            "Sales Order-update_party_balance",
+            "Sales Invoice-_party_balance",
+            "Sales Invoice-update_party_balance"
             
         )]]}
 ]
@@ -263,6 +267,7 @@ scheduler_events = {
 # Overriding Methods
 # ------------------------------
 #
+
 override_whitelisted_methods = {
 	"erpnext.selling.doctype.sales_order.sales_order.make_delivery_note": "dairy.milk_entry.custom_sales_order.make_delivery_note"
 }
