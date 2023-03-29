@@ -79,6 +79,7 @@ fixtures = fixtures = [
             "Stock Entry-add_snf_button",
             "Stock Entry-column_break_jxbbt",
             "Stock Entry-remove_fat_button",
+            "Stock Entry-item",
             "Stock Entry-remove_snf_button",
             "Sales Order-_party_balance",
             "Sales Order-update_party_balance",

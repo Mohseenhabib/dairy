@@ -52,8 +52,9 @@ def bom_item_child_table(item_code, qty):
 
 
 @frappe.whitelist()
-def bom_item_child(item_code,qty):
-    
+def bom_item_child(item_code,qty=None):
+    if not qty:
+        qty=1
     print("QTY ===============================",qty)
     reqd_fat = frappe.get_doc("Item",{'name' : item_code})
     if reqd_fat.maintain_fat_snf_clr == 1:
