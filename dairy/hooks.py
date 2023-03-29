@@ -220,7 +220,10 @@ doc_events = {
     # "before_submit":"dairy.dairy.custom_bom.before_submit"
     },
     "Work Order":{
-      "before_save":"dairy.milk_entry.custom_work_order.bom_item_child_table"
+      "before_save":[
+            "dairy.milk_entry.custom_work_order.bom_item_child_table",
+            "dairy.milk_entry.custom_work_order.get_required_fat_snf"
+      ]
     }
   
 }
