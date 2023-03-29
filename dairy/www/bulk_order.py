@@ -72,28 +72,29 @@ def make_so(item_list):
                         return msg
                 
                     # get_price_list = frappe.db.get_single_value("Bulk Order Settings", 'price_list')
-                    if not item_rate:
-                        item_rate = frappe.db.get_value("Item Price", {'item_code':data.get('item_code'),'price_list': f.default_price_list} , "price_list_rate")
-                   
-                        item = {
-                        "item_code" : data.get("item_code"),
-                        "delivery_date" : del_date,
-                        "qty" : data.get("qty"),
-                        "rate" : item_rate,
-                        "warehouse" : website_warehouse
-                        }
-                        so.append("items", item)
+                    
+                    item_rate = frappe.db.get_value("Item Price", {'item_code':data.get('item_code'),'price_list': f.default_price_list} , "price_list_rate")
+                
+                    item = {
+                    "item_code" : data.get("item_code"),
+                    "delivery_date" : del_date,
+                    "qty" : data.get("qty"),
+                    "rate" : item_rate,
+                    "warehouse" : website_warehouse
+                    }
+                    so.append("items", item)
         try:
             so.insert(ignore_permissions=True)
             cache.set_value('so_name', so.name)
+            # print("$$$$$$$$$$$$$$$$$$$$$$$$$$",item_with_all_data)
             for item in so.items:
                 a=0
                 for i in item_with_all_data:
                     if (i.get('item_code') == item.get('item_code')) and a==0:
-                        print("&&&&&&&&&&&&&&&&&&&&&&",i)
                         a=1
                         i['rate'] = item.get('rate')
                         i['amount'] = item.get('amount')
+            print("$$$$$$$$$$$$$$$$$$$$$$$$$$",item_with_all_data)
             cache.set_value('item_list', item_with_all_data)
             cache.set_value('rounded_up_total', so.rounded_total)
             cache.set_value('rounding_adjustment', so.rounding_adjustment)
@@ -175,8 +176,6 @@ def make_so(item_list):
                 a=0
                 for i in item_with_all_data:
                     if (i.get('item_code') == item.get('item_code')) and a==0:
-                        print("&&&&&&&&&&&&&&&&&&&&&&",i)
-
                         a=1
                         i['rate'] = item.get('rate')
                         i['amount'] = item.get('amount')
