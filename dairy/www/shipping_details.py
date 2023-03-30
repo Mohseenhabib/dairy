@@ -34,7 +34,8 @@ def get_context(context):
     else:
         context.del_date=datetime.datetime.strptime(str(today()), "%Y-%m-%d").strftime("%d-%m-%Y")
     context.order_date = datetime.datetime.now().strftime("%d-%m-%Y")
-    filters = [["Dynamic Link", "link_doctype", "=", "Customer"],["Dynamic Link", "link_name", "=", user],["Dynamic Link", "parenttype", "=", "Address"]]
+    customer=frappe.db.get_value("Customer",{"customer_name":user},"name")
+    filters = [["Dynamic Link", "link_doctype", "=", "Customer"],["Dynamic Link", "link_name", "=", customer],["Dynamic Link", "parenttype", "=", "Address"]]
     address_list = frappe.get_all("Address", filters=filters, fields=["*"])
     context.address_list = address_list
     default_cust_add_name = cache.get_value("default_cust_add")
