@@ -38,7 +38,7 @@ def get_context(context):
     filters = [["Dynamic Link", "link_doctype", "=", "Customer"],["Dynamic Link", "link_name", "=", customer],["Dynamic Link", "parenttype", "=", "Address"]]
 
     # address_list = frappe.get_all("Address", filters=filters, fields=["*"])
-    address_list=frappe.db.sql("""select * from `tabAddress` a join `tabDynamic Link` d on a.name=d.parent 
+    address_list=frappe.db.sql("""select a.* from `tabAddress` a join `tabDynamic Link` d on a.name=d.parent 
                                where d.link_name='{0}' and d.link_doctype='Customer' and d.parenttype='Address'""".format(customer),as_dict=1)
     context.address_list = address_list
     default_cust_add_name = cache.get_value("default_cust_add")
