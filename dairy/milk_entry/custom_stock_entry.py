@@ -405,7 +405,7 @@ def calculate_wfs(self,method):
                 self.required_fat=doc.standard_fat
                 self.required_snf=doc.standard_snf
                 self.total_fat_in_kg=(self.fg_completed_qty*doc.weight_per_unit)*doc.standard_fat/100
-                self.total_snf_in_kg=(self.fg_completed_qty*doc.weight_per_unit)*doc.standard_fat/100
+                self.total_snf_in_kg=(self.fg_completed_qty*doc.weight_per_unit)*doc.standard_snf/100
             
 
             total_rm_fat=[]
@@ -436,7 +436,7 @@ def calculate_wfs(self,method):
             
 
             self.total_diff_fat=self.required_fat- self.total_rm_fat
-            self.total_diff_snf=self.required_snf-self.total_diff_snf
+            self.total_diff_snf=self.required_snf-self.total_rm_snf
             self.total_diff_fat_in_kg=self.total_fat_in_kg-self.total_rm_fats_in_kg
             self.total_diff_snf_in_kg=self.total_snf_in_kg-self.total_rm_snfs_in_kg
 
