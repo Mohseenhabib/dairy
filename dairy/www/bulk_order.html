@@ -85,11 +85,7 @@
                             <td>{{it.stock_uom}}</td>
                   
                             
-                            <!-- <td>
-                                <button onclick="document.getElementById('quantity').stepDown()">-</button>
-                                <input type="number" id="{{item.item_code}}+date" name="quantity" min="0" max="1000" value="0" onchange="handle_qty('{{item.item_code}}', document.getElementById('{{item.item_code}}+date').value)" style="width: 70px;">
-                                <button onclick="document.getElementById('quantity').stepUp()">+</button>
-                            </td> -->
+            
 
                             <td><input type="number" id="{{item.item_code}}+date" name="quantity" min="0" max="1000" value="0" onchange="handle_qty('{{item.item_code}}', document.getElementById('{{item.item_code}}+date').value)" style="width: 70px;"></td>
 

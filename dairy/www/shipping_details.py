@@ -11,6 +11,7 @@ def get_context(context):
     context.naming_series = list(frappe.db.sql("select distinct naming_series from `tabSales Order`;"))
     cache = frappe.cache()
     get_cached_data = cache.get_value("item_list")
+    print("$$$$$$$$$4444444444444444",get_cached_data)
     context.item_details = get_cached_data
     print("*****************************",context.item_details)
     context.grand_total = cache.get_value("total_amount")
