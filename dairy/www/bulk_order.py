@@ -94,6 +94,7 @@ def make_so(item_list):
                         a=1
                         i['rate'] = item.get('rate')
                         i['amount'] = item.get('amount')
+                        i['uom']=item.get('uom')
             print("$$$$$$$$$$$$$$$$$$$$$$$$$$",item_with_all_data)
             cache.set_value('item_list', item_with_all_data)
             cache.set_value('rounded_up_total', so.rounded_total)
@@ -179,6 +180,7 @@ def make_so(item_list):
                         a=1
                         i['rate'] = item.get('rate')
                         i['amount'] = item.get('amount')
+                        i['uom'] = item.get('uom')
             cache.set_value('item_list', item_with_all_data)
             cache.set_value('rounded_up_total', sal_ord.rounded_total)
             cache.set_value('rounding_adjustment', sal_ord.rounding_adjustment)
