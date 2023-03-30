@@ -60,8 +60,8 @@ frappe.ui.form.on("Sales Invoice", {
 			callback: function(r) {
 				if (r.message){
 
-					frm.set_value("_party_balance", r.message)
-					frm.refresh_field("_party_balance")
+					frm.set_value("party_balance", r.message)
+					frm.refresh_field("party_balance")
 				}
 			}
 		})
