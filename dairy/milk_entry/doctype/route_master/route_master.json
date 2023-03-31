@@ -168,7 +168,7 @@
   {
    "fetch_from": "transporter.supplier_name",
    "fieldname": "transporter_name",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Transporter Name",
    "options": "Supplier",
    "read_only": 1
@@ -176,14 +176,14 @@
   {
    "fetch_from": "driver.full_name",
    "fieldname": "driver_name",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Driver Name",
    "options": "Driver",
    "read_only": 1
   }
  ],
  "links": [],
- "modified": "2023-03-23 11:45:21.561499",
+ "modified": "2023-03-31 17:55:55.209678",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Route Master",
