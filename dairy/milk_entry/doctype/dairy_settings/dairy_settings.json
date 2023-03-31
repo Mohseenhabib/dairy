@@ -100,7 +100,13 @@
   "crate_section",
   "crate_reconciliation_based_on",
   "column_break_91",
-  "crate_loss_billed_to"
+  "crate_loss_billed_to",
+  "section_break_jsl50",
+  "items_to_add_fat",
+  "items_to_remove_fat",
+  "column_break_ypomu",
+  "items_to_add_snf",
+  "items_to_remove_snf"
  ],
  "fields": [
   {
@@ -587,12 +593,45 @@
    "fieldname": "previous_sync_date",
    "fieldtype": "Date",
    "label": "Previous Sync Date"
+  },
+  {
+   "fieldname": "section_break_jsl50",
+   "fieldtype": "Section Break",
+   "label": "Manufacturing Settings"
+  },
+  {
+   "fieldname": "column_break_ypomu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "items_to_add_fat",
+   "fieldtype": "Table",
+   "label": "Items to Add Fat",
+   "options": "fatsnf table"
+  },
+  {
+   "fieldname": "items_to_add_snf",
+   "fieldtype": "Table",
+   "label": "Items to Add SNF",
+   "options": "fatsnf table"
+  },
+  {
+   "fieldname": "items_to_remove_snf",
+   "fieldtype": "Table",
+   "label": "Items to Remove SNF",
+   "options": "fatsnf table"
+  },
+  {
+   "fieldname": "items_to_remove_fat",
+   "fieldtype": "Table",
+   "label": "Items to Remove Fat",
+   "options": "fatsnf table"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-03-24 16:49:14.278829",
+ "modified": "2023-03-27 15:01:07.038936",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",

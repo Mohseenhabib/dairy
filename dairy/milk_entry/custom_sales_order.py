@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+from erpnext.accounts.party import get_dashboard_info
 import frappe
 import json
 import frappe.utils
@@ -197,3 +198,15 @@ def defsellinguom(doc_name=None):
             return 1
     except:
         frappe.throw("select item")
+
+
+@frappe.whitelist()
+def get_party_bal(customer):
+	cust_name =customer
+	doctype = "Customer"
+	loyalty_program = None
+
+	party_bal = get_dashboard_info(doctype, cust_name, loyalty_program)
+
+	if cust_name and party_bal:
+		return party_bal[0]['total_unpaid']

@@ -18,6 +18,10 @@ class GatePass(Document):
 				del_note = frappe.get_doc("Delivery Note",i.delivery_note)
 				del_note.crate_gate_pass_done = 1
 				del_note.db_update()
+			if i.sales_invoice:
+				si = frappe.get_doc("Sales Invoice",i.sales_invoice)
+				si.gate_pass = 1
+				si.db_update()
 
 	def on_cancel(self):
 		frappe.db.sql("delete from `tabMerge Gate Pass Item` where parent = %(name)s", {'name': self.name})
@@ -28,6 +32,12 @@ class GatePass(Document):
 		for i in self.item:
 			if i.delivery_note:
 				frappe.db.sql(""" update `tabDelivery Note` set crate_gate_pass_done = 0 where name = %(name)s """,{'name': i.delivery_note})
+				frappe.db.commit()
+				frappe.db.sql(""" update `tabGate Pass` set gate_crate_cal_done = " " where name = %(name)s """,
+							  {'name': self.name})
+				frappe.db.commit()
+			if i.sales_invoice:
+				frappe.db.sql(""" update `tabSales Invoice` set gate_pass = 0 where name = %(name)s """,{'name': i.sales_invoice})
 				frappe.db.commit()
 				frappe.db.sql(""" update `tabGate Pass` set gate_crate_cal_done = " " where name = %(name)s """,
 							  {'name': self.name})
@@ -252,22 +262,22 @@ class GatePass(Document):
 													 'vehicle':sales.vehicle,'transporter':sales.transporter, 'shift':sales.shift},as_dict=1)
 
 						log.crate_opening = int(openning[0]['crate_balance'])
-						log.crate_balance = openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret'])
+						log.crate_balance = openning[0]['crate_balance'] +(sums[0]['crate'] - sums[0]['crate_ret'])
 						sales.append("crate_summary", {
-							"crate_opening": openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret']),
+							"crate_opening": openning[0]['crate_balance'],
 							"crate_issue": sums[0]['crate'],
 							"crate_return": sums[0]['crate_ret'],
-							"crate_balance": openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret'])
+							"crate_balance": openning[0]['crate_balance'] + (sums[0]['crate'] - sums[0]['crate_ret'])
 						})
 
 					else:
 						log.crate_opening = int(0)
-						log.crate_balance = int(0) - (sums[0]['crate'] + sums[0]['crate_ret'])
+						log.crate_balance = int(0) + (sums[0]['crate'] - sums[0]['crate_ret'])
 						sales.append("crate_summary", {
-							"crate_opening": int(0) - (sums[0]['crate'] + sums[0]['crate_ret']),
+							"crate_opening": int(0),
 							"crate_issue": sums[0]['crate'],
 							"crate_return": sums[0]['crate_ret'],
-							"crate_balance": int(0) - (sums[0]['crate'] + sums[0]['crate_ret'])
+							"crate_balance": int(0) +(sums[0]['crate'] -sums[0]['crate_ret'])
 						})
 					log.save()
 					log.submit()
@@ -279,20 +289,18 @@ class GatePass(Document):
 			delivery = frappe.db.sql(""" select distinct(delivery_note)
 										from `tabGate Pass Item`
 										where parent = %(name)s""",{'name':sales.name})
-			print('delivery*******************',delivery)
 
 			for delv in delivery:
+				dn=frappe.get_doc("Delivery Note",delv)
 				dist_cratetype = frappe.db.sql(""" select distinct(crate_type)
 													from `tabGate Pass Item` 
 													where parent = %(name)s and delivery_note = %(delivery_note)s""",{'name':sales.name,'delivery_note':delv})
-				print('dist_cratetype****************',dist_cratetype)
 				
 				for crate in dist_cratetype:
 					dist_warehouse = frappe.db.sql(""" select distinct(warehouse) 
 														from `tabGate Pass Item` 
 														where parent = %(name)s and crate_type = %(crate_type)s """,
 														{'name': sales.name,'crate_type':crate})
-					print('dist warehouse****************',dist_warehouse)
 
 					for warehouse in dist_warehouse:
 
@@ -301,18 +309,16 @@ class GatePass(Document):
 												from 
 													`tabGate Pass Item` 
 												where 
-													crate_type = %(crate)s and parent = %(name)s and warehouse = %(warehouse)s""",
-													{'crate':crate,'name':sales.name,'warehouse':warehouse},as_dict=1)
+													crate_type = %(crate)s and parent = %(name)s and delivery_note=%(dn)s""",
+													{'crate':crate,'name':sales.name,'warehouse':warehouse,"dn":dn.name},as_dict=1)
 
-						print('sums***********************',sums)
 						
 						log = frappe.new_doc("Crate Log")
-						print('crate log created^^^^^^^^^^^^^^^^^')
 						log.transporter = sales.transporter
 						log.vehicle = sales.vehicle
 						log.route = sales.route
 						log.shift = sales.shift
-						log.customer=sales.customer
+						log.customer=dn.customer
 						log.date = frappe.utils.nowdate()
 						log.company = sales.company
 						log.voucher_type = "Delivery Note"
@@ -324,41 +330,42 @@ class GatePass(Document):
 						log.crate_type = crate[0]
 						log.source_warehouse = warehouse[0]
 						log.note = "Entry Created From Gate pass"
-						print('note&&&&&&&&&&&&&&&&&&&&7')
 						openning_cnt = frappe.db.sql(""" select count(*) from `tabCrate Log`  
 														where 
-															crate_type = %(crate)s and source_warehouse = %(warehouse)s 
-															and company = %(company)s and docstatus = 1 and vehicle = %(vehicle)s	
-															and transporter = %(transporter)s and shift = %(shift)s order by date desc """,
-															{'crate': crate, 'warehouse': warehouse,'company': sales.company,
-															'vehicle':sales.vehicle,'transporter':sales.transporter, 'shift':sales.shift}, as_dict=1)
+															crate_type = %(crate)s and  
+															company = %(company)s and  docstatus = 1 and customer=%(customer)s order by date desc limit 1 """,
+														{'crate':crate,'company':sales.company,
+														'customer':dn.customer},as_dict=1)
 						if openning_cnt[0]['count(*)'] > 0:
 
 							openning = frappe.db.sql(""" select crate_balance from `tabCrate Log`  
 														where 
-														crate_type = %(crate)s and source_warehouse = %(warehouse)s and
-														company = %(company)s and  docstatus = 1 and vehicle = %(vehicle)s
-														and transporter = %(transporter)s and shift = %(shift)s order by date desc limit 1 """,
-														{'crate':crate,'warehouse':warehouse,'company':sales.company,
-														'vehicle':sales.vehicle,'transporter':sales.transporter, 'shift':sales.shift},as_dict=1)
+														crate_type = %(crate)s  and
+														company = %(company)s and  docstatus = 1 and customer=%(customer)s order by date desc limit 1 """,
+														{'crate':crate,'company':sales.company,
+														'customer':dn.customer},as_dict=1)
 
 							log.crate_opening = int(openning[0]['crate_balance'])
-							log.crate_balance = openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret'])
+							log.crate_balance = openning[0]['crate_balance'] + (sums[0]['crate'] - sums[0]['crate_ret'])
 							sales.append("crate_summary", {
-								"crate_opening": openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret']),
+								"voucher_type" : "Delivery Note",
+								"voucher" :dn.name,
+								"crate_opening": openning[0]['crate_balance'],
 								"crate_issue": sums[0]['crate'],
 								"crate_return": sums[0]['crate_ret'],
-								"crate_balance": openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret'])
+								"crate_balance": openning[0]['crate_balance'] + (sums[0]['crate'] - sums[0]['crate_ret'])
 							})
 
 						else:
 							log.crate_opening = int(0)
-							log.crate_balance = int(0) - (sums[0]['crate'] + sums[0]['crate_ret'])
+							log.crate_balance = int(0) +(sums[0]['crate'] - sums[0]['crate_ret'])
 							sales.append("crate_summary", {
-								"crate_opening": int(0) - (sums[0]['crate'] + sums[0]['crate_ret']),
+								"voucher_type" : "Delivery Note",
+								"voucher" :dn.name,
+								"crate_opening": int(0),
 								"crate_issue": sums[0]['crate'],
 								"crate_return": sums[0]['crate_ret'],
-								"crate_balance": int(0) - (sums[0]['crate'] + sums[0]['crate_ret'])
+								"crate_balance": int(0) + (sums[0]['crate'] - sums[0]['crate_ret'])
 							})
 						# del_note.db_update()
 						log.save()
@@ -373,20 +380,18 @@ class GatePass(Document):
 			invoice = frappe.db.sql(""" select distinct(sales_invoice)
 										from `tabGate Pass Item`
 										where parent = %(name)s""",{'name':sales.name},as_dict=1)
-			print('invoice*******************',invoice)
 
 			for inv in invoice:
+				si=frappe.get_doc("Sales Invoice",inv.get("sales_invoice"))
 				dist_cratetype = frappe.db.sql(""" select distinct(crate_type)
 													from `tabGate Pass Item` 
 													where parent = '{0}' and sales_invoice = '{1}'""".format(sales.name,inv.get("sales_invoice")))
-				print('dist_cratetype****************',dist_cratetype)
 				
 				for crate in dist_cratetype:
 					dist_warehouse = frappe.db.sql(""" select distinct(warehouse) 
 														from `tabGate Pass Item` 
 														where parent = %(name)s and crate_type = %(crate_type)s """,
 														{'name': sales.name,'crate_type':crate})
-					print('dist warehouse****************',dist_warehouse)
 
 					for warehouse in dist_warehouse:
 
@@ -395,18 +400,16 @@ class GatePass(Document):
 												from 
 													`tabGate Pass Item` 
 												where 
-													crate_type = %(crate)s and parent = %(name)s and warehouse = %(warehouse)s""",
-													{'crate':crate,'name':sales.name,'warehouse':warehouse},as_dict=1)
+													crate_type = %(crate)s and parent = %(name)s and warehouse = %(warehouse)s and sales_invoice=%(si)s""",
+													{'crate':crate,'name':sales.name,'warehouse':warehouse,'si':si.name},as_dict=1)
 
-						print('sums***********************',sums)
 						
 						log = frappe.new_doc("Crate Log")
-						print('crate log created^^^^^^^^^^^^^^^^^')
 						log.transporter = sales.transporter
 						log.vehicle = sales.vehicle
 						log.route = sales.route
 						log.shift = sales.shift
-						log.customer=sales.customer
+						log.customer=si.customer
 						log.date = frappe.utils.nowdate()
 						log.company = sales.company
 						log.voucher_type = "Sales Invoice"
@@ -418,41 +421,42 @@ class GatePass(Document):
 						log.crate_type = crate[0]
 						log.source_warehouse = warehouse[0]
 						log.note = "Entry Created From Gate pass"
-						print('note&&&&&&&&&&&&&&&&&&&&7')
 						openning_cnt = frappe.db.sql(""" select count(*) from `tabCrate Log`  
 														where 
-															crate_type = %(crate)s and source_warehouse = %(warehouse)s 
-															and company = %(company)s and docstatus = 1 and vehicle = %(vehicle)s	
-															and transporter = %(transporter)s and shift = %(shift)s order by date desc """,
-															{'crate': crate, 'warehouse': warehouse,'company': sales.company,
-															'vehicle':sales.vehicle,'transporter':sales.transporter, 'shift':sales.shift}, as_dict=1)
+															crate_type = %(crate)s and  
+															company = %(company)s and  docstatus = 1 and customer=%(customer)s order by date desc limit 1 """,
+														{'crate':crate,'company':sales.company,
+														'customer':si.customer},as_dict=1)
 						if openning_cnt[0]['count(*)'] > 0:
 
 							openning = frappe.db.sql(""" select crate_balance from `tabCrate Log`  
 														where 
-														crate_type = %(crate)s and source_warehouse = %(warehouse)s and
-														company = %(company)s and  docstatus = 1 and vehicle = %(vehicle)s
-														and transporter = %(transporter)s and shift = %(shift)s order by date desc limit 1 """,
-														{'crate':crate,'warehouse':warehouse,'company':sales.company,
-														'vehicle':sales.vehicle,'transporter':sales.transporter, 'shift':sales.shift},as_dict=1)
+														crate_type = %(crate)s  and
+														company = %(company)s and  docstatus = 1 and customer=%(customer)s order by date desc limit 1 """,
+														{'crate':crate,'company':sales.company,
+														'customer':si.customer},as_dict=1)
 
 							log.crate_opening = int(openning[0]['crate_balance'])
-							log.crate_balance = openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret'])
+							log.crate_balance = openning[0]['crate_balance'] + (sums[0]['crate'] - sums[0]['crate_ret'])
 							sales.append("crate_summary", {
-								"crate_opening": openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret']),
+								"voucher_type" : "Sales Invoice",
+								"voucher" :si.name,
+								"crate_opening": openning[0]['crate_balance'],
 								"crate_issue": sums[0]['crate'],
 								"crate_return": sums[0]['crate_ret'],
-								"crate_balance": openning[0]['crate_balance'] - (sums[0]['crate'] + sums[0]['crate_ret'])
+								"crate_balance": openning[0]['crate_balance'] +(sums[0]['crate'] - sums[0]['crate_ret'])
 							})
 
 						else:
 							log.crate_opening = int(0)
-							log.crate_balance = int(0) - (sums[0]['crate'] + sums[0]['crate_ret'])
+							log.crate_balance = int(0) + (sums[0]['crate'] - sums[0]['crate_ret'])
 							sales.append("crate_summary", {
-								"crate_opening": int(0) - (sums[0]['crate'] + sums[0]['crate_ret']),
+								"voucher_type" : "Sales Invoice",
+								"voucher" :si.name,
+								"crate_opening": int(0),
 								"crate_issue": sums[0]['crate'],
 								"crate_return": sums[0]['crate_ret'],
-								"crate_balance": int(0) - (sums[0]['crate'] + sums[0]['crate_ret'])
+								"crate_balance": int(0) +(sums[0]['crate'] -sums[0]['crate_ret'])
 							})
 						# del_note.db_update()
 						log.save()
@@ -704,11 +708,12 @@ def calculate_crate(doc_name = None):
 								'item_code': itm.item_code
 							})
 						count = 1
+	print("$$$$$$$$$$$$$$$$$$$",total_crate)
 	doc.total_crate = total_crate
 	doc.gate_crate_cal_done = "Done"
 
 
-
+	total_crate = 0
 	for itm in doc.item:
 		# warehouse = itm.warehouse
 		if itm.qty:

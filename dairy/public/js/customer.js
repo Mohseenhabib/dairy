@@ -7,7 +7,7 @@ frappe.ui.form.on("Customer", {
             return {
                 filters: {
                     "company":doc.company,
-                     "route_type":"Milk Marketing",
+                    "route_type":"Milk Marketing",
                     "docstatus":1
                 }
             };

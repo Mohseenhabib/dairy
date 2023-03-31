@@ -16,6 +16,21 @@ frappe.ui.form.on("Sales Order", {
             };
         });
     },
+    update_party_balance: function(frm){
+		frappe.call({
+			method:'dairy.milk_entry.custom_sales_order.get_party_bal',
+            args:{
+                customer:frm.doc.customer
+            },
+			callback: function(r) {
+				if (r.message){
+
+					frm.set_value("party_balance", r.message)
+					frm.refresh_field("party_balance")
+				}
+			}
+		})
+	},
     after_save:function(frm,cdt,cdn){
         var d = locals[cdt][cdn];
         console.log(d);
