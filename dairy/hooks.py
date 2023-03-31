@@ -63,6 +63,7 @@ fixtures = fixtures = [
             "Stock Entry-column_break_acx0f",
             "Stock Entry-total_fat_in_kg",
             "Stock Entry-total_snf_in_kg",
+            "Stock Entry-rm_fat__snf_calculations"
             "Stock Entry-total_rm_fat",
             "Stock Entry-total_rm_snf",
             "Stock Entry-column_break_xeyfb",
