@@ -63,6 +63,7 @@ fixtures = fixtures = [
             "Stock Entry-column_break_acx0f",
             "Stock Entry-total_fat_in_kg",
             "Stock Entry-total_snf_in_kg",
+            "Stock Entry-rm_fat__snf_calculations"
             "Stock Entry-total_rm_fat",
             "Stock Entry-total_rm_snf",
             "Stock Entry-column_break_xeyfb",
@@ -85,7 +86,8 @@ fixtures = fixtures = [
             "Sales Order-update_party_balance",
             "Sales Invoice-_party_balance",
             "Sales Invoice-update_party_balance",
-            "Item Tax Template-tax_rate"
+            "Item Tax Template-tax_rate",
+            "Address-fssai_lic_no"
             
         )]]}
 ]

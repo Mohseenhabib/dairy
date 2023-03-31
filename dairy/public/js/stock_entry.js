@@ -2,11 +2,10 @@ frappe.provide("erpnext.stock");
 
 frappe.ui.form.on('Stock Entry', {
 	refresh:function(frm){
-		if(frm.doctotal_diff_fat_in_kg>0){
+		if(frm.doc.total_diff_fat_in_kg>0){
 			frm.set_df_property("add_fat_button","hidden",0)
 		}
 		if(frm.doc.total_diff_fat_in_kg<0){
-			frm.set_df_property("add_fat_button","hidden",0)
 			frm.set_df_property("remove_fat_button","hidden",0)
 
 		}
