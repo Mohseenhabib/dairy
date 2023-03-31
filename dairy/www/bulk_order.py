@@ -4,12 +4,11 @@ import math
 # from frappe.utils import getdate
 def get_context(context):
     context.items = frappe.get_list("Website Item", filters={'published': 1}, fields=["item_name", "item_code","website_image"])
-    #context.warehouse = order_warehouse()
 
 
 @frappe.whitelist()
 def make_so(item_list):
-
+    
     customer_name = None
     all_contact_doc_name = frappe.db.get_all("Contact",{"user":frappe.session.user},['user','name'])
     for con in all_contact_doc_name:
@@ -21,17 +20,19 @@ def make_so(item_list):
     item_with_all_data = []
     print("4455667778888888888888888888",json.loads(item_list))
     for item in json.loads(item_list):
+        print("77777777777777777777777777777777",item)
         if (item.get("qty")):
             if int(item.get('qty')) > 0:
                 fetch_details = frappe.db.get_all("Website Item",{"item_code" : item.get('item_code')},["item_name", "item_code","website_image"])
+                print("888888888888888888888888888888888888",fetch_details)
                 for i in fetch_details:
                     item['item_name'] = i.item_name
                     item['website_image'] = i.website_image
                     item_with_all_data.append(item)
+
     cache = frappe.cache()
-    # print("************************",item_with_all_data)
+    print("************************",item_with_all_data)
     saor=frappe.db.get_value("Sales Order",{"name":cache.get_value("so_name"),"docstatus":0,"delivery_shift":cache.get_value("delivery_shift").title() if cache.get_value("delivery_shift") else "Morning"},"name")
-    print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$1234",saor)
     if not saor:
         so = frappe.new_doc("Sales Order")
         so.company = frappe.db.sql("select name from `tabCompany`;")[0][0]
@@ -80,10 +81,11 @@ def make_so(item_list):
                     "delivery_date" : del_date,
                     "qty" : data.get("qty"),
                     "rate" : item_rate,
+                    "uom":data.get("uom"),
                     "warehouse" : website_warehouse
                     }
                     so.append("items", item)
-        try:
+        # try:
             so.insert(ignore_permissions=True)
             cache.set_value('so_name', so.name)
             # print("$$$$$$$$$$$$$$$$$$$$$$$$$$",item_with_all_data)
@@ -109,18 +111,21 @@ def make_so(item_list):
                 'status': True,
                 'so_name': so.name
             }
-        except:
-            return False
+        # except:
+        #     return False
         
     else:
         sal_ord=frappe.get_doc("Sales Order",saor)
+        print("5555555555555555222222222222",sal_ord)
         sal_ord.company = frappe.db.sql("select name from `tabCompany`;")[0][0]
         # get_price_list = frappe.db.get_single_value("Bulk Order Settings", "price_list")
         # if not get_price_list:
         #     frappe.throw('Please select price list in <b> Bulk Order Settings</b>')
         sal_ord.customer = customer_name
+        print("uuuuuuuuut666666666666666666666667",customer_name)
         cache.set_value('customer_name', customer_name)
         f=frappe.get_doc("Customer", sal_ord.customer )
+        print("7777777777777777777777777777777777",f)
         sal_ord.price_list=f.default_price_list
         # so.price_list = get_price_list
         sal_ord.order_type = "Shopping Cart"
@@ -129,6 +134,7 @@ def make_so(item_list):
         del_date = cache.get_value("del_date")
         if not del_date:
             del_date = frappe.utils.nowdate()
+            print("8888888888888888888888888888888888",del_date)
         sal_ord.delivery_date=del_date
         item_rate=0
         if cache.get_value("delivery_shift"):
@@ -166,6 +172,7 @@ def make_so(item_list):
                                 "delivery_date" : del_date,
                                 "qty" : data.get("qty"),
                                 "rate" : item_rate,
+                                "uom":data.get("uom"),
                                 "warehouse" : website_warehouse
                                 }
                                 sal_ord.append("items", item)
