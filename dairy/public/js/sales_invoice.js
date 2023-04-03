@@ -126,8 +126,8 @@ frappe.ui.form.on("Sales Invoice", {
                    {
                     frm.set_value("route",r.message.route);
                     frm.refresh_field("route")
-                     frm.set_value("selling_price_list",r.message.p_list);
-                     frm.refresh_field("selling_price_list")
+                    //  frm.set_value("selling_price_list",r.message.p_list);
+                    //  frm.refresh_field("selling_price_list")
 
                    }
                 }

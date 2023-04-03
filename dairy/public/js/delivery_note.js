@@ -62,28 +62,6 @@ frappe.ui.form.on("Delivery Note", {
       },
 
 	customer:function(frm){
-        return cur_frm.call({
-            method:"dairy.milk_entry.custom_delivery_note.get_route_price_list",
-            args: {
-                    doc_name: cur_frm.doc.customer
-                  },
-            callback: function(r)
-                {
-                   if(r.message)
-                   {
-                    frm.set_value("route",r.message.route);
-                     frm.set_value("selling_price_list",r.message.p_list);
-                     frm.set_value("set_warehouse",r.message.warehouse);
-                   }
-                }
-        });
-    },
-
-    route: function(frm){
-        frm.add_fetch("route", "transporter", "transporter");
-    },
-
-    customer: function(frm){
         frappe.call({
             method: 'dairy.milk_entry.doctype.bulk_milk_price_list.bulk_milk_price_list.fetch_data',
             args: {
@@ -98,7 +76,43 @@ frappe.ui.form.on("Delivery Note", {
                 }
             }
         });
-    }
+        return cur_frm.call({
+            method:"dairy.milk_entry.custom_delivery_note.get_route_price_list",
+            args: {
+                    doc_name: cur_frm.doc.customer
+                  },
+            callback: function(r)
+                {
+                   if(r.message)
+                   {
+                    frm.set_value("route",r.message.route);
+                    //  frm.set_value("selling_price_list",r.message.p_list);
+                     frm.set_value("set_warehouse",r.message.warehouse);
+                   }
+                }
+        });
+    },
+
+    route: function(frm){
+        frm.add_fetch("route", "transporter", "transporter");
+    },
+
+    // customer: function(frm){
+    //     frappe.call({
+    //         method: 'dairy.milk_entry.doctype.bulk_milk_price_list.bulk_milk_price_list.fetch_data',
+    //         args: {
+    //             'doctype': 'Bulk Milk Price List',
+    //             'customer': frm.doc.customer
+    //         },
+    //         callback: function(r) {
+    //             if (!r.exc) {
+    //                 // code snippet
+    //                 frm.set_value('fat_rate', r.message.rate)
+    //                 frm.set_value('snf_clr_rate', r.message.snf)
+    //             }
+    //         }
+    //     });
+    // }
 });
  
 //frappe.ui.form.on("Delivery Note Item", {
