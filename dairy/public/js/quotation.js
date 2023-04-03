@@ -141,7 +141,7 @@ frappe.ui.form.on('Quotation', {
                        if(r.message)
                        {
                         frm.set_value("route",r.message.route);
-                        frm.set_value("selling_price_list",r.message.p_list);
+                        // frm.set_value("selling_price_list",r.message.p_list);
                        }
                     }
             });
