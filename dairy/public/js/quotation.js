@@ -1,8 +1,8 @@
 
 frappe.ui.form.on('Quotation', {
-    setup: function(frm) {
-		frm.add_fetch("route", "price_list", "selling_price_list");
-	},
+    // setup: function(frm) {
+	// 	frm.add_fetch("route", "price_list", "selling_price_list");
+	// },
 	onload: function(frm){
         frm.set_query('route', function(doc) {
             return {

@@ -2,7 +2,7 @@
 frappe.ui.form.on("Sales Order", {
     setup: function(frm) {
 		frm.add_fetch("route", "source_warehouse", "set_warehouse");
-		frm.add_fetch("route", "price_list", "selling_price_list");
+	// 	frm.add_fetch("route", "price_list", "selling_price_list");
 	},
 	onload: function(frm){
 

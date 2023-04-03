@@ -1,7 +1,7 @@
 frappe.ui.form.on("Sales Invoice", {
-    setup: function(frm) {
-		frm.add_fetch("route", "price_list", "selling_price_list");
-	},
+    // setup: function(frm) {
+	// 	frm.add_fetch("route", "price_list", "selling_price_list");
+	// },
 	onload: function(frm){
         // frm.set_df_property("crate_count", "hidden",1);
         // frm.set_df_property("loose_crate_", "hidden",1);
