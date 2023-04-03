@@ -62,6 +62,7 @@ def make_so(item_list):
         website_warehouse = frappe.db.get_single_value("Bulk Order Settings", 'default_warehouse')
         print("item******************************",json.loads(item_list))
         for data in json.loads(item_list):
+            print("89999999999999999999111111",data)
             if (data.get("qty")):
                 if(int(data.get("qty")) > 0):
                     if not website_warehouse:
@@ -85,7 +86,7 @@ def make_so(item_list):
                     "warehouse" : website_warehouse
                     }
                     so.append("items", item)
-        # try:
+        try:
             so.insert(ignore_permissions=True)
             cache.set_value('so_name', so.name)
             # print("$$$$$$$$$$$$$$$$$$$$$$$$$$",item_with_all_data)
@@ -94,10 +95,13 @@ def make_so(item_list):
                 for i in item_with_all_data:
                     if (i.get('item_code') == item.get('item_code')) and a==0:
                         a=1
+                        doc=frappe.get_doc("Item",i.get('item_code'))
+                        item.uom=doc.stock_uom
                         i['rate'] = item.get('rate')
                         i['amount'] = item.get('amount')
-                        i['uom']=item.get('uom')
-            print("$$$$$$$$$$$$$$$$$$$$$$$$$$",item_with_all_data)
+                        i['uom']= doc.stock_uom
+            so.save(ignore_permissions=True)
+            print("$$$$$$$$55555666666666666666",item_with_all_data)
             cache.set_value('item_list', item_with_all_data)
             cache.set_value('rounded_up_total', so.rounded_total)
             cache.set_value('rounding_adjustment', so.rounding_adjustment)
@@ -111,8 +115,8 @@ def make_so(item_list):
                 'status': True,
                 'so_name': so.name
             }
-        # except:
-        #     return False
+        except:
+            return False
         
     else:
         sal_ord=frappe.get_doc("Sales Order",saor)
@@ -145,6 +149,7 @@ def make_so(item_list):
         sal_ord.delivery_shift=delivery_shift
         website_warehouse = frappe.db.get_single_value("Bulk Order Settings", 'default_warehouse')
         for data in json.loads(item_list):
+            print("2111111111111111111111111111",data)
             if (data.get("qty")):
                 if(int(data.get("qty")) > 0):
                     if not website_warehouse:
@@ -164,6 +169,7 @@ def make_so(item_list):
                     for j in sal_ord.items:
                         if j.item_code==data.get("item_code"):
                             j.qty= data.get("qty")
+
                             j.rate=item_rate
                         else:
                             if data.get("item_code") not in k:
@@ -176,7 +182,7 @@ def make_so(item_list):
                                 "warehouse" : website_warehouse
                                 }
                                 sal_ord.append("items", item)
-                       
+                                print("88888888888888832",item)
         try:
             sal_ord.save(ignore_permissions=True)
             cache.set_value('so_name', sal_ord.name)
@@ -185,9 +191,13 @@ def make_so(item_list):
                 for i in item_with_all_data:
                     if (i.get('item_code') == item.get('item_code')) and a==0:
                         a=1
+                        doc=frappe.get_doc("Item",i.get('item_code'))
+                        item.uom=doc.stock_uom
                         i['rate'] = item.get('rate')
                         i['amount'] = item.get('amount')
-                        i['uom'] = item.get('uom')
+                        i['uom'] = doc.stock_uom
+            so.save(ignore_permissions=True)
+
             cache.set_value('item_list', item_with_all_data)
             cache.set_value('rounded_up_total', sal_ord.rounded_total)
             cache.set_value('rounding_adjustment', sal_ord.rounding_adjustment)
