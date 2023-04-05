@@ -3,6 +3,7 @@
 
 frappe.ui.form.on('Crate Reconciliation', {
 	 refresh: function(frm, dt, dn) {
+        
 	 frappe.db.get_value("Dairy Settings", "Dairy Settings", "crate_reconciliation_based_on", (r) => {
         if (r && r.crate_reconciliation_based_on == "Delivery Note" || r.crate_reconciliation_based_on == ""||r.crate_reconciliation_based_on == "Sales Invoice") {
             frm.set_df_property("transporter","hidden",1);
@@ -78,7 +79,7 @@ frappe.ui.form.on('Crate Reconciliation', {
 //                    }, __("Get items from"));
 //                }
 //            })
-
+            
         }
         if (frm.doc.docstatus ==1 && frm.doc.difference>0)
         {
@@ -93,6 +94,7 @@ frappe.ui.form.on('Crate Reconciliation', {
                 });
             }).addClass('btn-primary');
         }
+        frm.set_df_property("myfield", "read_only", frm.is_new() ? 0 : 1);
 	 },
 	 onload: function(frm){
         frm.set_query('route', function(doc) {

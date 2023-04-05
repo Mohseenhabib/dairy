@@ -1,0 +1,310 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"ooRlmK6d6T\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Dairy</span>\",\"col\":12}},{\"id\":\"__wcf7FySE\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Milk Entry\",\"col\":3}},{\"id\":\"m9Hxg7E9hz\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Van Collection\",\"col\":3}},{\"id\":\"0BTFmiEvDP\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Van collection Items\",\"col\":3}},{\"id\":\"CFuEIrzuDH\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"DCS Center List\",\"col\":3}},{\"id\":\"6hXzyvvgkT\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Supplier\",\"col\":3}},{\"id\":\"EkRNzrOeDU\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"snAqTruY67\",\"type\":\"card\",\"data\":{\"card_name\":\"Menu\",\"col\":4}},{\"id\":\"G1Fm2MTJD9\",\"type\":\"card\",\"data\":{\"card_name\":\"Report\",\"col\":4}}]",
+ "creation": "2023-03-28 16:34:25.792077",
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "quantity-1",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "Dairy",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Menu",
+   "link_count": 18,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Dairy Settings",
+   "link_count": 0,
+   "link_to": "Dairy Settings",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Crate Type",
+   "link_count": 0,
+   "link_to": "Crate Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Crate Log",
+   "link_count": 0,
+   "link_to": "Crate Log",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Crate Reconciliation",
+   "link_count": 0,
+   "link_to": "Crate Reconciliation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Gate Pass",
+   "link_count": 0,
+   "link_to": "Gate Pass",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "RMRD",
+   "link_count": 0,
+   "link_to": "RMRD",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Route Master",
+   "link_count": 0,
+   "link_to": "Route Master",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Milk Entry ",
+   "link_count": 0,
+   "link_to": "Milk Entry",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": " VAN Collection Items ",
+   "link_count": 0,
+   "link_to": "Van Collection Items",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "DSC List ",
+   "link_count": 0,
+   "link_to": "Warehouse",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Milk Type ",
+   "link_count": 0,
+   "link_to": "Milk Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Leakage Item",
+   "link_count": 0,
+   "link_to": "Leakage Item",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Raw Milk Sample",
+   "link_count": 0,
+   "link_to": "Raw Milk Sample",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Milk Rate",
+   "link_count": 0,
+   "link_to": "Milk Rate",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Price List",
+   "link_count": 0,
+   "link_to": "Price List",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Vehicle ",
+   "link_count": 0,
+   "link_to": "Vehicle",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Pricing Rule",
+   "link_count": 0,
+   "link_to": "Pricing Rule",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Promotion Scheme",
+   "link_count": 0,
+   "link_to": "Promotional Scheme",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Report",
+   "link_count": 5,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Vehicle Wise Crate Summary",
+   "link_count": 0,
+   "link_to": "Vehicle Wise Crate Summary",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Milk Ledger",
+   "link_count": 0,
+   "link_to": "Milk Ledger",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Member Milk Ledger",
+   "link_count": 0,
+   "link_to": "Member Milk Ledger",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Milk Entry Trends",
+   "link_count": 0,
+   "link_to": "Milk Entry Trends",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Milk Balance",
+   "link_count": 0,
+   "link_to": "Milk Balance",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2023-03-28 16:55:31.451737",
+ "modified_by": "Administrator",
+ "module": "Milk Entry",
+ "name": "Dairy",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 39.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Van collection Items",
+   "link_to": "Van Collection Items",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Supplier",
+   "link_to": "Supplier",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "DCS Center List",
+   "link_to": "Warehouse",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Van Collection",
+   "link_to": "Van Collection",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Milk Entry",
+   "link_to": "Milk Entry",
+   "type": "DocType"
+  }
+ ],
+ "title": "Dairy"
+}

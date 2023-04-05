@@ -156,10 +156,9 @@
   {
    "allow_in_quick_entry": 1,
    "fieldname": "gate_pass",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Gate Pass",
-   "options": "Stock Entry",
    "read_only": 1
   },
   {
@@ -274,7 +273,6 @@
    "fetch_from": "van_collection.shift",
    "fieldname": "shift",
    "fieldtype": "Select",
-   "hidden": 1,
    "label": "Shift",
    "options": "Morning\nEvening"
   },
@@ -411,10 +409,11 @@
   }
  ],
  "links": [],
- "modified": "2023-02-02 13:10:15.538417",
+ "modified": "2023-03-26 11:51:55.028958",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Van Collection Items",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -432,5 +431,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }

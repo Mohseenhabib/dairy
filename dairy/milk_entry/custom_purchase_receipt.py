@@ -35,7 +35,7 @@ def change_milk_status(pc,method):
             else:
                 doc.status ="To Sample"
         else:
-            doc.status = "To Bill"
+            doc.status = "To Sample and Bill"
         doc.db_update()
 
 

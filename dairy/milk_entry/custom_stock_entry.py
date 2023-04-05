@@ -42,15 +42,14 @@ def milk_ledger_stock_entry(self,method):
                         mle = frappe.db.sql(query,
                                             {'warehouse': itm.s_warehouse, 'item_code': itm.item_code, 'batch_no': itm.batch_no,
                                             'serial_no': itm.serial_no}, as_dict=True)
-                        # if not mle:
-                        #     frappe.throw("Milk Ledger Entry Not Found For This Item")
-                        if mle:
-                            mle_obj = frappe.get_doc("Milk Ledger Entry",mle[0]['name'])
-                            print('mle_obj*************************',mle_obj)
-                            itm.fat = (mle_obj.fat_per / 100) * (itm.transfer_qty * itm_weight)
-                            itm.fat_per = mle_obj.fat_per
-                            itm.snf_clr = (mle_obj.snf_per / 100) * (itm.transfer_qty * itm_weight)
-                            itm.snf_clr_per = mle_obj.snf_per
+       
+                        # if mle:
+                        #     mle_obj = frappe.get_doc("Milk Ledger Entry",mle[0]['name'])
+                        #     print('mle_obj*************************',mle_obj)
+                        #     itm.fat = (mle_obj.fat_per / 100) * (itm.transfer_qty * itm_weight)
+                        #     itm.fat_per = mle_obj.fat_per
+                        #     itm.snf_clr = (mle_obj.snf_per / 100) * (itm.transfer_qty * itm_weight)
+                        #     itm.snf_clr_per = mle_obj.snf_per
 
                         # rate
                         # if milk_type != "":
@@ -231,6 +230,21 @@ def on_submit(self, method):
                             # new_mle.submit()
 
 def cancel_create_milk_stock_ledger(self,method):
+    if self.van_collection or self.van_collection_item:
+        vci = frappe.get_doc('Van Collection Items',self.van_collection_item)
+        if vci.van_collection == self.van_collection:
+            vc = frappe.get_doc('Van Collection',self.van_collection)
+            vc.db_set('status','In-Progress')
+            vc.db_update()
+            print('van collection satus *************************')
+
+    if self.rmrd or self.rmrd_lines:
+        r_lines = frappe.get_doc('RMRD Lines',self.rmrd_lines)
+        if r_lines.rmrd == self.rmrd:
+            rmrd = frappe.get_doc('RMRD',self.rmrd)
+            rmrd.db_set('status','In-Progress')
+            rmrd.db_update()
+            print('van collection satus *************************')
     for itm in self.items:
         if itm.t_warehouse:
             itm_obj = frappe.get_doc("Item", itm.item_code)
@@ -371,6 +385,9 @@ def cancel_create_milk_stock_ledger(self,method):
         frappe.db.sql("""DELETE FROM `tabStock Entry` where name = '{0}' """.format(se_dlt))
 
 
+    
+
+
 @frappe.whitelist()
 def get_item_weight(item_code):
     obj = frappe.get_doc("Item",item_code)
@@ -492,7 +509,4 @@ def get_remove_fat(name):
                       "fat":doc.standard_fat,"snf":doc.standard_snf,
                       "total_fat_in_kg":0,"total_snf_in_kg":0,"weight":doc.weight_per_unit})
     return items
-        
-
-
         

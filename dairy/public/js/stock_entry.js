@@ -623,6 +623,7 @@ frappe.ui.form.on('Stock Entry', {
 	})
 	}
 
+
 })
 
 frappe.ui.form.on('Stock Entry Detail', {

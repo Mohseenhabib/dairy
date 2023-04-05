@@ -9,10 +9,166 @@ import frappe
 from frappe import _
 from datetime import datetime
 from frappe.model.mapper import get_mapped_doc
+from frappe.utils.data import flt
 
 class MilkEntry(Document):
     @frappe.whitelist()
     def get_pricelist(self):
+        pricelist_name = frappe.db.sql("""
+                        select milk_rate.name from `tabMilk Rate` as milk_rate 
+                        inner join `tabWarehouse Child` as ware on ware.parent = milk_rate.name 
+                        where milk_rate.milk_type = '{0}' and ware.warehouse_id = '{1}' 
+                        and milk_rate.docstatus = 1 and milk_rate.effective_date <= '{2}' order by milk_rate.creation desc limit 1 """.format(self.milk_type,self.dcs_id,self.date))
+        if not pricelist_name:
+            frappe.throw(_("Milk Rate not found."))
+
+        self.db_set('milk_rate', pricelist_name[0][0])
+        
+        milk_rate = frappe.db.get_value('Milk Rate',{'name':pricelist_name[0][0]},['name'])
+
+        if milk_rate:
+            milk = frappe.get_doc('Milk Rate',milk_rate)
+            rate = frappe.db.sql(""" select rate from `tabMilk Rate Chart` where fat >= {0} and snf_clr >= {1} 
+                    and parent = '{2}' order by fat,snf_clr asc limit 1 """.format(self.fat,self.snf,pricelist_name[0][0]))
+                
+
+            final_rate = self.volume *rate[0][0]
+            if milk.enable_deduction == 1:
+                doc=frappe.get_doc("Dairy Settings")
+                item=0.0
+                if self.get("milk_type")=="Cow":
+                    item = frappe.db.get_value('Item',{"name":doc.cow_pro},['weight_per_unit'])
+                if self.get("milk_type")=="Buffalo":
+                    item = frappe.db.get_value('Item',{"name":doc.buf_pro},['weight_per_unit'])
+                if self.get("milk_type")=="Mix":
+                    item = frappe.db.get_value('Item',{"name":doc.mix_pro},['weight_per_unit'])
+
+
+
+                fat_min_cow_milk = flt(frappe.db.get_single_value("Dairy Settings", "fat_min_cow_milk"))
+                fat_min_buf_milk = flt(frappe.db.get_single_value("Dairy Settings", "fat_min_buf_milk"))
+                fat_min_mix_milk = flt(frappe.db.get_single_value("Dairy Settings", "fat_min_mix_milk"))
+                
+                snf_min_cow_milk = flt(frappe.db.get_single_value("Dairy Settings", "snf_min_cow_milk"))
+                snf_min_buf_milk = flt(frappe.db.get_single_value("Dairy Settings", "snf_min_buf_milk"))
+                snf_min_mix_milk = flt(frappe.db.get_single_value("Dairy Settings", "snf_min_mix_milk"))
+                
+              
+                # for mrc in milk.milk_rate_chart:
+                    
+                if self.get("milk_type")=="Cow":
+                    if self.fat < fat_min_cow_milk:
+                        w = (self.volume * item* fat_min_cow_milk)
+                        b = self.volume* item * self.fat
+                        # if self.fat not in milk.milk_rate_chart:
+                        for fd in milk.fat_deduction:
+                            if self.fat <= fd.from_fat and self.fat >= fd.to_fat:
+                                deduction_rate = (w-b ) * fd.per_kg_deduction 
+                                final_rate = final_rate - deduction_rate
+                                self.db_set('unit_price', rate[0][0])
+                                self.db_set('fat_deduction',deduction_rate)
+                                self.db_set('total',final_rate)
+                                self.db_set('status','Submitted')
+
+
+                    if self.snf < snf_min_cow_milk:
+                            w = (self.volume * item* snf_min_cow_milk)
+                            b = self.volume* item * self.snf
+                            # if self.snf not in milk.milk_rate_chart:
+                            for sd in milk.snf_deduction:   
+                                if self.snf <= sd.from_snf and self.snf >= sd.to_snf:
+                                    deduction_rate = (w-b ) * sd.per_kg_deduction 
+                                    final_rate = final_rate - deduction_rate
+                                    self.db_set('unit_price', rate[0][0])
+                                    self.db_set('snf_deduction',deduction_rate)
+                                    self.db_set('total',final_rate)
+                                    self.db_set('status','Submitted')
+                
+                
+                if self.get("milk_type")=="Buffalo":
+                    if self.fat < fat_min_buf_milk:
+                        w = (self.volume * item* fat_min_buf_milk)
+                        b = self.volume* item * self.fat
+                        for fd in milk.fat_deduction:
+                            if self.fat <= fd.from_fat and self.fat >= fd.to_fat:
+                                deduction_rate = (w-b ) * fd.per_kg_deduction 
+                                final_rate = final_rate - deduction_rate
+                                self.db_set('unit_price', rate[0][0])
+                                self.db_set('fat_deduction',deduction_rate)
+                                self.db_set('total',final_rate)
+                                self.db_set('status','Submitted')
+
+
+                    if self.snf < snf_min_buf_milk:
+                        w = (self.volume * item* snf_min_buf_milk)
+                        b = self.volume* item * self.snf
+                        for sd in milk.snf_deduction:   
+                            if self.snf <= sd.from_snf and self.snf >= sd.to_snf:
+                                deduction_rate = (w-b ) * sd.per_kg_deduction 
+                                final_rate = final_rate - deduction_rate
+                                self.db_set('unit_price', rate[0][0])
+                                self.db_set('snf_deduction',deduction_rate)
+                                self.db_set('total',final_rate)
+                                self.db_set('status','Submitted')
+            
+                
+                
+                if self.get("milk_type")=="Mix":
+                    if self.fat < fat_min_mix_milk:
+                        w = (self.volume * item* fat_min_mix_milk)
+                        b = self.volume* item * self.fat
+                        for fd in milk.fat_deduction:
+                            if self.fat <= fd.from_fat and self.fat >= fd.to_fat:
+                                deduction_rate = (w-b ) * fd.per_kg_deduction 
+                                final_rate = final_rate - deduction_rate
+                                self.db_set('unit_price', rate[0][0])
+                                self.db_set('fat_deduction',deduction_rate)
+                                self.db_set('total',final_rate)
+                                self.db_set('status','Submitted')
+
+
+                    if self.snf < snf_min_mix_milk:
+                            w = (self.volume * item* snf_min_mix_milk)
+                            b = self.volume* item * self.snf
+                            for sd in milk.snf_deduction:   
+                                if self.snf <= sd.from_snf and self.snf >= sd.to_snf:
+                                    deduction_rate = (w-b ) * sd.per_kg_deduction 
+                                    final_rate = final_rate - deduction_rate
+                                    self.db_set('unit_price', rate[0][0])
+                                    self.db_set('snf_deduction',deduction_rate)
+                                    self.db_set('total',final_rate)
+                                    self.db_set('status','Submitted')
+
+            
+            if milk.enable_volume_incentive == 1: 
+                if self.get("milk_type")=="Cow":
+                   for incentive in milk.incentive: 
+                        if self.volume <= int(incentive.from_volume) and self.volume >= int(incentive.to_volume):
+                            final_rate = final_rate + incentive.incentive_per_volume
+                            self.db_set('unit_price', rate[0][0])
+                            self.db_set('total',final_rate)
+                            self.db_set('status','Submitted')
+
+                if self.get("milk_type")=="Buffalo":
+                   for incentive in milk.incentive: 
+                        if self.volume <= int(incentive.from_volume) and self.volume >= int(incentive.to_volume):
+                            final_rate = final_rate + incentive.incentive_per_volume
+                            self.db_set('unit_price', rate[0][0])
+                            self.db_set('total',final_rate)
+                            self.db_set('status','Submitted')
+
+                if self.get("milk_type")=="Mix":
+                     for incentive in milk.incentive: 
+                        if self.volume <= int(incentive.from_volume) and self.volume >= int(incentive.to_volume):
+                            final_rate = final_rate + incentive.incentive_per_volume
+                            self.db_set('unit_price', rate[0][0])
+                            self.db_set('total',final_rate)
+                            self.db_set('status','Submitted')
+
+            
+
+
+       
         state_climatic_factor,state_factor = frappe.db.get_value('Warehouse',{'is_dcs':1},['state_climatic_factor','state_factor'])
         if self.clr != 0 or self.snf !=0:
             if self.snf == 0 or not self.snf:
@@ -34,6 +190,7 @@ class MilkEntry(Document):
             if self.get("milk_type")=="Mix":
                 item = frappe.db.get_value('Item',{"name":doc.mix_pro},['weight_per_unit'])
 
+
             fat_kg =  ((self.volume * (item)) * (self.fat/100))
             self.db_set('fat_kg', fat_kg)
             print('fat_kg**************',fat_kg,item)
@@ -41,19 +198,11 @@ class MilkEntry(Document):
         
             snf_kg =  ((self.volume * (item)) * (self.snf/100))
             self.db_set('snf_kg', snf_kg)
+            print('snfYYYYYYYYYYYYYYYYY',snf_kg)
 
             clr_kg =  ((self.volume * (item)) * (self.clr/100))
             self.db_set('clr_kg', clr_kg)
-
-            # doc=frappe.get_doc("Dairy Settings")
-            # if self.get("milk_type")=="Cow":
-            #     itm = frappe.db.get_value('Item',{"name":doc.cow_pro},['stock_uom'])
-            # if self.get("milk_type")=="Buffalo":
-            #     itm = frappe.db.get_value('Item',{"name":doc.buf_pro},['stock_uom'])
-            # if self.get("milk_type")=="Mix":
-            #     itm = frappe.db.get_value('Item',{"name":doc.mix_pro},['stock_uom'])
-            
-            # self.db_set('stock_uom',itm) 
+            print('clr%%%%%%%%%%%%%%%%%%',clr_kg)
 
             litre = ((self.volume * (item)))
             self.db_set('litre', litre)
@@ -63,26 +212,25 @@ class MilkEntry(Document):
                         select milk_rate.name from `tabMilk Rate` as milk_rate 
                         inner join `tabWarehouse Child` as ware on ware.parent = milk_rate.name 
                         where milk_rate.milk_type = '{0}' and ware.warehouse_id = '{1}' 
-                        and milk_rate.docstatus = 1 and milk_rate.effective_date <= '{2}' limit 1  """.format(self.milk_type,self.dcs_id,self.date))
+                        and milk_rate.docstatus = 1 and milk_rate.effective_date <= '{2}' order by milk_rate.creation desc limit 1  """.format(self.milk_type,self.dcs_id,self.date))
             if not pricelist_name:
                 frappe.throw(_("Milk Rate not found."))
+            milk_rate = frappe.db.get_value('Milk Rate',{'name':pricelist_name[0][0]},['name'])
+            if milk_rate:
+                milk = frappe.get_doc('Milk Rate',milk_rate)
+                if milk.enable_deduction == 0:
+                    self.db_set('milk_rate', pricelist_name[0][0])
+                    rate = frappe.db.sql(""" select rate from `tabMilk Rate Chart` where fat >= {0} and snf_clr >= {1} 
+                            and parent = '{2}' order by fat,snf_clr asc limit 1 """.format(self.fat,self.snf,pricelist_name[0][0]))
 
-            self.db_set('milk_rate', pricelist_name[0][0])
-            rate = frappe.db.sql(""" select rate from `tabMilk Rate Chart` where fat >= {0} and snf_clr >= {1} 
-                    and parent = '{2}' order by fat,snf_clr asc limit 1 """.format(self.fat,self.snf,pricelist_name[0][0]))
+                    print('rateEEEEEEEEEEEEEEEEEEEEEEEEEE',rate,pricelist_name[0][0])
+                    print('milk rate^^^^^^^^^^^^^^^^1111111111111111111',pricelist_name)
+                    
+                    
+                    self.db_set('unit_price', rate[0][0])
+                    self.db_set('total',(self.volume *self.unit_price))
+                    self.db_set('status','Submitted')
 
-            print('rateEEEEEEEEEEEEEEEEEEEEEEEEEE',rate,pricelist_name[0][0])
-            
-            if not rate:
-                frappe.throw(_("Milk price not found."))
-            self.db_set('unit_price', rate[0][0])
-            self.db_set('total',(self.volume *self.unit_price))
-            self.db_set('status','Submitted')
-
-    
-
-    # def check_status_rms(self):
-    #     raw_milk_sample = 
 
 
     @frappe.whitelist()

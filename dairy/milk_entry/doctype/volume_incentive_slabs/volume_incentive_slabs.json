@@ -1,0 +1,45 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-03-25 12:27:38.374621",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "from_volume",
+  "to_volume",
+  "incentive_per_volume"
+ ],
+ "fields": [
+  {
+   "fieldname": "from_volume",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "From Volume"
+  },
+  {
+   "fieldname": "to_volume",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "To Volume"
+  },
+  {
+   "fieldname": "incentive_per_volume",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Incentive Per Volume"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-03-25 12:51:27.759259",
+ "modified_by": "Administrator",
+ "module": "Milk Entry",
+ "name": "Volume Incentive Slabs",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

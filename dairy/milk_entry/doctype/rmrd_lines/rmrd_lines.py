@@ -8,6 +8,14 @@ from frappe.model.document import Document
 from math import ceil
 
 class RMRDLines(Document):
+	def validate(self):
+		if self.get('__islocal'):
+			result = frappe.db.sql("""select * from `tabRMRD Lines` where dcs =%s and shift =%s
+							and date=%s and docstatus = 1""",(self.dcs,self.shift,self.date))
+			if result:
+				frappe.throw("You can not create duplicate entry on same date and same DCS")
+	
+	
 	@frappe.whitelist()
 	def calculate_total_cans_wt(self):
 		allow_max_capacity = float(frappe.db.get_single_value("Dairy Settings", "max_allowed"))
@@ -192,10 +200,10 @@ class RMRDLines(Document):
 			# se_child.clr = (milk_collected * item.weight_per_unit) * (clr/100)
 			se_child.fat = (milk_collected * item.weight_per_unit) * (fat/100)
 			se_child.fat_per = fat
-			se_child.snf_clr = (milk_collected * item.weight_per_unit) * (snf/100)
-			se_child.snf_clr_per = snf
-			se_child.snf = (milk_collected * item.weight_per_unit) * (clr/100)
-			se_child.snf_per = clr
+			se_child.snf_clr = (milk_collected * item.weight_per_unit) * (clr/100)
+			se_child.snf_clr_per = clr
+			se_child.snf = (milk_collected * item.weight_per_unit) * (snf/100)
+			se_child.snf_per = snf
 			if stock_entry.purpose == "Material Transfer":
 				se_child.s_warehouse = route.source_warehouse
 			se_child.t_warehouse = rmrd.target_warehouse
