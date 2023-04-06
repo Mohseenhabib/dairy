@@ -20,28 +20,6 @@ frappe.ui.form.on("Work Order", {
             }
         })
     },
-    refresh:function(frm){
-        if(frm.doc.production_item && frm.doc.qty && frm.doc.required_fat_in_kg==0 && frm.doc.required_snt_in_kg==0){
-        frappe.call({
-            method : "dairy.milk_entry.custom_work_order.get_required_fat_snf",
-            args:{
-                production_item: frm.doc.production_item,
-                quantity : frm.doc.qty
-            },
-            callback:function(response){
-                console.log(response)
-                frm.set_value('required_fat',response.message[0]);
-                frm.set_value('required_snf_',response.message[1]);
-                frm.set_value('required_fat_in_kg',response.message[2]);
-                frm.set_value('required_snt_in_kg',response.message[3]);
-                frm.refresh_field('required_fat')
-                frm.refresh_field('required_snf_')
-                frm.refresh_field('required_fat_in_kg')
-                frm.refresh_field('required_snt_in_kg')
-            }
-        })
-    }
-    },
     qty:function(frm){
         frappe.call({
             method : "dairy.milk_entry.custom_work_order.get_required_fat_snf",
@@ -63,10 +41,6 @@ frappe.ui.form.on("Work Order", {
         })
     },
     refresh:function(frm){
-        frm.remove_custom_button("Start")
-        frm.remove_custom_button("Create Pick List")
-        frm.remove_custom_button("Close","Status")
-        frm.remove_custom_button("Stop","Status")
     frappe.db.get_value(
         "Item",
         frm.doc.production_item,
@@ -81,23 +55,38 @@ frappe.ui.form.on("Work Order", {
             }
 
         })
-    if (frm.doc.status=="Not Started"){
-        frm.add_custom_button(__("Create Manufacture Entry"),function(){
-            var today = new Date();
-            var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-
-            frappe.model.with_doctype("Stock Entry", function() {
-                let se = frappe.model.get_new_doc("Stock Entry");
-                se.stock_entry_type="Manufacture"
-                se.posting_date=date
-                se.posting_time=time
-                se.work_order=frm.doc.name
-    
-                frappe.set_route("Form", "Stock Entry", se.name);
-            });
-
-
+        if(frm.doc.production_item && frm.doc.qty && frm.doc.required_fat_in_kg==0 && frm.doc.required_snt_in_kg==0){
+            frappe.call({
+                method : "dairy.milk_entry.custom_work_order.get_required_fat_snf",
+                args:{
+                    production_item: frm.doc.production_item,
+                    quantity : frm.doc.qty
+                },
+                callback:function(response){
+                    console.log(response)
+                    frm.set_value('required_fat',response.message[0]);
+                    frm.set_value('required_snf_',response.message[1]);
+                    frm.set_value('required_fat_in_kg',response.message[2]);
+                    frm.set_value('required_snt_in_kg',response.message[3]);
+                    frm.refresh_field('required_fat')
+                    frm.refresh_field('required_snf_')
+                    frm.refresh_field('required_fat_in_kg')
+                    frm.refresh_field('required_snt_in_kg')
+                }
+            })
+        }
+    if (!frm.doc.__islocal){
+        frm.add_custom_button(__("Calculate Snf & Fat"),function(){
+           
+            frappe.call({
+                method : "dairy.milk_entry.custom_work_order.get_data",
+                args:{
+                    name: frm.doc.name
+                },
+                callback:function(response){
+                   
+                }
+            })
         })
     
     }

@@ -82,9 +82,9 @@ fixtures = fixtures = [
             "Stock Entry-remove_fat_button",
             "Stock Entry-item",
             "Stock Entry-remove_snf_button",
-            "Sales Order-_party_balance",
+            "Sales Order-party_balance",
             "Sales Order-update_party_balance",
-            "Sales Invoice-_party_balance",
+            "Sales Invoice-party_balance",
             "Sales Invoice-update_party_balance",
             "Item Tax Template-tax_rate",
             "Address-fssai_lic_no"
@@ -203,8 +203,8 @@ doc_events = {
     "Stock Entry":{
         "after_insert": ["dairy.milk_entry.doctype.van_collection.van_collection.change_van_collection_status",
                          "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry"],
-        "before_save":[ "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry",
-                       "dairy.milk_entry.custom_stock_entry.calculate_wfs"
+        "before_save":[ "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry"
+                    #    "dairy.milk_entry.custom_stock_entry.calculate_wfs"
         ],
         "before_submit": "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry",
         "on_submit": "dairy.milk_entry.custom_stock_entry.on_submit",
@@ -224,7 +224,7 @@ doc_events = {
     "Work Order":{
       "before_save":[
             "dairy.milk_entry.custom_work_order.bom_item_child_table",
-            "dairy.milk_entry.custom_work_order.get_required_fat_snf"
+            "dairy.milk_entry.custom_work_order.get_required_fat_snf_item"
       ]
     }
   
