@@ -122,6 +122,7 @@
    "options": "Territory"
   },
   {
+   "depends_on": "eval:doc.route_type==\"Milk Marketing\"",
    "fieldname": "source_warehouse",
    "fieldtype": "Link",
    "label": "Source Warehouse",
@@ -183,7 +184,7 @@
   }
  ],
  "links": [],
- "modified": "2023-03-31 17:55:55.209678",
+ "modified": "2023-04-06 16:41:33.222825",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Route Master",

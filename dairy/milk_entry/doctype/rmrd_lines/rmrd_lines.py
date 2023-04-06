@@ -200,10 +200,10 @@ class RMRDLines(Document):
 			# se_child.clr = (milk_collected * item.weight_per_unit) * (clr/100)
 			se_child.fat = (milk_collected * item.weight_per_unit) * (fat/100)
 			se_child.fat_per = fat
-			se_child.snf_clr = (milk_collected * item.weight_per_unit) * (clr/100)
-			se_child.snf_clr_per = clr
-			se_child.snf = (milk_collected * item.weight_per_unit) * (snf/100)
-			se_child.snf_per = snf
+			se_child.snf_clr = (milk_collected * item.weight_per_unit) * (snf/100)
+			se_child.snf_clr_per = snf
+			se_child.snf = (milk_collected * item.weight_per_unit) * (clr/100)
+			se_child.snf_per = clr
 			if stock_entry.purpose == "Material Transfer":
 				se_child.s_warehouse = route.source_warehouse
 			se_child.t_warehouse = rmrd.target_warehouse

@@ -20,7 +20,9 @@ def get_columns():
 		{"label": _("Shift"), "fieldname": "shift", "fieldtype": "Data", "width": 150},
 		{"label": _("Ltr"), "fieldname": "volume", "fieldtype": "Float", "width": 150},
 		{"label": _("Fat"), "fieldname": "fat", "fieldtype": "Percent", "width": 150},
+		{"label": _("Fat(in kg)"), "fieldname": "fat_kg", "fieldtype": "Percent", "width": 150},
 		{"label": _("SNF"), "fieldname": "snf", "fieldtype": "Percent", "width": 150},
+		{"label": _("SNF(in kg)"), "fieldname": "snf_kg", "fieldtype": "Percent", "width": 150},
 		{"label": _("Rate"), "fieldname": "unit_price", "fieldtype": "Currency", "width": 150},
 		{"label": _("Amount"), "fieldname": "total", "fieldtype": "Currency", "width": 150},
 	]
@@ -34,7 +36,7 @@ def get_data(filters, columns):
 	member = filters.get('member')
 	
 	
-	result = frappe.db.sql("""select date,shift,volume,fat, snf,unit_price,total
+	result = frappe.db.sql("""select date,shift,volume,fat,fat_kg, snf,snf_kg,unit_price,total
                                     from `tabMilk Entry` 
                                     where member = '{0}' and date between '{1}' and '{2}'
                                     """.format(member,from_date,to_date ), as_dict=True)

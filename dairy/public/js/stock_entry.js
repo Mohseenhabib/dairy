@@ -731,4 +731,79 @@ frappe.ui.form.on('Stock Entry Detail', {
         }
 	},
 
+	snf_per: function(frm, cdt, cdn) {
+	    var d = locals[cdt][cdn];
+        if(d.snf_per){
+            frappe.call({
+				method: "dairy.milk_entry.custom_stock_entry.get_item_weight",
+				args: {"item_code": d.item_code },
+				callback: function(r) {
+					if (!r.exe){
+					       var weight = r.message * d.transfer_qty
+					       var snf = ((d.snf_per / 100) * weight)
+					       if(! d.snf){
+					        frappe.model.set_value(cdt, cdn, "snf", snf);
+					       }
+                            frappe.model.set_value(cdt, cdn, "snf", snf);
+					}
+				}
+			});
+        }
+	},
+
+	snf: function(frm, cdt, cdn) {
+	    var d = locals[cdt][cdn];
+        if(d.snf){
+            frappe.call({
+				method: "dairy.milk_entry.custom_stock_entry.get_item_weight",
+				args: {"item_code": d.item_code },
+				callback: function(r) {
+					if (!r.exe){
+					       var weight = r.message * d.transfer_qty
+					       var s_per = ((d.snf / weight) * 100)
+					       if(! d.snf_per){
+					        frappe.model.set_value(cdt, cdn, "snf_per", s_per);
+					       }
+					       frappe.model.set_value(cdt, cdn, "snf_per", s_per);
+
+					}
+					
+				}
+			});
+        }
+	},
+
+	qty : function(frm, cdt, cdn) {
+		var d = locals[cdt][cdn];
+		if(d.qty){
+			frappe.call({
+				method: "dairy.milk_entry.custom_stock_entry.get_item_weight",
+				args: {"item_code": d.item_code },
+				callback: function(r) {
+					if (!r.exe){
+					    	var weight = r.message * d.transfer_qty
+					       	var snf = ((d.snf_per / 100) * weight)
+					       	if(! d.snf){
+					        	frappe.model.set_value(cdt, cdn, "snf", snf);
+					       	}
+                            frappe.model.set_value(cdt, cdn, "snf", snf);
+
+							var snf_clr = ((d.snf_clr_per / 100) * weight)
+							if(! d.snf_clr){
+							frappe.model.set_value(cdt, cdn, "snf_clr", snf_clr);
+							}
+							frappe.model.set_value(cdt, cdn, "snf_clr", snf_clr);
+
+							var fat = ((d.fat_per / 100) * weight)
+							if(! d.fat){
+							 frappe.model.set_value(cdt, cdn, "fat", fat);
+							}
+							frappe.model.set_value(cdt, cdn, "fat", fat);
+					}
+				}
+			});
+			
+		}
+	}
+
 });

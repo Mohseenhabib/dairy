@@ -11,7 +11,7 @@ frappe.ui.form.on("Sales Invoice", {
                 filters: {
                     "company":doc.company,
                      "route_type":"Milk Marketing",
-                    "docstatus":1
+                    // "docstatus":1
                 }
             };
         });
