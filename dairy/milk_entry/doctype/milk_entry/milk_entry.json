@@ -15,7 +15,6 @@
   "sb2",
   "member",
   "milk_type",
-  "van_collection_completed",
   "sb3",
   "sample",
   "volume",
@@ -46,6 +45,7 @@
   "parent_milk_entry",
   "section_break_25",
   "status",
+  "van_collection_completed",
   "amended_from",
   "column_break_28",
   "company",
@@ -246,7 +246,6 @@
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "Date",
-   "read_only": 1,
    "reqd": 1
   },
   {
@@ -354,7 +353,7 @@
  "is_submittable": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2023-04-06 15:56:52.034554",
+ "modified": "2023-04-07 14:26:58.444289",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Milk Entry",
