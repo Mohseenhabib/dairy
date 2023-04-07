@@ -31,6 +31,7 @@ frappe.ui.form.on('Van Collection', {
                 });
             }).addClass("btn-primary");
         }
+       
     },
     before_submit: function(frm) {
         return frm.call('submit_van_collection').then(() => {
@@ -43,7 +44,7 @@ frappe.ui.form.on('Van Collection', {
             return {
                 filters: {
                     "route_type":"Milk Procurement",
-                    "docstatus":1
+                    // "docstatus":1
                 }
             };
         });

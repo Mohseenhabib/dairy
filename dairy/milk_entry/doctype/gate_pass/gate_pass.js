@@ -9,7 +9,7 @@ frappe.ui.form.on('Gate Pass', {
                 filters: {
                     "company":doc.company,
                      "route_type":"Milk Marketing",
-                    "docstatus":1,
+                    // "docstatus":1,
                     "transporter":doc.transporter
                 }
             };

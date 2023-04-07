@@ -68,7 +68,7 @@ class MilkEntry(Document):
                                 self.db_set('unit_price', rate[0][0])
                                 self.db_set('fat_deduction',deduction_rate)
                                 self.db_set('total',final_rate)
-                                self.db_set('status','Submitted')
+                                # self.db_set('status','Submitted')
 
 
                     if self.snf < snf_min_cow_milk:
@@ -82,7 +82,7 @@ class MilkEntry(Document):
                                     self.db_set('unit_price', rate[0][0])
                                     self.db_set('snf_deduction',deduction_rate)
                                     self.db_set('total',final_rate)
-                                    self.db_set('status','Submitted')
+                                    # self.db_set('status','Submitted')
                 
                 
                 if self.get("milk_type")=="Buffalo":
@@ -96,7 +96,7 @@ class MilkEntry(Document):
                                 self.db_set('unit_price', rate[0][0])
                                 self.db_set('fat_deduction',deduction_rate)
                                 self.db_set('total',final_rate)
-                                self.db_set('status','Submitted')
+                                # self.db_set('status','Submitted')
 
 
                     if self.snf < snf_min_buf_milk:
@@ -109,7 +109,7 @@ class MilkEntry(Document):
                                 self.db_set('unit_price', rate[0][0])
                                 self.db_set('snf_deduction',deduction_rate)
                                 self.db_set('total',final_rate)
-                                self.db_set('status','Submitted')
+                                # self.db_set('status','Submitted')
             
                 
                 
@@ -124,7 +124,7 @@ class MilkEntry(Document):
                                 self.db_set('unit_price', rate[0][0])
                                 self.db_set('fat_deduction',deduction_rate)
                                 self.db_set('total',final_rate)
-                                self.db_set('status','Submitted')
+                                # self.db_set('status','Submitted')
 
 
                     if self.snf < snf_min_mix_milk:
@@ -137,7 +137,7 @@ class MilkEntry(Document):
                                     self.db_set('unit_price', rate[0][0])
                                     self.db_set('snf_deduction',deduction_rate)
                                     self.db_set('total',final_rate)
-                                    self.db_set('status','Submitted')
+                                    # self.db_set('status','Submitted')
 
             
             if milk.enable_volume_incentive == 1: 
@@ -147,7 +147,7 @@ class MilkEntry(Document):
                             final_rate = final_rate + incentive.incentive_per_volume
                             self.db_set('unit_price', rate[0][0])
                             self.db_set('total',final_rate)
-                            self.db_set('status','Submitted')
+                            # self.db_set('status','Submitted')
 
                 if self.get("milk_type")=="Buffalo":
                    for incentive in milk.incentive: 
@@ -155,7 +155,7 @@ class MilkEntry(Document):
                             final_rate = final_rate + incentive.incentive_per_volume
                             self.db_set('unit_price', rate[0][0])
                             self.db_set('total',final_rate)
-                            self.db_set('status','Submitted')
+                            # self.db_set('status','Submitted')
 
                 if self.get("milk_type")=="Mix":
                      for incentive in milk.incentive: 
@@ -163,7 +163,10 @@ class MilkEntry(Document):
                             final_rate = final_rate + incentive.incentive_per_volume
                             self.db_set('unit_price', rate[0][0])
                             self.db_set('total',final_rate)
-                            self.db_set('status','Submitted')
+                            
+                            
+                            
+        # self.db_set('status','Submitted')
 
             
 
@@ -279,7 +282,11 @@ class MilkEntry(Document):
             'rate': self.unit_price,
             'warehouse': self.dcs_id,
             'fat': self.fat_kg,
-            'clr': self.snf_kg
+            'clr': self.snf_kg,
+            'snf':self.clr_kg,
+            'snf_clr_per' : self.snf,
+            'clr_per' : self.clr,
+            'fat_per_' : self.fat
         })
         doc.insert(ignore_permissions=True)
         doc.submit()

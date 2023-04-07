@@ -15,21 +15,23 @@
   "sb2",
   "member",
   "milk_type",
-  "snf",
-  "van_collection_completed",
   "sb3",
   "sample",
   "volume",
   "stock_uom",
-  "fat",
-  "clr",
   "section_break_7",
+  "fat",
   "fat_kg",
-  "fat_deduction",
   "column_break_9",
+  "snf",
   "snf_kg",
-  "snf_deduction",
+  "column_break_eacwp",
+  "clr",
   "clr_kg",
+  "section_break_2naub",
+  "fat_deduction",
+  "column_break_ei8hi",
+  "snf_deduction",
   "sb4",
   "milk_rate",
   "litre",
@@ -43,6 +45,7 @@
   "parent_milk_entry",
   "section_break_25",
   "status",
+  "van_collection_completed",
   "amended_from",
   "column_break_28",
   "company",
@@ -243,7 +246,6 @@
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "Date",
-   "read_only": 1,
    "reqd": 1
   },
   {
@@ -309,8 +311,8 @@
   {
    "fieldname": "clr_kg",
    "fieldtype": "Float",
-   "hidden": 1,
-   "label": "CLR in kg"
+   "label": "CLR in kg",
+   "read_only": 1
   },
   {
    "default": "0",
@@ -334,12 +336,24 @@
    "fieldname": "snf_deduction",
    "fieldtype": "Currency",
    "label": "SNF Deduction"
+  },
+  {
+   "fieldname": "column_break_eacwp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_2naub",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_ei8hi",
+   "fieldtype": "Column Break"
   }
  ],
  "is_submittable": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2023-03-25 18:46:33.787133",
+ "modified": "2023-04-07 14:26:58.444289",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Milk Entry",
