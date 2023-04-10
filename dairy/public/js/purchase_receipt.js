@@ -1,6 +1,31 @@
 frappe.provide("erpnext.stock");
 
 frappe.ui.form.on('Purchase Receipt', {
+   refresh : function(frm) {
+      if(frm.doc.docstatus == 1){
+         $.each(frm.doc.items, function(index, row)
+         {   
+            console.log("----------------------------------------",row.item_code)
+            frappe.db.get_doc('Item',row.item_code).then((r) => {
+               if(r.maintain_fat_snf_clr == 1 ){
+                  frm.add_custom_button(__("Milk Ledger"), function() {
+                  frappe.route_options = {
+                     voucher_no: frm.doc.name,
+                     from_date: frm.doc.posting_date,
+                     to_date: moment(frm.doc.modified).format('YYYY-MM-DD'),
+                     company: frm.doc.company
+                  };
+                  frappe.set_route("query-report", "Milk Ledger");
+                  }, __("View"));
+               
+               }
+            })
+            
+         });
+     
+      } 
+     
+	}
 
 })
 
