@@ -91,10 +91,10 @@ class RMRD(Document):
 					if c.get('name') == entry.cow_pro:
 						doc.cow_milk_fat = c.get('fat_per')
 						doc.cow_milk_fat_kg = c.get('fat')
-						doc.cow_milk_snf_kg = c.get('snf')
-						doc.cow_milk_snf = c.get('snf_per')
-						doc.cow_milk_clr = c.get('snf_clr_per')
-						doc.cow_milk_clr_kg = c.get('snf_clr') 
+						doc.cow_milk_snf_kg = c.get('snf_clr')
+						doc.cow_milk_snf = c.get('snf_clr_per')
+						doc.cow_milk_clr = c.get('snf_per')
+						doc.cow_milk_clr_kg = c.get('snf') 
 					
 
 					if c.get('name') == entry.buf_pro:
@@ -109,10 +109,10 @@ class RMRD(Document):
 					if c.get('name') == entry.mix_pro:
 						doc.mix_milk_fat = c.get('fat_per')
 						doc.mix_milk_fat_kg = c.get('fat')
-						doc.mix_milk_snf_kg = c.get('snf')
-						doc.mix_milk_snf = c.get('snf_per')
-						doc.mix_milk_clr = c.get('snf_clr_per')
-						doc.mix_milk_clr_kg = c.get('snf_clr')
+						doc.mix_milk_snf_kg = c.get('snf_clr')
+						doc.mix_milk_snf = c.get('snf_clr_per')
+						doc.mix_milk_clr = c.get('snf_per')
+						doc.mix_milk_clr_kg = c.get('snf')
 
 			result2 = frappe.db.sql("""select count(*) as sam_count,milk_type from `tabMulti Row Milk Sample` where parent in
 									(select name from `tabVan Collection Items`

@@ -17,7 +17,30 @@ frappe.ui.form.on('RMRD Lines', {
 		frm.set_df_property("c_cow_milk", "read_only", frm.is_new() ? 0 : 1);
 		frm.set_df_property("c_buf_milk", "read_only", frm.is_new() ? 0 : 1);
 		frm.set_df_property("c_mix_milk", "read_only", frm.is_new() ? 0 : 1);
+
+		frappe.db.get_doc('Dairy Settings').then((r) => {
+		if(r.allow_changing == 1){
+			frm.set_df_property("cow_milk_fat", "read_only",0);
+			frm.set_df_property("buf_milk_fat", "read_only",0);
+			frm.set_df_property("mix_milk_fat", "read_only",0);
+			frm.set_df_property("cow_milk_snf", "read_only",0);
+			frm.set_df_property("buf_milk_snf", "read_only",0);
+			frm.set_df_property("mix_milk_snf", "read_only",0);
+		}
+		else{
+			frm.set_df_property("cow_milk_fat", "read_only",1);
+			frm.set_df_property("buf_milk_fat", "read_only",1);
+			frm.set_df_property("mix_milk_fat", "read_only",1);
+			frm.set_df_property("cow_milk_snf", "read_only",1);
+			frm.set_df_property("buf_milk_snf", "read_only",1);
+			frm.set_df_property("mix_milk_snf", "read_only",1);
+		}
+		});
+
+
 	 },
+
+	
 	 
 	//  g_cow_milk: function(frm) {
 	//      cur_frm.cscript.calculate_total_cans_wt()
@@ -107,7 +130,7 @@ frappe.ui.form.on('RMRD Lines', {
 		               });
 		           }).addClass('btn-primary');
 		       }
-
+			
 	},
 	onload:function(frm){
         frm.set_query('rmrd', function(doc) {
@@ -126,7 +149,111 @@ frappe.ui.form.on('RMRD Lines', {
                 }
             };
         });
-     }
+
+		frappe.db.get_doc('Dairy Settings').then((r) => {
+			if(r.allow_changing == 1){
+				frm.set_df_property("cow_milk_fat", "read_only",0);
+				frm.set_df_property("buf_milk_fat", "read_only",0);
+				frm.set_df_property("mix_milk_fat", "read_only",0);
+				frm.set_df_property("cow_milk_snf", "read_only",0);
+				frm.set_df_property("buf_milk_snf", "read_only",0);
+				frm.set_df_property("mix_milk_snf", "read_only",0);
+			}
+			else{
+				frm.set_df_property("cow_milk_fat", "read_only",1);
+				frm.set_df_property("buf_milk_fat", "read_only",1);
+				frm.set_df_property("mix_milk_fat", "read_only",1);
+				frm.set_df_property("cow_milk_snf", "read_only",1);
+				frm.set_df_property("buf_milk_snf", "read_only",1);
+				frm.set_df_property("mix_milk_snf", "read_only",1);
+			}
+			});
+    },
+
+	cow_milk_fat : function(frm){
+		return frappe.call({
+			doc: frm.doc,
+			method: 'item_weight',
+			callback: function(r) {
+				if(r.message[1]){
+					var d = frm.doc.cow_milk_fat
+					var tot = (frm.doc.g_cow_milk * r.message[0]) * (frm.doc.cow_milk_fat/100)
+				}
+				frappe.model.set_value("RMRD Lines",frm.doc.name,"cow_milk_fat_kg", tot);
+		}
+	})
+	},
+
+	cow_milk_snf : function(frm){
+		return frappe.call({
+			doc: frm.doc,
+			method: 'item_weight',
+			callback: function(r) {
+				if(r.message[1]){
+					var d = frm.doc.cow_milk_snf
+					var tot = (frm.doc.g_cow_milk * r.message[0]) * (frm.doc.cow_milk_snf/100)
+				}
+				frappe.model.set_value("RMRD Lines",frm.doc.name,"cow_milk_snf_kg", tot);
+		}
+	})
+	},
+
+	buf_milk_fat : function(frm){
+		return frappe.call({
+			doc: frm.doc,
+			method: 'item_weight',
+			callback: function(r) {
+				if(r.message[3]){
+					var d = frm.doc.buf_milk_fat
+					var tot = (frm.doc.g_buf_milk * r.message[2]) * (frm.doc.buf_milk_fat/100)
+				}
+				frappe.model.set_value("RMRD Lines",frm.doc.name,"buf_milk_fat_kg", tot);
+		}
+	})
+	},
+
+	buf_milk_snf : function(frm){
+		return frappe.call({
+			doc: frm.doc,
+			method: 'item_weight',
+			callback: function(r) {
+				if(r.message[3]){
+					var d = frm.doc.buf_milk_snf
+					var tot = (frm.doc.g_buf_milk * r.message[2]) * (frm.doc.buf_milk_snf/100)
+				}
+				frappe.model.set_value("RMRD Lines",frm.doc.name,"buf_milk_snf_kg", tot);
+		}
+	})
+	},
+
+	mix_milk_fat : function(frm){
+		return frappe.call({
+			doc: frm.doc,
+			method: 'item_weight',
+			callback: function(r) {
+				if(r.message[5]){
+					var d = frm.doc.mix_milk_fat
+					var tot = (frm.doc.g_mix_milk * r.message[4]) * (frm.doc.mix_milk_fat/100)
+				}
+				frappe.model.set_value("RMRD Lines",frm.doc.name,"mix_milk_fat_kg", tot);
+		}
+	})
+	},
+
+	mix_milk_snf : function(frm){
+		return frappe.call({
+			doc: frm.doc,
+			method: 'item_weight',
+			callback: function(r) {
+				if(r.message[5]){
+					var d = frm.doc.mix_milk_snf
+					var tot = (frm.doc.g_mix_milk * r.message[4]) * (frm.doc.mix_milk_snf/100)
+				}
+				frappe.model.set_value("RMRD Lines",frm.doc.name,"mix_milk_snf_kg", tot);
+		}
+	})
+	},
+
 });
 
 

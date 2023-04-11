@@ -660,7 +660,7 @@ frappe.ui.form.on('Stock Entry Detail', {
 				args: {"item_code": d.item_code },
 				callback: function(r) {
 					if (!r.exe){
-					       var weight = r.message * d.transfer_qty
+					       var weight = r.message['weight_per_unit']* d.transfer_qty
 					       var per = ((d.fat / weight) * 100)
 					        frappe.model.set_value(cdt, cdn, "fat_per", per);
 					}
@@ -677,7 +677,7 @@ frappe.ui.form.on('Stock Entry Detail', {
 				args: {"item_code": d.item_code },
 				callback: function(r) {
 					if (!r.exe){
-					       var weight = r.message * d.transfer_qty
+					       var weight = r.message['weight_per_unit']* d.transfer_qty
 					       var fat = ((d.fat_per / 100) * weight)
 					       if(! d.fat){
 					        frappe.model.set_value(cdt, cdn, "fat", fat);
@@ -698,7 +698,7 @@ frappe.ui.form.on('Stock Entry Detail', {
 				args: {"item_code": d.item_code },
 				callback: function(r) {
 					if (!r.exe){
-					       var weight = r.message * d.transfer_qty
+					       var weight = r.message['weight_per_unit'] * d.transfer_qty
 					       var per = ((d.snf_clr / weight) * 100)
 					       if(! d.snf_clr_per){
 					        frappe.model.set_value(cdt, cdn, "snf_clr_per", per);
@@ -719,7 +719,7 @@ frappe.ui.form.on('Stock Entry Detail', {
 				args: {"item_code": d.item_code },
 				callback: function(r) {
 					if (!r.exe){
-					       var weight = r.message * d.transfer_qty
+					       var weight = r.message['weight_per_unit']* d.transfer_qty
 					       var snf_clr = ((d.snf_clr_per / 100) * weight)
 					       if(! d.snf_clr){
 					        frappe.model.set_value(cdt, cdn, "snf_clr", snf_clr);
@@ -739,7 +739,7 @@ frappe.ui.form.on('Stock Entry Detail', {
 				args: {"item_code": d.item_code },
 				callback: function(r) {
 					if (!r.exe){
-					       var weight = r.message * d.transfer_qty
+					       var weight = r.message['weight_per_unit'] * d.transfer_qty
 					       var snf = ((d.snf_per / 100) * weight)
 					       if(! d.snf){
 					        frappe.model.set_value(cdt, cdn, "snf", snf);
@@ -759,7 +759,7 @@ frappe.ui.form.on('Stock Entry Detail', {
 				args: {"item_code": d.item_code },
 				callback: function(r) {
 					if (!r.exe){
-					       var weight = r.message * d.transfer_qty
+					       var weight = r.message['weight_per_unit'] * d.transfer_qty
 					       var s_per = ((d.snf / weight) * 100)
 					       if(! d.snf_per){
 					        frappe.model.set_value(cdt, cdn, "snf_per", s_per);
@@ -781,7 +781,7 @@ frappe.ui.form.on('Stock Entry Detail', {
 				args: {"item_code": d.item_code },
 				callback: function(r) {
 					if (!r.exe){
-					    	var weight = r.message * d.transfer_qty
+					    	var weight = r.message['weight_per_unit'] * d.transfer_qty
 					       	var snf = ((d.snf_per / 100) * weight)
 					       	if(! d.snf){
 					        	frappe.model.set_value(cdt, cdn, "snf", snf);

@@ -87,7 +87,29 @@ fixtures = fixtures = [
             "Sales Invoice-_party_balance",
             "Sales Invoice-update_party_balance",
             "Item Tax Template-tax_rate",
-            "Address-fssai_lic_no"
+            "Address-fssai_lic_no",
+            "Delivery Note Item - clr_per",
+            "Delivery Note Item - snf_per",
+            "Delivery Note Item - snf",
+            "Sales Invoice Item - fat",
+            "Sales Invoice Item - fat_per",
+            "Sales Invoice Item - snf",
+            "Sales Invoice Item - snf_per",
+            "Sales Invoice Item - snf_clr",
+            "Sales Invoice Item - snf_clr_per",
+            "Purchase Invoice Item - fat",
+            "Purchase Invoice Item - fat_per",
+            "Purchase Invoice Item - snf",
+            "purchase Invoice Item - snf_per",
+            "Purchase Invoice Item - snf_clr",
+            "Purchase Invoice Item - snf_clr_per",
+            "Stock Reconciliation Item - fat",
+            "Stock Reconciliation Item - fat_per",
+            "Stock Reconciliation Item - snf",
+            "Stock Reconciliation Item - snf_per",
+            "Stock Reconciliation Item - snf_clr",
+            "Stock Reconciliation Item - snf_clr_per",
+
             
         )]]}
 ]
@@ -113,7 +135,9 @@ doctype_js = {
     "Stock Entry": "public/js/stock_entry.js",
     "Purchase Receipt": "public/js/purchase_receipt.js",
     "BOM":"public/js/custom_bom.js",
-    "Work Order":"public/js/work_order.js"
+    "Work Order":"public/js/work_order.js",
+    "Purchase Invoice":"public/js/purchase_invoice.js",
+    "Stock Reconciliation":"public/js/stock_reconciliation.js",
     }
 
 doctype_list_js = {
