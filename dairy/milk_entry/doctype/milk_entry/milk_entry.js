@@ -90,9 +90,9 @@ frappe.ui.form.on('Milk Entry', {
                     }, __('Create'));
                 }
 
-                if (frm.doc.docstatus == 1 && is_collector == 1){
-                    frm.doc.status=="To Sample and Bill"
-                }
+                // if (frm.doc.docstatus == 1 && is_collector == 0){
+                //     frm.doc.status=="To Sample and Bill"
+                // }
                 
 
 
@@ -114,6 +114,15 @@ frappe.ui.form.on('Milk Entry', {
             let time = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
             frm.set_value("time",time)
         }
+
+        // frappe.db.get_value("Van Collection",frm.doc.date,["status"]).then((r) => {
+		// 		console.log('status^^^^^^^^^^^^^^^^^^',r.status)
+		// 		if(r.status == "Completed"){
+		// 			frm.set_df_property("van_collection_completed","hidden",0)
+		// 		}
+        //             frm.set_df_property("van_collection_completed","hidden",1)
+		// })
+
     },
     before_save: function(frm) {
         return frm.call('get_pricelist').then(() => {

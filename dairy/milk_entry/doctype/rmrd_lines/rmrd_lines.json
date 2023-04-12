@@ -13,6 +13,7 @@
   "column_break_2",
   "rmrd",
   "date",
+  "shift",
   "naming_series",
   "good_milk_section",
   "rmrd_good_cow_milk",
@@ -334,20 +335,17 @@
   {
    "fieldname": "cow_milk_fat",
    "fieldtype": "Percent",
-   "label": "Cow Milk FAT%",
-   "read_only": 1
+   "label": "Cow Milk FAT%"
   },
   {
    "fieldname": "buf_milk_fat",
    "fieldtype": "Percent",
-   "label": "Buffalo Milk FAT%",
-   "read_only": 1
+   "label": "Buffalo Milk FAT%"
   },
   {
    "fieldname": "mix_milk_fat",
    "fieldtype": "Percent",
-   "label": "Mix Milk FAT%",
-   "read_only": 1
+   "label": "Mix Milk FAT%"
   },
   {
    "fieldname": "cb45",
@@ -410,8 +408,7 @@
   {
    "fieldname": "cow_milk_snf",
    "fieldtype": "Percent",
-   "label": "Cow Milk SNF%",
-   "read_only": 1
+   "label": "Cow Milk SNF%"
   },
   {
    "fieldname": "cow_milk_snf_kg",
@@ -434,14 +431,12 @@
   {
    "fieldname": "buf_milk_snf",
    "fieldtype": "Percent",
-   "label": "Buf Milk SNF%",
-   "read_only": 1
+   "label": "Buf Milk SNF%"
   },
   {
    "fieldname": "mix_milk_snf",
    "fieldtype": "Percent",
-   "label": "Mix Milk SNF%",
-   "read_only": 1
+   "label": "Mix Milk SNF%"
   },
   {
    "fieldname": "mix_milk_snf_kg",
@@ -492,18 +487,25 @@
    "allow_in_quick_entry": 1,
    "allow_on_submit": 1,
    "fieldname": "stock_entry",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Stock Entry",
-   "options": "Stock Entry",
    "read_only": 1
+  },
+  {
+   "fetch_from": "rmrd.shift",
+   "fieldname": "shift",
+   "fieldtype": "Select",
+   "label": "Shift",
+   "options": "\nMorning\nEvening"
   }
  ],
  "links": [],
- "modified": "2023-03-02 10:37:48.341487",
+ "modified": "2023-04-10 15:00:03.623314",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "RMRD Lines",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -521,6 +523,7 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "title_field": "dcs",
  "track_changes": 1
 }

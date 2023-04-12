@@ -312,7 +312,7 @@ frappe.ui.form.on('RMRD', {
             return {
                 filters: {
                     "route_type":"Milk Procurement",
-                    "docstatus":1
+                    // "docstatus":1
                 }
             };
         });

@@ -8,9 +8,21 @@ frappe.ui.form.on("Customer", {
                 filters: {
                     "company":doc.company,
                     "route_type":"Milk Marketing",
-                    "docstatus":1
+                    // "docstatus":1
                 }
             };
         });
     },
+    refresh: function(frm,cdt,cdn){
+        frm.fields_dict['links'].grid.get_field('link_name').get_query = function(doc, cdt, cdn) {
+            var child = locals[cdt][cdn]
+            return {    
+                filters:[
+                    ['docstatus', '!=', 2]
+                   
+                ]
+            }
+
+        }
+    }
 });

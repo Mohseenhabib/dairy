@@ -35,7 +35,7 @@ def change_milk_status(pc,method):
             else:
                 doc.status ="To Sample"
         else:
-            doc.status = "To Bill"
+            doc.status = "To Sample and Bill"
         doc.db_update()
 
 
@@ -309,8 +309,8 @@ def cancel_create_milk_stock_ledger(self,method):
                     new_mle.qty_after_transaction =  mle_obj.qty_after_transaction - itm.total_weight
                     new_mle.fat_after_transaction = mle_obj.fat_after_transaction - itm.fat
                     new_mle.snf_after_transaction = mle_obj.snf_after_transaction - itm.clr
-                    new_mle.fat_per = ((mle_obj.fat_after_transaction - itm.fat) / (mle_obj.qty_after_transaction - itm.total_weight)) * 100
-                    new_mle.snf_per = ((mle_obj.snf_after_transaction - itm.clr) / (mle_obj.qty_after_transaction - itm.total_weight)) * 100
+                    new_mle.fat_per = flt((mle_obj.fat_after_transaction - itm.fat) / (mle_obj.qty_after_transaction - itm.total_weight)) * 100
+                    new_mle.snf_per = flt((mle_obj.snf_after_transaction - itm.clr) / (mle_obj.qty_after_transaction - itm.total_weight)) * 100
                     # new_mle.is_cancelled = 1
 
                     frappe.db.sql(""" update `tabMilk Ledger Entry` set is_cancelled = 1 where name = %(name)s """,

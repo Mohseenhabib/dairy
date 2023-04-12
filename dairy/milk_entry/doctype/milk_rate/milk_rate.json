@@ -18,7 +18,14 @@
   "selling_rate",
   "sb1",
   "milk_rate_chart",
-  "amended_from"
+  "amended_from",
+  "deduction_tab",
+  "enable_deduction",
+  "fat_deduction",
+  "snf_deduction",
+  "insentive_tab",
+  "enable_volume_incentive",
+  "incentive"
  ],
  "fields": [
   {
@@ -94,12 +101,52 @@
    "fieldname": "selling_rate",
    "fieldtype": "Check",
    "label": "Selling Rate"
+  },
+  {
+   "fieldname": "deduction_tab",
+   "fieldtype": "Tab Break",
+   "label": "Deduction"
+  },
+  {
+   "fieldname": "insentive_tab",
+   "fieldtype": "Tab Break",
+   "label": "Incentive"
+  },
+  {
+   "default": "0",
+   "fieldname": "enable_deduction",
+   "fieldtype": "Check",
+   "label": "Enable Deduction"
+  },
+  {
+   "fieldname": "fat_deduction",
+   "fieldtype": "Table",
+   "label": "Fat Deduction",
+   "options": "Fat Deduction"
+  },
+  {
+   "fieldname": "snf_deduction",
+   "fieldtype": "Table",
+   "label": "SNF Deduction",
+   "options": "SNF Deduction"
+  },
+  {
+   "default": "0",
+   "fieldname": "enable_volume_incentive",
+   "fieldtype": "Check",
+   "label": "Enable Volume Incentive"
+  },
+  {
+   "fieldname": "incentive",
+   "fieldtype": "Table",
+   "label": "Incentive",
+   "options": "Volume Incentive Slabs"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-17 15:46:25.679465",
+ "modified": "2023-03-26 20:19:29.105206",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Milk Rate",

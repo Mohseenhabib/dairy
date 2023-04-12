@@ -91,6 +91,7 @@
   "quality_inspection_required_for_van_collection",
   "column_break_82",
   "restrict_multiple_orders_in_single_shift",
+  "allow_changing",
   "milk_leakage_section",
   "applicable_on",
   "leakage_calculated_on",
@@ -652,12 +653,18 @@
    "fieldname": "operation_time",
    "fieldtype": "Float",
    "label": "Operation Time"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_changing",
+   "fieldtype": "Check",
+   "label": "Allow Changing Fat/Snf In RMRD Lines"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-04-07 20:10:25.778142",
+ "modified": "2023-04-10 14:37:48.426293",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",

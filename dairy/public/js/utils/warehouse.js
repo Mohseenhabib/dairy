@@ -6,7 +6,7 @@ frappe.ui.form.on('Warehouse', {
                 
                     "company":doc.company,
                     "route_type":"Milk Procurement",
-                    "docstatus":1
+                    // "docstatus":1
                 }
             };
         });

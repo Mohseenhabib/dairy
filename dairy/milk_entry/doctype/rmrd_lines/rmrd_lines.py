@@ -8,6 +8,35 @@ from frappe.model.document import Document
 from math import ceil
 
 class RMRDLines(Document):
+	def validate(self):
+		if self.get('__islocal'):
+			result = frappe.db.sql("""select * from `tabRMRD Lines` where dcs =%s and shift =%s
+							and date=%s and docstatus = 1""",(self.dcs,self.shift,self.date))
+			if result:
+				frappe.throw("You can not create duplicate entry on same date and same DCS")
+
+
+	@frappe.whitelist()
+	def item_weight(self,item_name):
+		g_cow_item = frappe.db.get_single_value("Dairy Settings", "cow_pro")
+		g_buf_item = frappe.db.get_single_value("Dairy Settings", "buf_pro")
+		g_mix_item = frappe.db.get_single_value("Dairy Settings", "mix_pro")
+
+		g_cow_weight,g_cow_name = frappe.db.get_value('Item',g_cow_item,['weight_per_unit','item_name'])
+
+		g_buf_weight,g_buf_name = frappe.db.get_value('Item',g_buf_item,['weight_per_unit','item_name'])
+
+		g_mix_weight,g_mix_name = frappe.db.get_value('Item',g_mix_item,['weight_per_unit','item_name'])
+
+		a = []
+		a.append(g_cow_weight)
+		a.append(g_cow_name)
+		a.append(g_buf_weight)
+		a.append(g_buf_name)
+		a.append(g_mix_weight)
+		a.append(g_mix_name)
+		return a
+
 	@frappe.whitelist()
 	def calculate_total_cans_wt(self):
 		allow_max_capacity = float(frappe.db.get_single_value("Dairy Settings", "max_allowed"))
