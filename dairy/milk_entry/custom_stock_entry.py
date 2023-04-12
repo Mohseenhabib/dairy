@@ -397,59 +397,59 @@ def update_vc_status(self,method):
             print('van collection satus *************************')
 
 
-def calculate_wfs(self,method):
-    if self.stock_entry_type=="Manufacture":
-        tot_qty=[]
-        for i in self.items:
-            if i.is_finished_item==0:
-                tot_qty.append(i.qty)
-        for i in self.items:
-            if i.is_finished_item==1:
-               i.qty="{:.3f}".format(sum(tot_qty))
+# def calculate_wfs(self,method):
+#     if self.stock_entry_type=="Manufacture":
+#         tot_qty=[]
+#         for i in self.items:
+#             if i.is_finished_item==0:
+#                 tot_qty.append(i.qty)
+#         for i in self.items:
+#             if i.is_finished_item==1:
+#                i.qty="{:.3f}".format(sum(tot_qty))
 
-        self.fg_completed_qty="{:.3f}".format(sum(tot_qty))
-        wo=frappe.get_doc("Work Order",self.work_order)
-        wo.db_set("status","In Process")
-        if self.item:
-            doc=frappe.get_doc("Item",self.item)
-            if doc.maintain_fat_snf_clr:
-                self.required_fat=doc.standard_fat
-                self.required_snf=doc.standard_snf
-                self.total_fat_in_kg=(flt(sum(tot_qty))*flt(doc.weight_per_unit))*doc.standard_fat/100
-                self.total_snf_in_kg=(flt(sum(tot_qty))*flt(doc.weight_per_unit))*doc.standard_snf/100
+#         self.fg_completed_qty="{:.3f}".format(sum(tot_qty))
+#         wo=frappe.get_doc("Work Order",self.work_order)
+#         wo.db_set("status","In Process")
+#         if self.item:
+#             doc=frappe.get_doc("Item",self.item)
+#             if doc.maintain_fat_snf_clr:
+#                 self.required_fat=doc.standard_fat
+#                 self.required_snf=doc.standard_snf
+#                 self.total_fat_in_kg=(flt(sum(tot_qty))*flt(doc.weight_per_unit))*doc.standard_fat/100
+#                 self.total_snf_in_kg=(flt(sum(tot_qty))*flt(doc.weight_per_unit))*doc.standard_snf/100
             
 
-            total_rm_fat=[]
-            total_rm_snf=[]
-            total_fat_in_kg=[]
-            total_snf_in_kg=[]
-            for i in self.items:
-                if i.is_finished_item==0:
-                    item=frappe.get_doc("Item",i.item_code)
-                    if doc.maintain_fat_snf_clr:
-                        i.fat_per=item.standard_fat
-                        i.snf_per=item.standard_snf
-                        i.fat=(i.qty*item.weight_per_unit)*item.standard_fat/100
-                        i.snf=(i.qty*item.weight_per_unit)*item.standard_snf/100
-                        total_rm_fat.append(item.standard_fat)
-                        total_rm_snf.append(item.standard_snf)
-                        total_fat_in_kg.append((i.qty*item.weight_per_unit)*item.standard_fat/100)
-                        total_snf_in_kg.append((i.qty*item.weight_per_unit)*item.standard_snf/100)
-            if len(total_rm_fat)>0:
-                self.total_rm_fat=sum(total_rm_fat)/len(self.items)
+#             total_rm_fat=[]
+#             total_rm_snf=[]
+#             total_fat_in_kg=[]
+#             total_snf_in_kg=[]
+#             for i in self.items:
+#                 if i.is_finished_item==0:
+#                     item=frappe.get_doc("Item",i.item_code)
+#                     if doc.maintain_fat_snf_clr:
+#                         i.fat_per=item.standard_fat
+#                         i.snf_per=item.standard_snf
+#                         i.fat=(i.qty*item.weight_per_unit)*item.standard_fat/100
+#                         i.snf=(i.qty*item.weight_per_unit)*item.standard_snf/100
+#                         total_rm_fat.append(item.standard_fat)
+#                         total_rm_snf.append(item.standard_snf)
+#                         total_fat_in_kg.append((i.qty*item.weight_per_unit)*item.standard_fat/100)
+#                         total_snf_in_kg.append((i.qty*item.weight_per_unit)*item.standard_snf/100)
+#             if len(total_rm_fat)>0:
+#                 self.total_rm_fat=sum(total_rm_fat)/len(self.items)
 
-            if len(total_rm_snf)>0:
-                self.total_rm_snf=sum(total_rm_snf)/len(self.items)
-            if len(total_fat_in_kg)>0:
-                self.total_rm_fats_in_kg=sum(total_fat_in_kg)
-            if len(total_snf_in_kg)>0:
-                self.total_rm_snfs_in_kg=sum(total_snf_in_kg)
+#             if len(total_rm_snf)>0:
+#                 self.total_rm_snf=sum(total_rm_snf)/len(self.items)
+#             if len(total_fat_in_kg)>0:
+#                 self.total_rm_fats_in_kg=sum(total_fat_in_kg)
+#             if len(total_snf_in_kg)>0:
+#                 self.total_rm_snfs_in_kg=sum(total_snf_in_kg)
             
 
-            self.total_diff_fat=self.required_fat- self.total_rm_fat
-            self.total_diff_snf=self.required_snf-self.total_rm_snf
-            self.total_diff_fat_in_kg=self.total_fat_in_kg-self.total_rm_fats_in_kg
-            self.total_diff_snf_in_kg=self.total_snf_in_kg-self.total_rm_snfs_in_kg
+#             self.total_diff_fat=self.required_fat- self.total_rm_fat
+#             self.total_diff_snf=self.required_snf-self.total_rm_snf
+#             self.total_diff_fat_in_kg=self.total_fat_in_kg-self.total_rm_fats_in_kg
+#             self.total_diff_snf_in_kg=self.total_snf_in_kg-self.total_rm_snfs_in_kg
 
 
     
@@ -606,6 +606,12 @@ def calculate_wfs(self,method):
 #                         "total_fat_in_kg":se.total_diff_fat_in_kg,"total_snf_in_kg":0,"weight":doc.weight_per_unit})
 #     return items
         
-
-
+@frappe.whitelist()
+def add_scrap_item(work_order,stock_entry_type):
+    if stock_entry_type=="Manufacture":
+        doc=frappe.get_doc("Work Order",work_order)
+        items=[]
+        for i in doc.fg_item_scrap:
+            items.append({"item":i.item,"qty":i.qty})
+    return items
         

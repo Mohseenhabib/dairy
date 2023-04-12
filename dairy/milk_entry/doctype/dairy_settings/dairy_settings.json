@@ -105,7 +105,12 @@
   "items_to_add_fat",
   "item_to_add_snf_fat",
   "column_break_ypomu",
-  "items_to_add_snf"
+  "items_to_add_snf",
+  "threshold_for_fat_separation",
+  "operation",
+  "workstation_type",
+  "workstation",
+  "operation_time"
  ],
  "fields": [
   {
@@ -617,14 +622,42 @@
   {
    "fieldname": "item_to_add_snf_fat",
    "fieldtype": "Link",
-   "label": "Item To Add Snf/Fat",
+   "label": "Item To Remove Snf/Fat",
    "options": "Item"
+  },
+  {
+   "fieldname": "threshold_for_fat_separation",
+   "fieldtype": "Float",
+   "label": "Threshold For Fat Separation(Kg Fat)"
+  },
+  {
+   "fieldname": "operation",
+   "fieldtype": "Link",
+   "label": "Operation",
+   "options": "Operation"
+  },
+  {
+   "fieldname": "workstation_type",
+   "fieldtype": "Link",
+   "label": "Workstation Type",
+   "options": "Workstation Type"
+  },
+  {
+   "fieldname": "workstation",
+   "fieldtype": "Link",
+   "label": "Workstation",
+   "options": "Workstation"
+  },
+  {
+   "fieldname": "operation_time",
+   "fieldtype": "Float",
+   "label": "Operation Time"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-04-06 12:04:50.227476",
+ "modified": "2023-04-07 20:10:25.778142",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",

@@ -33,35 +33,38 @@ frappe.ui.form.on('Stock Entry', {
 			})
 
 	},
-// 	add_fat_button:function(frm){
-// 		frappe.call({
-// 			method:"dairy.milk_entry.custom_stock_entry.get_add_fat",
-// 			args:{
-// 				"name":frm.doc.name
-// 			},
-// 			callback:function(r){
-// 				if (r.message){
-// 				console.log("$$$$$$$$$$$",r.message)
-// 					var child_table = frm.fields_dict['items'].grid;
+	setup:function(frm){
+		if(frm.doc.__islocal){
+		frappe.call({
+			method:"dairy.milk_entry.custom_stock_entry.add_scrap_item",
+			args:{
+				"work_order":frm.doc.work_order,
+				"stock_entry_type":frm.doc.stock_entry_type
+			},
+			callback:function(r){
+				if (r.message){
+					$.each(r.message, function(index, row){
+					var child_table = frm.fields_dict['items'].grid;
 
-//                     // Create a new row object
-//                     var new_row = child_table.add_new_row();
+                    // Create a new row object
+                    var new_row = child_table.add_new_row();
             
-//                     // Set the values for the new row
-//                     frappe.model.set_value(new_row.doctype, new_row.name, 's_warehouse', frm.doc.from_warehouse);
-//                     frappe.model.set_value(new_row.doctype, new_row.name, 'item_code', r.message.item_code);
-//                     frappe.model.set_value(new_row.doctype, new_row.name, 'qty', r.message.qty);
-//                     frappe.model.set_value(new_row.doctype, new_row.name, 'snf_per', r.message.snf);
-//                     frappe.model.set_value(new_row.doctype, new_row.name, 'fat_per', r.message.fat);
-//                     frappe.model.set_value(new_row.doctype, new_row.name, 'fat', r.message.total_fat_in_kg);
-//                     frappe.model.set_value(new_row.doctype, new_row.name, 'fat',  r.message.total_fat_in_kg);
-//                     frm.refresh_fields("items");
-// 					frappe.model.set_value(new_row.doctype, new_row.name, 't_warehouse', "");
-// 					frm.refresh_fields("items");
-// 				}
-// 			}
-// 	})
-// 	},
+                    // Set the values for the new row
+                    frappe.model.set_value(new_row.doctype, new_row.name, 't_warehouse', frm.doc.fg_warehouse);
+					frappe.model.set_value(new_row.doctype, new_row.name, 's_warehouse', "");
+                    frappe.model.set_value(new_row.doctype, new_row.name, 'item_code', row.item);
+                    frappe.model.set_value(new_row.doctype, new_row.name, 'qty', row.qty);
+					frappe.model.set_value(new_row.doctype, new_row.name, 'is_scrap_item', 1);
+					child_table.refresh()
+
+                    frm.refresh_fields("items");
+					})
+
+				}
+			}
+	})
+}
+	},
 // 	add_snf_button:function(frm){
 // 		frappe.call({
 // 			method:"dairy.milk_entry.custom_stock_entry.get_add_snf",
