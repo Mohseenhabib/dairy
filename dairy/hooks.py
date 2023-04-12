@@ -47,44 +47,18 @@ fixtures = fixtures = [
             "Work Order-required_fat_in_kg",
             "Work Order-required_snf_",
             "Work Order-required_snt_in_kg",
-            "Work Order Item-weight_details"
-            "Work Order Item-standard_fat"
-            "Work Order Item-standard_fat_in_kg"
-            "Work Order Item-transferred_fat_in_kg"
-            "Work Order Item-consumed_fat_in_kg"
-            "Work Order Item-column_break_ocf0w"
-            "Work Order Item-standard_snf"
-            "Work Order Item-standard_snf_in_kg"
-            "Work Order Item-transferred_snf_in_kg"
-            "Work Order Item-consumed_snf_in_kg",
-            "Stock Entry-fg_fat_snf_calculations",
-            "Stock Entry-required_fat",
-            "Stock Entry-required_snf",
-            "Stock Entry-column_break_acx0f",
-            "Stock Entry-total_fat_in_kg",
-            "Stock Entry-total_snf_in_kg",
-            "Stock Entry-rm_fat__snf_calculations",
-            "Stock Entry-total_rm_fat",
-            "Stock Entry-total_rm_snf",
-            "Stock Entry-column_break_xeyfb",
-            "Stock Entry-total_rm_fats_in_kg",
-            "Stock Entry-total_rm_snfs_in_kg",
-            "Stock Entry-difference_in_fat__snf",
-            "Stock Entry-total_diff_fat",
-            "Stock Entry-total_diff_snf",
-            "Stock Entry-column_break_sjkq1",
-            "Stock Entry-total_diff_fat_in_kg",
-            "Stock Entry-total_diff_snf_in_kg",
-            "Stock Entry-section_break_6odqt",
-            "Stock Entry-add_fat_button",
-            "Stock Entry-add_snf_button",
-            "Stock Entry-column_break_jxbbt",
-            "Stock Entry-remove_fat_button",
-            "Stock Entry-item",
-            "Stock Entry-remove_snf_button",
-            "Sales Order-_party_balance",
+            "Work Order Item-fat_per",
+            "Work Order Item-fat_per_in_kg",
+            "Work Order Item-snf_per",
+            "Work Order Item-snf_in_kg",
+            "Work Order-fg_item_scrap",
+            "Work Order-rm_fat_in_kg",
+            "Work Order-rm_snf_in_kg",
+            "Work Order-diff_fat_in_kg",
+            "Work Order-diff_snf_in_kg",
+            "Sales Order-party_balance",
             "Sales Order-update_party_balance",
-            "Sales Invoice-_party_balance",
+            "Sales Invoice-party_balance",
             "Sales Invoice-update_party_balance",
             "Item Tax Template-tax_rate",
             "Address-fssai_lic_no",
@@ -227,8 +201,8 @@ doc_events = {
     "Stock Entry":{
         "after_insert": ["dairy.milk_entry.doctype.van_collection.van_collection.change_van_collection_status",
                          "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry"],
-        "before_save":[ "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry",
-                       "dairy.milk_entry.custom_stock_entry.calculate_wfs"
+        "before_save":[ "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry"
+                    #    "dairy.milk_entry.custom_stock_entry.calculate_wfs"
         ],
         "before_submit": "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry",
         "on_submit": "dairy.milk_entry.custom_stock_entry.on_submit",
@@ -248,7 +222,7 @@ doc_events = {
     "Work Order":{
       "before_save":[
             "dairy.milk_entry.custom_work_order.bom_item_child_table",
-            "dairy.milk_entry.custom_work_order.get_required_fat_snf"
+            "dairy.milk_entry.custom_work_order.get_required_fat_snf_item"
       ]
     }
   

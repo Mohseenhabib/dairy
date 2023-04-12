@@ -29,7 +29,7 @@ frappe.ui.form.on('Dairy Settings', {
             }
         }
     ),
-    frm.set_query("item","items_to_remove_fat",function(frm){
+    frm.set_query("items_to_remove_snf_fat",function(frm){
         return{
             filters:{
                 'maintain_fat_snf_clr' : 1,
@@ -39,15 +39,6 @@ frappe.ui.form.on('Dairy Settings', {
     }
     ),
     frm.set_query("item","items_to_add_snf",function(frm){
-        return{
-            filters:{
-                'maintain_fat_snf_clr' : 1,
-                'disabled' : 0
-            }
-        }
-    }
-    ),
-    frm.set_query("item","items_to_remove_snf",function(frm,cdt,cdn){
         return{
             filters:{
                 'maintain_fat_snf_clr' : 1,

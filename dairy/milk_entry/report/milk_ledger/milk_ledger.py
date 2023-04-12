@@ -70,7 +70,6 @@ def execute(filters=None):
 		
 	
 		data.append(sle)
-		print('data*************************8',sle)
 
 		if include_uom:
 			conversion_factors.append(item_detail.conversion_factor)
@@ -207,7 +206,7 @@ def get_item_details(items, sl_entries, include_uom):
 def get_sle_conditions(filters):
 	conditions = []
 	if filters.get("warehouse"):
-		warehouse_condition = get_warehouse_condition(filters.get("warehouse"))
+		warehouse_condition = get_warehouse_condition_mle(filters.get("warehouse"))
 		if warehouse_condition:
 			conditions.append(warehouse_condition)
 	if filters.get("voucher_no"):
@@ -234,12 +233,21 @@ def get_opening_balance(filters, columns):
 		"posting_date": filters.from_date,
 		"posting_time": "00:00:00"
 	})
-
+	item=frappe.get_doc("Item",filters.item_code)
+	a=0
+	b=0
+	milk_ledger_entry=frappe.db.sql("""select snf_after_transaction,fat_after_transaction  from `tabMilk Ledger Entry`
+				    where item_code='{0}' and posting_date < '{1}' and   {warehouse_condition} order by creation 
+					desc""".format(filters.item_code,filters.from_date,warehouse_condition=get_warehouse_condition(filters.warehouse)),as_dict=1)
+	if milk_ledger_entry:
+		a=milk_ledger_entry[0].get("fat_after_transaction")
+		b=milk_ledger_entry[0].get("snf_after_transaction")
 	row = {
 		"item_code": _("'Opening'"),
-		"qty_after_transaction": last_entry.get("qty_after_transaction", 0),
-		# "valuation_rate": last_entry.get("valuation_rate", 0),
-		# "stock_value": last_entry.get("stock_value", 0)
+		"qty_after_transaction": last_entry.get("qty_after_transaction", 0) * item.weight_per_unit ,
+		"balance_qty": last_entry.get("qty_after_transaction", 0),
+		"fat_after_transaction": a,
+		"snf_after_transaction": b,
 	}
 
 	return row
@@ -248,12 +256,25 @@ def get_opening_balance(filters, columns):
 def get_warehouse_condition(warehouse):
 	warehouse_details = frappe.db.get_value("Warehouse", warehouse, ["lft", "rgt"], as_dict=1)
 	if warehouse_details:
-		return " exists (select name from `tabWarehouse` wh \
-			where wh.lft >= %s and wh.rgt <= %s and mle.warehouse = wh.name)"%(warehouse_details.lft,
-			warehouse_details.rgt)
+		return (
+			" exists (select name from `tabWarehouse` wh \
+			where wh.lft >= %s and wh.rgt <= %s and warehouse=wh.name)"
+			% (warehouse_details.lft, warehouse_details.rgt)
+		)
 
-	return ''
+	return ""
 
+
+def get_warehouse_condition_mle(warehouse):
+	warehouse_details = frappe.db.get_value("Warehouse", warehouse, ["lft", "rgt"], as_dict=1)
+	if warehouse_details:
+		return (
+			" exists (select name from `tabWarehouse` wh \
+			where wh.lft >= %s and wh.rgt <= %s  and mle.warehouse=wh.name)"
+			% (warehouse_details.lft, warehouse_details.rgt)
+		)
+
+	return ""
 
 def get_item_group_condition(item_group):
 	item_group_details = frappe.db.get_value("Item Group", item_group, ["lft", "rgt"], as_dict=1)

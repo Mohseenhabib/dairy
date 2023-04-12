@@ -1,15 +1,14 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2023-03-27 14:54:28.078389",
+ "creation": "2023-04-11 19:00:08.073321",
  "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "item",
-  "item_name",
-  "priority1"
+  "qty"
  ],
  "fields": [
   {
@@ -20,27 +19,20 @@
    "options": "Item"
   },
   {
-   "fetch_from": "item.item_name",
-   "fieldname": "item_name",
-   "fieldtype": "Data",
+   "fieldname": "qty",
+   "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Item Name",
-   "read_only": 1
-  },
-  {
-   "fieldname": "priority1",
-   "fieldtype": "Int",
-   "in_list_view": 1,
-   "label": "Priority"
+   "label": "Qty",
+   "options": "Qty"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-04-04 18:59:19.434757",
+ "modified": "2023-04-11 22:44:55.160324",
  "modified_by": "Administrator",
  "module": "Milk Entry",
- "name": "fatsnf table",
+ "name": "Scrap Fat Snf",
  "owner": "Administrator",
  "permissions": [],
  "sort_field": "modified",
