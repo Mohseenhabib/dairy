@@ -2,11 +2,13 @@
 # License: GNU General Public License v3. See license.txt
 
 from __future__ import unicode_literals
+from itertools import count
 
 import frappe
 from frappe.utils import cint, flt
 from erpnext.stock.utils import update_included_uom_in_report
 from frappe import _
+
 
 def execute(filters=None):
 	include_uom = filters.get("include_uom")
@@ -26,6 +28,7 @@ def execute(filters=None):
 
 	for sle in sl_entries:
 		
+			
 		item_detail = item_details[sle.item_code]
 
 		sle.update(item_detail)
@@ -67,11 +70,51 @@ def execute(filters=None):
 			"in_qty": abs(h),
 			"out_qty": abs(i)
 		})
-		
+		if sle.voucher_type == 'Purchase Receipt':
+			purchase = frappe.db.get_value('Purchase Receipt',{'name':sle.voucher_no},['shift'])
+			print('purchase*******************************',purchase)
+			sle.update({
+				"shift":purchase
+			})
+
+		if sle.voucher_type == 'Stock Entry':
+			van_shift= frappe.db.get_value('Van Collection Items',{'gate_pass':sle.voucher_no},['shift'])
+			if van_shift:
+				sle.update({
+					"shift":van_shift
+				})
+				
+			rmrd_shift= frappe.db.get_all('RMRD Lines',{'stock_entry':sle.voucher_no},['shift'])
+			if rmrd_shift:
+				sle.update({
+					"shift":rmrd_shift
+				})
+
+		if sle.voucher_type == 'Purchase Invoice':
+			p_invoice = frappe.db.get_value('Purchase Invoice',{'name':sle.voucher_no},['shift'])
+			sle.update({
+				"shift":p_invoice
+			})	
+			
+		if sle.voucher_type == 'Sales Invoice':
+			s_invoice = frappe.db.get_value('Sales Invoice',{'name':sle.voucher_no},['shift'])
+			sle.update({
+				"shift":s_invoice
+			})
+
+		if sle.voucher_type == 'Delivery Note':
+			d_note = frappe.db.get_value('Delivery Note',{'name':sle.voucher_no},['shift'])
+			sle.update({
+				"shift":d_note
+			})
 	
 		data.append(sle)
-		print('data*************************8',sle)
-
+		# a = []
+		# for d in data:
+		# 	if d.get('fat'):
+		# 		a.append(float(d.get('fat')))
+		# print('dddddddddddddddddddddddd',len(a),sum(a)/len(a))
+		
 		if include_uom:
 			conversion_factors.append(item_detail.conversion_factor)
 
@@ -84,10 +127,13 @@ def get_columns():
 		{"label": _("Date"), "fieldname": "date", "fieldtype": "Datetime", "width": 150},
 		{"label": _("Item"), "fieldname": "item_code", "fieldtype": "Link", "options": "Item", "width": 100},
 		{"label": _("Item Name"), "fieldname": "item_name", "width": 100},
+		{"label": _("Shift") , "fieldname": "shift" , "width": 100},
 		{"label": _("Stock UOM"), "fieldname": "stock_uom", "fieldtype": "Link", "options": "UOM", "width": 90},
+		{"label": _("Fat%"), "fieldname": "fat_per", "fieldtype": "float", "width": 90},
 		{"label": _("In Fat"), "fieldname": "in_fat", "fieldtype": "float", "width": 90},
 		{"label": _("Out Fat"), "fieldname": "out_fat", "fieldtype": "float", "width": 90},
 		{"label": _("Balance Fat (in Kg)"), "fieldname": "fat_after_transaction", "fieldtype": "float", "width": 120},
+		{"label": _("SNF%"), "fieldname": "snf_per", "fieldtype": "float", "width": 90},
 		{"label": _("In SNF"), "fieldname": "in_snf", "fieldtype": "float", "width": 90},
 		{"label": _("Out SNF"), "fieldname": "out_snf", "fieldtype": "float", "width": 90},
 		{"label": _("Balance SNF (in Kg)"), "fieldname": "snf_after_transaction", "fieldtype": "float", "width": 120},
@@ -126,7 +172,8 @@ def get_stock_ledger_entries(filters, items):
 			mle.qty_after_transaction,
 			# stock_value,
 			mle.voucher_type,
-			
+			mle.fat_per,
+			mle.snf_per,
 			mle.batch_no,
 			mle.serial_no,
 			mle.company,
@@ -141,7 +188,6 @@ def get_stock_ledger_entries(filters, items):
 		FROM
 			`tabMilk Ledger Entry` as mle
 		join `tabStock Ledger Entry` as sle
-
 		WHERE
 			mle.company = %(company)s
 				AND mle.posting_date BETWEEN %(from_date)s AND %(to_date)s
@@ -207,7 +253,7 @@ def get_item_details(items, sl_entries, include_uom):
 def get_sle_conditions(filters):
 	conditions = []
 	if filters.get("warehouse"):
-		warehouse_condition = get_warehouse_condition(filters.get("warehouse"))
+		warehouse_condition = get_warehouse_condition_mle(filters.get("warehouse"))
 		if warehouse_condition:
 			conditions.append(warehouse_condition)
 	if filters.get("voucher_no"):
@@ -234,26 +280,48 @@ def get_opening_balance(filters, columns):
 		"posting_date": filters.from_date,
 		"posting_time": "00:00:00"
 	})
-
+	item=frappe.get_doc("Item",filters.item_code)
+	a=0
+	b=0
+	milk_ledger_entry=frappe.db.sql("""select snf_after_transaction,fat_after_transaction  from `tabMilk Ledger Entry`
+				    where item_code='{0}' and posting_date < '{1}' and   {warehouse_condition} order by creation 
+					desc""".format(filters.item_code,filters.from_date,warehouse_condition=get_warehouse_condition(filters.warehouse)),as_dict=1)
+	if milk_ledger_entry:
+		a=milk_ledger_entry[0].get("fat_after_transaction")
+		b=milk_ledger_entry[0].get("snf_after_transaction")
 	row = {
 		"item_code": _("'Opening'"),
-		"qty_after_transaction": last_entry.get("qty_after_transaction", 0),
-		# "valuation_rate": last_entry.get("valuation_rate", 0),
-		# "stock_value": last_entry.get("stock_value", 0)
+		"qty_after_transaction": last_entry.get("qty_after_transaction", 0) * item.weight_per_unit ,
+		"balance_qty": last_entry.get("qty_after_transaction", 0),
+		"fat_after_transaction": a,
+		"snf_after_transaction": b,
 	}
-
+	
 	return row
 
 
 def get_warehouse_condition(warehouse):
 	warehouse_details = frappe.db.get_value("Warehouse", warehouse, ["lft", "rgt"], as_dict=1)
 	if warehouse_details:
-		return " exists (select name from `tabWarehouse` wh \
-			where wh.lft >= %s and wh.rgt <= %s and mle.warehouse = wh.name)"%(warehouse_details.lft,
-			warehouse_details.rgt)
+		return (
+			" exists (select name from `tabWarehouse` wh \
+			where wh.lft >= %s and wh.rgt <= %s and warehouse=wh.name)"
+			% (warehouse_details.lft, warehouse_details.rgt)
+		)
 
-	return ''
+	return ""
 
+
+def get_warehouse_condition_mle(warehouse):
+	warehouse_details = frappe.db.get_value("Warehouse", warehouse, ["lft", "rgt"], as_dict=1)
+	if warehouse_details:
+		return (
+			" exists (select name from `tabWarehouse` wh \
+			where wh.lft >= %s and wh.rgt <= %s  and mle.warehouse=wh.name)"
+			% (warehouse_details.lft, warehouse_details.rgt)
+		)
+
+	return ""
 
 def get_item_group_condition(item_group):
 	item_group_details = frappe.db.get_value("Item Group", item_group, ["lft", "rgt"], as_dict=1)
@@ -263,3 +331,4 @@ def get_item_group_condition(item_group):
 			item_group_details.rgt)
 
 	return ''
+
