@@ -224,6 +224,9 @@ doc_events = {
             "dairy.milk_entry.custom_work_order.bom_item_child_table",
             "dairy.milk_entry.custom_work_order.get_required_fat_snf_item"
       ]
+    },
+    "Stock Ledger Entry":{
+      "before_save": "dairy.milk_entry.custom_stock_ledger_entry.create_milk_ledger_entry"
     }
   
 }
