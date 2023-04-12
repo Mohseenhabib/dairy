@@ -61,30 +61,7 @@ fixtures = fixtures = [
             "Sales Invoice-party_balance",
             "Sales Invoice-update_party_balance",
             "Item Tax Template-tax_rate",
-            "Address-fssai_lic_no",
-            "Delivery Note Item - clr_per",
-            "Delivery Note Item - snf_per",
-            "Delivery Note Item - snf",
-            "Sales Invoice Item - fat",
-            "Sales Invoice Item - fat_per",
-            "Sales Invoice Item - snf",
-            "Sales Invoice Item - snf_per",
-            "Sales Invoice Item - snf_clr",
-            "Sales Invoice Item - snf_clr_per",
-            "Purchase Invoice Item - fat",
-            "Purchase Invoice Item - fat_per",
-            "Purchase Invoice Item - snf",
-            "purchase Invoice Item - snf_per",
-            "Purchase Invoice Item - snf_clr",
-            "Purchase Invoice Item - snf_clr_per",
-            "Stock Reconciliation Item - fat",
-            "Stock Reconciliation Item - fat_per",
-            "Stock Reconciliation Item - snf",
-            "Stock Reconciliation Item - snf_per",
-            "Stock Reconciliation Item - snf_clr",
-            "Stock Reconciliation Item - snf_clr_per",
-
-            
+            "Address-fssai_lic_no"
         )]]}
 ]
 
@@ -176,14 +153,14 @@ doc_events = {
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
         "before_submit": ["dairy.milk_entry.custom_delivery_note.before_submit",
                           "dairy.milk_entry.custom_delivery_note.after_save"],
-        "on_submit": "dairy.milk_entry.custom_delivery_note.on_submit",
+        # "on_submit": "dairy.milk_entry.custom_delivery_note.on_submit",
         "after_insert": ["dairy.milk_entry.custom_delivery_note.calculate_crate",
                          "dairy.milk_entry.custom_delivery_note.after_save"],
         "before_save": ["dairy.milk_entry.custom_delivery_note.calculate_crate",
                         "dairy.milk_entry.custom_delivery_note.after_save",
                         # "dairy.milk_entry.custom_delivery_note.set_fat_and_snf_rate"
                         ],
-        "on_cancel": "dairy.milk_entry.custom_delivery_note.cancel_milk_stock_ledger"
+        # "on_cancel": "dairy.milk_entry.custom_delivery_note.cancel_milk_stock_ledger"
     },
     "Sales Order": {
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
@@ -205,15 +182,15 @@ doc_events = {
                     #    "dairy.milk_entry.custom_stock_entry.calculate_wfs"
         ],
         "before_submit": "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry",
-        "on_submit": "dairy.milk_entry.custom_stock_entry.on_submit",
+        # "on_submit": "dairy.milk_entry.custom_stock_entry.on_submit",
         "on_submit": "dairy.milk_entry.custom_stock_entry.update_vc_status",
         "on_cancel": "dairy.milk_entry.custom_stock_entry.cancel_create_milk_stock_ledger"
     },
     "Purchase Receipt":{
         "after_insert": "dairy.milk_entry.custom_purchase_receipt.change_milk_entry_status",
-        "on_cancel": ["dairy.milk_entry.custom_purchase_receipt.cancel_create_milk_stock_ledger"],
-        "on_submit": ["dairy.milk_entry.custom_purchase_receipt.change_milk_status",
-                      "dairy.milk_entry.custom_purchase_receipt.create_milk_stock_ledger"],
+        # "on_cancel": ["dairy.milk_entry.custom_purchase_receipt.cancel_create_milk_stock_ledger"],
+        "on_submit": "dairy.milk_entry.custom_purchase_receipt.change_milk_status"
+                    #   "dairy.milk_entry.custom_purchase_receipt.create_milk_stock_ledger",
     },
     "BOM":{
     "before_save": "dairy.dairy.custom_bom.before_save"
