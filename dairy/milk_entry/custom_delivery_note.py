@@ -62,65 +62,65 @@ def before_submit(self,method):
                 log.submit()
 
     # create milk ledger entry
-def on_submit(self, method):
-    for itm in self.items:
-        itm_obj = frappe.get_doc("Item", itm.item_code)
-        maintain_snf_fat = itm_obj.maintain_fat_snf_clr
-        good_cow_milk = frappe.db.get_single_value("Dairy Settings", "cow_pro")
-        good_buff_milk = frappe.db.get_single_value("Dairy Settings", "buf_pro")
-        good_mix_milk = frappe.db.get_single_value("Dairy Settings", "mix_pro")
-        if itm.item_code == good_cow_milk or itm.item_code == good_buff_milk or itm.item_code == good_mix_milk or maintain_snf_fat == 1:
-            query = """ select count(*) from `tabMilk Ledger Entry` where item_code = %(item_code)s and warehouse = %(warehouse)s 
-                        """
-            if itm.batch_no:
-                query += """ and batch_no = %(batch_no)s """
-            if itm.serial_no:
-                query += """ and serial_no = %(serial_no)s """
+# def on_submit(self, method):
+#     for itm in self.items:
+#         itm_obj = frappe.get_doc("Item", itm.item_code)
+#         maintain_snf_fat = itm_obj.maintain_fat_snf_clr
+#         good_cow_milk = frappe.db.get_single_value("Dairy Settings", "cow_pro")
+#         good_buff_milk = frappe.db.get_single_value("Dairy Settings", "buf_pro")
+#         good_mix_milk = frappe.db.get_single_value("Dairy Settings", "mix_pro")
+#         if itm.item_code == good_cow_milk or itm.item_code == good_buff_milk or itm.item_code == good_mix_milk or maintain_snf_fat == 1:
+#             query = """ select count(*) from `tabMilk Ledger Entry` where item_code = %(item_code)s and warehouse = %(warehouse)s 
+#                         """
+#             if itm.batch_no:
+#                 query += """ and batch_no = %(batch_no)s """
+#             if itm.serial_no:
+#                 query += """ and serial_no = %(serial_no)s """
 
-            query += """ order by modified desc"""
+#             query += """ order by modified desc"""
 
-            total_count = frappe.db.sql(query,{'warehouse':itm.warehouse,'item_code':itm.item_code,'batch_no':itm.batch_no,
-                                               'serial_no':itm.serial_no})
+#             total_count = frappe.db.sql(query,{'warehouse':itm.warehouse,'item_code':itm.item_code,'batch_no':itm.batch_no,
+#                                                'serial_no':itm.serial_no})
 
-            if total_count[0][0] != 0:
-                query = """ select name from `tabMilk Ledger Entry` where item_code = %(item_code)s and warehouse = %(warehouse)s 
-                                                    """
-                if itm.batch_no:
-                    query += """ and batch_no = %(batch_no)s """
-                if itm.serial_no:
-                    query += """ and serial_no = %(serial_no)s """
+#             if total_count[0][0] != 0:
+#                 query = """ select name from `tabMilk Ledger Entry` where item_code = %(item_code)s and warehouse = %(warehouse)s 
+#                                                     """
+#                 if itm.batch_no:
+#                     query += """ and batch_no = %(batch_no)s """
+#                 if itm.serial_no:
+#                     query += """ and serial_no = %(serial_no)s """
 
-                query += """ order by modified desc limit 1 """
-                mle = frappe.db.sql(query,
-                                    {'warehouse': itm.warehouse, 'item_code': itm.item_code, 'batch_no': itm.batch_no,
-                                     'serial_no': itm.serial_no}, as_dict=True)
-                if len(mle) > 0:
-                    if mle[0]['name']:
-                        mle_obj = frappe.get_doc("Milk Ledger Entry", mle[0]['name'])
+#                 query += """ order by modified desc limit 1 """
+#                 mle = frappe.db.sql(query,
+#                                     {'warehouse': itm.warehouse, 'item_code': itm.item_code, 'batch_no': itm.batch_no,
+#                                      'serial_no': itm.serial_no}, as_dict=True)
+#                 if len(mle) > 0:
+#                     if mle[0]['name']:
+#                         mle_obj = frappe.get_doc("Milk Ledger Entry", mle[0]['name'])
 
-                        new_mle = frappe.new_doc("Milk Ledger Entry")
-                        new_mle.item_code = mle_obj.item_code
-                        new_mle.serial_no = cstr(mle_obj.serial_no).strip()
-                        new_mle.batch_no = mle_obj.batch_no
-                        new_mle.warehouse = mle_obj.warehouse
-                        new_mle.posting_date = self.posting_date
-                        new_mle.posting_time = self.posting_time
-                        new_mle.voucher_type = "Delivery Note"
-                        new_mle.voucher_no = self.name
-                        new_mle.voucher_detail_no = itm.name
-                        new_mle.actual_qty = -1 * itm.total_weight
-                        new_mle.fat = -1 * float(itm.fat)
-                        new_mle.snf = -1 * float(itm.snf_clr)
-                        new_mle.fat_per = float(itm.fat_per)
-                        new_mle.snf_per = float(itm.snf_clr_per)
-                        new_mle.stock_uom = itm.weight_uom
-                        new_mle.qty_after_transaction = mle_obj.qty_after_transaction - itm.total_weight
-                        new_mle.fat_after_transaction = mle_obj.fat_after_transaction - itm.fat
-                        new_mle.snf_after_transaction = mle_obj.snf_after_transaction - itm.snf_clr
-                        new_mle.fat_per = (float(itm.fat) / itm.total_weight) * 100
-                        new_mle.snf_per = (float(itm.snf_clr)/ itm.total_weight) * 100
-                        new_mle.save(ignore_permissions=True)
-                        # new_mle.submit()
+#                         new_mle = frappe.new_doc("Milk Ledger Entry")
+#                         new_mle.item_code = mle_obj.item_code
+#                         new_mle.serial_no = cstr(mle_obj.serial_no).strip()
+#                         new_mle.batch_no = mle_obj.batch_no
+#                         new_mle.warehouse = mle_obj.warehouse
+#                         new_mle.posting_date = self.posting_date
+#                         new_mle.posting_time = self.posting_time
+#                         new_mle.voucher_type = "Delivery Note"
+#                         new_mle.voucher_no = self.name
+#                         new_mle.voucher_detail_no = itm.name
+#                         new_mle.actual_qty = -1 * itm.total_weight
+#                         new_mle.fat = -1 * float(itm.fat)
+#                         new_mle.snf = -1 * float(itm.snf_clr)
+#                         new_mle.fat_per = float(itm.fat_per)
+#                         new_mle.snf_per = float(itm.snf_clr_per)
+#                         new_mle.stock_uom = itm.weight_uom
+#                         new_mle.qty_after_transaction = mle_obj.qty_after_transaction - itm.total_weight
+#                         new_mle.fat_after_transaction = mle_obj.fat_after_transaction - itm.fat
+#                         new_mle.snf_after_transaction = mle_obj.snf_after_transaction - itm.snf_clr
+#                         new_mle.fat_per = (float(itm.fat) / itm.total_weight) * 100
+#                         new_mle.snf_per = (float(itm.snf_clr)/ itm.total_weight) * 100
+#                         new_mle.save(ignore_permissions=True)
+#                         # new_mle.submit()
 
 def after_save(self,method):
     if not self.get("__islocal"):
@@ -216,63 +216,63 @@ def after_save(self,method):
 
 
 
-def cancel_milk_stock_ledger(self, method):
-    for itm in self.items:
-        itm_obj = frappe.get_doc("Item", itm.item_code)
-        maintain_snf_fat = itm_obj.maintain_fat_snf_clr
-        good_cow_milk = frappe.db.get_single_value("Dairy Settings", "cow_pro")
-        good_buff_milk = frappe.db.get_single_value("Dairy Settings", "buf_pro")
-        good_mix_milk = frappe.db.get_single_value("Dairy Settings", "mix_pro")
-        if itm.item_code == good_cow_milk or itm.item_code == good_buff_milk or itm.item_code == good_mix_milk or maintain_snf_fat == 1:
-            query = """ select name from `tabMilk Ledger Entry` where item_code = %(item_code)s and warehouse = %(warehouse)s 
-                                            """
-            if itm.batch_no:
-                query += """ and batch_no = %(batch_no)s """
-            if itm.serial_no:
-                query += """ and serial_no = %(serial_no)s """
+# def cancel_milk_stock_ledger(self, method):
+#     for itm in self.items:
+#         itm_obj = frappe.get_doc("Item", itm.item_code)
+#         maintain_snf_fat = itm_obj.maintain_fat_snf_clr
+#         good_cow_milk = frappe.db.get_single_value("Dairy Settings", "cow_pro")
+#         good_buff_milk = frappe.db.get_single_value("Dairy Settings", "buf_pro")
+#         good_mix_milk = frappe.db.get_single_value("Dairy Settings", "mix_pro")
+#         if itm.item_code == good_cow_milk or itm.item_code == good_buff_milk or itm.item_code == good_mix_milk or maintain_snf_fat == 1:
+#             query = """ select name from `tabMilk Ledger Entry` where item_code = %(item_code)s and warehouse = %(warehouse)s 
+#                                             """
+#             if itm.batch_no:
+#                 query += """ and batch_no = %(batch_no)s """
+#             if itm.serial_no:
+#                 query += """ and serial_no = %(serial_no)s """
 
-            query += """ and voucher_type = "Delivery Note" and voucher_no = %(voucher_no)s 
-                                            and voucher_detail_no = %(voucher_detail_no)s """
+#             query += """ and voucher_type = "Delivery Note" and voucher_no = %(voucher_no)s 
+#                                             and voucher_detail_no = %(voucher_detail_no)s """
 
-            query += """ order by modified desc limit 1 """
+#             query += """ order by modified desc limit 1 """
 
-            mle = frappe.db.sql(query,
-                                {'warehouse': itm.warehouse, 'item_code': itm.item_code, 'batch_no': itm.batch_no,
-                                 'serial_no': itm.serial_no,"voucher_detail_no":itm.name,"voucher_no":itm.parent}, as_dict=True)
-            if len(mle) > 0:
-                if mle[0]['name']:
-                    mle_obj = frappe.get_doc("Milk Ledger Entry", mle[0]['name'])
+#             mle = frappe.db.sql(query,
+#                                 {'warehouse': itm.warehouse, 'item_code': itm.item_code, 'batch_no': itm.batch_no,
+#                                  'serial_no': itm.serial_no,"voucher_detail_no":itm.name,"voucher_no":itm.parent}, as_dict=True)
+#             if len(mle) > 0:
+#                 if mle[0]['name']:
+#                     mle_obj = frappe.get_doc("Milk Ledger Entry", mle[0]['name'])
 
-                    new_mle = frappe.new_doc("Milk Ledger Entry")
-                    new_mle.item_code = mle_obj.item_code
-                    new_mle.serial_no = cstr(mle_obj.serial_no).strip()
-                    new_mle.batch_no = mle_obj.batch_no
-                    new_mle.warehouse = mle_obj.warehouse
-                    new_mle.posting_date = self.posting_date
-                    new_mle.posting_time = self.posting_time
-                    new_mle.voucher_type = "Delivery Note"
-                    new_mle.voucher_no = self.name
-                    new_mle.voucher_detail_no = itm.name
-                    new_mle.actual_qty = itm.total_weight
-                    new_mle.fat = float(itm.fat)
-                    new_mle.snf = float(itm.snf_clr)
-                    new_mle.stock_uom = itm.weight_uom
-                    new_mle.qty_after_transaction = mle_obj.qty_after_transaction + itm.total_weight
-                    new_mle.fat_after_transaction = mle_obj.fat_after_transaction + itm.fat
-                    new_mle.snf_after_transaction = mle_obj.snf_after_transaction + itm.snf_clr
-                    new_mle.fat_per = (float(itm.fat) / itm.total_weight) * 100
-                    new_mle.snf_per = (float(itm.snf_clr) / itm.total_weight) * 100
+#                     new_mle = frappe.new_doc("Milk Ledger Entry")
+#                     new_mle.item_code = mle_obj.item_code
+#                     new_mle.serial_no = cstr(mle_obj.serial_no).strip()
+#                     new_mle.batch_no = mle_obj.batch_no
+#                     new_mle.warehouse = mle_obj.warehouse
+#                     new_mle.posting_date = self.posting_date
+#                     new_mle.posting_time = self.posting_time
+#                     new_mle.voucher_type = "Delivery Note"
+#                     new_mle.voucher_no = self.name
+#                     new_mle.voucher_detail_no = itm.name
+#                     new_mle.actual_qty = itm.total_weight
+#                     new_mle.fat = float(itm.fat)
+#                     new_mle.snf = float(itm.snf_clr)
+#                     new_mle.stock_uom = itm.weight_uom
+#                     new_mle.qty_after_transaction = mle_obj.qty_after_transaction + itm.total_weight
+#                     new_mle.fat_after_transaction = mle_obj.fat_after_transaction + itm.fat
+#                     new_mle.snf_after_transaction = mle_obj.snf_after_transaction + itm.snf_clr
+#                     new_mle.fat_per = (float(itm.fat) / itm.total_weight) * 100
+#                     new_mle.snf_per = (float(itm.snf_clr) / itm.total_weight) * 100
 
 
-                    frappe.db.sql(""" update `tabMilk Ledger Entry` set is_cancelled = 1 where name = %(name)s """,
-                                  {'name': mle_obj.name})
-                    frappe.db.commit()
+#                     frappe.db.sql(""" update `tabMilk Ledger Entry` set is_cancelled = 1 where name = %(name)s """,
+#                                   {'name': mle_obj.name})
+#                     frappe.db.commit()
 
-                    new_mle.save(ignore_permissions=True)
-                    # new_mle.submit()
-                    frappe.db.sql(""" update `tabMilk Ledger Entry` set is_cancelled = 1 where name = %(name)s """,
-                                  {'name': new_mle.name})
-                    frappe.db.commit()
+#                     new_mle.save(ignore_permissions=True)
+#                     # new_mle.submit()
+#                     frappe.db.sql(""" update `tabMilk Ledger Entry` set is_cancelled = 1 where name = %(name)s """,
+#                                   {'name': new_mle.name})
+#                     frappe.db.commit()
 
 
 @frappe.whitelist()

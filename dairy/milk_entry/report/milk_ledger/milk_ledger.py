@@ -109,12 +109,6 @@ def execute(filters=None):
 			})
 	
 		data.append(sle)
-		# a = []
-		# for d in data:
-		# 	if d.get('fat'):
-		# 		a.append(float(d.get('fat')))
-		# print('dddddddddddddddddddddddd',len(a),sum(a)/len(a))
-		
 		if include_uom:
 			conversion_factors.append(item_detail.conversion_factor)
 
