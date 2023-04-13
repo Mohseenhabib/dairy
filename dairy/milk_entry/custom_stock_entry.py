@@ -625,9 +625,9 @@ def update_vc_status(self,method):
         
 @frappe.whitelist()
 def add_scrap_item(work_order,stock_entry_type):
+    items=[]
     if stock_entry_type=="Manufacture":
         doc=frappe.get_doc("Work Order",work_order)
-        items=[]
         for i in doc.fg_item_scrap:
             items.append({"item":i.item,"qty":i.qty})
     return items

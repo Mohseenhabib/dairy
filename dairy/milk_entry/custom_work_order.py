@@ -222,7 +222,7 @@ def get_data_snf(name):
             rmsnfkg=[]
             rm_weight=[]
             for j in wo.required_items:
-                rmsnfkg.append(j.snf_per_in_kg)
+                rmsnfkg.append(j.snf_in_kg)
                 item=frappe.get_doc("Item",j.item_code)
                 rm_weight.append(j.required_qty*item.weight_per_unit)
             rmweight=(sum(rmsnfkg)*100)/wo.required_fat
