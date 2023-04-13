@@ -115,4 +115,19 @@ frappe.ui.form.on('Route Master', {
 //		},
 //	}
 
+
+
+
+    company : function(frm){
+        frm.set_query('source_warehouse', function(doc) {
+            return {
+                filters: {
+                    "company":doc.company,
+                }
+            };
+        });
+
+
+    }
+
 });
