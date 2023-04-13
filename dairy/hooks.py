@@ -198,8 +198,8 @@ doc_events = {
     },
     "Work Order":{
       "before_save":[
-            "dairy.milk_entry.custom_work_order.bom_item_child_table",
             "dairy.milk_entry.custom_work_order.get_required_fat_snf_item"
+            "dairy.milk_entry.custom_work_order.bom_item_child_table",
       ]
     },
     "Stock Ledger Entry":{
