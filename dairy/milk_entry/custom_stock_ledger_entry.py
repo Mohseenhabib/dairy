@@ -40,11 +40,11 @@ def create_milk_ledger_entry(self, method):
                 for i in item:
 
                     # fat and snf for after transaction fields
-                    if self.incoming_rate > 0.0 and self.outgoing_rate == 0.0:
+                    if self.actual_qty >= 0:
                         fat_after_transaction = round(fat + i.fat, 3)
                         snf_after_transaction = round(snf + i.snf, 3)
 
-                    if self.incoming_rate == 0.0 and self.outgoing_rate > 0.0:
+                    if self.actual_qty <= 0:
                         fat_after_transaction = round(fat - i.fat, 3)
                         snf_after_transaction = round(snf - i.snf, 3)
 
@@ -114,11 +114,11 @@ def create_milk_ledger_entry(self, method):
                 for i in item:
 
                     # fat and snf for after transaction fields
-                    if self.incoming_rate > 0.0 and self.outgoing_rate == 0.0:
+                    if self.actual_qty >= 0:
                         fat_after_transaction = round(fat + i.fat, 3)
                         snf_after_transaction = round(snf + i.snf, 3)
 
-                    if self.incoming_rate == 0.0 and self.outgoing_rate > 0.0:
+                    if self.actual_qty <= 0:
                         fat_after_transaction = round(fat - i.fat, 3)
                         snf_after_transaction = round(snf - i.snf, 3)
 
@@ -188,11 +188,12 @@ def create_milk_ledger_entry(self, method):
                 for i in item:
 
                     # fat and snf for after transaction fields
-                    if self.incoming_rate > 0.0 and self.outgoing_rate == 0.0:
+                    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@", self.incoming_rate, self.outgoing_rate)
+                    if self.actual_qty >= 0:
                         fat_after_transaction = round(fat + i.fat, 3)
                         snf_after_transaction = round(snf + i.snf, 3)
 
-                    if self.incoming_rate == 0.0 and self.outgoing_rate > 0.0:
+                    if self.actual_qty <= 0:
                         fat_after_transaction = round(fat - i.fat, 3)
                         snf_after_transaction = round(snf - i.snf, 3)
 
@@ -251,7 +252,7 @@ def create_milk_ledger_entry(self, method):
                 fat = 0.0
                 snf = 0.0
 
-            doc = frappe.get_doc("Stock Entry", {"name":self.voucher_no, "to_warehouse": self.warehouse})
+            doc = frappe.get_doc("Stock Entry", {"name":self.voucher_no})
     
             for itm in doc.items:
                 if itm.name == self.voucher_detail_no and itm.item_code == self.item_code:
@@ -259,14 +260,15 @@ def create_milk_ledger_entry(self, method):
         
             if si_item == self.item_code:
                 item = frappe.db.get_all("Stock Entry Detail", {"parent": self.voucher_no, "item_code":self.item_code}, ["*"])
+
                 for i in item:
 
                     # fat and snf for after transaction fields
-                    if self.incoming_rate > 0.0 and self.outgoing_rate == 0.0:
+                    if self.actual_qty >= 0:
                         fat_after_transaction = round(fat + i.fat, 3)
                         snf_after_transaction = round(snf + i.snf, 3)
 
-                    if self.incoming_rate == 0.0 and self.outgoing_rate > 0.0:
+                    if self.actual_qty <= 0:
                         fat_after_transaction = round(fat - i.fat, 3)
                         snf_after_transaction = round(snf - i.snf, 3)
 
@@ -338,11 +340,11 @@ def create_milk_ledger_entry(self, method):
                 for i in item:
 
                     # fat and snf for after transaction fields
-                    if self.incoming_rate > 0.0 and self.outgoing_rate == 0.0:
+                    if self.actual_qty >= 0:
                         fat_after_transaction = round(fat + i.fat, 3)
                         snf_after_transaction = round(snf + i.clr, 3)
 
-                    if self.incoming_rate == 0.0 and self.outgoing_rate > 0.0:
+                    if self.actual_qty <= 0:
                         fat_after_transaction = round(fat - i.fat, 3)
                         snf_after_transaction = round(snf - i.clr, 3)
 
@@ -412,11 +414,11 @@ def create_milk_ledger_entry(self, method):
                 for i in item:
 
                      # fat and snf for after transaction fields
-                    if self.incoming_rate > 0.0 and self.outgoing_rate == 0.0:
+                    if self.actual_qty >= 0:
                         fat_after_transaction = round(fat + i.fat, 3)
                         snf_after_transaction = round(snf + i.snf, 3)
 
-                    if self.incoming_rate == 0.0 and self.outgoing_rate > 0.0:
+                    if self.actual_qty <= 0:
                         fat_after_transaction = round(fat - i.fat, 3)
                         snf_after_transaction = round(snf - i.snf, 3)
 
