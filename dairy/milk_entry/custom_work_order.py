@@ -38,11 +38,11 @@ def bom_item_child_table(self, method):
     for j in self.required_items:
         fat.append(flt(j.fat_per_in_kg))
         snf.append(flt(j.snf_in_kg))
-    if len(fat)>1:
+    if len(fat)>=1:
         self.rm_fat_in_kg=sum(fat)
         self.diff_fat_in_kg=self.required_fat_in_kg-sum(fat)
 
-    if len(snf)>1:
+    if len(snf)>=1:
         self.rm_snf_in_kg=sum(snf)
         self.diff_snf_in_kg=self.required_snt_in_kg-sum(snf)
 
@@ -222,7 +222,7 @@ def get_data_snf(name):
             rmsnfkg=[]
             rm_weight=[]
             for j in wo.required_items:
-                rmsnfkg.append(j.snf_per_in_kg)
+                rmsnfkg.append(j.snf_in_kg)
                 item=frappe.get_doc("Item",j.item_code)
                 rm_weight.append(j.required_qty*item.weight_per_unit)
             rmweight=(sum(rmsnfkg)*100)/wo.required_fat

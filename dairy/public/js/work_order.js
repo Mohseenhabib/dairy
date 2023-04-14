@@ -1,6 +1,21 @@
 frappe.ui.form.on("Work Order", {
 
     production_item:function(frm){
+        frappe.db.get_value(
+            "Item",
+            frm.doc.production_item,
+            "maintain_fat_snf_clr",
+            (r) => {
+                frm.set_df_property("source_warehouse","reqd",1)
+                console.log(r.maintain_fat_snf_clr)
+                if(r.maintain_fat_snf_clr==0){
+                    frm.set_df_property("required_fat","hidden",1)
+                    frm.set_df_property("required_snf_","hidden",1)
+                    frm.set_df_property("required_fat_in_kg","hidden",1)
+                    frm.set_df_property("required_snt_in_kg","hidden",1)
+                }
+    
+            })
         frappe.call({
             method : "dairy.milk_entry.custom_work_order.get_required_fat_snf",
             args:{
@@ -17,6 +32,7 @@ frappe.ui.form.on("Work Order", {
                 frm.refresh_field('required_snf_')
                 frm.refresh_field('required_fat_in_kg')
                 frm.refresh_field('required_snt_in_kg')
+                frm.refresh()
             }
         })
     },
