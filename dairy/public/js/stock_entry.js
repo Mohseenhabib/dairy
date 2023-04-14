@@ -34,7 +34,7 @@ frappe.ui.form.on('Stock Entry', {
 
 	},
 	setup:function(frm){
-		if(frm.doc.__islocal){
+		if(frm.doc.__islocal && frm.doc.stock_entry_type && frm.doc.work_order){
 		frappe.call({
 			method:"dairy.milk_entry.custom_stock_entry.add_scrap_item",
 			args:{
