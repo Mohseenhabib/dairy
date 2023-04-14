@@ -1,5 +1,8 @@
 from dairy.milk_entry.report.milk_ledger.milk_ledger import get_columns, get_item_details, get_items, get_opening_balance, get_stock_ledger_entries
+from erpnext.manufacturing.doctype.bom.bom import validate_bom_no
+from erpnext.manufacturing.doctype.work_order.work_order import WorkOrder
 from erpnext.stock.utils import update_included_uom_in_report
+from erpnext.utilities.transaction_base import validate_uom_is_integer
 import frappe
 from frappe.utils.data import cint, flt, getdate, today
 
@@ -388,3 +391,22 @@ def remove_fat_item(company,warehouse,date,itemlist):
 
     return list
 
+class CustomWorkOrder(WorkOrder):
+    def validate(self):
+        self.validate_production_item()
+        if self.bom_no:
+            validate_bom_no(self.production_item, self.bom_no)
+
+        self.validate_sales_order()
+        self.set_default_warehouse()
+        self.validate_warehouse_belongs_to_company()
+        self.calculate_operating_cost()
+        self.validate_qty()
+        self.validate_transfer_against()
+        self.validate_operation_time()
+        self.status = self.get_status()
+        self.validate_workstation_type()
+
+        validate_uom_is_integer(self, "stock_uom", ["qty", "produced_qty"])
+
+        # self.set_required_items(reset_only_qty=len(self.get("required_items")))

@@ -247,6 +247,9 @@ scheduler_events = {
 # Testing
 # -------
 
+override_doctype_class = {
+	'Work Order': 'dairy.milk_entry.custom_work_order.CustomWorkOrder',
+}
 # before_tests = "dairy.install.before_tests"
 
 # Overriding Methods
