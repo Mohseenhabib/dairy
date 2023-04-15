@@ -45,6 +45,7 @@ fixtures = fixtures = [
             "BOM Item-bom_snf",
             "Work Order-required_fat",
             "Work Order-required_fat_in_kg",
+            "Work Order-sepration_fat",
             "Work Order-required_snf_",
             "Work Order-required_snt_in_kg",
             "Work Order Item-fat_per",
@@ -259,7 +260,10 @@ override_doctype_class = {
 #
 
 override_whitelisted_methods = {
-	"erpnext.selling.doctype.sales_order.sales_order.make_delivery_note": "dairy.milk_entry.custom_sales_order.make_delivery_note"
+	"erpnext.selling.doctype.sales_order.sales_order.make_delivery_note": "dairy.milk_entry.custom_sales_order.make_delivery_note",
+    "erpnext.manufacturing.doctype.work_order.work_order.create_job_card": "dairy.milk_entry.custom_work_order.make_job_card"
+
+
 }
 #
 # each overriding function accepts a `data` argument;
