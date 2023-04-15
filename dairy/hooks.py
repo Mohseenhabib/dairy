@@ -164,7 +164,8 @@ doc_events = {
     },
     "Sales Order": {
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
-        "before_submit":"dairy.milk_entry.custom_sales_order.before_submit"
+        "before_submit":"dairy.milk_entry.custom_sales_order.before_submit",
+         "before_save":"dairy.milk_entry.custom_sales_order.get_party_bal"
     },
     "Quotation": {
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
@@ -172,6 +173,7 @@ doc_events = {
     "Sales Invoice": {
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
         "before_submit": "dairy.milk_entry.custom_sales_invoice.before_submit",
+        "before_save":"dairy.milk_entry.custom_sales_invoice.get_party_bal"
         # "after_insert": "dairy.milk_entry.custom_sales_invoice.calculate_crate"
         # "before_save": "dairy.milk_entry.custom_sales_invoice.calculate_crate_save"
     },

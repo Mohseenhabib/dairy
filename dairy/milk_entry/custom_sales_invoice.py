@@ -598,3 +598,16 @@ def get_party_bal(customer):
 
 	if cust_name and party_bal:
 		return party_bal[0]['total_unpaid']
+
+
+
+@frappe.whitelist()
+def get_party_bal(self,method):
+	cust_name =self.customer
+	doctype = "Customer"
+	loyalty_program = None
+
+	party_bal = get_dashboard_info(doctype, cust_name, loyalty_program)
+
+	if cust_name and party_bal:
+		self.party_balance=party_bal[0]['total_unpaid']

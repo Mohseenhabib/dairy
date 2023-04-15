@@ -41,26 +41,42 @@ def bom_item_child_table(self, method):
     for j in self.required_items:
         fat.append(flt(j.fat_per_in_kg))
         snf.append(flt(j.snf_in_kg))
+    item_weight=[]
+    qty=0
+    for i in self.fg_item_scrap:
+        item_weight.append(i.qty)
+        if len(item_weight)>0:
+            qty=flt(self.qty)+sum(item_weight)
+        else:
+            qty=flt(self.qty)
+    reqd_fat=frappe.get_doc("Item",self.production_item)
     if len(fat)>=1:
         self.rm_fat_in_kg=sum(fat)
-        self.diff_fat_in_kg=self.required_fat_in_kg-sum(fat)
+        self.diff_fat_in_kg=(flt(qty) * flt(reqd_fat.weight_per_unit)) * (flt(reqd_fat.standard_fat) / 100)-sum(fat)
 
     if len(snf)>=1:
         self.rm_snf_in_kg=sum(snf)
-        self.diff_snf_in_kg=self.required_snt_in_kg-sum(snf)
+        self.diff_snf_in_kg=(flt(qty) * flt(reqd_fat.weight_per_unit)) * (flt(reqd_fat.standard_snf) / 100)-sum(snf)
 
 
 
 
-def get_required_fat_snf_item(self, method):  
+def get_required_fat_snf_item(self, method):
     reqd_fat = frappe.get_doc("Item",{'name' : self.production_item})
-    
+    item_weight=[]
     if reqd_fat.maintain_fat_snf_clr == 1:
         if reqd_fat.standard_fat > 0 or reqd_fat.standard_snf > 0 : 
             self.required_fat=reqd_fat.standard_fat
             self.required_snf_=reqd_fat.standard_snf
-            self.required_fat_in_kg = (flt(self.qty) * flt(reqd_fat.weight_per_unit)) * (flt(reqd_fat.standard_fat) / 100)
-            self.required_snt_in_kg = (flt(self.qty) * flt(reqd_fat.weight_per_unit)) * (flt(reqd_fat.standard_snf) / 100)
+            qty=0
+            for i in self.fg_item_scrap:
+                item_weight.append(i.qty)
+            if len(item_weight)>0:
+                qty=flt(self.qty)+sum(item_weight)
+            else:
+                qty=flt(self.qty)
+            self.required_fat_in_kg = (flt(qty) * flt(reqd_fat.weight_per_unit)) * (flt(reqd_fat.standard_fat) / 100)
+            self.required_snt_in_kg = (flt(qty) * flt(reqd_fat.weight_per_unit)) * (flt(reqd_fat.standard_snf) / 100)
         
 
 
