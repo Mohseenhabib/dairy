@@ -1,6 +1,6 @@
 import csv
 import io
-# from frappe.utils.csvutils import UnicodeWriter
+import random
 
 import frappe
 import json
@@ -92,15 +92,40 @@ def get_filter_data(filter_list):
         l.append(x)
 
 
-    print("55555555555555555555555555555",l)
+    path = '/home/erpuser/Downloads/'
+    ran = random.randint(0,9999999999)
+    full_name = path + str(ran) +".csv"
+
+    # print("$$$$$$$$$$$$$$$$$",full_name)
   
-    with open('/home/erpuser/Downloads/profiles46.csv', 'w') as file:
+    with open(full_name, 'w') as file:
         field = ["name", "creation"]
         writer = csv.writer(file)
         # writer.writerow(field)
-        writer.writerow(l)
+        for row in  l:
+            writer.writerow(row)
+
    
-       
+#    # field names 
+#     fields = ['Name', 'Branch', 'Year', 'CGPA'] 
+
+#     # data rows of csv file 
+#     rows = l
+
+#     # name of csv file 
+#     filename = "university_records.csv"
+
+#     # writing to csv file 
+#     with open(filename, 'w') as csvfile: 
+#         # creating a csv writer object 
+#         csvwriter = csv.writer(csvfile) 
+
+#         # writing the fields 
+#         csvwriter.writerow(fields) 
+
+#         # writing the data rows 
+#         csvwriter.writerows(rows)
+        
 
 
 
