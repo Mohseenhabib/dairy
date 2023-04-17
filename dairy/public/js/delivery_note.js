@@ -35,6 +35,15 @@ frappe.ui.form.on("Delivery Note", {
         if (frm.doc.docstatus==1) {
 				frm.remove_custom_button("Delivery Trip", 'Create');
 			}
+        frm.add_custom_button(__("Milk Ledger"), function() {
+            frappe.route_options = {
+                voucher_no: frm.doc.name,
+                from_date: frm.doc.posting_date,
+                to_date: moment(frm.doc.modified).format('YYYY-MM-DD'),
+                company: frm.doc.company
+            };
+            frappe.set_route("query-report", "Milk Ledger");
+            }, __("View"));
 	},
 	onload: function(frm){
 	    if(frm.doc.__islocal){
