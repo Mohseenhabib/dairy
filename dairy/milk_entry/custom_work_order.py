@@ -1,7 +1,10 @@
 from dairy.milk_entry.report.milk_ledger.milk_ledger import get_columns, get_item_details, get_items, get_opening_balance, get_stock_ledger_entries
+from erpnext.manufacturing.doctype.bom.bom import validate_bom_no
+from erpnext.manufacturing.doctype.work_order.work_order import CapacityError, WorkOrder
 from erpnext.stock.utils import update_included_uom_in_report
+from erpnext.utilities.transaction_base import validate_uom_is_integer
 import frappe
-from frappe.utils.data import cint, flt, getdate, today
+from frappe.utils.data import cint, date_diff, flt, get_link_to_form, getdate, nowdate, today
 
 
 
@@ -156,33 +159,31 @@ def get_data_fat(name):
                     j.qty=flt(j.qty)+k.get("pickedqty")
         return list
     else:
-        if wo.diff_fat_in_kg>0:
+        if abs(wo.diff_fat_in_kg)>0:
             if doc.threshold_for_fat_separation<abs(wo.diff_fat_in_kg):
                 list.append({"operation":doc.operation,"workstation":doc.workstation,"workstation_type":doc.workstation_type,
                             "completed_qty":wo.qty,"time_in_mins":doc.operation_time,"bom":wo.bom_no,"threshhold":1})
-            return list
-        elif wo.diff_fat_in_kg<0:
-            rmfatkg=[]
-            rm_weight=[]
-            for j in wo.required_items:
-                rmfatkg.append(j.fat_per_in_kg)
-                item=frappe.get_doc("Item",j.item_code)
-                rm_weight.append(j.required_qty*item.weight_per_unit)
-            rmweight=(sum(rmfatkg)*100)/4
-            print("&&&&&&&&&&&&&&&",rmweight)
-            print("$$$$$$$$$$$$$$$$",sum(rm_weight))
-            water=rmweight-sum(rm_weight)+wo.process_loss_qty
-            list.append({"item":doc.item_to_add_snf_fat,"warehouse":wo.source_warehouse,"pickedqty":abs(water),"threshhold":0})
-            if len(wo.fg_item_scrap)==0:
-                wo.append("fg_item_scrap",{
-                    "item":wo.production_item,
-                    "qty":abs(water)
+                return list
+            elif doc.threshold_for_fat_separation>abs(wo.diff_fat_in_kg):
+                rmfatkg=[]
+                rm_weight=[]
+                for j in wo.required_items:
+                    rmfatkg.append(j.fat_per_in_kg)
+                    item=frappe.get_doc("Item",j.item_code)
+                    rm_weight.append(j.required_qty*item.weight_per_unit)
+                rmweight=(sum(rmfatkg)*100)/4
+                water=rmweight-sum(rm_weight)+wo.process_loss_qty
+                list.append({"item":doc.item_to_add_snf_fat,"warehouse":wo.source_warehouse,"pickedqty":abs(water),"threshhold":0})
+                if len(wo.fg_item_scrap)==0:
+                    wo.append("fg_item_scrap",{
+                        "item":wo.production_item,
+                        "qty":abs(water)
 
-                })
-            else:
-                for j in wo.fg_item_scrap:
-                    j.qty=flt(j.qty)+abs(water)
-            return list
+                    })
+                else:
+                    for j in wo.fg_item_scrap:
+                        j.qty=flt(j.qty)+abs(water)
+                return list
 
 
 @frappe.whitelist()
@@ -388,3 +389,149 @@ def remove_fat_item(company,warehouse,date,itemlist):
 
     return list
 
+class CustomWorkOrder(WorkOrder):
+    def validate(self):
+        self.validate_production_item()
+        if self.bom_no:
+            validate_bom_no(self.production_item, self.bom_no)
+
+        self.validate_sales_order()
+        self.set_default_warehouse()
+        self.validate_warehouse_belongs_to_company()
+        self.calculate_operating_cost()
+        self.validate_qty()
+        self.validate_transfer_against()
+        self.validate_operation_time()
+        self.status = self.get_status()
+        self.validate_workstation_type()
+
+        validate_uom_is_integer(self, "stock_uom", ["qty", "produced_qty"])
+
+        # self.set_required_items(reset_only_qty=len(self.get("required_items")))
+        ds=frappe.get_doc("Dairy Settings")
+        if abs(self.diff_fat_in_kg)>ds.threshold_for_fat_separation:
+            item=frappe.get_doc("Item",self.production_item)
+            if item.weight_per_unit>0:
+                self.sepration_fat=(abs(self.diff_fat_in_kg)*100)/(4*item.weight_per_unit)
+            else:
+                frappe.throw("Production Item Weight Should More Than 0")
+    def prepare_data_for_job_card(self, row, index, plan_days, enable_capacity_planning):
+        self.set_operation_start_end_time(index, row)
+
+        original_start_time = row.planned_start_time
+        job_card_doc = make_job_card(
+            self, row, auto_create=True, enable_capacity_planning=enable_capacity_planning
+        )
+
+        if enable_capacity_planning and job_card_doc:
+            row.planned_start_time = job_card_doc.time_logs[-1].from_time
+            row.planned_end_time = job_card_doc.time_logs[-1].to_time
+
+            if date_diff(row.planned_start_time, original_start_time) > plan_days:
+                frappe.message_log.pop()
+                frappe.throw(
+                    frappe._("Unable to find the time slot in the next {0} days for the operation {1}.").format(
+                        plan_days, row.operation
+                    ),
+                    CapacityError,
+                )
+
+            row.db_update()
+
+
+def make_job_card(work_order, row, enable_capacity_planning=False, auto_create=False):
+    ds=frappe.get_doc("Dairy Settings")
+
+    if abs(work_order.diff_fat_in_kg)>ds.threshold_for_fat_separation: 
+        doc = frappe.new_doc("Job Card")
+        doc.update(
+            {
+                "work_order": work_order.name,
+                "workstation_type": row.get("workstation_type"),
+                "operation": row.get("operation"),
+                "workstation": row.get("workstation"),
+                "posting_date": nowdate(),
+                "for_quantity": row.job_card_qty or work_order.get("qty", 0),
+                "operation_id": row.get("name"),
+                "bom_no": work_order.bom_no,
+                "project": work_order.project,
+                "company": work_order.company,
+                "sequence_id": row.get("sequence_id"),
+                "wip_warehouse": work_order.wip_warehouse,
+                "hour_rate": row.get("hour_rate"),
+                "serial_no": row.get("serial_no"),
+            }
+        )
+        item=frappe.get_doc("Item",work_order.production_item)
+        qty=(abs(work_order.diff_fat_in_kg)*100)/(4*item.weight_per_unit)
+        if ds.cream_item:
+            item=frappe.get_doc("Item",ds.cream_item)
+            doc.append("scrap_items",{
+                "item_code":ds.cream_item,
+                "item_name":item.item_name,
+                "stock_qty":qty
+            })
+        if work_order.transfer_material_against == "Job Card" and not work_order.skip_transfer:
+            doc.get_required_items()
+
+        if auto_create:
+            doc.flags.ignore_mandatory = True
+            if enable_capacity_planning:
+                doc.schedule_time_logs(row)
+
+            doc.insert()
+            frappe.msgprint(
+                frappe._("Job card {0} created").format(get_link_to_form("Job Card", doc.name)), alert=True
+            )
+
+        if enable_capacity_planning:
+            # automatically added scheduling rows shouldn't change status to WIP
+            doc.db_set("status", "Open")
+
+        return doc
+    else:
+        doc = frappe.new_doc("Job Card")
+        doc.update(
+            {
+                "work_order": work_order.name,
+                "workstation_type": row.get("workstation_type"),
+                "operation": row.get("operation"),
+                "workstation": row.get("workstation"),
+                "posting_date": nowdate(),
+                "for_quantity": row.job_card_qty or work_order.get("qty", 0),
+                "operation_id": row.get("name"),
+                "bom_no": work_order.bom_no,
+                "project": work_order.project,
+                "company": work_order.company,
+                "sequence_id": row.get("sequence_id"),
+                "wip_warehouse": work_order.wip_warehouse,
+                "hour_rate": row.get("hour_rate"),
+                "serial_no": row.get("serial_no"),
+            }
+        )
+        qty=abs(work_order.diff_fat_in_kg)*100/4
+        if ds.cream_item:
+            item=frappe.get_doc("Item",ds.cream_item)
+            doc.append("scrap_items",{
+                "item_code":ds.cream_item,
+                "item_name":item.item_name,
+                "stock_qty":qty
+            })
+        if work_order.transfer_material_against == "Job Card" and not work_order.skip_transfer:
+            doc.get_required_items()
+
+        if auto_create:
+            doc.flags.ignore_mandatory = True
+            if enable_capacity_planning:
+                doc.schedule_time_logs(row)
+
+            doc.insert()
+            frappe.msgprint(
+                frappe._("Job card {0} created").format(get_link_to_form("Job Card", doc.name)), alert=True
+            )
+
+        if enable_capacity_planning:
+            # automatically added scheduling rows shouldn't change status to WIP
+            doc.db_set("status", "Open")
+
+        return doc

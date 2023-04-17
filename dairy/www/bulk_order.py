@@ -1,6 +1,8 @@
 import frappe
 import json
 import math
+
+from frappe.utils.data import flt
 # from frappe.utils import getdate
 def get_context(context):
     context.items = frappe.get_list("Website Item", filters={'published': 1}, fields=["item_name", "item_code","website_image"])
@@ -18,9 +20,7 @@ def make_so(item_list):
         if(len(link_table) > 0):
             customer_name = link_table[0].get('link_name')
     item_with_all_data = []
-    print("4455667778888888888888888888",json.loads(item_list))
     for item in json.loads(item_list):
-        print("77777777777777777777777777777777",item)
         if (item.get("qty")):
             if int(item.get('qty')) > 0:
                 fetch_details = frappe.db.get_all("Website Item",{"item_code" : item.get('item_code')},["item_name", "item_code","website_image"])
@@ -82,6 +82,8 @@ def make_so(item_list):
                     "delivery_date" : del_date,
                     "qty" : data.get("qty"),
                     "rate" : item_rate,
+                    "conversion_rate":1,
+                    "stock_qty":flt(data.get("qty"))*1,
                     "uom":data.get("uom"),
                     "warehouse" : website_warehouse
                     }
@@ -178,7 +180,9 @@ def make_so(item_list):
                                 "delivery_date" : del_date,
                                 "qty" : data.get("qty"),
                                 "rate" : item_rate,
+                                "conversion_rate":1,
                                 "uom":data.get("uom"),
+                                "stock_qty":flt(data.get("qty"))*1,
                                 "warehouse" : website_warehouse
                                 }
                                 sal_ord.append("items", item)
