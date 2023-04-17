@@ -26,8 +26,8 @@ def create_milk_ledger_entry(self, method):
             else:
                 fat = 0.0
                 snf = 0.0
-            if frappe.db.get_value("Sales Invoice", {"name":self.voucher_no, "set_warehouse": self.warehouse},["name"]):
-                doc = frappe.get_doc("Sales Invoice", {"name":self.voucher_no, "set_warehouse": self.warehouse})
+            if frappe.db.get_value("Sales Invoice", {"name":self.voucher_no},["name"]):
+                doc = frappe.get_doc("Sales Invoice", {"name":self.voucher_no})
     
                 for itm in doc.items:
                     if itm.name == self.voucher_detail_no and itm.item_code == self.item_code:
