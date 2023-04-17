@@ -123,6 +123,8 @@ def make_so(item_list):
         order_warehouse_num = warehouse_details.get('rule_name')
     for i in so.get('items'):
         i.warehouse = order_warehouse
+        i.conversion_factor=1
+        i.stock_qty=i.qty*1
 
         
 

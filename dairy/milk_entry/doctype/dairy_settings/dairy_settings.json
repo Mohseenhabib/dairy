@@ -105,6 +105,7 @@
   "section_break_jsl50",
   "items_to_add_fat",
   "item_to_add_snf_fat",
+  "cream_item",
   "column_break_ypomu",
   "items_to_add_snf",
   "threshold_for_fat_separation",
@@ -659,12 +660,18 @@
    "fieldname": "allow_changing",
    "fieldtype": "Check",
    "label": "Allow Changing Fat/Snf In RMRD Lines"
+  },
+  {
+   "fieldname": "cream_item",
+   "fieldtype": "Link",
+   "label": "Cream Item",
+   "options": "Item"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-04-10 14:37:48.426293",
+ "modified": "2023-04-14 23:56:54.697691",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",
