@@ -68,7 +68,7 @@ def create_milk_ledger_entry(self, method):
                                     "snf_after_transaction" : snf_after_transaction
                                 }
                             )
-                            mle.save()
+                            mle.save(ignore_permissions=True)
 
                         else:
                             milk_ledger = frappe.new_doc("Milk Ledger Entry")
@@ -90,7 +90,7 @@ def create_milk_ledger_entry(self, method):
                             milk_ledger.fat_after_transaction = fat_after_transaction
                             milk_ledger.snf_after_transaction = snf_after_transaction
                             milk_ledger.company = self.company
-                            milk_ledger.insert()
+                            milk_ledger.insert(ignore_permissions=True)
 
 # ----------------------------------------------------------------------------------------------------------------------------
         
@@ -142,7 +142,7 @@ def create_milk_ledger_entry(self, method):
                                 "snf_after_transaction" : snf_after_transaction
                             }
                         )
-                        mle.save()
+                        mle.save(ignore_permissions=True)
 
                     else:
                         milk_ledger = frappe.new_doc("Milk Ledger Entry")
@@ -164,7 +164,7 @@ def create_milk_ledger_entry(self, method):
                         milk_ledger.fat_after_transaction = fat_after_transaction
                         milk_ledger.snf_after_transaction = snf_after_transaction
                         milk_ledger.company = self.company
-                        milk_ledger.insert()
+                        milk_ledger.insert(ignore_permissions=True)
 
 # -------------------------------------------------------------------------------------------------------------------------------
 
@@ -216,7 +216,7 @@ def create_milk_ledger_entry(self, method):
                                 "snf_after_transaction" : snf_after_transaction
                             }
                         )
-                        mle.save()
+                        mle.save(ignore_permissions=True)
 
                     else:
                         milk_ledger = frappe.new_doc("Milk Ledger Entry")
@@ -238,7 +238,7 @@ def create_milk_ledger_entry(self, method):
                         milk_ledger.fat_after_transaction = fat_after_transaction
                         milk_ledger.snf_after_transaction = snf_after_transaction
                         milk_ledger.company = self.company
-                        milk_ledger.insert()
+                        milk_ledger.insert(ignore_permissions=True)
 
 # -------------------------------------------------------------------------------------------------------------------------------
 
@@ -291,7 +291,7 @@ def create_milk_ledger_entry(self, method):
                                 "snf_after_transaction" : snf_after_transaction
                             }
                         )
-                        mle.save()
+                        mle.save(ignore_permissions=True)
 
                     else:
                         milk_ledger = frappe.new_doc("Milk Ledger Entry")
@@ -313,7 +313,7 @@ def create_milk_ledger_entry(self, method):
                         milk_ledger.fat_after_transaction = fat_after_transaction
                         milk_ledger.snf_after_transaction = snf_after_transaction
                         milk_ledger.company = self.company
-                        milk_ledger.insert()
+                        milk_ledger.insert(ignore_permissions=True)
 
 # -------------------------------------------------------------------------------------------------------------------------------
 
@@ -367,7 +367,7 @@ def create_milk_ledger_entry(self, method):
                                 "snf_after_transaction" : snf_after_transaction
                             }
                         )
-                        mle.save()
+                        mle.save(ignore_permissions=True)
 
                     else:
                         milk_ledger = frappe.new_doc("Milk Ledger Entry")
@@ -389,7 +389,7 @@ def create_milk_ledger_entry(self, method):
                         milk_ledger.fat_after_transaction = fat_after_transaction
                         milk_ledger.snf_after_transaction = snf_after_transaction
                         milk_ledger.company = self.company
-                        milk_ledger.insert()
+                        milk_ledger.insert(ignore_permissions=True)
 
 # -------------------------------------------------------------------------------------------------------------------------------
 
@@ -441,7 +441,7 @@ def create_milk_ledger_entry(self, method):
                                 "snf_after_transaction" : snf_after_transaction
                             }
                         )
-                        mle.save()
+                        mle.save(ignore_permissions=True)
 
                     else:
                         milk_ledger = frappe.new_doc("Milk Ledger Entry")
@@ -463,6 +463,6 @@ def create_milk_ledger_entry(self, method):
                         milk_ledger.fat_after_transaction = fat_after_transaction
                         milk_ledger.snf_after_transaction = snf_after_transaction
                         milk_ledger.company = self.company
-                        milk_ledger.insert()
+                        milk_ledger.insert(ignore_permissions=True)
 
 # -------------------------------------------------------------------------------------------------------------------------------
