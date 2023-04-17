@@ -22,7 +22,7 @@ frappe.ui.form.on('Stock Entry', {
 			frm.doc.item,
 			"maintain_fat_snf_clr",
 			(r) => {
-				console.log(r.maintain_fat_snf_clr)
+				// console.log(r.maintain_fat_snf_clr)
 				if(r.maintain_fat_snf_clr==1){
 					frm.set_df_property("fg_fat_snf_calculations","hidden",0)
 					frm.set_df_property("rm_fat__snf_calculations","hidden",0)
@@ -33,6 +33,7 @@ frappe.ui.form.on('Stock Entry', {
 			})
 
 	},
+	
 	setup:function(frm){
 		if(frm.doc.__islocal && frm.doc.stock_entry_type && frm.doc.work_order){
 		frappe.call({

@@ -1,7 +1,15 @@
 frappe.ui.form.on("Sales Invoice", {
-    // setup: function(frm) {
-	// 	frm.add_fetch("route", "price_list", "selling_price_list");
-	// },
+    refresh: function(frm) {
+        frm.add_custom_button(__("Milk Ledger"), function() {
+            frappe.route_options = {
+               voucher_no: frm.doc.name,
+               from_date: frm.doc.posting_date,
+               to_date: moment(frm.doc.modified).format('YYYY-MM-DD'),
+               company: frm.doc.company
+            };
+            frappe.set_route("query-report", "Milk Ledger");
+            }, __("View"));
+	},
 	onload: function(frm){
         // frm.set_df_property("crate_count", "hidden",1);
         // frm.set_df_property("loose_crate_", "hidden",1);
