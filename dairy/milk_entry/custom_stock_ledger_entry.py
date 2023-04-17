@@ -26,71 +26,71 @@ def create_milk_ledger_entry(self, method):
             else:
                 fat = 0.0
                 snf = 0.0
-
-            doc = frappe.get_doc("Sales Invoice", {"name":self.voucher_no, "set_warehouse": self.warehouse})
+            if frappe.db.get_value("Sales Invoice", {"name":self.voucher_no, "set_warehouse": self.warehouse},["name"]):
+                doc = frappe.get_doc("Sales Invoice", {"name":self.voucher_no, "set_warehouse": self.warehouse})
     
-            for itm in doc.items:
-                if itm.name == self.voucher_detail_no and itm.item_code == self.item_code:
-                    si_item = itm.item_code
-        
-            if si_item == self.item_code:
-                item = frappe.db.get_all("Sales Invoice Item", {"parent": self.voucher_no, "item_code":self.item_code}, ["*"])
+                for itm in doc.items:
+                    if itm.name == self.voucher_detail_no and itm.item_code == self.item_code:
+                        si_item = itm.item_code
+            
+                if si_item == self.item_code:
+                    item = frappe.db.get_all("Sales Invoice Item", {"parent": self.voucher_no, "item_code":self.item_code}, ["*"])
 
 
-                for i in item:
+                    for i in item:
 
-                    # fat and snf for after transaction fields
-                    if self.actual_qty >= 0:
-                        fat_after_transaction = round(fat + i.fat, 3)
-                        snf_after_transaction = round(snf + i.snf, 3)
+                        # fat and snf for after transaction fields
+                        if self.actual_qty >= 0:
+                            fat_after_transaction = round(fat + i.fat, 3)
+                            snf_after_transaction = round(snf + i.snf, 3)
 
-                    if self.actual_qty <= 0:
-                        fat_after_transaction = round(fat - i.fat, 3)
-                        snf_after_transaction = round(snf - i.snf, 3)
+                        if self.actual_qty <= 0:
+                            fat_after_transaction = round(fat - i.fat, 3)
+                            snf_after_transaction = round(snf - i.snf, 3)
 
-                    milk_le = frappe.db.get_value("Milk Ledger Entry", {"item_code":self.item_code, "warehouse": self.warehouse, "voucher_no": self.voucher_no, "batch_no":self.batch_no}, ["name"])                  
-                    if milk_le:
-                        mle = frappe.get_doc("Milk Ledger Entry", {"item_code":self.item_code, "warehouse": self.warehouse, "voucher_no": self.voucher_no, "batch_no":self.batch_no}) 
+                        milk_le = frappe.db.get_value("Milk Ledger Entry", {"item_code":self.item_code, "warehouse": self.warehouse, "voucher_no": self.voucher_no, "batch_no":self.batch_no}, ["name"])                  
+                        if milk_le:
+                            mle = frappe.get_doc("Milk Ledger Entry", {"item_code":self.item_code, "warehouse": self.warehouse, "voucher_no": self.voucher_no, "batch_no":self.batch_no}) 
 
-                        mle.update(
-                            {
-                                "batch_no" : i.batch_no,
-                                "posting_date" : today,
-                                "posting_time" : current_time,
-                                "actual_qty" : self.actual_qty,
-                                "fat" : i.fat,
-                                "fat_per" : i.fat_per,
-                                "snf" : i.snf,
-                                "snf_per" : i.snf_per,
-                                "stock_uom" : self.stock_uom,
-                                "qty_after_transaction" : self.qty_after_transaction,
-                                "fat_after_transaction" : fat_after_transaction,
-                                "snf_after_transaction" : snf_after_transaction
-                            }
-                        )
-                        mle.save()
+                            mle.update(
+                                {
+                                    "batch_no" : i.batch_no,
+                                    "posting_date" : today,
+                                    "posting_time" : current_time,
+                                    "actual_qty" : self.actual_qty,
+                                    "fat" : i.fat,
+                                    "fat_per" : i.fat_per,
+                                    "snf" : i.snf,
+                                    "snf_per" : i.snf_per,
+                                    "stock_uom" : self.stock_uom,
+                                    "qty_after_transaction" : self.qty_after_transaction,
+                                    "fat_after_transaction" : fat_after_transaction,
+                                    "snf_after_transaction" : snf_after_transaction
+                                }
+                            )
+                            mle.save()
 
-                    else:
-                        milk_ledger = frappe.new_doc("Milk Ledger Entry")
-                        milk_ledger.item_code = i.item_code
-                        milk_ledger.batch_no = i.batch_no
-                        milk_ledger.warehouse = i.warehouse
-                        milk_ledger.posting_date = today
-                        milk_ledger.posting_time = current_time
-                        milk_ledger.voucher_type = self.voucher_type
-                        milk_ledger.voucher_no = self.voucher_no
-                        milk_ledger.voucher_detail_no = self.voucher_detail_no
-                        milk_ledger.actual_qty = self.actual_qty
-                        milk_ledger.fat = i.fat
-                        milk_ledger.fat_per = i.fat_per
-                        milk_ledger.snf = i.snf
-                        milk_ledger.snf_per = i.snf_per
-                        milk_ledger.stock_uom = self.stock_uom
-                        milk_ledger.qty_after_transaction = self.qty_after_transaction
-                        milk_ledger.fat_after_transaction = fat_after_transaction
-                        milk_ledger.snf_after_transaction = snf_after_transaction
-                        milk_ledger.company = self.company
-                        milk_ledger.insert()
+                        else:
+                            milk_ledger = frappe.new_doc("Milk Ledger Entry")
+                            milk_ledger.item_code = i.item_code
+                            milk_ledger.batch_no = i.batch_no
+                            milk_ledger.warehouse = i.warehouse
+                            milk_ledger.posting_date = today
+                            milk_ledger.posting_time = current_time
+                            milk_ledger.voucher_type = self.voucher_type
+                            milk_ledger.voucher_no = self.voucher_no
+                            milk_ledger.voucher_detail_no = self.voucher_detail_no
+                            milk_ledger.actual_qty = self.actual_qty
+                            milk_ledger.fat = i.fat
+                            milk_ledger.fat_per = i.fat_per
+                            milk_ledger.snf = i.snf
+                            milk_ledger.snf_per = i.snf_per
+                            milk_ledger.stock_uom = self.stock_uom
+                            milk_ledger.qty_after_transaction = self.qty_after_transaction
+                            milk_ledger.fat_after_transaction = fat_after_transaction
+                            milk_ledger.snf_after_transaction = snf_after_transaction
+                            milk_ledger.company = self.company
+                            milk_ledger.insert()
 
 # ----------------------------------------------------------------------------------------------------------------------------
         
