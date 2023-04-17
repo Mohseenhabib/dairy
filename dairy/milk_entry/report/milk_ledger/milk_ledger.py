@@ -163,7 +163,7 @@ def get_stock_ledger_entries(filters, items):
 			mle.item_code,
 			mle.warehouse,
 			mle.actual_qty as mle_act_qty,
-			mle.qty_after_transaction,
+			sle.qty_after_transaction,
 			# stock_value,
 			mle.voucher_type,
 			mle.fat_per,
@@ -175,7 +175,7 @@ def get_stock_ledger_entries(filters, items):
 			mle.fat,
 			mle.snf,
 			mle.fat_after_transaction,
-			mle.qty_after_transaction,
+			sle.qty_after_transaction,
 			mle.snf_after_transaction,
 			sle.actual_qty as sle_act_qty,
 			sle.qty_after_transaction as balance_qty
