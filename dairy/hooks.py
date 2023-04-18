@@ -93,9 +93,7 @@ doctype_js = {
     }
 
 doctype_list_js = {
-                    "Warehouse": "public/js/utils/warehouse_list.js",
-                    "Payment Entry": "public/js/custom_payment_entry_list.js"
-                  }
+                    "Warehouse": "public/js/utils/warehouse_list.js"                  }
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
 

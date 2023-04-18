@@ -93,7 +93,7 @@ frappe.ui.form.on("Work Order", {
                 }
             })
         }
-    if (!frm.doc.__islocal && frm.doc.docstatus==0){
+    if (!frm.doc.__islocal && frm.doc.docstatus==0 && frm.doc.diff_fat_in_kg!=0){
         frm.add_custom_button(__("Adjust Fat"),function(){
            
             frappe.call({
@@ -149,7 +149,7 @@ frappe.ui.form.on("Work Order", {
         })
     
     }
-    if (!frm.doc.__islocal && frm.doc.docstatus==0){
+    if (!frm.doc.__islocal && frm.doc.docstatus==0 && frm.doc.diff_snf_in_kg!=0){
         frm.add_custom_button(__("Adjust Snf"),function(){
            
             frappe.call({

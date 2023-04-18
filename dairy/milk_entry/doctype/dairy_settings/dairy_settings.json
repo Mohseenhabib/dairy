@@ -112,7 +112,9 @@
   "operation",
   "workstation_type",
   "workstation",
-  "operation_time"
+  "operation_time",
+  "accounting_section",
+  "file_path_download_csv"
  ],
  "fields": [
   {
@@ -666,12 +668,22 @@
    "fieldtype": "Link",
    "label": "Cream Item",
    "options": "Item"
+  },
+  {
+   "fieldname": "accounting_section",
+   "fieldtype": "Section Break",
+   "label": "Accounting"
+  },
+  {
+   "fieldname": "file_path_download_csv",
+   "fieldtype": "Data",
+   "label": "File Path Download Csv"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-04-14 23:56:54.697691",
+ "modified": "2023-04-18 23:56:49.853724",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",
