@@ -43,52 +43,37 @@ def get_filter_data(filter_list):
 
     f =frappe.get_all('Payment Entry',a,["*"])
     # print("********************************///////////////////",f)
+    a = 0
     l =[]
     for d in f:
+        a = a+1
+        ifsc = frappe.get_value("Bank Account",{"bank_account_no":d.bank_account_no},["branch_code"])
         x =[]
       
-        x.append(d.name)
-        x.append(d.creation)
-        x.append(d.modified)
-        x.append(d.modified_by)
-        x.append(d.owner)
-        x.append(d.docstatus)
-        x.append(d.idx)
-        x.append(d.naming_series)
-        x.append(d.payment_type)
-        x.append(d.payment_order_status)
-        x.append(d.posting_date)
-        x.append(d.company)
-        x.append(d.mode_of_payment)
-        x.append(d.party_type)
-        x.append(d.party)
-        x.append(d.party_name)
-        x.append(d.bank_account)
-        x.append(d.party_bank_account)
-        x.append(d.contact_person)
-        x.append(d.contact_email)
-        x.append(d.party_balance)
-        x.append(d.paid_from)
-        x.append(d.paid_from_account_type)
-        x.append(d.paid_from_account_currency)
-        x.append(d.paid_from_account_balance)
+        x.append("N")
+        x.append("           ")
+        x.append(d.bank_account_no)
         x.append(d.paid_amount)
-        x.append(d.paid_amount_after_tax)
-        x.append(d.source_exchange_rate)
-        x.append(d.base_paid_amount)
-        x.append(d.base_paid_amount_after_tax)
-        x.append(d.received_amount)
-        x.append(d.received_amount_after_tax)
-        x.append(d.target_exchange_rate)
-        x.append(d.base_received_amount)
-        x.append(d.base_received_amount_after_tax)
-        x.append(d.total_allocated_amount)
-        x.append(d.base_total_allocated_amount)
-        x.append(d.unallocated_amount)
-        x.append(d.difference_amount)
-        x.append(d.purchase_taxes_and_charges_templete)
-        x.append(d.sales_taxes_and_charges_templete)
-        x.append(d.apply_tax_withholding_amunt)
+        x.append(d.party_name)
+        x.append("           ")
+        x.append("           ")
+        x.append("           ")
+        x.append("           ")
+        x.append("           ")
+        x.append("           ")
+        x.append("           ")
+        x.append(str(d.posting_date) + "-"+ str("{:03d}".format(a)))
+        x.append("           ")
+        x.append("           ")
+        x.append("           ")
+        x.append("           ")
+        x.append("           ")
+        x.append("           ")
+        x.append("           ")
+        x.append("           ")
+        x.append("           ")
+        x.append(ifsc)
+        x.append(d.bank)
         l.append(x)
 
 
@@ -106,25 +91,7 @@ def get_filter_data(filter_list):
             writer.writerow(row)
 
    
-#    # field names 
-#     fields = ['Name', 'Branch', 'Year', 'CGPA'] 
 
-#     # data rows of csv file 
-#     rows = l
-
-#     # name of csv file 
-#     filename = "university_records.csv"
-
-#     # writing to csv file 
-#     with open(filename, 'w') as csvfile: 
-#         # creating a csv writer object 
-#         csvwriter = csv.writer(csvfile) 
-
-#         # writing the fields 
-#         csvwriter.writerow(fields) 
-
-#         # writing the data rows 
-#         csvwriter.writerows(rows)
         
 
 
@@ -201,14 +168,6 @@ def get_filter_data(filter_list):
 
 
 
-
-
-
-
-
-
-
-#//////////////////////////////////////Method no.2////////////////////////////////////////
 
 
 
