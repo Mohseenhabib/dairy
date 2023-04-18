@@ -245,14 +245,14 @@ def before_save(self,method):
                 ml = ml[-1]
                 s.fat_per = ml.get('fat_per')
                 s.snf_per = ml.get('snf_per')
-                s.fat = ((s.qty*s.fat_per)/100) * item.weight_per_unit
-                s.snf = ((s.qty*s.snf_per)/100) * item.weight_per_unit
+                s.fat = ((s.qty*flt(s.fat_per))/100) * flt(item.weight_per_unit)
+                s.snf = ((s.qty*flt(s.snf_per))/100) * flt(item.weight_per_unit)
             else:
                 ml = ml[0]
                 s.fat_per = ml.get('fat_per')
                 s.snf_per = ml.get('snf_per')
-                s.fat = ((s.qty*s.fat_per)/100) * item.weight_per_unit
-                s.snf = ((s.qty*s.snf_per)/100) * item.weight_per_unit
+                s.fat = ((s.qty*flt(s.fat_per))/100) * flt(item.weight_per_unit)
+                s.snf = ((s.qty*flt(s.snf_per))/100) * flt(item.weight_per_unit)
 
 
 def cancel_create_milk_stock_ledger(self,method):
