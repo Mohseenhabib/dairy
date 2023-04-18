@@ -6,9 +6,11 @@ from frappe.utils import cint, flt
 def create_milk_ledger_entry(self, method):
         
     if self.is_cancelled == 1:
-        can = frappe.get_doc("Milk Ledger Entry", {"item_code": self.item_code, "warehouse": self.warehouse, "voucher_no": self.voucher_no})
-        can.is_cancelled = 1
-        can.save()
+        doc=frappe.db.get_all("Milk Ledger Entry",{"name":self.voucher_no,"is_cancelled":0},["name"])
+        for i in doc:
+            can = frappe.get_doc("Milk Ledger Entry",i.name)
+            can.is_cancelled = 1
+            can.save(ignore_permissions=True)
 
     now = datetime.now()
     today = now.strftime("%Y-%m-%d")
