@@ -205,7 +205,11 @@ doc_events = {
     },
     "Stock Ledger Entry":{
       "after_insert": "dairy.milk_entry.custom_stock_ledger_entry.create_milk_ledger_entry"
-    }
+    },
+    # "Milk Entry":{
+    #     "before_save": "dairy.milk_entry.doctype.milk_entry.milk_entry.sub"
+    # # "before_submit":"dairy.dairy.custom_bom.before_submit"
+    # },
   
 }
 
@@ -231,9 +235,9 @@ scheduler_events = {
 # # 	"all": [
 # # 		"dairy.tasks.all"
 # # 	],
-# # 	"daily": [
-# # 		"dairy.tasks.daily"
-# # 	],
+	"daily": [
+		"dairy.milk_entry.doctype.milk_entry.milk_entry.sub"
+	],
 	"hourly": [
 		"dairy.milk_entry.doctype.dairy_settings.dairy_settings.purchase_invoice",
 	],

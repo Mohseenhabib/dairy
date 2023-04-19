@@ -183,6 +183,10 @@ frappe.ui.form.on('Stock Entry Detail', {
             df.read_only = 1;
             var df = frappe.meta.get_docfield("Stock Entry Detail","snf_clr_per", cur_frm.doc.name);
             df.read_only = 1;
+			var df = frappe.meta.get_docfield("Stock Entry Detail","snf_per", cur_frm.doc.name);
+            df.read_only = 1;
+			var df = frappe.meta.get_docfield("Stock Entry Detail","snf", cur_frm.doc.name);
+            df.read_only = 1;
 
         }else{
             var df = frappe.meta.get_docfield("Stock Entry Detail","fat", cur_frm.doc.name);
@@ -192,6 +196,10 @@ frappe.ui.form.on('Stock Entry Detail', {
             var df = frappe.meta.get_docfield("Stock Entry Detail","snf_clr", cur_frm.doc.name);
             df.read_only = 0;
             var df = frappe.meta.get_docfield("Stock Entry Detail","snf_clr_per", cur_frm.doc.name);
+            df.read_only = 0;
+			var df = frappe.meta.get_docfield("Stock Entry Detail","snf_per", cur_frm.doc.name);
+            df.read_only = 0;
+			var df = frappe.meta.get_docfield("Stock Entry Detail","snf", cur_frm.doc.name);
             df.read_only = 0;
         }
     },
