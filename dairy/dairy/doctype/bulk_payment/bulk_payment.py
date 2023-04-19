@@ -10,6 +10,8 @@ import random
 import frappe
 import json
 
+from frappe.utils.data import format_date
+
 class BulkPayment(Document):
 	@frappe.whitelist()
 	def get_data(self):
@@ -58,8 +60,8 @@ class BulkPayment(Document):
 			x.append("           ")
 			x.append("           ")
 			x.append("           ")
-			x.append(str(d.posting_date) + "-"+ str("{:03d}".format(a)))
-			x.append(str(d.posting_date) + "-"+ str("{:03d}".format(a)))
+			x.append(str(format_date(d.posting_date)) + "-"+ str("{:03d}".format(a)))
+			x.append(str(format_date(d.posting_date)) + "-"+ str("{:03d}".format(a)))
 			x.append("           ")
 			x.append("           ")
 			x.append("           ")
@@ -68,7 +70,7 @@ class BulkPayment(Document):
 			x.append("           ")
 			x.append("           ")
 			x.append("           ")
-			x.append(d.posting_date)
+			x.append(format_date(d.posting_date))
 			x.append("           ")
 			x.append(d.ifsc)
 			x.append(d.bank)
