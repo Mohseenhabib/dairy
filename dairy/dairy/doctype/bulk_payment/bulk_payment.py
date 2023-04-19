@@ -42,15 +42,27 @@ class BulkPayment(Document):
 	def get_lines(self):
 		a = 0
 		l =[]
-		for d in self.items:
-			ifsc = frappe.get_value("Bank Account",{"bank_account_no":d.bank_account_no},["branch_code"])
+		filters={}
+		if self.from_date:
+			filters.update({"posting_date":[">=",self.from_date]})
+		if self.to_date:
+			filters.update({"posting_date":["<=",self.to_date]})
+		if self.mode_of_payment:
+			filters.update({"mode_of_payment":self.mode_of_payment})
+		if self.party_type:
+			filters.update({"party_type":self.party_type})
+		filters.update({"docstatus":0})
+		f =frappe.get_all('Payment Entry',filters,["*"])
+		for d in f:
+		# for d in self.items:
+			bank = frappe.get_doc("Bank Account",d.party_bank_account)
 
 			a = a+1
 			x =[]
 		
 			x.append("N")
 			x.append("           ")
-			x.append(d.bank_account_no)
+			x.append(bank.bank_account_no)
 			x.append(d.paid_amount)
 			x.append(d.party_name)
 			x.append("           ")
@@ -72,8 +84,8 @@ class BulkPayment(Document):
 			x.append("           ")
 			x.append(format_date(d.posting_date))
 			x.append("           ")
-			x.append(d.ifsc)
-			x.append(d.bank)
+			x.append(bank.branch_code)
+			x.append(bank.bank)
 			x.append("           ")
 			x.append(frappe.session.user)
 			l.append(x)
