@@ -55,14 +55,15 @@ class BulkPayment(Document):
 		f =frappe.get_all('Payment Entry',filters,["*"])
 		for d in f:
 		# for d in self.items:
-			bank = frappe.get_doc("Bank Account",d.party_bank_account)
+			bank_account_no= frappe.db.get_value("Bank Account",d.party_bank_account,"bank_account_no")
+			branch_code=frappe.db.get_value("Bank Account",d.party_bank_account,"branch_code")
+			bank=frappe.db.get_value("Bank Account",d.party_bank_account,"bank")
 
 			a = a+1
 			x =[]
-		
 			x.append("N")
 			x.append("           ")
-			x.append(bank.bank_account_no)
+			x.append(bank_account_no)
 			x.append(d.paid_amount)
 			x.append(d.party_name)
 			x.append("           ")
@@ -84,8 +85,8 @@ class BulkPayment(Document):
 			x.append("           ")
 			x.append(format_date(d.posting_date))
 			x.append("           ")
-			x.append(bank.branch_code)
-			x.append(bank.bank)
+			x.append(branch_code)
+			x.append(bank)
 			x.append("           ")
 			x.append(frappe.session.user)
 			l.append(x)
@@ -102,7 +103,7 @@ class BulkPayment(Document):
 			writer = csv.writer(file)
 			# writer.writerow(field)
 			for row in  l:
-				writer.writerow(row)
+				writer.writerow(row)					
 
     
 
