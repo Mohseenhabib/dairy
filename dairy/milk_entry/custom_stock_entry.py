@@ -234,24 +234,25 @@ def milk_ledger_stock_entry(self,method):
 #                              # new_mle.submit()
 
 def before_save(self,method):
-    for s in self.items:
-        item = frappe.get_doc('Item',s.item_code)
-        filters={'from_date':getdate(self.posting_date),'to_date':getdate(self.posting_date),'s_warehouse':s.s_warehouse,'item_code':s.item_code,'company':self.company}
-        filters=frappe._dict(filters)
-        ml=exec(filters)
-        print('mllllllllllllllllllllllllllllll',filters,ml)
-        if (len(ml)) > 1:
-            ml = ml[-1]
-            s.fat_per = ml.get('fat_after_transaction')/ml.get('qty_after_transaction')/100
-            s.snf_per = ml.get('snf_after_transaction')/ml.get('qty_after_transaction')/100
-            s.fat = ((s.qty*s.fat_per)/100) * item.weight_per_unit
-            s.snf = ((s.qty*s.snf_per)/100) * item.weight_per_unit
-        else:
-            ml = ml[0]
-            s.fat_per = ml.get('fat_after_transaction')/ml.get('qty_after_transaction')/100
-            s.snf_per = ml.get('snf_after_transaction')/ml.get('qty_after_transaction')/100
-            s.fat = ((s.qty*s.fat_per)/100) * item.weight_per_unit
-            s.snf = ((s.qty*s.snf_per)/100) * item.weight_per_unit
+    if self.stock_entry_type=="Material Transfer":
+        for s in self.items:
+            item = frappe.get_doc('Item',s.item_code)
+            filters={'from_date':getdate(self.posting_date),'to_date':getdate(self.posting_date),'warehouse':s.s_warehouse,'item_code':s.item_code,'company':self.company}
+            filters=frappe._dict(filters)
+            ml=exec(filters)
+            print('mllllllllllllllllllllllllllllll',filters,ml)
+            if (len(ml)) > 1:
+                ml = ml[-1]
+                s.fat_per = ml.get('fat_per')
+                s.snf_per = ml.get('snf_per')
+                s.fat = ((s.qty*flt(s.fat_per))/100) * flt(item.weight_per_unit)
+                s.snf = ((s.qty*flt(s.snf_per))/100) * flt(item.weight_per_unit)
+            else:
+                ml = ml[0]
+                s.fat_per = ml.get('fat_per')
+                s.snf_per = ml.get('snf_per')
+                s.fat = ((s.qty*flt(s.fat_per))/100) * flt(item.weight_per_unit)
+                s.snf = ((s.qty*flt(s.snf_per))/100) * flt(item.weight_per_unit)
 
 
 def cancel_create_milk_stock_ledger(self,method):
