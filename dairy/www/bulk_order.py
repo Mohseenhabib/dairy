@@ -220,10 +220,11 @@ def make_so(item_list):
 @frappe.whitelist()
 def handle_date(date):
     frappe.cache().set_value("del_date", date)
+
 @frappe.whitelist()
 def handle_shift(shift):
-     frappe.cache().set_value("delivery_shift",shift) 
-     return shift
+    frappe.cache().set_value("delivery_shift",shift) 
+    return shift
 
    
 
