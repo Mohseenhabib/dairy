@@ -28,6 +28,13 @@ frappe.ui.form.on('Bulk Payment', {
 
     },
     refresh:function(frm){
+        frm.set_query("party_type", function() {
+			return {
+				filters: {
+					"name": ["in", ["Supplier", "Employee"]]
+				}
+			};
+		});
 		if(frm.doc.docstatus==1){
         frm.add_custom_button(__("Download Csv"),function(){
            
