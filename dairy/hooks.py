@@ -235,9 +235,9 @@ scheduler_events = {
 # # 	"all": [
 # # 		"dairy.tasks.all"
 # # 	],
-	"daily": [
-		"dairy.milk_entry.doctype.milk_entry.milk_entry.sub"
-	],
+	# "daily": [
+	# 	"dairy.milk_entry.doctype.milk_entry.milk_entry.sub"
+	# ],
 	"hourly": [
 		"dairy.milk_entry.doctype.dairy_settings.dairy_settings.purchase_invoice",
 	],

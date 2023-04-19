@@ -251,7 +251,10 @@ class MilkEntry(Document):
         
         self.db_set('stock_uom',itm)    
 
-
+    @frappe.whitelist()
+    def before_submit(self):
+        self.create_purchase_receipt()
+        
     @frappe.whitelist()
     def create_purchase_receipt(self):
 
