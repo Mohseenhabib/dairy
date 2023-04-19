@@ -105,13 +105,16 @@
   "section_break_jsl50",
   "items_to_add_fat",
   "item_to_add_snf_fat",
+  "cream_item",
   "column_break_ypomu",
   "items_to_add_snf",
   "threshold_for_fat_separation",
   "operation",
   "workstation_type",
   "workstation",
-  "operation_time"
+  "operation_time",
+  "accounting_section",
+  "file_path_download_csv"
  ],
  "fields": [
   {
@@ -659,12 +662,28 @@
    "fieldname": "allow_changing",
    "fieldtype": "Check",
    "label": "Allow Changing Fat/Snf In RMRD Lines"
+  },
+  {
+   "fieldname": "cream_item",
+   "fieldtype": "Link",
+   "label": "Cream Item",
+   "options": "Item"
+  },
+  {
+   "fieldname": "accounting_section",
+   "fieldtype": "Section Break",
+   "label": "Accounting"
+  },
+  {
+   "fieldname": "file_path_download_csv",
+   "fieldtype": "Data",
+   "label": "File Path Download Csv"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-04-10 14:37:48.426293",
+ "modified": "2023-04-18 23:56:49.853724",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",

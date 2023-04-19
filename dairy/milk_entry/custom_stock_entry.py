@@ -6,6 +6,7 @@ import frappe
 from frappe import _
 from frappe.model.mapper import get_mapped_doc
 from frappe.utils import flt,cint, cstr, getdate
+from frappe.utils.data import today
 
 def milk_ledger_stock_entry(self,method):
     if not self.get("__islocal"):
@@ -229,7 +230,30 @@ def milk_ledger_stock_entry(self,method):
 #                             new_mle.snf_per = ((mle_obj.snf_after_transaction + itm.snf_clr) / (
 #                                     (itm.transfer_qty * itm_weight) + mle_obj.qty_after_transaction)) * 100
 #                             new_mle.save(ignore_permissions=True)
-#                             # new_mle.submit()
+#
+#                              # new_mle.submit()
+
+def before_save(self,method):
+    if self.stock_entry_type=="Material Transfer":
+        for s in self.items:
+            item = frappe.get_doc('Item',s.item_code)
+            filters={'from_date':getdate(self.posting_date),'to_date':getdate(self.posting_date),'warehouse':s.s_warehouse,'item_code':s.item_code,'company':self.company}
+            filters=frappe._dict(filters)
+            ml=exec(filters)
+            print('mllllllllllllllllllllllllllllll',filters,ml)
+            if (len(ml)) > 1:
+                ml = ml[-1]
+                s.fat_per = ml.get('fat_per')
+                s.snf_per = ml.get('snf_per')
+                s.fat = ((s.qty*flt(s.fat_per))/100) * flt(item.weight_per_unit)
+                s.snf = ((s.qty*flt(s.snf_per))/100) * flt(item.weight_per_unit)
+            else:
+                ml = ml[0]
+                s.fat_per = ml.get('fat_per')
+                s.snf_per = ml.get('snf_per')
+                s.fat = ((s.qty*flt(s.fat_per))/100) * flt(item.weight_per_unit)
+                s.snf = ((s.qty*flt(s.snf_per))/100) * flt(item.weight_per_unit)
+
 
 def cancel_create_milk_stock_ledger(self,method):
     if self.van_collection or self.van_collection_item:
@@ -472,74 +496,76 @@ def update_vc_status(self,method):
     
 
 
-# def exec(filters=None):
-#     include_uom = filters.get("include_uom")
-#     columns = get_columns()
-#     items = get_items(filters)
-#     sl_entries = get_stock_ledger_entries(filters, items)
-#     item_details = get_item_details(items, sl_entries, include_uom)
-#     opening_row = get_opening_balance(filters, columns)
-#     precision = cint(frappe.db.get_single_value("System Settings", "float_precision"))
+def exec(filters=None):
+    include_uom = filters.get("include_uom")
+    columns = get_columns()
+    items = get_items(filters)
+    sl_entries = get_stock_ledger_entries(filters, items)
+    item_details = get_item_details(items, sl_entries, include_uom)
+    opening_row = get_opening_balance(filters, columns)
+    precision = cint(frappe.db.get_single_value("System Settings", "float_precision"))
 
-#     data = []
-#     conversion_factors = []
-#     if opening_row:
-#         data.append(opening_row)
+    data = []
+    conversion_factors = []
+    if opening_row:                                     
+        data.append(opening_row)
 
 
-#     for sle in sl_entries:
+    for sle in sl_entries:
         
-#         item_detail = item_details[sle.item_code]
+        item_detail = item_details[sle.item_code]
 
-#         sle.update(item_detail)
+        sle.update(item_detail)
 
-#         if filters.get("batch_no"):
-#             actual_qty += flt(sle.actual_qty, precision)
-#             # stock_value += sle.stock_value_difference
+        if filters.get("batch_no"):
+            actual_qty += flt(sle.actual_qty, precision)
+            # stock_value += sle.stock_value_difference
 
-#             if sle.voucher_type == 'Stock Reconciliation' and not sle.actual_qty:
-#                 actual_qty = sle.qty_after_transaction
-#                 # stock_value = sle.stock_value
+            if sle.voucher_type == 'Stock Reconciliation' and not sle.actual_qty:
+                actual_qty = sle.qty_after_transaction
+                # stock_value = sle.stock_value
 
-#             sle.update({
-#                 "qty_after_transaction": abs(actual_qty)
-#                 # "stock_value": stock_value
-#             })
-#         a = max(sle.mle_act_qty, 0)
-#         b =  min(sle.mle_act_qty, 0)
-#         sle.update({
-#             "in_wt": abs(a),
-#             "out_wt": abs(b)
-#         })
-#         e = max(sle.fat, 0)
-#         f = min(sle.fat, 0)
-#         sle.update({
-#             "in_fat": abs(e),
-#             "out_fat": abs(f)
-#         })
-#         c =  max(sle.snf, 0)
-#         d = min(sle.snf, 0)
-#         sle.update({
-#             "in_snf": abs(c),
-#             "out_snf": abs(d)
-#         })
+            sle.update({
+                "qty_after_transaction": abs(actual_qty)
+                # "stock_value": stock_value
+            })
+        a = max(sle.mle_act_qty, 0)
+        b =  min(sle.mle_act_qty, 0)
+        sle.update({
+            "in_wt": abs(a),
+            "out_wt": abs(b)
+        })
+        e = max(sle.fat, 0)
+        f = min(sle.fat, 0)
+        sle.update({
+            "in_fat": abs(e),
+            "out_fat": abs(f)
+        })
+        c =  max(sle.snf, 0)
+        d = min(sle.snf, 0)
+        sle.update({
+            "in_snf": abs(c),
+            "out_snf": abs(d)
+        })
         
-#         h =  max(sle.sle_act_qty ,0)
-#         i = min(sle.sle_act_qty,0)
-#         sle.update({
-#             "in_qty": abs(h),
-#             "out_qty": abs(i)
-#         })
+        h =  max(sle.sle_act_qty ,0)
+        i = min(sle.sle_act_qty,0)
+        sle.update({
+            "in_qty": abs(h),
+            "out_qty": abs(i)
+        })
         
 
-#         data.append(sle)
-#         # print('data*************************8',sle)
+        data.append(sle)
+        print('data*************************8',data)
 
-#         if include_uom:
-#             conversion_factors.append(item_detail.conversion_factor)
+        if include_uom:
+            conversion_factors.append(item_detail.conversion_factor)
 
-#     update_included_uom_in_report(columns, data, include_uom, conversion_factors)
-#     return data
+    update_included_uom_in_report(columns, data, include_uom, conversion_factors)
+    return data
+
+
 # @frappe.whitelist()
 # def get_add_fat(name):
 #     filters={}

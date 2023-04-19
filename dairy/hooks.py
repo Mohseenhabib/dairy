@@ -45,6 +45,7 @@ fixtures = fixtures = [
             "BOM Item-bom_snf",
             "Work Order-required_fat",
             "Work Order-required_fat_in_kg",
+            "Work Order-sepration_fat",
             "Work Order-required_snf_",
             "Work Order-required_snt_in_kg",
             "Work Order Item-fat_per",
@@ -92,9 +93,7 @@ doctype_js = {
     }
 
 doctype_list_js = {
-                    "Warehouse": "public/js/utils/warehouse_list.js",
-                    "Payment Entry": "public/js/custom_payment_entry_list.js"
-                  }
+                    "Warehouse": "public/js/utils/warehouse_list.js"                  }
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
 
@@ -164,7 +163,8 @@ doc_events = {
     },
     "Sales Order": {
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
-        "before_submit":"dairy.milk_entry.custom_sales_order.before_submit"
+        "before_submit":"dairy.milk_entry.custom_sales_order.before_submit",
+         "before_save":"dairy.milk_entry.custom_sales_order.get_party_bal"
     },
     "Quotation": {
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
@@ -172,14 +172,15 @@ doc_events = {
     "Sales Invoice": {
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
         "before_submit": "dairy.milk_entry.custom_sales_invoice.before_submit",
+        "before_save":"dairy.milk_entry.custom_sales_invoice.get_party_bal"
         # "after_insert": "dairy.milk_entry.custom_sales_invoice.calculate_crate"
         # "before_save": "dairy.milk_entry.custom_sales_invoice.calculate_crate_save"
     },
     "Stock Entry":{
         "after_insert": ["dairy.milk_entry.doctype.van_collection.van_collection.change_van_collection_status",
                          "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry"],
-        "before_save":[ "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry"
-                    #    "dairy.milk_entry.custom_stock_entry.calculate_wfs"
+        "before_save":[ "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry",
+                        "dairy.milk_entry.custom_stock_entry.before_save"
         ],
         "before_submit": "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry",
         # "on_submit": "dairy.milk_entry.custom_stock_entry.on_submit",
@@ -247,6 +248,9 @@ scheduler_events = {
 # Testing
 # -------
 
+override_doctype_class = {
+	'Work Order': 'dairy.milk_entry.custom_work_order.CustomWorkOrder',
+}
 # before_tests = "dairy.install.before_tests"
 
 # Overriding Methods
@@ -254,7 +258,10 @@ scheduler_events = {
 #
 
 override_whitelisted_methods = {
-	"erpnext.selling.doctype.sales_order.sales_order.make_delivery_note": "dairy.milk_entry.custom_sales_order.make_delivery_note"
+	"erpnext.selling.doctype.sales_order.sales_order.make_delivery_note": "dairy.milk_entry.custom_sales_order.make_delivery_note",
+    "erpnext.manufacturing.doctype.work_order.work_order.create_job_card": "dairy.milk_entry.custom_work_order.make_job_card"
+
+
 }
 #
 # each overriding function accepts a `data` argument;

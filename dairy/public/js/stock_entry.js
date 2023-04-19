@@ -22,7 +22,7 @@ frappe.ui.form.on('Stock Entry', {
 			frm.doc.item,
 			"maintain_fat_snf_clr",
 			(r) => {
-				console.log(r.maintain_fat_snf_clr)
+				// console.log(r.maintain_fat_snf_clr)
 				if(r.maintain_fat_snf_clr==1){
 					frm.set_df_property("fg_fat_snf_calculations","hidden",0)
 					frm.set_df_property("rm_fat__snf_calculations","hidden",0)
@@ -32,7 +32,19 @@ frappe.ui.form.on('Stock Entry', {
 
 			})
 
+		frm.add_custom_button(__("Milk Ledger"), function() {
+			frappe.route_options = {
+				voucher_no: frm.doc.name,
+				from_date: frm.doc.posting_date,
+				to_date: moment(frm.doc.modified).format('YYYY-MM-DD'),
+				company: frm.doc.company
+			};
+			frappe.set_route("query-report", "Milk Ledger");
+			}, __("View"));
+	
+
 	},
+	
 	setup:function(frm){
 		if(frm.doc.__islocal && frm.doc.stock_entry_type && frm.doc.work_order){
 		frappe.call({
