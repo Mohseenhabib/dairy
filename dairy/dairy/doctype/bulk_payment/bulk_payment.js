@@ -2,24 +2,25 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('Bulk Payment', {
-    before_save: function(frm) {
+    get_records: function(frm) {
         frappe.call({
             method: "get_data",
             doc: frm.doc,
             callback:function(r){
                 frm.refresh_field("items")
+                frm.refresh()
             }
 
             })
        
 
     },
-	after_save: function(frm) {
+	before_submit: function(frm) {
         frappe.call({
             method: "get_lines",
             doc: frm.doc,
             callback:function(r){
-                frm.refresh_field("items")
+    
             }
 
             })
@@ -27,7 +28,7 @@ frappe.ui.form.on('Bulk Payment', {
 
     },
     refresh:function(frm){
-		if(!frm.doc.__islocal){
+		if(frm.doc.docstatus==1){
         frm.add_custom_button(__("Download Csv"),function(){
            
         var url = frappe.urllib.get_full_url(
