@@ -22,7 +22,7 @@ class BulkPayment(Document):
 			filters.update({"mode_of_payment":self.mode_of_payment})
 		if self.party_type:
 			filters.update({"party_type":self.party_type})
-		filters.update({"docstatus":1})
+		filters.update({"docstatus":0})
 		f =frappe.get_all('Payment Entry',filters,["*"])
 		self.items=[]
 		for d in f:
