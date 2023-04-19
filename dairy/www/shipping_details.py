@@ -1,9 +1,12 @@
 import frappe
 import datetime
 import json
+from frappe.sessions import clear
 from frappe.utils import caching
 
 from frappe.utils.data import today
+from frappe.website.utils import clear_cache
+
 def get_context(context):
     user = frappe.db.get_value("User", frappe.session.user, 'first_name')
 
@@ -23,8 +26,13 @@ def get_context(context):
     if cache.get_value('delivery_shift'):
         context.delivery_shift = str(cache.get_value('delivery_shift')).title()
         print("777888888888888888888888888888888888888",context.delivery_shift)
+
     else:
         context.delivery_shift="Morning"
+
+
+
+    
 
     if cache.get_value('del_date'):
 
@@ -77,6 +85,7 @@ def get_context(context):
                 "gst_state" : add.get("gst_state")
             }
             context.def_ship_add = customer_add
+        print("888888888888888888888888888888888888",type(context))
 
 @frappe.whitelist()
 def make_so(item_list):
@@ -150,6 +159,8 @@ def make_so(item_list):
     }
     so.db_update()
     get_cached_data.delete_value("so_name")
+    get_cached_data.delete_value("del_date")
+    get_cached_data.delete_value("delivery_shift")
     frappe.clear_cache()
     
     return msg
@@ -164,3 +175,4 @@ def handle_address(name):
         if(address.get("name") == name.get("value")):
             frappe.cache().set_value(name.get("key"),name.get("value"))
             return address
+        
