@@ -207,9 +207,14 @@ doc_events = {
       "after_insert": "dairy.milk_entry.custom_stock_ledger_entry.create_milk_ledger_entry"
     },
     # "Milk Entry":{
-    #     "before_save": "dairy.milk_entry.doctype.milk_entry.milk_entry.sub"
-    # # "before_submit":"dairy.dairy.custom_bom.before_submit"
+    #     "before_submit": "dairy.milk_entry.doctype.milk_entry.milk_entry.before_submit",
+    #     # "on_submit": "dairy.milk_entry.doctype.milk_entry.milk_entry.status"
+    #     # "after_insert": "dairy.milk_entry.custom_purchase_receipt.change_milk_entry_status",
+    #     # "_submit": "dairy.milk_entry.custom_purchase_receipt.change_milk_status"
     # },
+    # "Dairy Settings":{
+    #     "before_save" : "dairy.milk_entry.doctype.dairy_settings.dairy_settings.before_save" 
+    # }
   
 }
 
@@ -231,23 +236,23 @@ has_permission = {
 # Scheduled Tasks
 # ---------------
 
-scheduler_events = {
-# # 	"all": [
-# # 		"dairy.tasks.all"
-# # 	],
-	# "daily": [
-	# 	"dairy.milk_entry.doctype.milk_entry.milk_entry.sub"
-	# ],
-	"hourly": [
-		"dairy.milk_entry.doctype.dairy_settings.dairy_settings.purchase_invoice",
-	],
-# # 	"weekly": [
-# # 		"dairy.tasks.weekly"
-# # 	]
-# # 	"monthly": [
-# # 		"dairy.tasks.monthly"
-# # 	]
- }
+# scheduler_events = {
+# # # 	"all": [
+# # # 		"dairy.tasks.all"
+# # # 	],
+# 	# "daily": [
+# 	# 	"dairy.milk_entry.doctype.milk_entry.milk_entry.sub"
+# 	# ],
+# 	"hourly": [
+# 		"dairy.milk_entry.doctype.dairy_settings.dairy_settings.purchase_invoice",
+# 	],
+# # # 	"weekly": [
+# # # 		"dairy.tasks.weekly"
+# # # 	]
+# # # 	"monthly": [
+# # # 		"dairy.tasks.monthly"
+# # # 	]
+#  }
 
 # Testing
 # -------
