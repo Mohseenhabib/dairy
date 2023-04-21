@@ -10,6 +10,8 @@ from frappe import _
 from datetime import datetime
 from frappe.model.mapper import get_mapped_doc
 from frappe.utils.data import flt
+# from dairy.milk_entry.custom_purchase_receipt import change_milk_entry_status
+# from dairy.milk_entry.custom_purchase_receipt import change_milk_status
 
 class MilkEntry(Document):
     @frappe.whitelist()
@@ -255,6 +257,7 @@ class MilkEntry(Document):
     def before_submit(self):
         self.create_purchase_receipt()
         
+        
     @frappe.whitelist()
     def create_purchase_receipt(self):
 
@@ -273,6 +276,7 @@ class MilkEntry(Document):
         if warehouse.is_dcs and warehouse.is_third_party_dcs:
             doc.supplier = warehouse.supplier
 
+        doc.set_posting_time = 1
         doc.posting_date = self.date
         doc.posting_time = self.time
         doc.company = warehouse.company
@@ -380,55 +384,4 @@ def make_sample(source_name, target_doc=None):
 
     return doclist
 
-
-def sub():
-    subm = frappe.get_all('Milk Entry',{'docstatus':1},['name'])
-    print(subm,'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
-    
-    for milk in subm:
-        
-        doc = frappe.get_doc('Milk Entry',milk.name)
-
-        purchase_receipts = frappe.db.sql("""select count(name) from `tabPurchase Receipt` 
-                                            where status not in ('Cancelled') and docstatus=1 and milk_entry= %s""",(doc.name))[0][0]
-
-        if not purchase_receipts:
-           
-            if purchase_receipts >= 1:
-                frappe.throw(_("Purchase Receipt already Created."))
-
-            warehouse = frappe.get_doc('Warehouse', doc.dcs_id)
-            item_code = _get_product(doc.milk_type)
-           
-            doc1 = frappe.new_doc('Purchase Receipt')
-            doc1.supplier = doc.member
-            
-            if warehouse.is_dcs and warehouse.is_third_party_dcs:
-                doc1.supplier = warehouse.supplier
-
-            doc1.posting_date = doc.date
-            doc1.posting_time = doc.time
-            doc1.company = warehouse.company
-            doc1.milk_entry = doc.name
-
-            doc1.append('items', {
-                'item_code': item_code.item_code,
-                'item_name': item_code.item_name,
-                'description': item_code.description,
-                'received_qty': doc.volume,
-                'qty': doc.volume,
-                'uom': item_code.stock_uom,
-                'stock_uom': item_code.stock_uom,
-                'rate': doc.unit_price,
-                'warehouse': doc.dcs_id,
-                'fat': doc.fat_kg,
-                'clr': doc.snf_kg,
-                'snf':doc.clr_kg,
-                'snf_clr_per' : doc.snf,
-                'clr_per' : doc.clr,
-                'fat_per_' : doc.fat
-            })
-            doc1.insert(ignore_permissions=True)
-            doc1.submit()
-    return doc
 
