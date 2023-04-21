@@ -32,6 +32,7 @@
   "fat_deduction",
   "column_break_ei8hi",
   "snf_deduction",
+  "incentive",
   "sb4",
   "milk_rate",
   "litre",
@@ -330,12 +331,14 @@
   {
    "fieldname": "fat_deduction",
    "fieldtype": "Currency",
-   "label": "FAT Deduction"
+   "label": "FAT Deduction",
+   "read_only": 1
   },
   {
    "fieldname": "snf_deduction",
    "fieldtype": "Currency",
-   "label": "SNF Deduction"
+   "label": "SNF Deduction",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_eacwp",
@@ -348,12 +351,18 @@
   {
    "fieldname": "column_break_ei8hi",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "incentive",
+   "fieldtype": "Float",
+   "label": "Incentive",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2023-04-07 14:26:58.444289",
+ "modified": "2023-04-21 13:11:57.210117",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Milk Entry",
