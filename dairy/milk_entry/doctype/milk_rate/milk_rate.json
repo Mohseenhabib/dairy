@@ -13,9 +13,12 @@
   "sb2",
   "milk_type",
   "effective_date",
+  "snf_in_kg",
   "cl1",
   "dsc_name",
   "selling_rate",
+  "simplified_milk_rate",
+  "fat_in_kg",
   "sb1",
   "milk_rate_chart",
   "amended_from",
@@ -141,12 +144,28 @@
    "fieldtype": "Table",
    "label": "Incentive",
    "options": "Volume Incentive Slabs"
+  },
+  {
+   "default": "0",
+   "fieldname": "simplified_milk_rate",
+   "fieldtype": "Check",
+   "label": "Simplified Milk Rate"
+  },
+  {
+   "fieldname": "snf_in_kg",
+   "fieldtype": "Data",
+   "label": "SNF in kg"
+  },
+  {
+   "fieldname": "fat_in_kg",
+   "fieldtype": "Data",
+   "label": "Fat in kg"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-26 20:19:29.105206",
+ "modified": "2023-04-21 10:35:42.483717",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Milk Rate",

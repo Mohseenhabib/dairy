@@ -101,63 +101,42 @@ def purchase_invoice():
 	if p_inv.default_payment_type == 'Days':
 		
 		delta=getdate(date.today()) - getdate(p_inv.previous_sync_date)
-		print('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy',delta.days, p_inv.days)
 		if delta.days >= p_inv.days:
-			print('ooooooooooooooooooooooooooooooo')
+			# pi = frappe.new_doc("Purchase Invoice")
 			purchase = frappe.db.sql("""select distinct(supplier) as name 
 											from `tabPurchase Receipt` 
 											where docstatus =1 and posting_date BETWEEN '{0}' and '{1}'
 											""".format(p_inv.previous_sync_date,getdate(today())), as_dict =True)
 					
-			print('purchase********************************************',purchase)
 			for i in purchase:
 				
-				
-				me = frappe.db.sql("""select milk_entry
+				me = frappe.db.sql("""select milk_entry , status , supplier
 											from `tabPurchase Receipt` 
-											where docstatus= 1 and supplier = '{0}' and posting_date BETWEEN '{1}' and '{2}'
+											where docstatus= 1 and supplier = '{0}' and posting_date BETWEEN '{1}' and '{2}' and per_billed<100
 											""".format(i.name,p_inv.previous_sync_date,getdate(today())), as_dict =True)
 				if me:
 					pi = frappe.new_doc("Purchase Invoice")
 					print('meeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',me)
 					for m in me:
 						milk = frappe.get_doc('Milk Entry',m.milk_entry)
-						print('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm',m.milk_entry)
 						ware = frappe.get_doc('Warehouse',{'name':milk.dcs_id})
-						print('ware^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',ware)
-
-						# for wh in ware:
-
-							# entry = frappe.db.get_value('Milk Entry',{'name':m.milk_entry},['date'])
-							# print('entryYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY',entry)
-
-							# query =frappe.db.sql("""select dcs_id,member,milk_type,name,volume
-							# 							from `tabMilk Entry` 
-							# 							where docstatus =1  and name = '{0}'
-							# 							""".format(m.milk_entry), as_dict =True)
-
-							
-
-							# print('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',query)
-							# for k in query:
-							# 	# if query[0]:
-							# 		# print('query^^^^^^^^^^^^^^^^^^^^^^^^^',k.name)
-								# milk = frappe.get_doc('Milk Entry',m.milk_entry)
-								# print('query^^^^^^^^^^^^^^^^^^^^^^^^^',milk.name)
 
 						pr =  frappe.db.get_value('Purchase Receipt',{'milk_entry':milk.name,"docstatus":1},['name'])
-
-						# for j in pr:
 						if pr:
 							pri =  frappe.get_doc('Purchase Receipt',pr)
+
+						# if pr:
 							# pur_inv = frappe.db.get_value('Purchase Invoice Item',{'purchase_receipt':pr},["parent"])
-							# if not pur_inv:
-								
+							# print('pur_inv***************************************',pur_inv)
+							# inv = frappe.db.get_value('Purchase Invoice Item',{'purchase_receipt':pr},["pr_detail"])
+							# print('inv^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',inv)
+							# if not inv:
+							
 							# pi = frappe.new_doc("Purchase Invoice")
+							pi.supplier = milk.member
+							pi.milk_entry = milk.name
 							for itm in pri.items:
-								pi.supplier = milk.member if  ware.is_third_party_dcs == 0 else ware.supplier
-								pi.name = milk.name
-								print('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjj',milk.name)
+								# pi.supplier = milk.member if  ware.is_third_party_dcs == 0 else ware.supplier
 								pi.append(
 									"items",
 									{
@@ -170,14 +149,15 @@ def purchase_invoice():
 										'stock_uom': itm.stock_uom,
 										'rate': itm.rate,
 										'warehouse': milk.dcs_id,
-										'purchase_receipt':pr
+										'purchase_receipt':pr,
+										'pr_detail':itm.name
 									}
 								)
 					pi.save(ignore_permissions = True)
 					pi.submit()
 					if (pi.docstatus == 1):
 						milk.db_set('status','Billed')
-					p_inv.db_set('previous_sync_date',getdate(today()))
+			p_inv.db_set('previous_sync_date',getdate(today()))
 
 
 
@@ -193,74 +173,54 @@ def purchase_invoice():
 											where docstatus =1 and posting_date BETWEEN '{0}' and '{1}'
 											""".format(p_inv.previous_sync_date,getdate(today())), as_dict =True)
 					
-				print('purchase********************************************',purchase)
-				for i in purchase:
-					
-					
-					me = frappe.db.sql("""select milk_entry
-												from `tabPurchase Receipt` 
-												where docstatus= 1 and supplier = '{0}' and posting_date BETWEEN '{1}' and '{2}'
-												""".format(i.name,p_inv.previous_sync_date,getdate(today())), as_dict =True)
-					if me:
-						pi = frappe.new_doc("Purchase Invoice")
-						print('meeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',me)
-						for m in me:
-							milk = frappe.get_doc('Milk Entry',m.milk_entry)
-							print('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm',m.milk_entry)
-							ware = frappe.get_doc('Warehouse',{'name':milk.dcs_id})
-							print('ware^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',ware)
+			for i in purchase:
+				
+				me = frappe.db.sql("""select milk_entry , status , supplier
+											from `tabPurchase Receipt` 
+											where docstatus= 1 and supplier = '{0}' and posting_date BETWEEN '{1}' and '{2}' and per_billed<100
+											""".format(i.name,p_inv.previous_sync_date,getdate(today())), as_dict =True)
+				if me:
+					pi = frappe.new_doc("Purchase Invoice")
+					print('meeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',me)
+					for m in me:
+						milk = frappe.get_doc('Milk Entry',m.milk_entry)
+						ware = frappe.get_doc('Warehouse',{'name':milk.dcs_id})
 
-							# for wh in ware:
+						pr =  frappe.db.get_value('Purchase Receipt',{'milk_entry':milk.name,"docstatus":1},['name'])
+						if pr:
+							pri =  frappe.get_doc('Purchase Receipt',pr)
 
-								# entry = frappe.db.get_value('Milk Entry',{'name':m.milk_entry},['date'])
-								# print('entryYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY',entry)
-
-								# query =frappe.db.sql("""select dcs_id,member,milk_type,name,volume
-								# 							from `tabMilk Entry` 
-								# 							where docstatus =1  and name = '{0}'
-								# 							""".format(m.milk_entry), as_dict =True)
-
-								
-
-								# print('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',query)
-								# for k in query:
-								# 	# if query[0]:
-								# 		# print('query^^^^^^^^^^^^^^^^^^^^^^^^^',k.name)
-									# milk = frappe.get_doc('Milk Entry',m.milk_entry)
-									# print('query^^^^^^^^^^^^^^^^^^^^^^^^^',milk.name)
-
-							pr =  frappe.db.get_value('Purchase Receipt',{'milk_entry':milk.name,"docstatus":1},['name'])
-
-							# for j in pr:
-							if pr:
-								pri =  frappe.get_doc('Purchase Receipt',pr)
-								# pur_inv = frappe.db.get_value('Purchase Invoice Item',{'purchase_receipt':pr},["parent"])
-								# if not pur_inv:
-									
-								# pi = frappe.new_doc("Purchase Invoice")
-								for itm in pri.items:
-									pi.supplier = milk.member if  ware.is_third_party_dcs == 0 else ware.supplier
-									pi.name = milk.name
-									print('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjj',milk.name)
-									pi.append(
-										"items",
-										{
-											'item_code': itm.item_code,
-											'item_name': itm.item_name,
-											'description': itm.description,
-											'received_qty': milk.volume,
-											'qty': milk.volume,
-											'uom': itm.stock_uom,
-											'stock_uom': itm.stock_uom,
-											'rate': itm.rate,
-											'warehouse': milk.dcs_id,
-											'purchase_receipt':pr
-										}
-									)
-						pi.save(ignore_permissions = True)
-						pi.submit()
-						if (pi.docstatus == 1):
-							milk.db_set('status','Billed')
-						p_inv.db_set('previous_sync_date',getdate(today()))
-
+						# if pr:
+							# pur_inv = frappe.db.get_value('Purchase Invoice Item',{'purchase_receipt':pr},["parent"])
+							# print('pur_inv***************************************',pur_inv)
+							# inv = frappe.db.get_value('Purchase Invoice Item',{'purchase_receipt':pr},["pr_detail"])
+							# print('inv^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',inv)
+							# if not inv:
+							
+							# pi = frappe.new_doc("Purchase Invoice")
+							pi.supplier = milk.member
+							pi.milk_entry = milk.name
+							for itm in pri.items:
+								# pi.supplier = milk.member if  ware.is_third_party_dcs == 0 else ware.supplier
+								pi.append(
+									"items",
+									{
+										'item_code': itm.item_code,
+										'item_name': itm.item_name,
+										'description': itm.description,
+										'received_qty': milk.volume,
+										'qty': milk.volume,
+										'uom': itm.stock_uom,
+										'stock_uom': itm.stock_uom,
+										'rate': itm.rate,
+										'warehouse': milk.dcs_id,
+										'purchase_receipt':pr,
+										'pr_detail':itm.name
+									}
+								)
+					pi.save(ignore_permissions = True)
+					pi.submit()
+					if (pi.docstatus == 1):
+						milk.db_set('status','Billed')
+			p_inv.db_set('previous_sync_date',getdate(today()))
 

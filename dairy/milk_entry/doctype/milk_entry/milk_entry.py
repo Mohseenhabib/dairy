@@ -25,10 +25,11 @@ class MilkEntry(Document):
             frappe.throw(_("Milk Rate not found."))
 
         self.db_set('milk_rate', pricelist_name[0][0])
+
         
         milk_rate = frappe.db.get_value('Milk Rate',{'name':pricelist_name[0][0]},['name'])
 
-        if milk_rate:
+        if milk_rate:  
             milk = frappe.get_doc('Milk Rate',milk_rate)
             rate = frappe.db.sql(""" select rate from `tabMilk Rate Chart` where fat >= {0} and snf_clr >= {1} 
                     and parent = '{2}' order by fat,snf_clr asc limit 1 """.format(self.fat,self.snf,pricelist_name[0][0]))
@@ -61,6 +62,7 @@ class MilkEntry(Document):
                     if self.get("milk_type")=="Cow":
                         if self.fat < fat_min_cow_milk:
                             w = (self.volume * item* fat_min_cow_milk)
+                            print('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwww',w)
                             b = self.volume* item * self.fat
                             # if self.fat not in milk.milk_rate_chart:
                             for fd in milk.fat_deduction:
@@ -142,10 +144,13 @@ class MilkEntry(Document):
                                         # self.db_set('status','Submitted')
 
                 
-                if milk.enable_volume_incentive == 1: 
+                if milk.enable_volume_incentive == 1:
+                    ct = frappe.db.get_value('Supplier',{'name':self.member},['commission_type'])
+
                     if self.get("milk_type")=="Cow":
-                        for incentive in milk.incentive: 
-                            if self.volume >= int(incentive.from_volume) and self.volume <= int(incentive.to_volume):
+                        for incentive in milk.incentive:
+            
+                            if self.volume >= int(incentive.from_volume) and self.volume <= int(incentive.to_volume) and incentive.commission_type==ct:
                                 final_rate = final_rate + (incentive.incentive_per_volume * self.volume)
                                 ivolume =  incentive.incentive_per_volume * self.volume
                                 print('volume^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',ivolume)
@@ -158,7 +163,7 @@ class MilkEntry(Document):
 
                     if self.get("milk_type")=="Buffalo":
                         for incentive in milk.incentive: 
-                            if self.volume >= int(incentive.from_volume) and self.volume <= int(incentive.to_volume):
+                            if self.volume >= int(incentive.from_volume) and self.volume <= int(incentive.to_volume) and incentive.commission_type==ct:
                                 final_rate = final_rate + (incentive.incentive_per_volume * self.volume)
                                 ivolume =  incentive.incentive_per_volume * self.volume
                                 # final_rate = final_rate + ivolume
@@ -169,7 +174,7 @@ class MilkEntry(Document):
 
                     if self.get("milk_type")=="Mix":
                         for incentive in milk.incentive: 
-                            if self.volume >= int(incentive.from_volume) and self.volume <= int(incentive.to_volume):
+                            if self.volume >= int(incentive.from_volume) and self.volume <= int(incentive.to_volume) and incentive.commission_type==ct:
                                 final_rate = final_rate + (incentive.incentive_per_volume * self.volume)
                                 ivolume =  incentive.incentive_per_volume * self.volume
                                 # final_rate = final_rate + (incentive.incentive_per_volume*self.volume)
