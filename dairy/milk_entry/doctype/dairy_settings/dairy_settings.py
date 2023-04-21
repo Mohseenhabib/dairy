@@ -154,11 +154,11 @@ def purchase_invoice():
 											'pr_detail':itm.name
 										}
 									)
-						pi.save(ignore_permissions = True)
-						pi.submit()
-						if (pi.docstatus == 1):
-							milk.db_set('status','Billed')
-						frappe.db.commit()
+					pi.save(ignore_permissions = True)
+					pi.submit()
+					if (pi.docstatus == 1):
+						milk.db_set('status','Billed')
+					frappe.db.commit()
 			p_inv.db_set('previous_sync_date',getdate(today()))
 
 
