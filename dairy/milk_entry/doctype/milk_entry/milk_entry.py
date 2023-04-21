@@ -62,7 +62,7 @@ class MilkEntry(Document):
                             b = self.volume* item * self.fat
                             # if self.fat not in milk.milk_rate_chart:
                             for fd in milk.fat_deduction:
-                                if self.fat <= fd.from_fat and self.fat >= fd.to_fat:
+                                if self.fat >= fd.from_fat and self.fat <= fd.to_fat:
                                     deduction_rate = (w-b ) * fd.per_kg_deduction 
                                     final_rate = final_rate - deduction_rate
                                     self.db_set('unit_price', rate[0][0])
@@ -76,7 +76,7 @@ class MilkEntry(Document):
                                 b = self.volume* item * self.snf
                                 # if self.snf not in milk.milk_rate_chart:
                                 for sd in milk.snf_deduction:   
-                                    if self.snf <= sd.from_snf and self.snf >= sd.to_snf:
+                                    if self.snf >= sd.from_snf and self.snf <= sd.to_snf:
                                         deduction_rate = (w-b ) * sd.per_kg_deduction 
                                         final_rate = final_rate - deduction_rate
                                         self.db_set('unit_price', rate[0][0])
@@ -90,7 +90,7 @@ class MilkEntry(Document):
                             w = (self.volume * item* fat_min_buf_milk)
                             b = self.volume* item * self.fat
                             for fd in milk.fat_deduction:
-                                if self.fat <= fd.from_fat and self.fat >= fd.to_fat:
+                                if self.fat >= fd.from_fat and self.fat <= fd.to_fat:
                                     deduction_rate = (w-b ) * fd.per_kg_deduction 
                                     final_rate = final_rate - deduction_rate
                                     self.db_set('unit_price', rate[0][0])
@@ -103,7 +103,7 @@ class MilkEntry(Document):
                             w = (self.volume * item* snf_min_buf_milk)
                             b = self.volume* item * self.snf
                             for sd in milk.snf_deduction:   
-                                if self.snf <= sd.from_snf and self.snf >= sd.to_snf:
+                                if self.snf >= sd.from_snf and self.snf <= sd.to_snf:
                                     deduction_rate = (w-b ) * sd.per_kg_deduction 
                                     final_rate = final_rate - deduction_rate
                                     self.db_set('unit_price', rate[0][0])
@@ -118,7 +118,7 @@ class MilkEntry(Document):
                             w = (self.volume * item* fat_min_mix_milk)
                             b = self.volume* item * self.fat
                             for fd in milk.fat_deduction:
-                                if self.fat <= fd.from_fat and self.fat >= fd.to_fat:
+                                if self.fat >= fd.from_fat and self.fat <= fd.to_fat:
                                     deduction_rate = (w-b ) * fd.per_kg_deduction 
                                     final_rate = final_rate - deduction_rate
                                     self.db_set('unit_price', rate[0][0])
@@ -131,7 +131,7 @@ class MilkEntry(Document):
                                 w = (self.volume * item* snf_min_mix_milk)
                                 b = self.volume* item * self.snf
                                 for sd in milk.snf_deduction:   
-                                    if self.snf <= sd.from_snf and self.snf >= sd.to_snf:
+                                    if self.snf >= sd.from_snf and self.snf <= sd.to_snf:
                                         deduction_rate = (w-b ) * sd.per_kg_deduction 
                                         final_rate = final_rate - deduction_rate
                                         self.db_set('unit_price', rate[0][0])
@@ -143,7 +143,7 @@ class MilkEntry(Document):
                 if milk.enable_volume_incentive == 1: 
                     if self.get("milk_type")=="Cow":
                         for incentive in milk.incentive: 
-                            if self.volume <= int(incentive.from_volume) and self.volume >= int(incentive.to_volume):
+                            if self.volume >= int(incentive.from_volume) and self.volume <= int(incentive.to_volume):
                                 final_rate = final_rate + incentive.incentive_per_volume
                                 self.db_set('unit_price', rate[0][0])
                                 self.db_set('total',final_rate)
@@ -151,7 +151,7 @@ class MilkEntry(Document):
 
                     if self.get("milk_type")=="Buffalo":
                         for incentive in milk.incentive: 
-                            if self.volume <= int(incentive.from_volume) and self.volume >= int(incentive.to_volume):
+                            if self.volume >= int(incentive.from_volume) and self.volume <= int(incentive.to_volume):
                                 final_rate = final_rate + incentive.incentive_per_volume
                                 self.db_set('unit_price', rate[0][0])
                                 self.db_set('total',final_rate)
@@ -159,7 +159,7 @@ class MilkEntry(Document):
 
                     if self.get("milk_type")=="Mix":
                         for incentive in milk.incentive: 
-                            if self.volume <= int(incentive.from_volume) and self.volume >= int(incentive.to_volume):
+                            if self.volume >= int(incentive.from_volume) and self.volume <= int(incentive.to_volume):
                                 final_rate = final_rate + incentive.incentive_per_volume
                                 self.db_set('unit_price', rate[0][0])
                                 self.db_set('total',final_rate)
