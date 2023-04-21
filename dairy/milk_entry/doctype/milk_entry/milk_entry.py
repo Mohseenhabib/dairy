@@ -147,33 +147,35 @@ class MilkEntry(Document):
                         for incentive in milk.incentive: 
                             if self.volume >= int(incentive.from_volume) and self.volume <= int(incentive.to_volume):
                                 final_rate = final_rate + (incentive.incentive_per_volume * self.volume)
-                                volume =  incentive.incentive_per_volume * self.volume
-                                final_rate = final_rate + (incentive.incentive_per_volume*self.volume)
+                                ivolume =  incentive.incentive_per_volume * self.volume
+                                print('volume^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',ivolume)
+                                # final_rate = final_rate + ivolume
+                                self.db_set('incentive',ivolume)
                                 self.db_set('unit_price', rate[0][0])
                                 self.db_set('total',final_rate)
-                                self.db_set('incentive',volume)
+                                
                                 # self.db_set('status','Submitted')
 
                     if self.get("milk_type")=="Buffalo":
                         for incentive in milk.incentive: 
                             if self.volume >= int(incentive.from_volume) and self.volume <= int(incentive.to_volume):
                                 final_rate = final_rate + (incentive.incentive_per_volume * self.volume)
-                                volume =  incentive.incentive_per_volume * self.volume
-                                final_rate = final_rate + (incentive.incentive_per_volume*self.volume)
+                                ivolume =  incentive.incentive_per_volume * self.volume
+                                # final_rate = final_rate + ivolume
                                 self.db_set('unit_price', rate[0][0])
                                 self.db_set('total',final_rate)
-                                self.db_set('incentive',volume)
+                                self.db_set('incentive',ivolume)
                                 # self.db_set('status','Submitted')
 
                     if self.get("milk_type")=="Mix":
                         for incentive in milk.incentive: 
                             if self.volume >= int(incentive.from_volume) and self.volume <= int(incentive.to_volume):
                                 final_rate = final_rate + (incentive.incentive_per_volume * self.volume)
-                                volume =  incentive.incentive_per_volume * self.volume
-                                final_rate = final_rate + (incentive.incentive_per_volume*self.volume)
+                                ivolume =  incentive.incentive_per_volume * self.volume
+                                # final_rate = final_rate + (incentive.incentive_per_volume*self.volume)
                                 self.db_set('unit_price', rate[0][0])
                                 self.db_set('total',final_rate)
-                                self.db_set('incentive',volume)
+                                self.db_set('incentive',ivolume)
             else:                   
                 frappe.throw(_("No Rate Found For Provide Combination."))               
                                 
@@ -243,8 +245,8 @@ class MilkEntry(Document):
                     print('milk rate^^^^^^^^^^^^^^^^1111111111111111111',pricelist_name)
                     
                     
-                    self.db_set('unit_price', rate[0][0])
-                    self.db_set('total',(self.volume *self.unit_price))
+                    # self.db_set('unit_price', rate[0][0])
+                    # self.db_set('total',(self.volume *self.unit_price))
                     self.db_set('status','Submitted')
 
 
