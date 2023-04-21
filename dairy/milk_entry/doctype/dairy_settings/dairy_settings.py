@@ -112,7 +112,7 @@ def purchase_invoice():
 				
 				me = frappe.db.sql("""select milk_entry , status , supplier
 											from `tabPurchase Receipt` 
-											where docstatus= 1 and supplier = '{0}' and posting_date BETWEEN '{1}' and '{2}' and per_billed<100
+											where docstatus= 1 and supplier = '{0}' and posting_date BETWEEN '{1}' and '{2}' and per_billed<100 and milk_entry is not null
 											""".format(i.name,p_inv.previous_sync_date,getdate(today())), as_dict =True)
 				if me:
 					pi = frappe.new_doc("Purchase Invoice")
