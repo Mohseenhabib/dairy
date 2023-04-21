@@ -15,18 +15,8 @@ class DairySettings(Document):
 	# 	purchase_invoice()
 	pass
 
-
-
-
 def purchase_invoice():
-	from frappe.utils.background_jobs import enqueue
-	enqueue('dairy.milk_entry.doctype.dairy_settings.dairy_settings.make_purchase', timeout=30000, queue="long")
-
-	# make_purchase()
-
-
-
-def make_purchase():
+	
 	# tdate = str(date.today())
 	p_inv = frappe.get_doc('Dairy Settings')
 	if p_inv.default_payment_type == 'Daily':
