@@ -14,6 +14,12 @@ from frappe.utils.data import flt
 # from dairy.milk_entry.custom_purchase_receipt import change_milk_status
 
 class MilkEntry(Document):
+    def before_save(self):
+        self.get_pricelist()
+
+
+
+
     @frappe.whitelist()
     def get_pricelist(self):
         pricelist_name = frappe.db.sql("""
@@ -316,6 +322,7 @@ class MilkEntry(Document):
         })
         doc.insert(ignore_permissions=True)
         doc.submit()
+        self.db_set("status" ,"To Sample and Bill")
         return doc
 
 def _get_product(milk_type):
