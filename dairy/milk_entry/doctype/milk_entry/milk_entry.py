@@ -322,7 +322,7 @@ class MilkEntry(Document):
         })
         doc.insert(ignore_permissions=True)
         doc.submit()
-        self.db_set("status" ,"To Sample and Bill")
+        # self.db_set("status" ,"To Sample and Bill")
         return doc
 
 def _get_product(milk_type):
