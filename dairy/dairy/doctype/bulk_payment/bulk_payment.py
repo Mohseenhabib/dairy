@@ -33,7 +33,7 @@ class BulkPayment(Document):
 			bank=frappe.db.get_value("Bank Account",d.party_bank_account,"bank")
 
 			self.append("items",{
-				"bank_account_no":bank_account_no,
+				"bank_account_no":str(bank_account_no),
 				"paid_amount":d.paid_amount,
 				"party_name":d.party_name,
 				"posting_date":d.posting_date,
@@ -65,7 +65,7 @@ class BulkPayment(Document):
 			x =[]
 			x.append("N")
 			x.append("           ")
-			x.append(bank_account_no)
+			x.append(str(bank_account_no))
 			x.append(d.paid_amount)
 			x.append(d.party_name)
 			x.append("           ")
