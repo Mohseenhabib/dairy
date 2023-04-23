@@ -28,15 +28,17 @@ class BulkPayment(Document):
 		f =frappe.get_all('Payment Entry',filters,["*"])
 		self.items=[]
 		for d in f:
-			ifsc = frappe.get_value("Bank Account",{"bank_account_no":d.bank_account_no},["branch_code"])
+			bank_account_no= frappe.db.get_value("Bank Account",d.party_bank_account,"bank_account_no")
+			branch_code=frappe.db.get_value("Bank Account",d.party_bank_account,"branch_code")
+			bank=frappe.db.get_value("Bank Account",d.party_bank_account,"bank")
 
 			self.append("items",{
-				"bank_account_no":d.bank_account_no,
+				"bank_account_no":bank_account_no,
 				"paid_amount":d.paid_amount,
 				"party_name":d.party_name,
 				"posting_date":d.posting_date,
-				"ifsc":ifsc,
-				"bank":d.bank
+				"ifsc":branch_code,
+				"bank":bank
 			})
 	@frappe.whitelist()
 	def get_lines(self):
