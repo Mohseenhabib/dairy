@@ -30,14 +30,18 @@
   "clr_kg",
   "section_break_2naub",
   "fat_deduction",
+  "fat_deduction_per",
+  "incentive",
   "column_break_ei8hi",
   "snf_deduction",
-  "incentive",
+  "snf_deduction_per",
+  "incentive_per",
   "sb4",
   "milk_rate",
   "litre",
   "cb5",
   "unit_price",
+  "unit_price_with_incentive",
   "total",
   "lft",
   "rgt",
@@ -357,12 +361,36 @@
    "fieldtype": "Currency",
    "label": "Incentive",
    "read_only": 1
+  },
+  {
+   "fieldname": "fat_deduction_per",
+   "fieldtype": "Currency",
+   "label": "Fat Deduction Per Liter",
+   "read_only": 1
+  },
+  {
+   "fieldname": "snf_deduction_per",
+   "fieldtype": "Currency",
+   "label": "SNF Deduction Per Liter",
+   "read_only": 1
+  },
+  {
+   "fieldname": "incentive_per",
+   "fieldtype": "Currency",
+   "label": "Incentive Per Volume",
+   "read_only": 1
+  },
+  {
+   "fieldname": "unit_price_with_incentive",
+   "fieldtype": "Currency",
+   "label": "Rate",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2023-04-21 15:26:29.061392",
+ "modified": "2023-04-25 11:00:17.634210",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Milk Entry",

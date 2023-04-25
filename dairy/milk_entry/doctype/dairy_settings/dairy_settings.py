@@ -88,7 +88,13 @@ def purchase_invoice():
 									'stock_uom': itm.stock_uom,
 									'rate': itm.rate,
 									'warehouse': milk.dcs_id,
-									'purchase_receipt':pr
+									'purchase_receipt':pr,
+									'fat': itm.fat,
+									'snf': itm.clr,
+									'snf_clr': itm.snf,
+									'fat_per': itm.fat_per_ ,
+									'snf_clr_per':itm.clr_per ,
+									'snf_per':itm.snf_clr_per,
 								}
 							)
 			pi.save(ignore_permissions = True)

@@ -28,12 +28,26 @@ frappe.ui.form.on('Milk Rate', {
     validate: function(frm) {
         if(!frm.doc.milk_rate_chart) {
             frappe.throw(__('Cant Submit without Rate Chart.'));
-        }
+        };
+        // if(frm.doc.simplified_milk_rate == 1){
+        //     frm.set_df_property('milk_rate_chart', 'hidden', 0);
+        // }
     },
+    // refresh:function(frm){
+    //     if(frm.doc.simplified_milk_rate == 1){
+    //         frm.set_df_property(frm.doc.milk_rate_chart, 'hidden', 1);
+    //     }
+    //     else{
+    //         frm.set_df_property(frm.doc.milk_rate_chart, 'hidden', 0); 
+    //     }
+    // },
+
     before_submit : function (frm) {
-        for(let i in frm.doc.milk_rate_chart){
-            if (frm.doc.milk_rate_chart[i].rate <= 0){
-                frappe.throw(__('Rate must be greater then zero on row '+(parseInt(i,10)+1)));
+        if(frm.doc.simplified_milk_rate == 0){
+            for(let i in frm.doc.milk_rate_chart){
+                if (frm.doc.milk_rate_chart[i].rate <= 0){
+                    frappe.throw(__('Rate must be greater then zero on row '+(parseInt(i,10)+1)));
+                }
             }
         }
     },
