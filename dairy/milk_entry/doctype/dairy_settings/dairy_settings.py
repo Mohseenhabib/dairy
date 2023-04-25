@@ -157,7 +157,13 @@ def purchase_invoice():
 											'rate': itm.rate,
 											'warehouse': milk.dcs_id,
 											'purchase_receipt':pr,
-											'pr_detail':itm.name
+											'pr_detail':itm.name,
+											'fat': itm.fat,
+											'snf': itm.clr,
+											'snf_clr': itm.snf,
+											'fat_per': itm.fat_per_ ,
+											'snf_clr_per':itm.clr_per ,
+											'snf_per':itm.snf_clr_per,
 										}
 									)
 					pi.save(ignore_permissions = True)
@@ -223,7 +229,13 @@ def purchase_invoice():
 										'rate': itm.rate,
 										'warehouse': milk.dcs_id,
 										'purchase_receipt':pr,
-										'pr_detail':itm.name
+										'pr_detail':itm.name,
+										'fat': itm.fat,
+										'snf': itm.clr,
+										'snf_clr': itm.snf,
+										'fat_per': itm.fat_per_ ,
+										'snf_clr_per':itm.clr_per ,
+										'snf_per':itm.snf_clr_per,
 									}
 								)
 					pi.save(ignore_permissions = True)
