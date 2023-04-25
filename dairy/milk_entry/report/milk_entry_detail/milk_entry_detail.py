@@ -69,12 +69,21 @@ def get_columns(filters):
             "fieldtype": "Float",
             "width": 60
         },
+        {"label": _("FAT(in kg)"), "fieldname": "fat_kg", "fieldtype": "Float", "width": 60},
         {
             "label": _("CLR"),
             "fieldname": "clr",
             "fieldtype": "Float",
             "width": 60
         },
+        {"label": _("CLR(in kg)"), "fieldname": "clr_kg", "fieldtype": "Float", "width": 60},
+        {
+            "label": _("SNF"),
+            "fieldname": "snf",
+            "fieldtype": "Float",
+            "width": 60
+        },
+        {"label": _("SNF(in kg)"), "fieldname": "snf_kg", "fieldtype": "Float", "width": 60},
         {
             "label": _("Milk Rate"),
             "options":"Milk Rate",
@@ -126,7 +135,11 @@ def get_columns(filters):
             "fieldname": "purchase_receipt",
             "fieldtype": "Link",
             "width": 100
-        }
+        },
+        {"label": _("Incentive"), "fieldname": "incentive", "fieldtype": "Currency", "width": 100},
+		{"label": _("Fat Deduction"), "fieldname": "fat_deduction", "fieldtype": "Currency", "width": 100},
+		{"label": _("SNF Deduction"), "fieldname": "snf_deduction", "fieldtype": "Currency", "width": 100},
+
     ]
     return columns
 
@@ -134,8 +147,8 @@ def get_data(filters):
     # print("======")
     conditions = get_conditions(filters)
 
-    query = """ select tm.name,tm.member,tm.dcs_id,tm.date,tm.time,tm.shift,tm.milk_type,tm.volume,tm.fat,tm.clr,tm.milk_rate,tm.unit_price,tm.total, 
-                tm.owner,tm.creation,tm.sample,tm.status,tp.name,tm.company from  `tabMilk Entry` tm inner join `tabPurchase Receipt` tp where tp.milk_entry = tm.name """
+    query = """ select tm.name,tm.member,tm.dcs_id,tm.date,tm.time,tm.shift,tm.milk_type,tm.volume,tm.fat,tm.fat_kg,tm.clr,tm.clr_kg,tm.snf,tm.snf_kg,tm.milk_rate,tm.unit_price,tm.total, 
+                tm.owner,tm.creation,tm.sample,tm.status,tp.name,tm.company,tm.incentive,tm.fat_deduction,tm.snf_deduction from  `tabMilk Entry` tm inner join `tabPurchase Receipt` tp where tp.milk_entry = tm.name """
 
     # print("====query",query+conditions)
     q_data = frappe.db.sql(query+conditions)
@@ -151,15 +164,22 @@ def get_data(filters):
             "milk_type": q[6],
             "volume": q[7],
             "fat": q[8],
-            "clr": q[9],
-            "milk_rate":q[10],
-            "unit_price":q[11],
-            "total": q[12],
-            "owner":q[13],
-            "creation":q[14],
-            "sample": q[15],
-            "status": q[16],
-            "purchase_receipt":q[17]
+            "fat_kg":q[9],
+            "clr": q[10],
+            "clr_kg":q[11],
+            "snf":q[12],
+            "snf_kg":q[13],
+            "milk_rate":q[14],
+            "unit_price":q[15],
+            "total": q[16],
+            "owner":q[17],
+            "creation":q[18],
+            "sample": q[19],
+            "status": q[20],
+            "purchase_receipt":q[21],
+            "incentive":q[23],
+            "fat_deduction":q[24],
+            "snf_deduction":q[25]
         }
         data.append(row)
 

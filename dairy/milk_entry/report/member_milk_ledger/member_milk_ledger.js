@@ -32,11 +32,24 @@ frappe.query_reports["Member Milk Ledger"] = {
 			"fieldname":"member",
 			"label": __("Member"),
 			"fieldtype": "Link",
-			"reqd": 1,
+			// "reqd": 1,
 			// "default": frappe.datetime.get_today(),
 			"options":"Supplier",
 		},
-		
+		// {
+		// 	"fieldname":"group_by",
+		// 	"label": __("Group By"),
+		// 	"fieldtype": "Select",
+		// 	"options": [" ","DCS","Member","Shift","Date"]
+		// },
+		{
+			"fieldname":"dcs",
+			"label": __("DCS"),
+			"fieldtype": "Link",
+			// "reqd": 1,
+			// "default": frappe.datetime.get_today(),
+			"options":"Warehouse",
+		},
 
 	]
 };
