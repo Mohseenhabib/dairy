@@ -243,7 +243,7 @@ scheduler_events = {
 	# "daily": [
 	# 	"dairy.milk_entry.doctype.milk_entry.milk_entry.sub"
 	# ],
-	"hourly": [
+	"daily_long": [
 		"dairy.milk_entry.doctype.dairy_settings.dairy_settings.purchase_invoice",
 	],
 # # 	"weekly": [
