@@ -532,7 +532,7 @@ class MilkEntry(Document):
             'qty': self.volume,
             'uom': item_code.stock_uom,
             'stock_uom': item_code.stock_uom,
-            'rate': self.unit_price,
+            'rate': self.unit_price_with_incentive,
             'warehouse': self.dcs_id,
             'fat': self.fat_kg,
             'clr': self.snf_kg,
