@@ -214,7 +214,7 @@ class MilkEntry(Document):
                     if  milk.enable_deduction == 0 and milk.enable_volume_incentive == 0:
                         self.db_set('unit_price', new_rate)
                         self.db_set('total',new_rate * self.volume)
-                    
+                        self.db_set('unit_price_with_incentive',new_rate)
                 else:                   
                         frappe.throw(_("No Rate Found For Provide Combination."))               
             
@@ -407,6 +407,7 @@ class MilkEntry(Document):
                     if  milk.enable_deduction == 0 and milk.enable_volume_incentive == 0:
                         self.db_set('unit_price', rate[0][0])
                         self.db_set('total',rate[0][0] * self.volume)
+                        self.db_set('unit_price_with_incentive',rate[0][0])
                     
                 else:                   
                     frappe.throw(_("No Rate Found For Provide Combination."))               

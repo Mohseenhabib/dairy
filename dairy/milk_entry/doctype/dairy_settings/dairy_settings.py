@@ -75,7 +75,7 @@ def purchase_invoice():
 						# pi = frappe.new_doc("Purchase Invoice")
 						for itm in pri.items:
 							pi.supplier = milk.member if  ware.is_third_party_dcs == 0 else ware.supplier
-							pi.name = milk.name
+							pi.milk_entry = milk.name
 							pi.append(
 								"items",
 								{
@@ -140,8 +140,8 @@ def purchase_invoice():
 								# if not inv:
 								
 								# pi = frappe.new_doc("Purchase Invoice")
-								pi.supplier = milk.member
-								pi.milk_entry = milk.name
+								pi.supplier = milk.member if  ware.is_third_party_dcs == 0 else ware.supplier
+								# pi.milk_entry = milk.name
 								for itm in pri.items:
 									# pi.supplier = milk.member if  ware.is_third_party_dcs == 0 else ware.supplier
 									pi.append(
@@ -213,7 +213,7 @@ def purchase_invoice():
 							
 							# pi = frappe.new_doc("Purchase Invoice")
 							pi.supplier = milk.member
-							pi.milk_entry = milk.name
+							# pi.milk_entry = milk.name
 							for itm in pri.items:
 								# pi.supplier = milk.member if  ware.is_third_party_dcs == 0 else ware.supplier
 								pi.append(
