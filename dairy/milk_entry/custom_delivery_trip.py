@@ -191,7 +191,8 @@ def get_purchase(pr):
 		pr_item=frappe.get_doc("Purchase Receipt",j.purchase_receipt)
 		k.update({"ltr":j.qty,"fat":j.fat_per,"snf":j.snf_per,"rate":j.rate,"amount":j.amount,"posting_date":format_date(pr_item.posting_date),"shift":pr_item.shift})
 		dlst.append(k)
-	sorted_data = sorted(dlst, key=lambda x: (x['posting_date'], x['shift']))
+	sorted_data = sorted(dlst, key=lambda x: (x["posting_date"], x["shift"].lower() != "morning"))
+
 	return sorted_data
 
 
