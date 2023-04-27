@@ -87,18 +87,19 @@ class MilkEntry(Document):
 
 
                             if self.snf < snf_min_cow_milk:
-                                    w = (self.volume * item* snf_min_cow_milk)
-                                    b = self.volume* item * self.snf
-                                    # if self.snf not in milk.milk_rate_chart:
-                                    for sd in milk.snf_deduction:   
-                                        if self.snf >= sd.from_snf and self.snf <= sd.to_snf:
-                                            deduction_rate = (w-b ) * sd.per_kg_deduction 
-                                            final_rate = final_rate - deduction_rate
-                                            self.db_set('unit_price', new_rate)
-                                            self.db_set('snf_deduction',deduction_rate)
-                                            self.db_set('total',final_rate)
-                                            self.db_set('snf_deduction_per',sd.per_kg_deduction)
-                                            self.db_set('unit_price_with_incentive',flt(new_rate) - flt(sd.per_kg_deduction ))
+                                w = (self.volume * item* snf_min_cow_milk)
+                                b = self.volume* item * self.snf
+                                # if self.snf not in milk.milk_rate_chart:
+                                for sd in milk.snf_deduction:   
+                                    if self.snf >= sd.from_snf and self.snf <= sd.to_snf:
+                                        deduction_rate = (w-b ) * sd.per_kg_deduction 
+                                        final_rate = final_rate - deduction_rate
+                                        self.db_set('unit_price', new_rate)
+                                        self.db_set('snf_deduction',deduction_rate)
+                                        self.db_set('total',final_rate)
+                                        self.db_set('snf_deduction_per',sd.per_kg_deduction)
+                                        self.db_set('unit_price_with_incentive',flt(new_rate) - flt(sd.per_kg_deduction ))
+                                        print('snf---------------------((((((((((((((((((((((((((')
                                             # self.db_set('status','Submitted')
                         
                         # self.db_set('unit_price_with_deduction',deduction_rate)
