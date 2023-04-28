@@ -33,15 +33,15 @@ frappe.query_reports["Member Milk Ledger"] = {
 			"label": __("Member"),
 			"fieldtype": "Link",
 			// "reqd": 1,
-			// "default": frappe.datetime.get_today(),
+			// "depands_on": 'group_by'== 'member',
 			"options":"Supplier",
 		},
-		// {
-		// 	"fieldname":"group_by",
-		// 	"label": __("Group By"),
-		// 	"fieldtype": "Select",
-		// 	"options": [" ","DCS","Member","Shift","Date"]
-		// },
+		{
+			"fieldname":"group_by",
+			"label": __("Group By"),
+			"fieldtype": "Select",
+			"options": [" ","DCS","Member","Shift","Date"]
+		},
 		{
 			"fieldname":"dcs",
 			"label": __("DCS"),
@@ -50,6 +50,22 @@ frappe.query_reports["Member Milk Ledger"] = {
 			// "default": frappe.datetime.get_today(),
 			"options":"Warehouse",
 		},
+		{
+			"fieldname":"shift",
+			"label": __("Shift"),
+			"fieldtype": "Select",
+			// "reqd": 1,
+			// "default": frappe.datetime.get_today(),
+			"options":[" ","Morning","Evening"],
+		},
+		// {
+		// 	"fieldname":"date",
+		// 	"label": __("Date"),
+		// 	"fieldtype": "Date",
+		// 	// "reqd": 1,
+		// 	// "default": frappe.datetime.get_today(),
+		// 	// "options":[" ","Morning","Evening"],
+		// },
 
 	]
 };

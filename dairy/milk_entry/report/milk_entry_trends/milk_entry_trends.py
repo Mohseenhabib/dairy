@@ -256,7 +256,7 @@ def group_wise_column(group_by):
 		if group_by=="dcs":
 			return [group_by + ":Link/Warehouse:120"]
 		elif group_by=="member":
-			return [group_by + ":Link/Member:120"]
+			return [group_by + ":Link/Supplier:120"]
 		elif group_by=="shift":
 			return [group_by + ":Data:80"]
 	else:

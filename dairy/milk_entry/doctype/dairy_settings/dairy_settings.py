@@ -95,6 +95,7 @@ def purchase_invoice():
 									'fat_per': itm.fat_per_ ,
 									'snf_clr_per':itm.clr_per ,
 									'snf_per':itm.snf_clr_per,
+									'milk_entry':milk.name
 								}
 							)
 			pi.save(ignore_permissions = True)
@@ -164,6 +165,7 @@ def purchase_invoice():
 											'fat_per': itm.fat_per_ ,
 											'snf_clr_per':itm.clr_per ,
 											'snf_per':itm.snf_clr_per,
+											'milk_entry':milk.name
 										}
 									)
 					pi.save(ignore_permissions = True)
@@ -236,6 +238,7 @@ def purchase_invoice():
 										'fat_per': itm.fat_per_ ,
 										'snf_clr_per':itm.clr_per ,
 										'snf_per':itm.snf_clr_per,
+										'milk_entry':milk.name
 									}
 								)
 					pi.save(ignore_permissions = True)
