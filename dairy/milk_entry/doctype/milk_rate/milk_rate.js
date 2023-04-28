@@ -26,7 +26,7 @@ frappe.ui.form.on('Milk Rate', {
         }
     },
     validate: function(frm) {
-        if(!frm.doc.milk_rate_chart && frm.doc.simplified_milk_rate) {
+        if(!frm.doc.milk_rate_chart && !frm.doc.simplified_milk_rate) {
             frappe.throw(__('Cant Submit without Rate Chart.'));
         };
         // if(frm.doc.simplified_milk_rate == 1){
