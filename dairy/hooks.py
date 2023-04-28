@@ -57,6 +57,8 @@ fixtures = fixtures = [
             "Work Order-rm_snf_in_kg",
             "Work Order-diff_fat_in_kg",
             "Work Order-diff_snf_in_kg",
+            "Work Order-fat_snf_section",
+            "Work Order-column_break_qmtum",
             "Sales Order-party_balance",
             "Sales Order-update_party_balance",
             "Sales Invoice-party_balance",
