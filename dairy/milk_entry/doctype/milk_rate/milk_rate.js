@@ -14,19 +14,21 @@ frappe.ui.form.on('Milk Rate', {
            
     },
 	milk_type: function(frm) {
+        if(!frm.doc.simplified_milk_rate){
 	    return frm.call('get_snf_lines').then(() => {
             frm.refresh_field('milk_rate_chart');
         });
+    }
 	},
 	onload(frm) {
-        if(frm.doc.__islocal) {
+        if(frm.doc.__islocal && !frm.doc.simplified_milk_rate) {
             return frm.call('get_snf_lines').then(() => {
                 frm.refresh_field('milk_rate_chart');
             });
         }
     },
     validate: function(frm) {
-        if(!frm.doc.milk_rate_chart) {
+        if(!frm.doc.milk_rate_chart && !frm.doc.simplified_milk_rate) {
             frappe.throw(__('Cant Submit without Rate Chart.'));
         };
         // if(frm.doc.simplified_milk_rate == 1){

@@ -44,6 +44,7 @@ class MilkEntry(Document):
                 new_rate = (flt(milk.fat_rate_in_kg) * flt(self.fat)+flt(milk.snf_rate_in_kg) * flt(self.snf))/100 - flt(self.snf_deduction_per)- flt(self.fat_deduction_per)
                 print('new rate^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',new_rate)
                 if new_rate:
+                    self.db_set('unit_price', new_rate)
                     final_rate = self.volume * new_rate
                     if milk.enable_deduction == 1:
                         doc=frappe.get_doc("Dairy Settings")
@@ -67,18 +68,19 @@ class MilkEntry(Document):
                         
                     
                         # for mrc in milk.milk_rate_chart:
-                            
+                        
                         if self.get("milk_type")=="Cow":
                             w = ((self.volume * item) * self.fat) 
                             for fd in milk.fat_deduction:
                                 if self.fat >= fd.from_fat and self.fat <= fd.to_fat:
                                     deduction_rate = (w) * fd.per_kg_deduction 
                                     final_rate = final_rate - deduction_rate
-                                    self.db_set('unit_price', new_rate)
+                                    # self.db_set('unit_price', new_rate)
                                     self.db_set('fat_deduction',deduction_rate)
                                     self.db_set('total',final_rate)
                                     self.db_set('fat_deduction_per',fd.per_kg_deduction)
-                                    self.db_set('unit_price_with_incentive',flt(new_rate) - flt(fd.per_kg_deduction) )
+                                    new_rate=flt(new_rate) - flt(fd.per_kg_deduction)
+                                    self.db_set('unit_price_with_incentive',flt(new_rate))
                                     # self.db_set('status','Submitted')
 
 
@@ -88,11 +90,12 @@ class MilkEntry(Document):
                                 if self.snf >= sd.from_snf and self.snf <= sd.to_snf:
                                     deduction_rate = (w) * sd.per_kg_deduction 
                                     final_rate = final_rate - deduction_rate
-                                    self.db_set('unit_price', new_rate)
+                                    # self.db_set('unit_price', new_rate)
                                     self.db_set('snf_deduction',deduction_rate)
                                     self.db_set('total',final_rate)
+                                    new_rate=flt(new_rate) - flt(sd.per_kg_deduction)
                                     self.db_set('snf_deduction_per',sd.per_kg_deduction)
-                                    self.db_set('unit_price_with_incentive',flt(new_rate) - flt(sd.per_kg_deduction ))
+                                    self.db_set('unit_price_with_incentive',flt(new_rate))
                                     print('snf---------------------((((((((((((((((((((((((((')
                                         # self.db_set('status','Submitted')
                     
@@ -103,11 +106,12 @@ class MilkEntry(Document):
                                 if self.fat >= fd.from_fat and self.fat <= fd.to_fat:
                                     deduction_rate = (w) * fd.per_kg_deduction 
                                     final_rate = final_rate - deduction_rate
-                                    self.db_set('unit_price', new_rate)
+                                    # self.db_set('unit_price', new_rate)
                                     self.db_set('fat_deduction',deduction_rate)
                                     self.db_set('total',final_rate)
+                                    new_rate=flt(new_rate) - flt(fd.per_kg_deduction)
                                     self.db_set('fat_deduction_per',fd.per_kg_deduction)
-                                    self.db_set('unit_price_with_incentive',flt(new_rate) - flt(fd.per_kg_deduction ))
+                                    self.db_set('unit_price_with_incentive',flt(new_rate))
                                     # self.db_set('status','Submitted')
 
 
@@ -116,11 +120,12 @@ class MilkEntry(Document):
                                 if self.snf >= sd.from_snf and self.snf <= sd.to_snf:
                                     deduction_rate = (w) * sd.per_kg_deduction 
                                     final_rate = final_rate - deduction_rate
-                                    self.db_set('unit_price', new_rate)
+                                    # self.db_set('unit_price', new_rate)
                                     self.db_set('snf_deduction',deduction_rate)
                                     self.db_set('total',final_rate)
+                                    new_rate=flt(new_rate) - flt(sd.per_kg_deduction)
                                     self.db_set('snf_deduction_per',sd.per_kg_deduction)
-                                    self.db_set('unit_price_with_incentive',flt(new_rate) - flt(sd.per_kg_deduction) )
+                                    self.db_set('unit_price_with_incentive',flt(new_rate))
                                     # self.db_set('status','Submitted')
                     
                         
@@ -130,11 +135,12 @@ class MilkEntry(Document):
                                 if self.fat >= fd.from_fat and self.fat <= fd.to_fat:
                                     deduction_rate = (w) * fd.per_kg_deduction 
                                     final_rate = final_rate - deduction_rate
-                                    self.db_set('unit_price', new_rate)
+                                    # self.db_set('unit_price', new_rate)
                                     self.db_set('fat_deduction',deduction_rate)
                                     self.db_set('total',final_rate)
+                                    new_rate=flt(new_rate) - flt(fd.per_kg_deduction)
                                     self.db_set('fat_deduction_per',fd.per_kg_deduction)
-                                    self.db_set('unit_price_with_incentive',flt(new_rate) - flt(fd.per_kg_deduction) )
+                                    self.db_set('unit_price_with_incentive',flt(new_rate))
                                     # self.db_set('status','Submitted')
 
 
@@ -143,11 +149,12 @@ class MilkEntry(Document):
                                 if self.snf >= sd.from_snf and self.snf <= sd.to_snf:
                                     deduction_rate = (w) * sd.per_kg_deduction 
                                     final_rate = final_rate - deduction_rate
-                                    self.db_set('unit_price', new_rate)
+                                    # self.db_set('unit_price', new_rate)
                                     self.db_set('snf_deduction',deduction_rate)
                                     self.db_set('total',final_rate)
+                                    new_rate=flt(new_rate) - flt(sd.per_kg_deduction)
                                     self.db_set('snf_deduction_per',sd.per_kg_deduction)
-                                    self.db_set('unit_price_with_incentive',flt(new_rate) - flt(sd.per_kg_deduction ))
+                                    self.db_set('unit_price_with_incentive',flt(new_rate))
                                     # self.db_set('status','Submitted')
                 # self.db_set('unit_price_with_deduction',deduction_rate)
                     
@@ -162,10 +169,11 @@ class MilkEntry(Document):
                                     print('volume^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',ivolume)
                                     # final_rate = final_rate + ivolume
                                     self.db_set('incentive',ivolume)
-                                    self.db_set('unit_price', new_rate)
+                                    # self.db_set('unit_price', new_rate)
                                     self.db_set('total',final_rate)
                                     self.db_set('incentive_per',incentive.incentive_per_volume)
-                                    self.db_set('unit_price_with_incentive',flt(new_rate) + flt(incentive.incentive_per_volume))
+                                    new_rate=flt(new_rate) + flt(incentive.incentive_per_volume)
+                                    self.db_set('unit_price_with_incentive',flt(new_rate))
                                     
                                     # self.db_set('status','Submitted')
 
@@ -179,7 +187,8 @@ class MilkEntry(Document):
                                     self.db_set('total',final_rate)
                                     self.db_set('incentive',ivolume)
                                     self.db_set('incentive_per',incentive.incentive_per_volume)
-                                    self.db_set('unit_price_with_incentive',flt(new_rate) + flt(incentive.incentive_per_volume))
+                                    new_rate=flt(new_rate) + flt(incentive.incentive_per_volume)
+                                    self.db_set('unit_price_with_incentive',flt(new_rate))
                                     # self.db_set('status','Submitted')
 
                         if self.get("milk_type")=="Mix":
@@ -192,7 +201,8 @@ class MilkEntry(Document):
                                     self.db_set('total',final_rate)
                                     self.db_set('incentive',ivolume)
                                     self.db_set('incentive_per',incentive.incentive_per_volume)
-                                    self.db_set('unit_price_with_incentive',flt(new_rate) + flt(incentive.incentive_per_volume))
+                                    new_rate=flt(new_rate) + flt(incentive.incentive_per_volume)
+                                    self.db_set('unit_price_with_incentive',flt(new_rate))
 
 
                     if  milk.enable_deduction == 0 and milk.enable_volume_incentive == 0:
@@ -532,7 +542,7 @@ class MilkEntry(Document):
             'qty': self.volume,
             'uom': item_code.stock_uom,
             'stock_uom': item_code.stock_uom,
-            'rate': self.unit_price,
+            'rate': self.unit_price_with_incentive,
             'warehouse': self.dcs_id,
             'fat': self.fat_kg,
             'clr': self.snf_kg,

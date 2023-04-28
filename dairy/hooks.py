@@ -283,7 +283,7 @@ override_doctype_dashboards = {
 jinja = {
 	"methods": [
         "dairy.milk_entry.custom_delivery_trip.warehouse_address",
-
+        "dairy.milk_entry.custom_delivery_trip.get_purchase",
 		"dairy.milk_entry.custom_delivery_trip.get_jinja_data",
         "dairy.milk_entry.custom_delivery_trip.get_jinja_data_del_note",
         "dairy.milk_entry.custom_delivery_trip.get_jinja_data_si",

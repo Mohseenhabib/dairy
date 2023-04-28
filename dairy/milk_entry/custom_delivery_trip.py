@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe import _
+from frappe.utils.data import format_date, getdate
 
 @frappe.whitelist()
 def get_jinja_data(doc):
@@ -179,5 +180,20 @@ def warehouse_address(warehouse):
 		lst.append(cont)
 		print("**********************************",lst)
 		return lst
+
+
+@frappe.whitelist()
+def get_purchase(pr):
+	doc=frappe.get_doc("Purchase Invoice",pr)
+	dlst=[]
+	for j in doc.items:
+		h={}
+		pr_item=frappe.get_doc("Purchase Receipt",j.purchase_receipt)
+		for k in pr_item.items: 
+			h.update({"ltr":k.qty,"fat":k.fat_per_,"snf":k.snf_clr_per,"rate":k.rate,"amount":k.amount,"posting_date":format_date(pr_item.posting_date),"shift":pr_item.shift})
+		dlst.append(h)
+	sorted_data = sorted(dlst, key=lambda x: (x["posting_date"], x["shift"].lower() != "morning"))
+
+	return sorted_data
 
 
