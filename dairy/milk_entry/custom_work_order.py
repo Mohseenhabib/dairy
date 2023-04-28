@@ -409,16 +409,18 @@ class CustomWorkOrder(WorkOrder):
 
         # self.set_required_items(reset_only_qty=len(self.get("required_items")))
         ds=frappe.get_doc("Dairy Settings")
-        if abs(self.diff_fat_in_kg)>ds.threshold_for_fat_separation:
-            item=frappe.get_doc("Item",self.production_item)
-            if item.weight_per_unit>0:
-                self.sepration_fat=(abs(self.diff_fat_in_kg)*100)/(4*item.weight_per_unit)
-            else:
-                frappe.throw("Production Item Weight Should More Than 0")
+        if self.required_fat>0:
+            if abs(self.diff_fat_in_kg)>ds.threshold_for_fat_separation:
+                item=frappe.get_doc("Item",self.production_item)
+                if item.weight_per_unit>0:
+                    self.sepration_fat=(abs(self.diff_fat_in_kg)*100)/(4*item.weight_per_unit)
+                else:
+                    frappe.throw("Production Item Weight Should More Than 0")
         if self.source_warehouse:
-            for i in self.required_items:
-                i.source_warehouse=self.source_warehouse
-                
+            if self.required_fat>0:
+                for i in self.required_items:
+                    i.source_warehouse=self.source_warehouse
+
     def prepare_data_for_job_card(self, row, index, plan_days, enable_capacity_planning):
         self.set_operation_start_end_time(index, row)
 
