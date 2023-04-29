@@ -75,7 +75,7 @@ class MilkEntry(Document):
                             w = ((self.volume * item) * self.fat) 
                             for fd in milk.fat_deduction:
                                 if self.fat >= fd.from_fat and self.fat <= fd.to_fat:
-                                    deduction_rate = (w) * fd.per_kg_deduction 
+                                    deduction_rate = (self.volume) * fd.per_kg_deduction 
                                     final_rate = final_rate - deduction_rate
                                     # self.db_set('unit_price', new_rate)
                                     self.db_set('fat_deduction',deduction_rate)
@@ -87,10 +87,10 @@ class MilkEntry(Document):
 
 
                            
-                            w = ((self.volume * item) * self.snf)
+                            # w = ((self.volume * item) * self.snf)
                             for sd in milk.snf_deduction:   
                                 if self.snf >= sd.from_snf and self.snf <= sd.to_snf:
-                                    deduction_rate = (w) * sd.per_kg_deduction 
+                                    deduction_rate = (self.volume) * sd.per_kg_deduction 
                                     final_rate = final_rate - deduction_rate
                                     # self.db_set('unit_price', new_rate)
                                     self.db_set('snf_deduction',deduction_rate)
@@ -106,7 +106,7 @@ class MilkEntry(Document):
                             w = ((self.volume * item) * self.fat)
                             for fd in milk.fat_deduction:
                                 if self.fat >= fd.from_fat and self.fat <= fd.to_fat:
-                                    deduction_rate = (w) * fd.per_kg_deduction 
+                                    deduction_rate = (self.volume) * fd.per_kg_deduction 
                                     final_rate = final_rate - deduction_rate
                                     # self.db_set('unit_price', new_rate)
                                     self.db_set('fat_deduction',deduction_rate)
@@ -120,7 +120,7 @@ class MilkEntry(Document):
                             w = ((self.volume * item) * self.snf)
                             for sd in milk.snf_deduction:   
                                 if self.snf >= sd.from_snf and self.snf <= sd.to_snf:
-                                    deduction_rate = (w) * sd.per_kg_deduction 
+                                    deduction_rate = (self.volume) * sd.per_kg_deduction 
                                     final_rate = final_rate - deduction_rate
                                     # self.db_set('unit_price', new_rate)
                                     self.db_set('snf_deduction',deduction_rate)
@@ -135,7 +135,7 @@ class MilkEntry(Document):
                             w = ((self.volume * item) * self.fat)
                             for fd in milk.fat_deduction:
                                 if self.fat >= fd.from_fat and self.fat <= fd.to_fat:
-                                    deduction_rate = (w) * fd.per_kg_deduction 
+                                    deduction_rate = (self.volume) * fd.per_kg_deduction 
                                     final_rate = final_rate - deduction_rate
                                     # self.db_set('unit_price', new_rate)
                                     self.db_set('fat_deduction',deduction_rate)
@@ -149,7 +149,7 @@ class MilkEntry(Document):
                             w = ((self.volume * item) * self.snf)
                             for sd in milk.snf_deduction:   
                                 if self.snf >= sd.from_snf and self.snf <= sd.to_snf:
-                                    deduction_rate = (w) * sd.per_kg_deduction 
+                                    deduction_rate = (self.volume) * sd.per_kg_deduction 
                                     final_rate = final_rate - deduction_rate
                                     # self.db_set('unit_price', new_rate)
                                     self.db_set('snf_deduction',deduction_rate)
