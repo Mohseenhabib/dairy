@@ -16,15 +16,14 @@ class BulkPayment(Document):
 	@frappe.whitelist()
 	def get_data(self):
 		filters={}
-		if self.from_date:
-			filters.update({"posting_date":[">=",self.from_date]})
-		if self.to_date:
-			filters.update({"posting_date":["<=",self.to_date]})
+		if self.from_date and self.to_date:
+			filters.update({"posting_date":["between",[self.from_date,self.to_date]]})
 		if self.mode_of_payment:
 			filters.update({"mode_of_payment":self.mode_of_payment})
 		if self.party_type:
 			filters.update({"party_type":self.party_type})
 		filters.update({"docstatus":0})
+
 		f =frappe.get_all('Payment Entry',filters,["*"])
 		self.items=[]
 		for d in f:
