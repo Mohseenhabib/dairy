@@ -47,6 +47,7 @@ class MilkEntry(Document):
                     self.db_set('unit_price', new_rate)
                     self.db_set('unit_price_with_incentive',flt(new_rate))
                     final_rate = self.volume * new_rate
+                    self.db_set('total',final_rate)
                     if milk.enable_deduction == 1:
                         doc=frappe.get_doc("Dairy Settings")
                         item=0.0
@@ -226,6 +227,7 @@ class MilkEntry(Document):
                     pr=rate[0][0]
                     final_rate = self.volume *rate[0][0]
                     self.db_set('unit_price_with_incentive',rate[0][0])
+                    self.db_set('total',final_rate)
 
                     if milk.enable_deduction == 1:
                         doc=frappe.get_doc("Dairy Settings")
