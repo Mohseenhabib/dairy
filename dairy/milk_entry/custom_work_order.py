@@ -413,7 +413,7 @@ class CustomWorkOrder(WorkOrder):
             if abs(self.diff_fat_in_kg)>ds.threshold_for_fat_separation:
                 item=frappe.get_doc("Item",self.production_item)
                 if item.weight_per_unit>0:
-                    self.sepration_fat=(abs(self.diff_fat_in_kg)*100)/(4*item.weight_per_unit)
+                    self.sepration_fat=(abs(self.diff_fat_in_kg)*100)/(self.required_fat*item.weight_per_unit)
                 else:
                     frappe.throw("Production Item Weight Should More Than 0")
         if self.source_warehouse:
