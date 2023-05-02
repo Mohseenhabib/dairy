@@ -2,14 +2,17 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
+import datetime
 import frappe
 from frappe import _
+from datetime import datetime
 
 
 def execute(filters=None):
     columns = get_columns(filters)
     data = get_data(filters)
-    return columns, data
+    chart = get_chart_data(filters, columns)
+    return columns, data , None, chart
 
 def get_columns(filters):
     columns = [
@@ -144,7 +147,7 @@ def get_columns(filters):
     return columns
 
 def get_data(filters):
-    # print("======")
+    
     conditions = get_conditions(filters)
 
     query = """ select tm.name,tm.member,tm.dcs_id,tm.date,tm.time,tm.shift,tm.milk_type,tm.volume,tm.fat,tm.fat_kg,tm.clr,tm.clr_kg,tm.snf,tm.snf_kg,tm.milk_rate,tm.unit_price,tm.total, 
@@ -204,3 +207,31 @@ def get_conditions(filters):
             query += """ and  milk_type = '%s' """%filters.milk_type
 
     return query
+
+
+def get_chart_data(filters, columns):
+    print('charttttttttttttttttttttttttttt')
+    a =[]
+    volume = []
+    lbl = frappe.db.sql("""select distinct(date) , volume
+                                    from `tabMilk Entry` 
+                                    where date BETWEEN '{0}' and '{1}'
+                                    """.format(filters.get('from_date'),filters.get('to_date')), as_dict=True)
+    
+    for l in lbl:
+        c = l.date.strftime("%d-%m-%Y")
+        a.append(c)
+        labels = a
+        volume.append(l.volume)
+    
+    b = get_data(filters)
+    for vol in b:
+        datasets = []
+        datasets.append({"name": _("Volume"), "values": volume})
+        print('datasets****************************************',datasets)   
+
+        chart = {"data": {"labels": labels, "datasets": datasets}}
+
+        chart["type"] = "line"
+        print('chart*******************************************',chart)
+        return chart

@@ -17,6 +17,7 @@ frappe.query_reports["Milk Entry Trends"] = {
 			"label": __("Period"),
 			"fieldtype": "Select",
 			"options": [
+				{ "value": "Daily", "label": __("Daily") },
 				{ "value": "Monthly", "label": __("Monthly") },
 				{ "value": "Quarterly", "label": __("Quarterly") },
 				{ "value": "Half-Yearly", "label": __("Half-Yearly") },

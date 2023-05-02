@@ -128,13 +128,16 @@
    "link_fieldname": "van_collection"
   }
  ],
- "modified": "2023-02-16 16:14:27.253843",
+ "modified": "2023-05-02 13:23:39.145806",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Van Collection",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
+   "amend": 1,
+   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,
@@ -163,5 +166,6 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }

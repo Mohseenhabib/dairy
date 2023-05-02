@@ -21,6 +21,8 @@ def get_columns():
 	columns = [
 		{"label": _("Date"), "fieldname": "date", "fieldtype": "Datetime", "width": 150},
 		{"label": _("Shift"), "fieldname": "shift", "fieldtype": "Data", "width": 150},
+		{"label": _("Member"), "fieldname": "member", "fieldtype": "Data", "width": 150},
+		# {"label": _("Name"), "fieldname": "name", "fieldtype": "Link","options":"Milk Entry","width": 150},
 		{"label": _("DCS"), "fieldname": "dcs_id", "fieldtype": "Data", "width": 150},
 		{"label": _("Ltr"), "fieldname": "volume", "fieldtype": "Float", "width": 150},
 		{"label": _("Fat%"), "fieldname": "fat", "fieldtype": "Percent", "width": 150},
@@ -32,7 +34,7 @@ def get_columns():
 		{"label": _("Weight(in kg)"), "fieldname": "litre", "fieldtype": "Float", "width": 150},
 		{"label": _("Rate"), "fieldname": "unit_price", "fieldtype": "Currency", "width": 150},
 		{"label": _("Amount"), "fieldname": "total", "fieldtype": "Currency", "width": 150},
-		# {"label": _("Incentive"), "fieldname": "incentive", "fieldtype": "Currency", "width": 150},
+		{"label": _("Purchase Invoice"), "fieldname": "parent", "fieldtype": "Link","options":"Purchase Invoice", "width": 150},
 		# {"label": _("Fat Deduction"), "fieldname": "fat_deduction", "fieldtype": "Currency", "width": 150},
 		# {"label": _("SNF Deduction"), "fieldname": "snf_deduction", "fieldtype": "Currency", "width": 150},
 	]
@@ -56,26 +58,47 @@ def get_data(filters, columns):
 	from_date = filters.get('from_date')
 	to_date = filters.get('to_date')
 	result=[]
-	# if filters.get('group_by')=="":
-	result = frappe.db.sql("""select date,shift,dcs_id,volume,fat,fat_kg, snf,snf_kg,clr,clr_kg,litre,unit_price,total
-									from `tabMilk Entry` 
-									where date between '{0}' and '{1}' {conditions}
-									""".format(from_date,to_date,conditions=conditions), as_dict=True)
+	# doc = frappe.get_all('Purchase Invoice Item',['milk_entry'])
+	# print('filterssssssssssssssssssssssssss',doc)
+	if not filters.get('group_by'):
+		print('kkkkkkkkkkkkkkkkkkkkkkkkkkkk')
+		result = frappe.db.sql("""select pi.parent,me.name,me.date,me.shift,me.member,me.dcs_id,me.volume,me.fat,me.fat_kg, me.snf,me.snf_kg,me.clr,me.clr_kg,me.litre,me.unit_price,me.total
+								from `tabMilk Entry` as me inner join `tabPurchase Receipt` as pr on pr.milk_entry = me.name join `tabPurchase Invoice Item` as pi on pi.purchase_receipt = pr.name
+								where me.date between '{0}' and '{1}'
+								""".format(from_date,to_date), as_dict=True)
+		print('result--------------------$$$$$$$$$$$$$$$$$$$$$$$$$$$$',result)	
 
-	# if filters.get('group_by')=='member':
-	# 	result = frappe.db.sql("""select date,shift,dcs_id,volume,fat,fat_kg, snf,snf_kg,clr,clr_kg,litre,unit_price,total
-    #                                 from `tabMilk Entry` 
-    #                                 where date between '{0}' and '{1}' group by member 
-    #                                 """.format(from_date,to_date ), as_dict=True)
+
+
+	if filters.get('group_by')=='Member':
+		print('member###########################')
+		result = frappe.db.sql("""select pi.parent,me.name,me.date,me.shift,me.member,me.dcs_id,me.volume,me.fat,me.fat_kg, me.snf,me.snf_kg,me.clr,me.clr_kg,me.litre,me.unit_price,me.total
+								from `tabMilk Entry` as me inner join `tabPurchase Receipt` as pr on pr.milk_entry = me.name join `tabPurchase Invoice Item` as pi on pi.purchase_receipt = pr.name
+								where me.date between '{0}' and '{1}' {conditions}
+								""".format(from_date,to_date,conditions=conditions), as_dict=True)
+		print('result--------------------$$$$$$$$$$$$$$$$$$$$$$$$$$$$',result)	
 		
-	# if filters.get('group_by')=='dcs':
-	# 	result = frappe.db.sql("""select date,shift,dcs_id,volume,fat,fat_kg, snf,snf_kg,clr,clr_kg,litre,unit_price,total
-    #                                 from `tabMilk Entry` 
-    #                                 where date between '{0}' and '{1}' and '{2}' 
-    #                                 """.format(from_date,to_date,filters.get("dcs") ), as_dict=True)
+	if filters.get('group_by')=='DCS':
+		result = frappe.db.sql("""select pi.parent,me.name,me.date,me.shift,me.member,me.dcs_id,me.volume,me.fat,me.fat_kg, me.snf,me.snf_kg,me.clr,me.clr_kg,me.litre,me.unit_price,me.total
+								from `tabMilk Entry` as me inner join `tabPurchase Receipt` as pr on pr.milk_entry = me.name join `tabPurchase Invoice Item` as pi on pi.purchase_receipt = pr.name
+								where me.date between '{0}' and '{1}' {conditions}
+								""".format(from_date,to_date,conditions=conditions), as_dict=True)
 	
+	if filters.get('group_by')=='Shift':
+		result = frappe.db.sql("""select pi.parent,me.name,me.date,me.shift,me.member,me.dcs_id,me.volume,me.fat,me.fat_kg, me.snf,me.snf_kg,me.clr,me.clr_kg,me.litre,me.unit_price,me.total
+								from `tabMilk Entry` as me inner join `tabPurchase Receipt` as pr on pr.milk_entry = me.name join `tabPurchase Invoice Item` as pi on pi.purchase_receipt = pr.name
+								where me.date between '{0}' and '{1}' {conditions}
+								""".format(from_date,to_date,conditions=conditions), as_dict=True)
 	
-
+	if filters.get('group_by')=='Date':
+		result = frappe.db.sql("""select pi.parent,me.name,me.date,me.shift,me.member,me.dcs_id,sum(me.volume) as volume,sum(me.fat) as fat,
+								sum(me.fat_kg) as fat_kg, sum(me.snf) as snf,sum(me.snf_kg) as snf_kg,
+								sum(me.clr) as clr,sum(me.clr_kg) as clr_kg,sum(me.litre) as litre,
+								sum(me.unit_price) as unit_price,sum(me.total) as total
+								from `tabMilk Entry` as me inner join `tabPurchase Receipt` as pr on pr.milk_entry = me.name join `tabPurchase Invoice Item` as pi on pi.purchase_receipt = pr.name
+								where me.date between '{0}' and '{1}' group by shift
+								""".format(from_date,to_date,), as_dict=True)
+	
 	
 	return result
 
@@ -121,9 +144,14 @@ def group_wise_column(group_by):
 
 def get_conditions(filters):
 	query=""
+	
 	if filters.get('dcs'):
 		query += """ and  dcs_id = '%s'  """%filters.dcs
 	if filters.get('member'):
 		query += """ and  member = '%s'  """%filters.member
+	if filters.get('shift'):
+		query += """ and  shift = '%s'  """%filters.shift
+	if filters.get('date'):
+		query += """ and  date = '%s'  """%filters.date
 	    
 	return query

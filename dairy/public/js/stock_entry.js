@@ -176,17 +176,17 @@ frappe.ui.form.on('Stock Entry Detail', {
         var d = locals[cdt][cdn];
         if(d.s_warehouse){
             var df = frappe.meta.get_docfield("Stock Entry Detail","fat", cur_frm.doc.name);
-            df.read_only = 1;
+            df.read_only = 0;
             var df = frappe.meta.get_docfield("Stock Entry Detail","fat_per", cur_frm.doc.name);
-            df.read_only = 1;
+            df.read_only = 0;
             var df = frappe.meta.get_docfield("Stock Entry Detail","snf_clr", cur_frm.doc.name);
-            df.read_only = 1;
+            df.read_only = 0;
             var df = frappe.meta.get_docfield("Stock Entry Detail","snf_clr_per", cur_frm.doc.name);
-            df.read_only = 1;
+            df.read_only = 0;
 			var df = frappe.meta.get_docfield("Stock Entry Detail","snf_per", cur_frm.doc.name);
-            df.read_only = 1;
+            df.read_only = 0;
 			var df = frappe.meta.get_docfield("Stock Entry Detail","snf", cur_frm.doc.name);
-            df.read_only = 1;
+            df.read_only = 0;
 
         }else{
             var df = frappe.meta.get_docfield("Stock Entry Detail","fat", cur_frm.doc.name);
