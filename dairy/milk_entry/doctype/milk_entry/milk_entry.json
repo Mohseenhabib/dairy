@@ -392,7 +392,7 @@
  "is_submittable": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2023-04-28 12:13:57.687901",
+ "modified": "2023-05-02 13:23:04.238185",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Milk Entry",
@@ -415,6 +415,8 @@
    "write": 1
   },
   {
+   "amend": 1,
+   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,

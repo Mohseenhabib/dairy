@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 import datetime
 import frappe
 from frappe import _
+from datetime import datetime
 
 
 def execute(filters=None):
@@ -209,46 +210,28 @@ def get_conditions(filters):
 
 
 def get_chart_data(filters, columns):
-    # print('charttttttttttttttttttttttttttt')
-    # a =[]
-    # # b = get_data(filters)
-    # # print('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',b)
-    # # for vol in b:
-    # #     print('vol---------------88888888888888888888888888',vol.get('date'))
-    # lbl = frappe.db.sql("""select date
-    #                                 from `tabMilk Entry` 
-    #                                 where date between '{0}' and '{1}'
-    #                                 """.format(filters.get('from_date'),filters.get('to_date')), as_dict=True)
-    
-    # print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk',lbl)
-    # for l in lbl:
-    #     a.append(l.date)
-    #     print('llllllllllllllllllllllllllllllllllllllllllllllll',lbl)
-    #     labels = a
-    # b = get_data(filters)
-    # print('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',b)
-    # for vol in b:
-    #     print('vol---------------88888888888888888888888888',vol)
-    #     date, volume = [], []
-    #     volume.append(vol.get('volume'))
-    
-    #     datasets = []
-    # # if date:
-    # #     datasets.append({"name": _("Date"), "values": date})
-      
-    
-    #     datasets.append({"name": _("Volume"), "values": volume})
-    #     print('datasets****************************************',datasets)   
-
-    #     chart = {"data": {"labels": labels, "datasets": datasets}}
-
-    #     chart["type"] ="line"
-    #     print('chart*******************************************',chart)
-    #     return chart
-
+    print('charttttttttttttttttttttttttttt')
+    a =[]
+    volume = []
     lbl = frappe.db.sql("""select distinct(date) , volume
-                                     from `tabMilk Entry` as me inner join `tabPurchase Receipt` as pi on pi.
-                                     where date between '{0}' and '{1}'
-                                     """.format(filters.get('from_date'),filters.get('to_date')), as_dict=True)
+                                    from `tabMilk Entry` 
+                                    where date BETWEEN '{0}' and '{1}'
+                                    """.format(filters.get('from_date'),filters.get('to_date')), as_dict=True)
+    
     for l in lbl:
-        print('lbl-----------------------**************************************',l)
+        c = l.date.strftime("%d-%m-%Y")
+        a.append(c)
+        labels = a
+        volume.append(l.volume)
+    
+    b = get_data(filters)
+    for vol in b:
+        datasets = []
+        datasets.append({"name": _("Volume"), "values": volume})
+        print('datasets****************************************',datasets)   
+
+        chart = {"data": {"labels": labels, "datasets": datasets}}
+
+        chart["type"] = "line"
+        print('chart*******************************************',chart)
+        return chart
