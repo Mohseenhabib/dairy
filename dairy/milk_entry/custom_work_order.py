@@ -162,7 +162,7 @@ def get_data_fat(name):
         if abs(wo.diff_fat_in_kg)>0:
             if doc.threshold_for_fat_separation<abs(wo.diff_fat_in_kg):
                 list.append({"operation":doc.operation,"workstation":doc.workstation,"workstation_type":doc.workstation_type,
-                            "completed_qty":wo.qty,"time_in_mins":doc.operation_time,"bom":wo.bom_no,"threshhold":1})
+                            "completed_qty":wo.separation_fat,"time_in_mins":doc.operation_time,"bom":wo.bom_no,"threshhold":1})
                 return list
             elif doc.threshold_for_fat_separation>abs(wo.diff_fat_in_kg):
                 rmfatkg=[]
@@ -396,7 +396,7 @@ class CustomWorkOrder(WorkOrder):
             validate_bom_no(self.production_item, self.bom_no)
 
         self.validate_sales_order()
-        self.set_default_warehouse()
+        # self.set_default_warehouse()
         self.validate_warehouse_belongs_to_company()
         self.calculate_operating_cost()
         self.validate_qty()
@@ -409,12 +409,18 @@ class CustomWorkOrder(WorkOrder):
 
         # self.set_required_items(reset_only_qty=len(self.get("required_items")))
         ds=frappe.get_doc("Dairy Settings")
-        if abs(self.diff_fat_in_kg)>ds.threshold_for_fat_separation:
-            item=frappe.get_doc("Item",self.production_item)
-            if item.weight_per_unit>0:
-                self.sepration_fat=(abs(self.diff_fat_in_kg)*100)/(4*item.weight_per_unit)
-            else:
-                frappe.throw("Production Item Weight Should More Than 0")
+        if self.required_fat>0:
+            if abs(self.diff_fat_in_kg)>ds.threshold_for_fat_separation:
+                item=frappe.get_doc("Item",self.production_item)
+                if item.weight_per_unit>0:
+                    self.sepration_fat=(abs(self.diff_fat_in_kg)*100)/(self.required_fat*item.weight_per_unit)
+                else:
+                    frappe.throw("Production Item Weight Should More Than 0")
+        if self.source_warehouse:
+            if self.required_fat>0:
+                for i in self.required_items:
+                    i.source_warehouse=self.source_warehouse
+
     def prepare_data_for_job_card(self, row, index, plan_days, enable_capacity_planning):
         self.set_operation_start_end_time(index, row)
 
