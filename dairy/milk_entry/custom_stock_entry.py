@@ -234,7 +234,7 @@ def milk_ledger_stock_entry(self,method):
 #                              # new_mle.submit()
 
 def before_save(self,method):
-    if self.stock_entry_type in ["Material Transfer","Material Issue","Material Transfer For Manufacturing","Repack"]:
+    if self.stock_entry_type in ["Material Transfer","Material Issue","Material Transfer for Manufacture","Repack"]:
         for s in self.items:
             item = frappe.get_doc('Item',s.item_code)
             filters={'from_date':getdate(self.posting_date),'to_date':getdate(self.posting_date),'warehouse':s.s_warehouse,'item_code':s.item_code,'company':self.company}
@@ -258,7 +258,7 @@ def before_save(self,method):
         for j in self.items:
             if flt(j.fat_per)>0 or flt(j.snf_per)>0:
                 frappe.throw("Fat and Snf Not defined")
-    if self.stock_entry_type in ["Manufacture","Material Consumpation For Manufacturing"]:
+    if self.stock_entry_type in ["Manufacture","Material Consumption for Manufacture"]:
         for s in self.items:
             item = frappe.get_doc('Item',s.item_code)
             filters={'from_date':getdate(self.posting_date),'to_date':getdate(self.posting_date),'warehouse':s.t_warehouse,'item_code':s.item_code,'company':self.company}

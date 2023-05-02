@@ -524,7 +524,7 @@ def make_job_card(work_order, row, enable_capacity_planning=False, auto_create=F
                 "serial_no": row.get("serial_no"),
             }
         )
-        qty=abs(work_order.diff_fat_in_kg)*100/4
+        qty=abs(work_order.diff_fat_in_kg)*100/work_order.required_fat
         if ds.cream_item:
             item=frappe.get_doc("Item",ds.cream_item)
             doc.append("scrap_items",{
