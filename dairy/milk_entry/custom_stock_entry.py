@@ -243,14 +243,14 @@ def before_save(self,method):
             print('mllllllllllllllllllllllllllllll',filters,ml)
             if (len(ml)) > 1:
                 ml = ml[-1]
-                s.fat_per = ml.get('fat_per')
-                s.snf_per = ml.get('snf_per')
+                s.fat_per = (ml.get("fat_after_transaction")/ml.get("qty_after_transaction"))*100
+                s.snf_per = (ml.get("fat_after_transaction")/ml.get("qty_after_transaction"))*100
                 s.fat = ((s.qty*flt(s.fat_per))/100) * flt(item.weight_per_unit)
                 s.snf = ((s.qty*flt(s.snf_per))/100) * flt(item.weight_per_unit)
             else:
                 ml = ml[0]
-                s.fat_per = ml.get('fat_per')
-                s.snf_per = ml.get('snf_per')
+                s.fat_per = (ml.get("fat_after_transaction")/ml.get("qty_after_transaction"))*100
+                s.snf_per = (ml.get("fat_after_transaction")/ml.get("qty_after_transaction"))*100
                 s.fat = ((s.qty*flt(s.fat_per))/100) * flt(item.weight_per_unit)
                 s.snf = ((s.qty*flt(s.snf_per))/100) * flt(item.weight_per_unit)
 
@@ -267,14 +267,14 @@ def before_save(self,method):
             print('mllllllllllllllllllllllllllllll',filters,ml)
             if (len(ml)) > 1:
                 ml = ml[-1]
-                s.fat_per = ml.get('fat_per')
-                s.snf_per = ml.get('snf_per')
+                s.fat_per = (ml.get("fat_after_transaction")/ml.get("qty_after_transaction"))*100
+                s.snf_per = (ml.get("fat_after_transaction")/ml.get("qty_after_transaction"))*100
                 s.fat = ((s.qty*flt(s.fat_per))/100) * flt(item.weight_per_unit)
                 s.snf = ((s.qty*flt(s.snf_per))/100) * flt(item.weight_per_unit)
             else:
                 ml = ml[0]
-                s.fat_per = ml.get('fat_per')
-                s.snf_per = ml.get('snf_per')
+                s.fat_per = (ml.get("fat_after_transaction")/ml.get("qty_after_transaction"))*100
+                s.snf_per = (ml.get("fat_after_transaction")/ml.get("qty_after_transaction"))*100
                 s.fat = ((s.qty*flt(s.fat_per))/100) * flt(item.weight_per_unit)
                 s.snf = ((s.qty*flt(s.snf_per))/100) * flt(item.weight_per_unit)
 
