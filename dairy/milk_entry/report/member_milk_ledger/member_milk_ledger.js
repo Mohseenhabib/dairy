@@ -12,7 +12,6 @@ frappe.query_reports["Member Milk Ledger"] = {
 			"reqd": 1,
 			"default": frappe.defaults.get_user_default("Company")
 		},
-		
 		{
 			"fieldname":"from_date",
 			"label": __("From Date"),
@@ -27,15 +26,6 @@ frappe.query_reports["Member Milk Ledger"] = {
 			"reqd": 1,
 			"default": frappe.datetime.get_today(),
 		},
-
-		{
-			"fieldname":"member",
-			"label": __("Member"),
-			"fieldtype": "Link",
-			// "reqd": 1,
-			// "depands_on": 'group_by'== 'member',
-			"options":"Supplier",
-		},
 		{
 			"fieldname":"group_by",
 			"label": __("Group By"),
@@ -43,12 +33,20 @@ frappe.query_reports["Member Milk Ledger"] = {
 			"options": [" ","DCS","Member","Shift","Date"]
 		},
 		{
+			"fieldname":"member",
+			"label": __("Member"),
+			"fieldtype": "Link",
+			// "reqd": 1,
+			"options":"Supplier",
+			// "depends_on": "eval: doc.group_by == 'Member'",
+		},
+		{
 			"fieldname":"dcs",
 			"label": __("DCS"),
 			"fieldtype": "Link",
 			// "reqd": 1,
-			// "default": frappe.datetime.get_today(),
 			"options":"Warehouse",
+			// "depends_on": "eval: doc.group_by == 'DCS'",
 		},
 		{
 			"fieldname":"shift",
@@ -57,15 +55,11 @@ frappe.query_reports["Member Milk Ledger"] = {
 			// "reqd": 1,
 			// "default": frappe.datetime.get_today(),
 			"options":[" ","Morning","Evening"],
+			// "depends_on": "eval: doc.group_by == 'Shift'",
 		},
-		// {
-		// 	"fieldname":"date",
-		// 	"label": __("Date"),
-		// 	"fieldtype": "Date",
-		// 	// "reqd": 1,
-		// 	// "default": frappe.datetime.get_today(),
-		// 	// "options":[" ","Morning","Evening"],
-		// },
+		
 
-	]
+	],
+
+	
 };
