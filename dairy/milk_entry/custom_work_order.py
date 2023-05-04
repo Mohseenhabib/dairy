@@ -49,6 +49,27 @@ def bom_item_child_table(self, method):
         self.rm_snf_in_kg=sum(snf)
         self.diff_snf_in_kg=self.required_snt_in_kg-sum(snf)
 
+    ds=frappe.get_doc("Dairy Settings")
+    if self.required_fat>0:
+        if abs(self.diff_fat_in_kg)>ds.threshold_for_fat_separation:
+            item=frappe.get_doc("Item",self.production_item)
+            if item.weight_per_unit>0:
+                self.sepration_fat=(abs(self.diff_fat_in_kg)*100)/(self.required_fat*item.weight_per_unit)
+            else:
+                frappe.throw("Production Item Weight Should More Than 0")
+   
+    # result = {}
+    # for d in self.required_items:
+    #     if d["item_code"] in result:
+    #         result[d["item_code"]] += d["required_qty"]
+    #     else:
+    #         result[d["item_code"]] = d["required_qty"]
+
+    # for k, v in result.items():
+    #     {"item": k, "qty": v}
+
+
+        
 
 
 
@@ -61,7 +82,6 @@ def get_required_fat_snf_item(self, method):
             self.required_snf_=reqd_fat.standard_snf
             self.required_fat_in_kg = (flt(self.qty) * flt(reqd_fat.weight_per_unit)) * (flt(reqd_fat.standard_fat) / 100)
             self.required_snt_in_kg = (flt(self.qty) * flt(reqd_fat.weight_per_unit)) * (flt(reqd_fat.standard_snf) / 100)
-        
 
 
 def exec(filters=None):
@@ -364,13 +384,11 @@ def add_snf_item(required_snf_kg,company,warehouse,date,itemlist):
 def remove_fat_item(company,warehouse,date,itemlist):
     list=[]
     filters={}
-    print("#####################",itemlist)
     for i in itemlist:
         item=frappe.get_doc("Item",i.item_code)
         filters.update({'warehouse':warehouse,"from_date":date,"to_date":date,"company":company,"item_code":item.name})
         filters=frappe._dict(filters)
         td=exec(filters)
-        print("&&&&&&&&&&&&&&&&&&&&&&&1234",td)
         if td:
             if len(td)>1:
                 td=td[-1]
@@ -380,7 +398,6 @@ def remove_fat_item(company,warehouse,date,itemlist):
                     list.append({"item":item.name,"fatper":fat_per,"snfper":snf_per})
             else:
                 td=td[0]
-                print("&&&&&&&&&&&&&&&&&&",td)
                 if td.get("qty_after_transaction")>0:
                     fat_per=(td.get("fat_after_transaction")/td.get("qty_after_transaction"))*100
                     snf_per=(td.get("snf_after_transaction")/td.get("qty_after_transaction"))*100
@@ -408,14 +425,6 @@ class CustomWorkOrder(WorkOrder):
         validate_uom_is_integer(self, "stock_uom", ["qty", "produced_qty"])
 
         # self.set_required_items(reset_only_qty=len(self.get("required_items")))
-        ds=frappe.get_doc("Dairy Settings")
-        if self.required_fat>0:
-            if abs(self.diff_fat_in_kg)>ds.threshold_for_fat_separation:
-                item=frappe.get_doc("Item",self.production_item)
-                if item.weight_per_unit>0:
-                    self.sepration_fat=(abs(self.diff_fat_in_kg)*100)/(self.required_fat*item.weight_per_unit)
-                else:
-                    frappe.throw("Production Item Weight Should More Than 0")
         if self.source_warehouse:
             if self.required_fat>0:
                 for i in self.required_items:
@@ -515,7 +524,7 @@ def make_job_card(work_order, row, enable_capacity_planning=False, auto_create=F
                 "serial_no": row.get("serial_no"),
             }
         )
-        qty=abs(work_order.diff_fat_in_kg)*100/4
+        qty=abs(work_order.diff_fat_in_kg)*100/work_order.required_fat
         if ds.cream_item:
             item=frappe.get_doc("Item",ds.cream_item)
             doc.append("scrap_items",{

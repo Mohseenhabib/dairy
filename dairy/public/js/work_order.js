@@ -36,6 +36,10 @@ frappe.ui.form.on("Work Order", {
             }
         })
     },
+    after_submit:function(frm){
+        frm.reload()
+
+    },
     qty:function(frm){
         frappe.call({
             method : "dairy.milk_entry.custom_work_order.get_required_fat_snf",
