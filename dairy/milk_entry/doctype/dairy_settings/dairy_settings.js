@@ -89,4 +89,14 @@ frappe.ui.form.on('Dairy Settings', {
 	// 	});
     //     console.log('purchase_incoiveEEEEEEEEEEEEEEEEEEEE')
     // },
+    refresh : function(frm){
+        frm.add_custom_button(__('Custom Payment'),function() {
+            return frappe.call({
+                doc: frm.doc,
+                method: 'custom_payment',
+                callback: function(r) {
+            }
+        })
+        });
+    }
 });

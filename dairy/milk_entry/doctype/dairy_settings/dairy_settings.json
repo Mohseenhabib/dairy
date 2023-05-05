@@ -79,6 +79,8 @@
   "days",
   "column_break_73",
   "previous_sync_date",
+  "section_break_xznf1",
+  "custom_date",
   "section_break_60",
   "order_locking_time",
   "morning_locking_time",
@@ -678,12 +680,21 @@
    "fieldname": "file_path_download_csv",
    "fieldtype": "Data",
    "label": "File Path Download Csv"
+  },
+  {
+   "fieldname": "section_break_xznf1",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "custom_date",
+   "fieldtype": "Date",
+   "label": "Custom Date"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-04-18 23:56:49.853724",
+ "modified": "2023-05-05 12:47:17.079020",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",
