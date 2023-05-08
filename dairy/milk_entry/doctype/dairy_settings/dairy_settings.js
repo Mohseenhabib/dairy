@@ -93,7 +93,7 @@ frappe.ui.form.on('Dairy Settings', {
         frm.add_custom_button(__('Custom Payment'),function() {
             return frappe.call({
                 doc: frm.doc,
-                method: 'custom_payment',
+                method: 'custom_po',
                 callback: function(r) {
             }
         })
