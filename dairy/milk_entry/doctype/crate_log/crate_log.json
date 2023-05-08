@@ -12,6 +12,7 @@
   "crate_balance",
   "transporter",
   "customer",
+  "customer_name",
   "vehicle",
   "shift",
   "column_break_9",
@@ -149,12 +150,18 @@
    "label": "Gate Pass",
    "options": "Gate Pass",
    "read_only": 1
+  },
+  {
+   "fetch_from": "customer.customer_name",
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "label": "Customer Name"
   }
  ],
  "in_create": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-24 18:57:50.725190",
+ "modified": "2023-05-08 18:11:33.938951",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Crate Log",
