@@ -312,7 +312,7 @@ class VanCollection(Document):
                         item = frappe.db.get_value('Item',{"name":doc.buf_pro},['weight_per_unit'])
                     if i.get("milk_type")=="Mix":
                         item = frappe.db.get_value('Item',{"name":doc.mix_pro},['weight_per_unit'])
-
+                    print('item****************************',item)
                     print('buffalo volume8*****************',buffalo_volume)
                     print('cow_volume*********************************',cow_volume,cow_milk_fatin_kg,item)
                     if (cow_volume) > 0:
