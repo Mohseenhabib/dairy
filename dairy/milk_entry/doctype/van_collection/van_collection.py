@@ -179,31 +179,31 @@ class VanCollection(Document):
                 
                         for sm in result:
                             if sm.get('milk_type') == 'Cow':
-                                total_volume_cow += sm.get('total_volume')
-                                fat_cow += sm.get('fat')
-                                clr_cow += sm.get('clr')
-                                snf_cow += sm.get('snf')
-                                fat_kg_cow += sm.get('fat_kg')
-                                snf_kg_cow += sm.get('snf_kg')
-                                clr_kg_cow += sm.get('clr_kg')
+                                total_volume_cow += flt(sm.get('total_volume'))
+                                fat_cow += flt(sm.get('fat'))
+                                clr_cow += flt(sm.get('clr'))
+                                snf_cow += flt(sm.get('snf'))
+                                fat_kg_cow += flt(sm.get('fat_kg'))
+                                snf_kg_cow += flt(sm.get('snf_kg'))
+                                clr_kg_cow += flt(sm.get('clr_kg'))
 
                             if sm.get('milk_type') == 'Buffalo':
-                                total_volume_buf += sm.get('total_volume')
-                                fat_buf += sm.get('fat')
-                                clr_buf += sm.get('clr')
-                                snf_buf += sm.get('snf')
-                                fat_kg_buf += sm.get('fat_kg')
-                                snf_kg_buf += sm.get('snf_kg')
-                                clr_kg_buf += sm.get('clr_kg')
+                                total_volume_buf += flt(sm.get('total_volume'))
+                                fat_buf += flt(sm.get('fat'))
+                                clr_buf += flt(sm.get('clr'))
+                                snf_buf += flt(sm.get('snf'))
+                                fat_kg_buf += flt(sm.get('fat_kg'))
+                                snf_kg_buf += flt(sm.get('snf_kg'))
+                                clr_kg_buf += flt(sm.get('clr_kg'))
 
                             if sm.get('milk_type') == 'Mix':
-                                total_volume_mix += sm.get('total_volume')
-                                fat_mix += sm.get('fat')
-                                clr_mix += sm.get('clr')
-                                snf_mix += sm.get('snf')
-                                fat_kg_mix += sm.get('fat_kg')
-                                snf_kg_mix += sm.get('snf_kg')
-                                clr_kg_mix += sm.get('clr_kg')
+                                total_volume_mix += flt(sm.get('total_volume'))
+                                fat_mix += flt(sm.get('fat'))
+                                clr_mix += flt(sm.get('clr'))
+                                snf_mix += flt(sm.get('snf'))
+                                fat_kg_mix += flt(sm.get('fat_kg'))
+                                snf_kg_mix += flt(sm.get('snf_kg'))
+                                clr_kg_mix += flt(sm.get('clr_kg'))
 
 
                         result = [{'milk_type':'Cow','total_volume':total_volume_cow,'fat':fat_cow,'clr':clr_cow,'fat_kg':fat_kg_cow,'snf_kg':snf_kg_cow,'clr_kg':clr_kg_cow,'snf':snf_cow},
@@ -314,19 +314,19 @@ class VanCollection(Document):
                         item = frappe.db.get_value('Item',{"name":doc.mix_pro},['weight_per_unit'])
 
                     print('buffalo volume8*****************',buffalo_volume)
-                    if flt(cow_volume) > 0:
-                        van_collection.cow_milk_fat = (cow_milk_fatin_kg /(cow_volume * item)) * 100 
-                        van_collection.cow_milk_clr = (cow_milk_clrin_kg /(cow_volume * item)) * 100 
-                        van_collection.cow_milk_snf = (cow_milk_snfin_kg /(cow_volume * item)) * 100
-                    if flt(buffalo_volume) > 0:
-                        van_collection.buf_milk_fat = (buffalo_milk_fatin_kg /(buffalo_volume  * item)) * 100 
-                        van_collection.buf_milk_clr = (buffalo_milk_clrin_kg /(buffalo_volume  * item)) * 100
-                        van_collection.buffalow_milk_snf = (buffalo_milk_snfin_kg /(buffalo_volume  * item)) * 100
+                    if (cow_volume) > 0:
+                        van_collection.cow_milk_fat = flt(cow_milk_fatin_kg) /flt((cow_volume * item)) * 100 
+                        van_collection.cow_milk_clr = flt(cow_milk_clrin_kg )/flt((cow_volume * item)) * 100 
+                        van_collection.cow_milk_snf = flt(cow_milk_snfin_kg) /flt((cow_volume * item)) * 100
+                    if (buffalo_volume) > 0:
+                        van_collection.buf_milk_fat = flt(buffalo_milk_fatin_kg /(buffalo_volume  * item)) * 100 
+                        van_collection.buf_milk_clr = flt(buffalo_milk_clrin_kg /(buffalo_volume  * item)) * 100
+                        van_collection.buffalow_milk_snf = flt(buffalo_milk_snfin_kg /(buffalo_volume  * item)) * 100
                     
-                    if flt(mix_volume) > 0:
-                        van_collection.mix_milk_fat = (mix_milk_fatin_kg /(mix_volume * item)) * 100 
-                        van_collection.mix_milk_snf = (mix_milk_snfin_kg /(mix_volume * item)) * 100
-                        van_collection.cow_milk_clr = (mix_milk_clrin_kg /(mix_volume * item)) * 100 
+                    if (mix_volume) > 0:
+                        van_collection.mix_milk_fat = flt(mix_milk_fatin_kg /(mix_volume * item)) * 100 
+                        van_collection.mix_milk_snf = flt(mix_milk_snfin_kg /(mix_volume * item)) * 100
+                        van_collection.cow_milk_clr = flt(mix_milk_clrin_kg /(mix_volume * item)) * 100 
                     van_collection.insert(ignore_permissions = True)
                     
 
