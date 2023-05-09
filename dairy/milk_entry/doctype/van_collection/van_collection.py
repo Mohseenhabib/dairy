@@ -314,7 +314,10 @@ class VanCollection(Document):
                         item = frappe.db.get_value('Item',{"name":doc.mix_pro},['weight_per_unit'])
 
                     print('buffalo volume8*****************',buffalo_volume)
+                    print('cow_volume*********************************',cow_volume,cow_milk_fatin_kg,item)
                     if (cow_volume) > 0:
+                        print('cow_volume*********************************',cow_volume,cow_milk_fatin_kg,item)
+
                         van_collection.cow_milk_fat = (flt(cow_milk_fatin_kg) /flt((cow_volume * item))) * 100 
                         van_collection.cow_milk_clr = (flt(cow_milk_clrin_kg) /flt((cow_volume * item))) * 100 
                         van_collection.cow_milk_snf = (flt(cow_milk_snfin_kg) /flt((cow_volume * item))) * 100
