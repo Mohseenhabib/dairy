@@ -7,10 +7,15 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 from datetime import date
+from datetime import datetime
+from frappe.utils import add_to_date, get_datetime, now_datetime
 
 from frappe.utils.data import flt
 
 class VanCollection(Document):
+    def validate(self):
+        self.get_remaining_shift()
+
     @frappe.whitelist()
     def submit_van_collection(self):
         self.db_set('status','Submitted')
@@ -18,7 +23,7 @@ class VanCollection(Document):
     def on_cancel(self):
         milk_entry = frappe.get_all('Milk Entry',{'date':self.date},['name','van_collection_completed','date'])
         for me in milk_entry:
-            if self.date == me.date:
+            if self.date == me.date and self.to_date == me.date:
                 vcc = frappe.get_doc('Milk Entry',me.name) 
                 vcc.van_collection_completed = 0
                 vcc.db_update()
@@ -34,7 +39,7 @@ class VanCollection(Document):
         self.flags.ignore_validate_update_after_submit = True  # ignore after submit permission
         milk_entry = frappe.get_all('Milk Entry',{'date':self.date},['name','van_collection_completed','date'])
         for me in milk_entry:
-            if self.date == me.date:
+            if self.date == me.date and self.to_date == me.date:
                 vcc = frappe.get_doc('Milk Entry',me.name)
                 if self.status == "Completed":
                     vcc.van_collection_completed = 1
@@ -42,8 +47,29 @@ class VanCollection(Document):
         
         self.save(ignore_permissions=True)
 
+
+    def get_remaining_shift(self):
+        options = []
+        rs = frappe.db.sql(""" select df.options from `tabDocType` as dt
+                            join `tabDocField` as df on df.parent = dt.name
+                            where dt.name = 'Van Collection' 
+                            and df.fieldname = 'shift' """,as_dict = 1)
+        
+        print('rrrrrrrssssssssssssssssssssssss',rs)
+        if rs:
+            for o in rs:
+                sft = o.get('options')
+                x = sft.split('\n')
+                options = x
+            print('options********************************',options)
+        return options
+    
+
     @frappe.whitelist()
     def van_start_collection(self):
+
+        total_date = []
+        sde = []
         state_climatic_factor,state_factor = frappe.db.get_value('Warehouse',{'is_dcs':1},['state_climatic_factor','state_factor'])
         seq =[]
         sequence = frappe.db.get_all('Warehouse',{'is_dcs':1},['sequence'])
@@ -51,6 +77,49 @@ class VanCollection(Document):
             seq.append(i.get('sequence'))
         print('sequence******************',seq,sorted(seq))
         tdate = date.today()
+        d1 = datetime.strptime(self.date, "%Y-%m-%d")
+        d2 = datetime.strptime(self.to_date, "%Y-%m-%d")
+
+        # difference between dates in timedelta
+        delta = d2 - d1
+        for k in range(0,delta.days+1):
+            dt = add_to_date(self.date,days=k)
+            total_date.append(dt)
+        print('total date&&&&&&&&&&&&&&&&&&&&&&&&&&&',total_date)
+        
+        if self.shift == self.to_shift:
+            remaining_shift = self.get_remaining_shift()
+            for rs in remaining_shift:
+                if len(total_date) > 1:
+                    for d in total_date:
+                        
+                        if rs != self.shift:
+                            sd = {'date':d,'shift':self.shift}
+                            sdt = {'date':d,'shift':rs}
+                            if sd not in sde:
+                                sde.append(sd)
+                            if sdt not in sde:
+                                sde.append(sdt)
+                           
+
+                    for uw in sde:
+                        if uw.get('date') == self.to_date and self.to_shift != uw.get('shift'):
+                            sde.remove(uw)
+                elif(len(total_date) == 1):
+                    sd = {'date':total_date[0],'shift':self.shift}
+                    if sd not in sde:
+                        sde.append(sd)
+
+
+        if self.shift != self.to_shift:
+            for d in total_date:
+                sd = {'date':d,'shift':self.shift}
+                sdt = {'date':d,'shift':self.to_shift}
+                if sd not in sde:
+                    sde.append(sd)
+                if sdt not in sde:
+                    sde.append(sdt)
+        print('sdeeeeeeeeeeee88888888888888888888',sde)
 
         if self:
             warehouse = frappe.db.get_all("Warehouse",{
@@ -59,14 +128,88 @@ class VanCollection(Document):
                                         })
             if not warehouse:
                 frappe.throw(_("No Warehouse present in this Route"))
-            for res in warehouse:
-                result = frappe.db.sql("""select dcs_id,milk_type,sum(volume) as total_volume,sum(fat) as fat,sum(clr) as clr ,
-                                    sum(fat_kg) as fat_kg , sum(snf_kg) as snf_kg , sum(clr_kg) as clr_kg
-                                    from `tabMilk Entry` 
-                                    where docstatus =1 and dcs_id = %s and shift = %s and date = %s 
-                                    group by milk_type""",(res.name,self.shift,self.date), as_dict =True)
+            
+            final_result = []
+            milk_type = 'Cow'
+            total_volume_cow = 0.0
+            fat_cow = 0.0 
+            clr_cow = 0.0
+            snf_cow = 0.0
+            fat_kg_cow =0.0
+            snf_kg_cow = 0.0
+            clr_kg_cow = 0.0
 
-                print('result***************************',result,res)
+            milk_type = 'Buffalo'
+            total_volume_buf= 0.0
+            fat_buf = 0.0 
+            clr_buf = 0.0
+            snf_buf = 0.0
+            fat_kg_buf =0.0
+            snf_kg_buf = 0.0
+            clr_kg_buf = 0.0
+
+            milk_type = 'Mix'
+            total_volume_mix = 0.0
+            fat_mix = 0.0 
+            clr_mix = 0.0
+            snf_mix = 0.0
+            fat_kg_mix =0.0
+            snf_kg_mix = 0.0
+            clr_kg_mix = 0.0
+            for res in warehouse:
+                # for j in sde:
+                #     print('dateeeeeeeeeeee************************8',j.get('date'))
+                #     result = frappe.db.sql("""select date,name,dcs_id,milk_type,volume as total_volume,fat as fat,clr as clr ,
+                #                         fat_kg as fat_kg , snf_kg as snf_kg , clr_kg as clr_kg
+                #                         from `tabMilk Entry` 
+                #                         where docstatus =1 and dcs_id = '{0}'and date = '{1}' 
+                #                         and name = 'E00319'
+                #                         """.format(res.name,j.get('date')), as_dict =True)
+
+                #     print('result***************************',result)
+                
+                for j in sde:
+                    result = frappe.db.sql("""select dcs_id,milk_type,sum(volume) as total_volume,sum(fat) as fat,sum(clr) as clr ,
+                                        sum(snf) as snf,sum(fat_kg) as fat_kg , sum(snf_kg) as snf_kg , sum(clr_kg) as clr_kg
+                                        from `tabMilk Entry` 
+                                        where docstatus =1 and dcs_id = '{0}' and shift = '{1}' and date = '{2}' 
+                                        group by milk_type""".format(res.name,j.get('shift'),j.get('date')), as_dict =True)
+
+                    if result:
+                
+                        for sm in result:
+                            if sm.get('milk_type') == 'Cow':
+                                total_volume_cow += sm.get('total_volume')
+                                fat_cow += sm.get('fat')
+                                clr_cow += sm.get('clr')
+                                snf_cow += sm.get('snf')
+                                fat_kg_cow += sm.get('fat_kg')
+                                snf_kg_cow += sm.get('snf_kg')
+                                clr_kg_cow += sm.get('clr_kg')
+
+                            if sm.get('milk_type') == 'Buffalo':
+                                total_volume_buf += sm.get('total_volume')
+                                fat_buf += sm.get('fat')
+                                clr_buf += sm.get('clr')
+                                snf_buf += sm.get('snf')
+                                fat_kg_buf += sm.get('fat_kg')
+                                snf_kg_buf += sm.get('snf_kg')
+                                clr_kg_buf += sm.get('clr_kg')
+
+                            if sm.get('milk_type') == 'Mix':
+                                total_volume_mix += sm.get('total_volume')
+                                fat_mix += sm.get('fat')
+                                clr_mix += sm.get('clr')
+                                snf_mix += sm.get('snf')
+                                fat_kg_mix += sm.get('fat_kg')
+                                snf_kg_mix += sm.get('snf_kg')
+                                clr_kg_mix += sm.get('clr_kg')
+
+
+                        result = [{'milk_type':'Cow','total_volume':total_volume_cow,'fat':fat_cow,'clr':clr_cow,'fat_kg':fat_kg_cow,'snf_kg':snf_kg_cow,'clr_kg':clr_kg_cow,'snf':snf_cow},
+                                  {'milk_type':'Buffalo','total_volume':total_volume_buf,'fat':fat_buf,'clr':clr_buf,'fat_kg':fat_kg_buf,'snf_kg':snf_kg_buf,'clr_kg':clr_kg_buf,'snf':snf_buf},
+                                  {'milk_type':'Mix','total_volume':total_volume_mix,'fat':fat_mix,'clr':clr_mix,'fat_kg':fat_kg_mix,'snf_kg':snf_kg_mix,'clr_kg':clr_kg_mix,'snf':snf_mix}]
+                    print('result***************************',result,res)
                 cow_volume = 0.0
                 buffalo_volume = 0.0
                 mix_volume = 0.0
@@ -110,8 +253,8 @@ class VanCollection(Document):
                         mix_milk_snfin_kg = i.get('snf_kg')
                         mix_milk_fatin_kg = i.get('fat_kg')
                         mix_milk_clrin_kg = i.get('clr_kg')
-                   
-
+                
+                print('cow volume****************************',cow_volume)
                 if cow_volume > 0 or buffalo_volume > 0 or mix_volume > 0:
                     van_collection = frappe.new_doc("Van Collection Items")
                     van_collection.dcs = res.name
@@ -137,20 +280,20 @@ class VanCollection(Document):
                     van_collection.mix_milk_fat = mix_milk_fat
                     van_collection.mix_milk_clr = mix_milk_clr
                     
-                  
-                   
+                
+                
                     result1 = frappe.db.sql("""Select name,milk_type from `tabSample lines` where milk_entry in
-                                                           (select name from `tabMilk Entry` 
-                                                           where docstatus =1 and dcs_id = %s and shift = %s and date = %s 
-                                                           )""", (res.name, self.shift, self.date), as_dict=True)
-                  
+                                                        (select name from `tabMilk Entry` 
+                                                        where docstatus =1 and dcs_id = %s and shift BETWEEN %s and %s and date BETWEEN %s and %s
+                                                        )""", (res.name, self.shift,self.to_shift, self.date,self.to_date), as_dict=True)
+                
 
                     for res in result1:
                         if res.get('milk_type') == 'Cow':
                             van_collection.append("cow_milk_sam", {
                                 'sample_lines': res.get('name')
                             })
-                      
+                    
                         if res.get('milk_type') == 'Buffalo':
                             van_collection.append("buf_milk_sam", {
                                 'sample_lines': res.get('name')

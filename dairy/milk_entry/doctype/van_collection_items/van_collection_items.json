@@ -14,6 +14,8 @@
   "date",
   "column_break_4",
   "dcs",
+  "to_shift",
+  "to_date",
   "company",
   "sb2",
   "cow_milk_collected",
@@ -273,15 +275,14 @@
    "fetch_from": "van_collection.shift",
    "fieldname": "shift",
    "fieldtype": "Select",
-   "label": "Shift",
+   "label": "From Shift",
    "options": "Morning\nEvening"
   },
   {
    "fetch_from": "van_collection.date",
    "fieldname": "date",
    "fieldtype": "Date",
-   "hidden": 1,
-   "label": "Date",
+   "label": "From Date",
    "read_only": 1
   },
   {
@@ -406,10 +407,24 @@
   {
    "fieldname": "column_break_47",
    "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "van_collection.to_shift",
+   "fieldname": "to_shift",
+   "fieldtype": "Select",
+   "label": "To Shift",
+   "options": "Morning\nEvening"
+  },
+  {
+   "fetch_from": "van_collection.to_date",
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date",
+   "read_only": 1
   }
  ],
  "links": [],
- "modified": "2023-03-26 11:51:55.028958",
+ "modified": "2023-05-09 15:04:29.362839",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Van Collection Items",
