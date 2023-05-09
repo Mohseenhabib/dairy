@@ -76,18 +76,7 @@ class VanCollection(Document):
         for i in sequence:
             seq.append(i.get('sequence'))
         print('sequence******************',seq,sorted(seq))
-
-        doc=frappe.get_doc("Dairy Settings")
-        item=0.0
-        if i.get("milk_type")=="Cow":
-            item = frappe.db.get_value('Item',{"name":doc.cow_pro},['weight_per_unit'])
-        if i.get("milk_type")=="Buffalo":
-            item = frappe.db.get_value('Item',{"name":doc.buf_pro},['weight_per_unit'])
-        if i.get("milk_type")=="Mix":
-            item = frappe.db.get_value('Item',{"name":doc.mix_pro},['weight_per_unit'])
-        print('item****************************',item)
-
-
+        
         tdate = date.today()
         d1 = datetime.strptime(self.date, "%Y-%m-%d")
         d2 = datetime.strptime(self.to_date, "%Y-%m-%d")
@@ -316,15 +305,18 @@ class VanCollection(Document):
                                 'sample_lines': res.get('name')
                             })     
                     
-                    # doc=frappe.get_doc("Dairy Settings")
-                    # item=0.0
-                    # if i.get("milk_type")=="Cow":
-                    #     item = frappe.db.get_value('Item',{"name":doc.cow_pro},['weight_per_unit'])
-                    # if i.get("milk_type")=="Buffalo":
-                    #     item = frappe.db.get_value('Item',{"name":doc.buf_pro},['weight_per_unit'])
-                    # if i.get("milk_type")=="Mix":
-                    #     item = frappe.db.get_value('Item',{"name":doc.mix_pro},['weight_per_unit'])
-                    # print('item****************************',item)
+                    doc=frappe.get_doc("Dairy Settings")
+                    item=0.0
+                    if i.get("milk_type")=="Cow":
+                        item = frappe.db.get_value('Item',{"name":doc.cow_pro},['weight_per_unit'])
+                    if i.get("milk_type")=="Buffalo":
+                        item = frappe.db.get_value('Item',{"name":doc.buf_pro},['weight_per_unit'])
+                    if i.get("milk_type")=="Mix":
+                        item = frappe.db.get_value('Item',{"name":doc.mix_pro},['weight_per_unit'])
+                    print('item****************************',item)
+
+
+                    
                     print('buffalo volume8*****************',buffalo_volume)
                     print('cow_volume*********************************',cow_volume,cow_milk_fatin_kg,item)
                     if (cow_volume) > 0:
