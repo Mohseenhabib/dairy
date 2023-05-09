@@ -315,9 +315,9 @@ class VanCollection(Document):
 
                     print('buffalo volume8*****************',buffalo_volume)
                     if (cow_volume) > 0:
-                        van_collection.cow_milk_fat = flt(cow_milk_fatin_kg /(cow_volume * item)) * 100 
-                        van_collection.cow_milk_clr = flt(cow_milk_clrin_kg /(cow_volume * item)) * 100 
-                        van_collection.cow_milk_snf = flt(cow_milk_snfin_kg /(cow_volume * item)) * 100
+                        van_collection.cow_milk_fat = (flt(cow_milk_fatin_kg) /flt((cow_volume * item))) * 100 
+                        van_collection.cow_milk_clr = (flt(cow_milk_clrin_kg) /flt((cow_volume * item))) * 100 
+                        van_collection.cow_milk_snf = (flt(cow_milk_snfin_kg) /flt((cow_volume * item))) * 100
                     if (buffalo_volume) > 0:
                         van_collection.buf_milk_fat = flt(buffalo_milk_fatin_kg /(buffalo_volume  * item)) * 100 
                         van_collection.buf_milk_clr = flt(buffalo_milk_clrin_kg /(buffalo_volume  * item)) * 100
