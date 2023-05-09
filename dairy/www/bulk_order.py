@@ -5,7 +5,7 @@ import math
 from frappe.utils.data import flt
 # from frappe.utils import getdate
 def get_context(context):
-    context.items = frappe.get_list("Website Item", filters={'published': 1}, fields=["item_name", "item_code","website_image"])
+    context.items = frappe.get_list("Website Item", filters={'published': 1}, fields=["item_name", "item_code","website_image"],order_by="item_name asc")
 
 
 @frappe.whitelist()
