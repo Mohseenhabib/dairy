@@ -176,6 +176,7 @@ class VanCollection(Document):
                                         where docstatus =1 and dcs_id = '{0}' and shift = '{1}' and date = '{2}' 
                                         group by milk_type""".format(res.name,j.get('shift'),j.get('date')), as_dict =True)
 
+
                     if result:
                 
                         for sm in result:
@@ -319,18 +320,18 @@ class VanCollection(Document):
                     
                     print('buffalo volume8*****************',buffalo_volume)
                     print('cow_volume*********************************',cow_volume,cow_milk_fatin_kg,item)
-                    if (cow_volume) > 0:
+                    if flt(cow_volume) > 0:
                         print('cow_volume*********************************',cow_volume,cow_milk_fatin_kg,item)
 
                         van_collection.cow_milk_fat = (flt(cow_milk_fatin_kg) /flt((cow_volume * item))) * 100 
                         van_collection.cow_milk_clr = (flt(cow_milk_clrin_kg) /flt((cow_volume * item))) * 100 
                         van_collection.cow_milk_snf = (flt(cow_milk_snfin_kg) /flt((cow_volume * item))) * 100
-                    if (buffalo_volume) > 0:
+                    if flt(buffalo_volume) > 0:
                         van_collection.buf_milk_fat = flt(buffalo_milk_fatin_kg /(buffalo_volume  * item)) * 100 
                         van_collection.buf_milk_clr = flt(buffalo_milk_clrin_kg /(buffalo_volume  * item)) * 100
                         van_collection.buffalow_milk_snf = flt(buffalo_milk_snfin_kg /(buffalo_volume  * item)) * 100
                     
-                    if (mix_volume) > 0:
+                    if flt(mix_volume) > 0:
                         van_collection.mix_milk_fat = flt(mix_milk_fatin_kg /(mix_volume * item)) * 100 
                         van_collection.mix_milk_snf = flt(mix_milk_snfin_kg /(mix_volume * item)) * 100
                         van_collection.cow_milk_clr = flt(mix_milk_clrin_kg /(mix_volume * item)) * 100 
