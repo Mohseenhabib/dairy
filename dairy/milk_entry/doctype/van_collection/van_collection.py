@@ -242,7 +242,7 @@ class VanCollection(Document):
                         buffalo_volume = i.get('total_volume')
                         buf_milk_fat = i.get('fat')
                         buf_milk_clr = i.get('clr')
-                        buffalo_milk_snf = i.get('snf')
+                        buffalow_milk_snf = i.get('snf')
                         buffalo_milk_snfin_kg = i.get('snf_kg')
                         buffalo_milk_fatin_kg = i.get('fat_kg')
                         buffalo_milk_clrin_kg = i.get('clr_kg')
@@ -276,11 +276,13 @@ class VanCollection(Document):
                     van_collection.buffalo_milk_clrin_kg = buffalo_milk_clrin_kg
                     van_collection.buf_milk_fat = buf_milk_fat
                     van_collection.buf_milk_clr = buf_milk_clr
+                    van_collection.buffalow_milk_snf = buffalow_milk_snf
                     van_collection.mix_milk_snfin_kg = mix_milk_snfin_kg
                     van_collection.mix_milk_fatin_kg = mix_milk_fatin_kg
                     van_collection.mix_milk_clrin_kg = mix_milk_clrin_kg
                     van_collection.mix_milk_fat = mix_milk_fat
                     van_collection.mix_milk_clr = mix_milk_clr
+                    van_collection.mix_milk_snf = mix_milk_snf
                     
                 
                 
@@ -310,11 +312,13 @@ class VanCollection(Document):
                     item=0.0
                     if i.get("milk_type")=="Cow":
                         item = frappe.db.get_value('Item',{"name":doc.cow_pro},['weight_per_unit'])
-                    if i.get("milk_type")=="Buffalo":
+                        print('cow item______________________',item)
+                    elif i.get("milk_type")=="Buffalo":
                         item = frappe.db.get_value('Item',{"name":doc.buf_pro},['weight_per_unit'])
-                    if i.get("milk_type")=="Mix":
+                        print('buffalo item ______________________________',item)
+                    elif i.get("milk_type")=="Mix":
                         item = frappe.db.get_value('Item',{"name":doc.mix_pro},['weight_per_unit'])
-                    print('item****************************',item)
+                        print('mix item****************************',item)
 
 
                     
