@@ -67,7 +67,7 @@ class VanCollection(Document):
 
     @frappe.whitelist()
     def van_start_collection(self):
-
+        
         total_date = []
         sde = []
         state_climatic_factor,state_factor = frappe.db.get_value('Warehouse',{'is_dcs':1},['state_climatic_factor','state_factor'])
@@ -86,11 +86,12 @@ class VanCollection(Document):
         for k in range(0,delta.days+1):
             dt = add_to_date(self.date,days=k)
             total_date.append(dt)
-        print('total date&&&&&&&&&&&&&&&&&&&&&&&&&&&',total_date)
+        # print('total date&&&&&&&&&&&&&&&&&&&&&&&&&&&',total_date,k)
         
         if self.shift == self.to_shift:
             remaining_shift = self.get_remaining_shift()
             for rs in remaining_shift:
+                # print('length _______________________--',len(total_date)>1)
                 if len(total_date) > 1:
                     for d in total_date:
                         
@@ -106,21 +107,42 @@ class VanCollection(Document):
                     for uw in sde:
                         if uw.get('date') == self.to_date and self.to_shift != uw.get('shift'):
                             sde.remove(uw)
+                        if self.shift == "Evening" and self.to_shift == "Evening":
+                            if uw.get('date') == self.date:
+                                if uw.get('shift') != self.shift:
+                                    sde.remove(uw)
+                            if uw.get('date') == self.to_date:
+                                if uw.get('shift') != self.to_shift:
+                                    sde.append(uw)
                 elif(len(total_date) == 1):
                     sd = {'date':total_date[0],'shift':self.shift}
                     if sd not in sde:
                         sde.append(sd)
-
+                    
+            print(' equal sdeeeeeeeeeeee88888888888888888888',sde)
 
         if self.shift != self.to_shift:
             for d in total_date:
+
                 sd = {'date':d,'shift':self.shift}
                 sdt = {'date':d,'shift':self.to_shift}
                 if sd not in sde:
+                    # print('sd*************************',sd)
                     sde.append(sd)
                 if sdt not in sde:
+                    # print('sdt************************',sdt)
                     sde.append(sdt)
-        print('sdeeeeeeeeeeee88888888888888888888',sde)
+            for uw in sde:
+                if self.shift == "Evening" and self.to_shift == "Morning":
+                    if uw.get('date') == self.date:
+                        if uw.get('shift') != self.shift:
+                            sde.remove(uw)
+                    if uw.get('date') == self.to_date:
+                        if uw.get('shift') != self.to_shift:
+                            sde.remove(uw)
+
+                
+            print('sdeeeeeeeeeeee88888888888888888888',sde)
 
         if self:
             warehouse = frappe.db.get_all("Warehouse",{
@@ -208,10 +230,10 @@ class VanCollection(Document):
                                 clr_kg_mix += sm.get('clr_kg')
 
 
-                        result = [{'milk_type':'Cow','total_volume':total_volume_cow,'fat':fat_cow,'clr':clr_cow,'fat_kg':fat_kg_cow,'snf_kg':snf_kg_cow,'clr_kg':clr_kg_cow,'snf':snf_cow},
-                                  {'milk_type':'Buffalo','total_volume':total_volume_buf,'fat':fat_buf,'clr':clr_buf,'fat_kg':fat_kg_buf,'snf_kg':snf_kg_buf,'clr_kg':clr_kg_buf,'snf':snf_buf},
-                                  {'milk_type':'Mix','total_volume':total_volume_mix,'fat':fat_mix,'clr':clr_mix,'fat_kg':fat_kg_mix,'snf_kg':snf_kg_mix,'clr_kg':clr_kg_mix,'snf':snf_mix}]
-                    print('result***************************',result,res)
+                result = [{'milk_type':'Cow','total_volume':total_volume_cow,'fat':fat_cow,'clr':clr_cow,'fat_kg':fat_kg_cow,'snf_kg':snf_kg_cow,'clr_kg':clr_kg_cow,'snf':snf_cow},
+                            {'milk_type':'Buffalo','total_volume':total_volume_buf,'fat':fat_buf,'clr':clr_buf,'fat_kg':fat_kg_buf,'snf_kg':snf_kg_buf,'clr_kg':clr_kg_buf,'snf':snf_buf},
+                            {'milk_type':'Mix','total_volume':total_volume_mix,'fat':fat_mix,'clr':clr_mix,'fat_kg':fat_kg_mix,'snf_kg':snf_kg_mix,'clr_kg':clr_kg_mix,'snf':snf_mix}]
+                print('result***************************',result,res)
                 cow_volume = 0.0
                 buffalo_volume = 0.0
                 mix_volume = 0.0
@@ -357,6 +379,7 @@ class VanCollection(Document):
             self.db_set('status', 'In-Progress')
             self.flags.ignore_validate_update_after_submit = True  # ignore after submit permission
             self.save(ignore_permissions=True)
+
         return True
 
 
