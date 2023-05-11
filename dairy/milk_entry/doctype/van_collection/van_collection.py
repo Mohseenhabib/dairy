@@ -142,7 +142,7 @@ class VanCollection(Document):
                             sde.remove(uw)
 
                 
-            print('sdeeeeeeeeeeee88888888888888888888',sde)
+            # print('sdeeeeeeeeeeee88888888888888888888',sde)
 
         if self:
             warehouse = frappe.db.get_all("Warehouse",{
@@ -230,12 +230,12 @@ class VanCollection(Document):
                                 fat_kg_mix += sm.get('fat_kg')
                                 snf_kg_mix += sm.get('snf_kg')
                                 clr_kg_mix += sm.get('clr_kg')
-                            print('ooooooooooooooooooooooooooooooooooooooooooooooo',i.get('dcs_id'))
+                            # print('ooooooooooooooooooooooooooooooooooooooooooooooo',i.get('dcs_id'))
 
                 result = [{'milk_type':'Cow','total_volume':total_volume_cow,'fat':fat_cow,'clr':clr_cow,'fat_kg':fat_kg_cow,'snf_kg':snf_kg_cow,'clr_kg':clr_kg_cow,'snf':snf_cow},
                             {'milk_type':'Buffalo','total_volume':total_volume_buf,'fat':fat_buf,'clr':clr_buf,'fat_kg':fat_kg_buf,'snf_kg':snf_kg_buf,'clr_kg':clr_kg_buf,'snf':snf_buf},
                             {'milk_type':'Mix','total_volume':total_volume_mix,'fat':fat_mix,'clr':clr_mix,'fat_kg':fat_kg_mix,'snf_kg':snf_kg_mix,'clr_kg':clr_kg_mix,'snf':snf_mix}]
-                print('result***************************',result,sm.get('dcs_id'))
+                # print('result***************************',result,sm.get('dcs_id'))
                 cow_volume = 0.0
                 buffalo_volume = 0.0
                 mix_volume = 0.0
@@ -284,19 +284,19 @@ class VanCollection(Document):
                     item=0.0
                     if i.get("milk_type")=="Cow":
                         item = frappe.db.get_value('Item',{"name":doc.cow_pro},['weight_per_unit'])
-                        print('cow item______________________',item)
+                        # print('cow item______________________',item)
                     elif i.get("milk_type")=="Buffalo":
                         item = frappe.db.get_value('Item',{"name":doc.buf_pro},['weight_per_unit'])
-                        print('buffalo item ______________________________',item)
+                        # print('buffalo item ______________________________',item)
                     elif i.get("milk_type")=="Mix":
                         item = frappe.db.get_value('Item',{"name":doc.mix_pro},['weight_per_unit'])
-                        print('mix item****************************',item)
+                        # print('mix item****************************',item)
                 
-                    print('cow volume****************************',cow_volume,i.get('dcs_id'),res)
+                    # print('cow volume****************************',cow_volume,i.get('dcs_id'),res)
                 if cow_volume > 0 or buffalo_volume > 0 or mix_volume > 0:
                     van_collection = frappe.new_doc("Van Collection Items")
                     van_collection.dcs = res.name
-                    print('rres.name------------------------------------------',sm.get('dcs_id'))
+                    # print('rres.name------------------------------------------',sm.get('dcs_id'))
                     # if sm.get('dcs_id'):
                     van_collection.cow_milk_vol = cow_volume
                     van_collection.buf_milk_vol = buffalo_volume
@@ -345,25 +345,10 @@ class VanCollection(Document):
                             van_collection.append("mix_milk_sam", {
                                 'sample_lines': res.get('name')
                             })     
-                    
-                    # doc=frappe.get_doc("Dairy Settings")
-                    # item=0.0
-                    # if i.get("milk_type")=="Cow":
-                    #     item = frappe.db.get_value('Item',{"name":doc.cow_pro},['weight_per_unit'])
-                    #     print('cow item______________________',item)
-                    # elif i.get("milk_type")=="Buffalo":
-                    #     item = frappe.db.get_value('Item',{"name":doc.buf_pro},['weight_per_unit'])
-                    #     print('buffalo item ______________________________',item)
-                    # elif i.get("milk_type")=="Mix":
-                    #     item = frappe.db.get_value('Item',{"name":doc.mix_pro},['weight_per_unit'])
-                    #     print('mix item****************************',item)
-
-
-                    
-                    print('buffalo volume8*****************',buffalo_volume)
-                    print('cow_volume*********************************',cow_volume,cow_milk_fatin_kg,item)
+                   
+                    # print('cow_volume*********************************',cow_volume,cow_milk_fatin_kg,item)
                     if flt(cow_volume) > 0:
-                        print('cow_volume*********************************',cow_volume,cow_milk_fatin_kg,item)
+                        # print('cow_volume*********************************',cow_volume,cow_milk_fatin_kg,item)
 
                         van_collection.cow_milk_fat = (flt(cow_milk_fatin_kg) /flt((cow_volume * item))) * 100 
                         van_collection.cow_milk_clr = (flt(cow_milk_clrin_kg) /flt((cow_volume * item))) * 100 
@@ -395,7 +380,7 @@ def change_van_collection_status(st,method):
         doc = frappe.get_doc("Van Collection Items", st.van_collection_item)
         doc.gate_pass =st.name
         doc.db_update()
-    print('st******************************8', st.rmrd_lines)
+    # print('st******************************8', st.rmrd_lines)
     if st.rmrd_lines:
         doc = frappe.get_doc("RMRD Lines", st.rmrd_lines)
         doc.stock_entry = st.name
