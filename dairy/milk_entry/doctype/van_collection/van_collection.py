@@ -153,33 +153,35 @@ class VanCollection(Document):
                 frappe.throw(_("No Warehouse present in this Route"))
             
             final_result = []
-            milk_type = 'Cow'
-            total_volume_cow = 0.0
-            fat_cow = 0.0 
-            clr_cow = 0.0
-            snf_cow = 0.0
-            fat_kg_cow =0.0
-            snf_kg_cow = 0.0
-            clr_kg_cow = 0.0
-
-            milk_type = 'Buffalo'
-            total_volume_buf= 0.0
-            fat_buf = 0.0 
-            clr_buf = 0.0
-            snf_buf = 0.0
-            fat_kg_buf =0.0
-            snf_kg_buf = 0.0
-            clr_kg_buf = 0.0
-
-            milk_type = 'Mix'
-            total_volume_mix = 0.0
-            fat_mix = 0.0 
-            clr_mix = 0.0
-            snf_mix = 0.0
-            fat_kg_mix =0.0
-            snf_kg_mix = 0.0
-            clr_kg_mix = 0.0
+            
+           
             for res in warehouse:
+                milk_type = 'Cow'
+                total_volume_cow = 0.0
+                fat_cow = 0.0 
+                clr_cow = 0.0
+                snf_cow = 0.0
+                fat_kg_cow =0.0
+                snf_kg_cow = 0.0
+                clr_kg_cow = 0.0
+
+                milk_type = 'Buffalo'
+                total_volume_buf= 0.0
+                fat_buf = 0.0 
+                clr_buf = 0.0
+                snf_buf = 0.0
+                fat_kg_buf =0.0
+                snf_kg_buf = 0.0
+                clr_kg_buf = 0.0
+
+                milk_type = 'Mix'
+                total_volume_mix = 0.0
+                fat_mix = 0.0 
+                clr_mix = 0.0
+                snf_mix = 0.0
+                fat_kg_mix =0.0
+                snf_kg_mix = 0.0
+                clr_kg_mix = 0.0
                 # for j in sde:
                 #     print('dateeeeeeeeeeee************************8',j.get('date'))
                 #     result = frappe.db.sql("""select date,name,dcs_id,milk_type,volume as total_volume,fat as fat,clr as clr ,
@@ -228,12 +230,12 @@ class VanCollection(Document):
                                 fat_kg_mix += sm.get('fat_kg')
                                 snf_kg_mix += sm.get('snf_kg')
                                 clr_kg_mix += sm.get('clr_kg')
-
+                            print('ooooooooooooooooooooooooooooooooooooooooooooooo',i.get('dcs_id'))
 
                 result = [{'milk_type':'Cow','total_volume':total_volume_cow,'fat':fat_cow,'clr':clr_cow,'fat_kg':fat_kg_cow,'snf_kg':snf_kg_cow,'clr_kg':clr_kg_cow,'snf':snf_cow},
                             {'milk_type':'Buffalo','total_volume':total_volume_buf,'fat':fat_buf,'clr':clr_buf,'fat_kg':fat_kg_buf,'snf_kg':snf_kg_buf,'clr_kg':clr_kg_buf,'snf':snf_buf},
                             {'milk_type':'Mix','total_volume':total_volume_mix,'fat':fat_mix,'clr':clr_mix,'fat_kg':fat_kg_mix,'snf_kg':snf_kg_mix,'clr_kg':clr_kg_mix,'snf':snf_mix}]
-                print('result***************************',result,res)
+                print('result***************************',result,sm.get('dcs_id'))
                 cow_volume = 0.0
                 buffalo_volume = 0.0
                 mix_volume = 0.0
@@ -290,10 +292,12 @@ class VanCollection(Document):
                         item = frappe.db.get_value('Item',{"name":doc.mix_pro},['weight_per_unit'])
                         print('mix item****************************',item)
                 
-                print('cow volume****************************',cow_volume)
+                    print('cow volume****************************',cow_volume,i.get('dcs_id'),res)
                 if cow_volume > 0 or buffalo_volume > 0 or mix_volume > 0:
                     van_collection = frappe.new_doc("Van Collection Items")
                     van_collection.dcs = res.name
+                    print('rres.name------------------------------------------',sm.get('dcs_id'))
+                    # if sm.get('dcs_id'):
                     van_collection.cow_milk_vol = cow_volume
                     van_collection.buf_milk_vol = buffalo_volume
                     van_collection.mix_milk_vol = mix_volume
@@ -322,8 +326,8 @@ class VanCollection(Document):
                 
                     result1 = frappe.db.sql("""Select name,milk_type from `tabSample lines` where milk_entry in
                                                         (select name from `tabMilk Entry` 
-                                                        where docstatus =1 and dcs_id = %s and shift BETWEEN %s and %s and date BETWEEN %s and %s
-                                                        )""", (res.name, self.shift,self.to_shift, self.date,self.to_date), as_dict=True)
+                                                        where docstatus =1 and dcs_id = %s and shift =  %s and date = %s
+                                                        )""", (res.name, j.get('shift'),j.get('date')), as_dict=True)
                 
 
                     for res in result1:
