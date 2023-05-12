@@ -31,7 +31,7 @@ frappe.ui.form.on('Bulk Payment', {
         frm.set_query("party_type", function() {
 			return {
 				filters: {
-					"name": ["in", ["Supplier", "Employee"]]
+					"name": ["in", ["Supplier", "Employee","Customer"]]
 				}
 			};
 		});
