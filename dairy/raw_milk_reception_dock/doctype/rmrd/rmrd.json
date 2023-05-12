@@ -10,11 +10,13 @@
   "route",
   "target_warehouse",
   "company",
+  "shift",
   "vehicle",
   "column_break_3",
   "status",
   "date",
-  "shift",
+  "to_date",
+  "to_shift",
   "inspection_required",
   "section_break_7",
   "t_g_cow_can",
@@ -76,14 +78,14 @@
    "fieldname": "date",
    "fieldtype": "Date",
    "in_list_view": 1,
-   "label": "Date",
+   "label": "From Date",
    "reqd": 1
   },
   {
    "fieldname": "shift",
    "fieldtype": "Select",
    "in_list_view": 1,
-   "label": "Shift",
+   "label": "From Shift",
    "options": "\nMorning\nEvening",
    "reqd": 1
   },
@@ -413,11 +415,22 @@
    "fieldname": "t_mix_m_fat_kg",
    "fieldtype": "Float",
    "label": "Total Mix Milk Fat( in Kg)"
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date"
+  },
+  {
+   "fieldname": "to_shift",
+   "fieldtype": "Select",
+   "label": "To Shift",
+   "options": "\nMorning\nEvening"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-05-02 13:21:59.809276",
+ "modified": "2023-05-12 10:28:00.033792",
  "modified_by": "Administrator",
  "module": "Raw Milk Reception Dock",
  "name": "RMRD",
