@@ -38,7 +38,7 @@ def get_data(filters, columns):
 	route = filters.get('route')
 	
 	if customer:
-		result = frappe.db.sql("""select cl.date,cl.shift,cl.customer_name,cl.customer,cl.route,cl.crate_issue,cl.crate_return,cl.crate_balance
+		result = frappe.db.sql("""select cl.date,cl.shift,c.customer_name,cl.customer,cl.route,cl.crate_issue,cl.crate_return,cl.crate_balance
 										from `tabCrate Log` cl join `tabCustomer` c on  cl.customer=c.name
 										where 
 										customer = '{0}'
@@ -48,7 +48,7 @@ def get_data(filters, columns):
 		return data
 
 	else:
-		result = frappe.db.sql("""select cl.date,cl.customer_name,cl.shift,cl.customer,cl.route,cl.crate_issue,cl.crate_return,cl.crate_balance
+		result = frappe.db.sql("""select cl.date,c.customer_name,cl.shift,cl.customer,cl.route,cl.crate_issue,cl.crate_return,cl.crate_balance
 										from `tabCrate Log`cl join `tabCustomer` c on cl.customer=c.name 
 										where 
 										date between '{0}' and '{1}'
