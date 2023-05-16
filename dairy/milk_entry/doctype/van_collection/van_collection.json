@@ -12,8 +12,10 @@
   "status",
   "sb1",
   "date",
+  "to_date",
   "cb1",
   "shift",
+  "to_shift",
   "sb2",
   "vehicle",
   "cb2",
@@ -40,7 +42,7 @@
    "default": "Today",
    "fieldname": "date",
    "fieldtype": "Date",
-   "label": "Date",
+   "label": "From Date",
    "reqd": 1
   },
   {
@@ -51,7 +53,7 @@
    "default": "Morning",
    "fieldname": "shift",
    "fieldtype": "Select",
-   "label": "Shift",
+   "label": "From Shift",
    "options": "Morning\nEvening",
    "reqd": 1
   },
@@ -118,6 +120,17 @@
   {
    "fieldname": "column_break_3",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date"
+  },
+  {
+   "fieldname": "to_shift",
+   "fieldtype": "Select",
+   "label": "To Shift",
+   "options": "Morning\nEvening"
   }
  ],
  "is_submittable": 1,
@@ -128,7 +141,7 @@
    "link_fieldname": "van_collection"
   }
  ],
- "modified": "2023-05-02 13:23:39.145806",
+ "modified": "2023-05-08 16:15:16.179259",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Van Collection",

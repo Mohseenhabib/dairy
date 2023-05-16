@@ -42,15 +42,13 @@ class RMRD(Document):
 		result1 = frappe.db.sql("""select sum(cow_milk_collected) as cow_collected,
 								sum(buffalow_milk_collected) as buf_collected,
 								sum(mix_milk_collected) as mix_collected,
-								
-
 								dcs 
 								from `tabVan Collection Items` 
-								where route =%s and shift =%s and date =%s and gate_pass is not null
+								where route =%s and shift =%s and to_shift= %s and date =%s and to_date = %s and gate_pass is not null
 								group by dcs
-								""", (self.route, self.shift, self.date), as_dict=True)
+								""", (self.route, self.shift,self.to_shift,self.date ,self.to_date), as_dict=True)
 
-
+		print('result1****************************************',result1)
 					
 		if not result1:
 			frappe.throw("Collection Not found!")
@@ -116,8 +114,8 @@ class RMRD(Document):
 
 			result2 = frappe.db.sql("""select count(*) as sam_count,milk_type from `tabMulti Row Milk Sample` where parent in
 									(select name from `tabVan Collection Items`
-									where route =%s and shift =%s and date =%s and dcs =%s) group by milk_type""",
-									(self.route, self.shift, self.date,res.get('dcs')), as_dict=True)
+									where route =%s and shift =%s and to_shift = %s and date =%s and to_date = %s and dcs =%s) group by milk_type""",
+									(self.route, self.shift,self.to_shift, self.date,self.to_date,res.get('dcs')), as_dict=True)
 			for res in result2:
 				if res.get('milk_type') == 'Cow':
 					doc.cow_milk_sam = res.get('sam_count')
