@@ -284,13 +284,13 @@ class VanCollection(Document):
                     item=0.0
                     if i.get("milk_type")=="Cow":
                         item = frappe.db.get_value('Item',{"name":doc.cow_pro},['weight_per_unit'])
-                        # print('cow item______________________',item)
+                        print('cow item______________________',item)
                     elif i.get("milk_type")=="Buffalo":
                         item = frappe.db.get_value('Item',{"name":doc.buf_pro},['weight_per_unit'])
-                        # print('buffalo item ______________________________',item)
+                        print('buffalo item ______________________________',item)
                     elif i.get("milk_type")=="Mix":
                         item = frappe.db.get_value('Item',{"name":doc.mix_pro},['weight_per_unit'])
-                        # print('mix item****************************',item)
+                        print('mix item****************************',item)
                 
                     # print('cow volume****************************',cow_volume,i.get('dcs_id'),res)
                 if cow_volume > 0 or buffalo_volume > 0 or mix_volume > 0:
@@ -351,13 +351,13 @@ class VanCollection(Document):
                     item=0.0
                     if i.get("milk_type")=="Cow":
                         item = frappe.db.get_value('Item',{"name":doc.cow_pro},['weight_per_unit'])
-                        # print('cow item______________________',item)
+                        print('cow item______________________',item)
                     elif i.get("milk_type")=="Buffalo":
                         item = frappe.db.get_value('Item',{"name":doc.buf_pro},['weight_per_unit'])
-                        # print('buffalo item ______________________________',item)
+                        print('buffalo item ______________________________',item)
                     elif i.get("milk_type")=="Mix":
                         item = frappe.db.get_value('Item',{"name":doc.mix_pro},['weight_per_unit'])
-                        # print('mix item****************************',item)
+                        print('mix item****************************',item)
                     # print('cow_volume*********************************',cow_volume,cow_milk_fatin_kg,item)
                     if flt(cow_volume) > 0:
                         # print('cow_volume*********************************',cow_volume,cow_milk_fatin_kg,item)
