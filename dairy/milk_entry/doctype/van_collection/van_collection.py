@@ -285,10 +285,10 @@ class VanCollection(Document):
                     if i.get("milk_type")=="Cow":
                         item = frappe.db.get_value('Item',{"name":doc.cow_pro},['weight_per_unit'])
                         print('cow item______________________',item)
-                    elif i.get("milk_type")=="Buffalo":
+                    if i.get("milk_type")=="Buffalo":
                         item = frappe.db.get_value('Item',{"name":doc.buf_pro},['weight_per_unit'])
                         print('buffalo item ______________________________',item)
-                    elif i.get("milk_type")=="Mix":
+                    if i.get("milk_type")=="Mix":
                         item = frappe.db.get_value('Item',{"name":doc.mix_pro},['weight_per_unit'])
                         print('mix item****************************',item)
                 
