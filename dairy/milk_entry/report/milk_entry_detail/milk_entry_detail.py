@@ -210,7 +210,7 @@ def get_conditions(filters):
 
 
 def get_chart_data(filters, columns):
-    print('charttttttttttttttttttttttttttt')
+    
     a =[]
     volume = []
     lbl = frappe.db.sql("""select distinct(date) , volume
@@ -228,10 +228,10 @@ def get_chart_data(filters, columns):
     for vol in b:
         datasets = []
         datasets.append({"name": _("Volume"), "values": volume})
-        print('datasets****************************************',datasets)   
+          
 
         chart = {"data": {"labels": labels, "datasets": datasets}}
 
         chart["type"] = "line"
-        print('chart*******************************************',chart)
+        
         return chart
