@@ -72,7 +72,6 @@ def execute(filters=None):
 		})
 		if sle.voucher_type == 'Purchase Receipt':
 			purchase = frappe.db.get_value('Purchase Receipt',{'name':sle.voucher_no},['shift'])
-			print('purchase*******************************',purchase)
 			sle.update({
 				"shift":purchase
 			})
@@ -193,7 +192,7 @@ def get_stock_ledger_entries(filters, items):
 		""".format(sle_conditions=get_sle_conditions(filters), item_conditions_sql=item_conditions_sql),
 		filters, as_dict=1)
 
-	print('sl entries************************************', sl_entries)
+	
 	return sl_entries
 
 
