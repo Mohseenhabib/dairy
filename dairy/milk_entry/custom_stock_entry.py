@@ -48,7 +48,7 @@ def milk_ledger_stock_entry(self,method):
        
                         # if mle:
                         #     mle_obj = frappe.get_doc("Milk Ledger Entry",mle[0]['name'])
-                        #     print('mle_obj*************************',mle_obj)
+                        #    
                         #     itm.fat = (mle_obj.fat_per / 100) * (itm.transfer_qty * itm_weight)
                         #     itm.fat_per = mle_obj.fat_per
                         #     itm.snf_clr = (mle_obj.snf_per / 100) * (itm.transfer_qty * itm_weight)
@@ -56,7 +56,7 @@ def milk_ledger_stock_entry(self,method):
 
                         # rate
                         # if milk_type != "":
-                        #     print('milk type**********************')
+                        #    
                         #     query2 = frappe.db.sql(""" select bmpl.name, bmpl.rate, bmpl.snf_clr_rate 
                         #                             from `tabBulk Milk Price List` bmpl, `tabBulk Milk Price List Warehouse` bmplw
                         #                             where bmplw.warehouse = %(warehouse)s and bmpl.active = 1 and bmpl.milk_type = %(milk_type)s 
@@ -240,7 +240,7 @@ def before_save(self,method):
             filters={'from_date':getdate(self.posting_date),'to_date':getdate(self.posting_date),'warehouse':s.s_warehouse,'item_code':s.item_code,'company':self.company}
             filters=frappe._dict(filters)
             ml=exec(filters)
-            # print('mllllllllllllllllllllllllllllll',filters,ml)
+           
             if (len(ml)) > 1:
                 ml = ml[-1]
                 if flt(ml.get("qty_after_transaction"))>0:
@@ -266,7 +266,7 @@ def before_save(self,method):
             filters={'from_date':getdate(self.posting_date),'to_date':getdate(self.posting_date),'warehouse':s.t_warehouse,'item_code':s.item_code,'company':self.company}
             filters=frappe._dict(filters)
             ml=exec(filters)
-            # print('mllllllllllllllllllllllllllllll',filters,ml)
+          
             if (len(ml)) > 1:
                 ml = ml[-1]
                 if flt(ml.get("qty_after_transaction"))>0:
@@ -294,7 +294,7 @@ def cancel_create_milk_stock_ledger(self,method):
             vc = frappe.get_doc('Van Collection',self.van_collection)
             vc.db_set('status','In-Progress')
             vc.db_update()
-            # print('van collection satus *************************')
+          
 
     if self.rmrd or self.rmrd_lines:
         r_lines = frappe.get_doc('RMRD Lines',self.rmrd_lines)
@@ -302,7 +302,7 @@ def cancel_create_milk_stock_ledger(self,method):
             rmrd = frappe.get_doc('RMRD',self.rmrd)
             rmrd.db_set('status','In-Progress')
             rmrd.db_update()
-#             print('van collection satus *************************')
+#            
 #     for itm in self.items:
 #         if itm.t_warehouse:
 #             itm_obj = frappe.get_doc("Item", itm.item_code)
@@ -424,14 +424,14 @@ def cancel_create_milk_stock_ledger(self,method):
 #                         frappe.db.commit()
                                       
     vci = frappe.get_all('Van Collection Items',{'gate_pass':self.name},['name'])
-    # print('vciiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii')
+   
     for i in vci:
         doc=frappe.get_doc("Van Collection Items",i.name)
         se_del = doc.gate_pass
         doc.db_set("gate_pass","")
         self.van_collection_item = ""
         # frappe.db.sql("""DELETE FROM `tabStock Entry` where name = '{0}' """.format(se_del))
-        # print('se_del***********************************')
+      
 
     r_lines = frappe.get_all('RMRD Lines',{'stock_entry':self.name},['name'])
     for rl in r_lines:
@@ -439,7 +439,7 @@ def cancel_create_milk_stock_ledger(self,method):
         se_dlt = doc1.stock_entry
         doc1.db_set('stock_entry',"")
         self.rmrd = ""
-        # print('se dlt*****************************************')
+       
         # frappe.db.sql("""DELETE FROM `tabStock Entry` where name = '{0}' """.format(se_dlt))
 
 
@@ -459,7 +459,7 @@ def update_vc_status(self,method):
             vc = frappe.get_doc('Van Collection',self.van_collection)
             vc.db_set('status','Completed')
             vc.db_update()
-            # print('van collection satus *************************')
+         
 
     if self.rmrd and self.rmrd_lines:
         r_lines = frappe.get_doc('RMRD Lines',self.rmrd_lines)
@@ -467,7 +467,7 @@ def update_vc_status(self,method):
             rmrd = frappe.get_doc('RMRD',self.rmrd)
             rmrd.db_set('status','Completed')
             rmrd.db_update()
-            # print('van collection satus *************************')
+          
 
 
 # def calculate_wfs(self,method):
@@ -589,7 +589,7 @@ def exec(filters=None):
         
 
         data.append(sle)
-        # print('data*************************8',data)
+      
 
         if include_uom:
             conversion_factors.append(item_detail.conversion_factor)
@@ -626,7 +626,7 @@ def exec(filters=None):
 #                 qty=((dx.get("qty_after_transaction")/dx.get("fat_after_transaction"))*se.total_diff_fat_in_kg)/flt(doc.weight_per_unit)
 #                 items.update({"qty":qty})
 #                 break
-#     print("&&&&&&&&&&&&&&&&&&",items)
+#     
 #     if qty==0:
 #         frappe.throw("Item Qty Not found")
 #     return items
