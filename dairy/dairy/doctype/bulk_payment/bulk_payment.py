@@ -54,17 +54,15 @@ class BulkPayment(Document):
 			filters.update({"party_type":self.party_type})
 		filters.update({"docstatus":0})
 		f =frappe.get_all('Payment Entry',filters,["*"])
-		for d in f:
-		# for d in self.items:
-			bank_account_no= frappe.db.get_value("Bank Account",d.party_bank_account,"bank_account_no")
-			branch_code=frappe.db.get_value("Bank Account",d.party_bank_account,"branch_code")
-			bank=frappe.db.get_value("Bank Account",d.party_bank_account,"bank")
+		for d in self.items:
+			branch_code=frappe.db.get_value("Bank Account",{"bank_account_no":d.bank_account_no},"branch_code")
+			bank=frappe.db.get_value("Bank Account",{"bank_account_no":d.bank_account_no},"bank")
 
 			a = a+1
 			x =[]
 			x.append("N")
 			x.append("           ")
-			x.append("'"+str(bank_account_no))
+			x.append("'"+str(d.bank_account_no))
 			x.append(d.paid_amount)
 			x.append(d.party_name)
 			x.append("           ")
@@ -89,7 +87,7 @@ class BulkPayment(Document):
 			x.append(branch_code)
 			x.append(bank)
 			x.append("           ")
-			x.append(frappe.session.user)
+			x.append("bastardairyfarm@gmail.com")
 			l.append(x)
 
 
