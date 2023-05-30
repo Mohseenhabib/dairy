@@ -2,9 +2,12 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
+import calendar
+from datetime import datetime
 import frappe
 from frappe import _
 from frappe.utils import getdate
+from nextproject.nextproject.report.resource_wise_billable_hrs.resource_wise_billable_hrs import daterange_find
 
 
 def execute(filters=None):
@@ -31,6 +34,8 @@ def get_columns(filters, trans):
 	if group_by_cols:
 		columns = based_on_details["based_on_cols"] + group_by_cols + period_cols + \
 			[_("Total(Qty)") + ":Float:120", _("Total(Amt)") + ":Currency:120"]
+		
+	print('columns----------------**************************',columns)
 
 	conditions = {"based_on_select": based_on_details["based_on_select"], "period_wise_select": period_select,
 		"columns": columns, "group_by": based_on_details["based_on_group_by"], "grbc": group_by_cols, "trans": trans,
@@ -89,6 +94,8 @@ def get_data(filters, conditions):
 		else :
 			inc = 0
 
+
+		print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
 		data1 = frappe.db.sql(""" select %s from `tabMilk Entry` t1
 					where  t1.company = %s and %s between %s and %s and
 					t1.docstatus = 1 %s %s
@@ -96,9 +103,17 @@ def get_data(filters, conditions):
 				""" % (query_details,"%s",
 					posting_date, "%s", "%s", conditions.get("addl_tables_relational_cond"), cond, conditions["group_by"]), (filters.get("company"),
 					year_start_date, year_end_date),as_list=1)
-
-
-		print("===data1",data1)
+		
+		# print("===data1",data1)
+		# print('data1 query*****************',""" select %s from `tabMilk Entry` t1
+		# 			where  t1.company = %s and %s between %s and %s and
+		# 			t1.docstatus = 1 %s %s
+		# 			group by %s
+		# 		""" % (query_details,"%s",
+		# 			posting_date, "%s", "%s", conditions.get("addl_tables_relational_cond"), cond, conditions["group_by"]), (filters.get("company"),
+		# 			year_start_date, year_end_date))
+		
+		# print('query details-------------------*******************')
 		for d in range(len(data1)):
 			#to add blanck column
 			dt = data1[d]
@@ -147,7 +162,7 @@ def get_data(filters, conditions):
 
 		data = frappe.db.sql(""" select %s from `tab%s` t1
 					where t1.company = %s and %s between %s and %s and
-					t1.docstatus = 1 %s %s
+					t1.docstatus = 1 %s  %s
 					group by %s
 				""" %
 				(query_details, conditions["trans"],
@@ -160,69 +175,146 @@ def get_data(filters, conditions):
 def get_mon(dt):
 	return getdate(dt).strftime("%b")
 
+def get_day(dt):
+	return getdate(dt).strftime("%d")
+
+
 def period_wise_columns_query(filters, trans):
 	query_details = ''
 	pwc = []
-	bet_dates = get_period_date_ranges(filters.get("period"), filters.get("fiscal_year"))
+	print('fiscal year filter*****************************************',filters.get("fiscal_year"))
+	bet_dates = get_period_date_ranges(filters,filters.get("period"), filters.get("fiscal_year"))
+	print('bet dates%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',bet_dates)
 
 	trans_date = 'date'
-	if filters.get("period") != 'Yearly':
+
+	if filters.get("period") in ["Monthly","Quarterly","Half-Yearly"]:
 		for dt in bet_dates:
 			get_period_wise_columns(dt, filters.get("period"), pwc)
 			query_details = get_period_wise_query(dt, trans_date, query_details)
+	
+	elif filters.get("period") == 'Daily':
+		for dt in bet_dates:
+			pwc+= [{
+				'label': dt[0]+" "+"(Total(Qty))",
+				'fieldname': dt[0]+"_"+"qty",
+				'fieldtype': 'Float',
+				
+			}]
+			pwc+=[{
+				'label': dt[0]+" "+"(Total(Amt))",
+				'fieldname': dt[0]+"_"+"amt",
+				'fieldtype': 'Currency',
+				
+			}]
+			# get_period_wise_columns(dt, filters.get("period"), pwc)
+			query_details = get_day_wise_query(dt, trans_date, query_details)
+			print(query_details)
+
 	else:
 		pwc = [_(filters.get("fiscal_year")) + " ("+_("Qty") + "):Float:120",
 			_(filters.get("fiscal_year")) + " ("+ _("Amt") + "):Currency:120"]
 		query_details = " SUM(t1.volume), SUM(t1.total),"
+	
 
-	query_details += 'SUM(t1.volume), SUM(t1.total)'
+	if filters.get("period") in ["Monthly","Quarterly","Half-Yearly"]:
+		query_details += 'SUM(t1.volume), SUM(t1.total)'
+
+	if filters.get("period") == 'Daily':
+		# # dy = get_period_date_ranges(filters,filters.get('period'), fiscal_year=None, year_start_date=None)
+		# group = get_group_by(filters)
+		# dy = frappe.db.sql('''select sum(t1.volume) as vol from `tabMilk Entry` as t1 where date between '{0}' and '{1}' group by dcs_id '''.format(filters.get('from_date'),filters.get('to_date')),as_dict=1)
+		# print('dyyyyyyyyyyyyyyyyyyyyyy',dy)
+		# dte = frappe.db.sql('''select sum(t1.total) as tot from `tabMilk Entry` as t1 where date between '{0}' and '{1}' group by dcs_id '''.format(filters.get('from_date'),filters.get('to_date')),as_dict=1)
+		# # for k in dy:
+		# query_details += '{0}, {1},'.format(dy,dte)
+		# print('group $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',query_details)
+		query_details += 'SUM(t1.volume), SUM(t1.total)'	
 	return pwc, query_details
+
 
 def get_period_wise_columns(bet_dates, period, pwc):
 	if period == 'Monthly':
 		pwc += [_(get_mon(bet_dates[0])) + " (" + _("Volume") + "):Float:120",
 			_(get_mon(bet_dates[0])) + " (" + _("Amt") + "):Currency:120"]
+		
+	elif period == 'Daily':
+		pwc += [_(get_day(bet_dates[0])) + " (" + _("Volume") + "):Float:120",
+			_(get_day(bet_dates[0])) + " (" + _("Amt") + "):Currency:120"]
+	
 	else:
 		pwc += [_(get_mon(bet_dates[0])) + "-" + _(get_mon(bet_dates[1])) + " (" + _("Volume") + "):Float:120",
 			_(get_mon(bet_dates[0])) + "-" + _(get_mon(bet_dates[1])) + " (" + _("Amt") + "):Currency:120"]
+		
 
+	
+	
 def get_period_wise_query(bet_dates, trans_date, query_details):
+	
 	query_details += """SUM(IF(t1.%(trans_date)s BETWEEN '%(sd)s' AND '%(ed)s', t1.volume, NULL)),
 					SUM(IF(t1.%(trans_date)s BETWEEN '%(sd)s' AND '%(ed)s', t1.total, NULL)),
 				""" % {"trans_date": trans_date, "sd": bet_dates[0],"ed": bet_dates[1]}
 	return query_details
 
-@frappe.whitelist(allow_guest=True)
-def get_period_date_ranges(period, fiscal_year=None, year_start_date=None):
-	from dateutil.relativedelta import relativedelta
+def get_day_wise_query(bet_dates, trans_date, query_details):
+	
+	query_details +=  """SUM(IF(t1.%(trans_date)s='%(sd)s',t1.volume,NULL)),
+						SUM(IF(t1.%(trans_date)s='%(sd)s',t1.total,NULL)),
+				""" %{"trans_date": trans_date, "sd": bet_dates[0]}
+	print('query*****************************************',trans_date)
+	return query_details
 
+@frappe.whitelist(allow_guest=True)
+def get_period_date_ranges(filters,period, fiscal_year=None, year_start_date=None):
+	from dateutil.relativedelta import relativedelta
+	print('fiscal year 01*****************************************',fiscal_year)
 	if not year_start_date:
+		print('fiscal year*****************************************',fiscal_year)
+
 		year_start_date, year_end_date = frappe.db.get_value("Fiscal Year",
 			fiscal_year, ["year_start_date", "year_end_date"])
+	
 
-	increment = {
+	# increment = {
+	# 	"Monthly": 1,
+	# 	"Quarterly": 3,
+	# 	"Half-Yearly": 6,
+	# 	"Yearly": 12
+	# }.get(period)
+
+	period_date_ranges = []
+	if period == "Daily":
+		from_date = datetime.strptime(filters.get("from_date"),"%Y-%m-%d").strftime("%Y,%m,%d")
+		to_date = datetime.strptime(filters.get("to_date"),"%Y-%m-%d").strftime("%Y,%m,%d")
+		start_dt = datetime.strptime(from_date,"%Y,%m,%d").date()
+		end_dt = datetime.strptime(to_date,"%Y,%m,%d").date()
+		for dt in daterange_find(start_dt, end_dt):
+			period_date_ranges.append([dt.strftime("%Y-%m-%d")])
+		print('period date range**********************************************',period_date_ranges)
+
+	else:
+		increment = {
 		"Monthly": 1,
 		"Quarterly": 3,
 		"Half-Yearly": 6,
 		"Yearly": 12
-	}.get(period)
+		}.get(period)
 
-	period_date_ranges = []
-	for i in range(1, 13, increment):
-		period_end_date = getdate(year_start_date) + relativedelta(months=increment, days=-1)
-		if period_end_date > getdate(year_end_date):
-			period_end_date = year_end_date
-		period_date_ranges.append([year_start_date, period_end_date])
-		year_start_date = period_end_date + relativedelta(days=1)
-		if period_end_date == year_end_date:
-			break
+		for i in range(1, 13, increment):
+			period_end_date = getdate(year_start_date) + relativedelta(months=increment, days=-1)
+			if period_end_date > getdate(year_end_date):
+				period_end_date = year_end_date
+			period_date_ranges.append([year_start_date, period_end_date])
+			year_start_date = period_end_date + relativedelta(days=1)
+			if period_end_date == year_end_date:
+				break
 
 	return period_date_ranges
 
 def get_period_month_ranges(period, fiscal_year):
 	from dateutil.relativedelta import relativedelta
 	period_month_ranges = []
-
+	print("-------------------------------------286 fiscal yr",fiscal_year)
 	for start_date, end_date in get_period_date_ranges(period, fiscal_year):
 		months_in_this_period = []
 		while start_date <= end_date:
@@ -264,10 +356,21 @@ def group_wise_column(group_by):
 
 
 
+def get_group_by(filters):
+	sel_col = ''
+	# ind = conditions["columns"].index(conditions["grbc"][0])
+
+	# if filters.get("group_by") == 'Item':
+	# 	sel_col = 't2.item_code'
+	if filters.get("group_by") == 'dcs':
+		sel_col = 't1.dcs_id'
+	elif filters.get("group_by") == 'member':
+		sel_col = 't1.member'
+	elif filters.get("group_by") == 'shift':
+		sel_col = 't1.shift'
 
 
-
-
+	return sel_col
 
 
 

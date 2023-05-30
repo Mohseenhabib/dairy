@@ -26,12 +26,27 @@ frappe.query_reports["Milk Entry Trends"] = {
 			"default": "Monthly"
 		},
 		{
+			"fieldname":"from_date",
+			"label": __("From Date"),
+			"fieldtype": "Date",
+			"default": frappe.datetime.add_months(frappe.datetime.get_today(), -1),
+			"depends_on":"eval:doc.period == 'Daily'"
+		},
+		{
+			"fieldname":"to_date",
+			"label": __("To Date"),
+			"fieldtype": "Date",
+			"default": frappe.datetime.get_today(),
+			"depends_on":"eval:doc.period == 'Daily'"
+		},
+		{
 			"fieldname":"fiscal_year",
 			"label": __("Fiscal Year"),
 			"fieldtype": "Link",
 			"options":'Fiscal Year',
 			"reqd": 1,
-			"default": frappe.sys_defaults.fiscal_year
+			"default": frappe.sys_defaults.fiscal_year,
+			"depends_on":"eval:doc.period != 'Daily'"
 		},
 //		{
 //			"fieldname":"period_based_on",
