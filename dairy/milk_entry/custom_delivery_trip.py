@@ -189,9 +189,11 @@ def get_purchase(pr):
 	for j in doc.items:
 		h={}
 		pr_item=frappe.get_doc("Purchase Receipt",j.purchase_receipt)
+		milk = frappe.get_doc('Milk Entry',pr_item.milk_entry)
 		for k in pr_item.items: 
-			h.update({"ltr":k.qty,"fat":k.fat_per_,"snf":k.snf_clr_per,"rate":k.rate,"amount":k.amount,"posting_date":format_date(pr_item.posting_date),"shift":pr_item.shift})
+			h.update({"ltr":k.qty,"fat":k.fat_per_,"snf":k.snf_clr_per,"rate":milk.unit_price,"amount":k.amount,"posting_date":format_date(pr_item.posting_date),"shift":pr_item.shift})
 		dlst.append(h)
+		
 	sorted_data = sorted(dlst, key=lambda x: (x["posting_date"], x["shift"].lower() != "morning"))
 
 	return sorted_data
