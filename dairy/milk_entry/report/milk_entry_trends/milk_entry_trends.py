@@ -3,11 +3,11 @@
 
 from __future__ import unicode_literals
 import calendar
-from datetime import datetime
+from datetime import datetime, timedelta
 import frappe
 from frappe import _
 from frappe.utils import getdate
-from nextproject.nextproject.report.resource_wise_billable_hrs.resource_wise_billable_hrs import daterange_find
+# from nextproject.nextproject.report.resource_wise_billable_hrs.resource_wise_billable_hrs import daterange_find
 
 
 def execute(filters=None):
@@ -15,7 +15,8 @@ def execute(filters=None):
     data = get_data(filters, conditions)
     return conditions["columns"], data
 
-def get_columns(filters, trans):
+def get_columns(filters,trans):
+
 	validate_filters(filters)
 
 	# get conditions for based_on filter cond
@@ -23,8 +24,10 @@ def get_columns(filters, trans):
 
 	print("===based_on_details",based_on_details)
 	# get conditions for periodic filter cond
+	# name = get_query()
 	period_cols, period_select = period_wise_columns_query(filters, trans)
-	print("===period_cols", period_cols,"====period_select",period_select)
+	print("====period_select",period_select)
+
 
 	# get conditions for grouping filter cond
 	group_by_cols = group_wise_column(filters.get("group_by"))
@@ -57,8 +60,10 @@ def validate_filters(filters):
 def get_data(filters, conditions):
 	data = []
 	inc, cond= '',''
+	# object = get_query()
+	bet_dates = get_period_date_ranges(filters,filters.get("period"), filters.get("fiscal_year"))
 	query_details =  conditions["based_on_select"] + conditions["period_wise_select"]
-
+	print('condditions*********************************',conditions["based_on_select"])
 	posting_date = 't1.date'
 	# if conditions.get('trans') in ['Sales Invoice', 'Purchase Invoice', 'Purchase Receipt', 'Delivery Note']:
 	# 	posting_date = 't1.posting_date'
@@ -80,8 +85,8 @@ def get_data(filters, conditions):
 		sel_col = ''
 		ind = conditions["columns"].index(conditions["grbc"][0])
 
-		# if filters.get("group_by") == 'Item':
-		# 	sel_col = 't2.item_code'
+		if filters.get("group_by") == '':
+			sel_col = ''
 		if filters.get("group_by") == 'dcs':
 			sel_col = 't1.dcs_id'
 		elif filters.get("group_by") == 'member':
@@ -95,23 +100,63 @@ def get_data(filters, conditions):
 			inc = 0
 
 
-		print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-		data1 = frappe.db.sql(""" select %s from `tabMilk Entry` t1
-					where  t1.company = %s and %s between %s and %s and
-					t1.docstatus = 1 %s %s
-					group by %s
-				""" % (query_details,"%s",
-					posting_date, "%s", "%s", conditions.get("addl_tables_relational_cond"), cond, conditions["group_by"]), (filters.get("company"),
-					year_start_date, year_end_date),as_list=1)
+		print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',query_details)
 		
-		# print("===data1",data1)
-		# print('data1 query*****************',""" select %s from `tabMilk Entry` t1
-		# 			where  t1.company = %s and %s between %s and %s and
-		# 			t1.docstatus = 1 %s %s
-		# 			group by %s
-		# 		""" % (query_details,"%s",
-		# 			posting_date, "%s", "%s", conditions.get("addl_tables_relational_cond"), cond, conditions["group_by"]), (filters.get("company"),
-		# 			year_start_date, year_end_date))
+
+		da=""
+		print('print query detail daily%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',query_details)
+		for q in bet_dates:
+			da +=  """SUM(IF(t1.date='{0}',t1.volume,NULL)),
+						SUM(IF(t1.date='{0}',t1.total,NULL)),
+				""" .format(q[0])
+			
+		if filters.get('period') != 'Daily':
+			print('daily daily daily daily daily daily daily')
+			data1 = frappe.db.sql(""" select %s from `tabMilk Entry` t1
+						where  t1.company = %s and %s between %s and %s and
+						t1.docstatus = 1 %s %s
+						group by %s
+					""" % (query_details,"%s",
+						posting_date, "%s", "%s", conditions.get("addl_tables_relational_cond"), cond, conditions["group_by"]), (filters.get("company"),
+						year_start_date, year_end_date),as_list=1)
+			
+
+		elif filters.get('group_by') != 'All' and filters.get('based_on') != 'Milk Type':
+			
+			print('elif elif elif elif elif elif elif elif elif elif elif elif')
+			trans = "Milk Entry"
+			# period_cols, period_select = data1_query(filters, trans)
+			# query_details =  conditions["based_on_select"] + period_select
+			# print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&",bet_dates[0])
+			data1 = frappe.db.sql(""" select t1.milk_type, {0}(select sum(me.volume) from `tabMilk Entry` as me where (me.date between date('{1}') and date('{2}'))) as qty, 
+								(select sum(me.total) from `tabMilk Entry` as me where (me.date between date('{1}') and date('{2}'))) as amt from `tabMilk Entry` t1
+					where  t1.company = '{3}' and t1.date between '{1}' and '{2}' and
+					t1.docstatus = 1 {4} {5} 
+					group by {6}
+				""" .format(da,filters.get('from_date'),filters.get('to_date'),filters.get("company"),conditions.get("addl_tables_relational_cond"), cond, conditions["group_by"]),as_list=1)
+		
+			print("===data1",data1)
+
+
+
+		# elif filters.get('based_on') == 'DCS':
+		# 	data1 = frappe.db.sql(""" select t1.dcs_id, {0}(select sum(me.volume) from `tabMilk Entry` as me where (me.date between date('{1}') and date('{2}'))) as qty, 
+		# 							(select sum(me.total) from `tabMilk Entry` as me where (me.date between date('{1}') and date('{2}'))) as amt from `tabMilk Entry` t1
+		# 				where  t1.company = '{3}' and t1.date between '{1}' and '{2}' and
+		# 				t1.docstatus = 1 {4} {5} 
+		# 				group by {6}
+		# 			""" .format(da,filters.get('from_date'),filters.get('to_date'),filters.get("company"),conditions.get("addl_tables_relational_cond"), cond, conditions["group_by"]),as_list=1)
+
+
+		else:
+			print('elseeeeeeeeeeee!!!!!!!!!!!@@@@@@@@@@@#########$$$$$%%%%%%%%%%^^^^^')
+			data1 = frappe.db.sql(""" select t1.dcs_id,t1.milk_type, {0}(select sum(me.volume) from `tabMilk Entry` as me where (me.date between date('{1}') and date('{2}') and me.{6} = t1.{6} group by me.{6}))) as qty, 
+								(select sum(me.total) from `tabMilk Entry` as me where (me.date between date('{1}') and date('{2}') and me.{6} = t1.{6} group by me.{6}))) as amt from `tabMilk Entry` t1
+					where  t1.company = '{3}' and t1.date between '{1}' and '{2}' and
+					t1.docstatus = 1 {4} {5} 
+					
+				""" .format(da,filters.get('from_date'),filters.get('to_date'),filters.get("company"),conditions.get("addl_tables_relational_cond"), cond,"t1.dcs_id"),as_list=1)
+		
 		
 		# print('query details-------------------*******************')
 		for d in range(len(data1)):
@@ -128,7 +173,7 @@ def get_data(filters, conditions):
 					(sel_col,  conditions["trans"],
 						"%s", posting_date, "%s", "%s", conditions["group_by"], "%s", conditions.get("addl_tables_relational_cond"), cond),
 					(filters.get("company"), year_start_date, year_end_date, data1[d][0]), as_list=1)
-
+			
 			for i in range(len(row)):
 				des = ['' for q in range(len(conditions["columns"]))]
 
@@ -142,7 +187,7 @@ def get_data(filters, conditions):
 							"%s", conditions["group_by"], "%s", conditions.get("addl_tables_relational_cond"), cond),
 						(filters.get("company"), year_start_date, year_end_date, row[i][0],
 							data1[d][0]), as_list=1)
-
+				print('row1^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',row1)
 				des[ind] = row[i][0]
 
 				for j in range(1,len(conditions["columns"])-inc):
@@ -179,7 +224,9 @@ def get_day(dt):
 	return getdate(dt).strftime("%d")
 
 
-def period_wise_columns_query(filters, trans):
+def period_wise_columns_query(filters,trans):
+	# obct = get_query(name)
+	
 	query_details = ''
 	pwc = []
 	print('fiscal year filter*****************************************',filters.get("fiscal_year"))
@@ -208,6 +255,7 @@ def period_wise_columns_query(filters, trans):
 				
 			}]
 			# get_period_wise_columns(dt, filters.get("period"), pwc)
+
 			query_details = get_day_wise_query(dt, trans_date, query_details)
 			print(query_details)
 
@@ -217,20 +265,87 @@ def period_wise_columns_query(filters, trans):
 		query_details = " SUM(t1.volume), SUM(t1.total),"
 	
 
-	if filters.get("period") in ["Monthly","Quarterly","Half-Yearly"]:
+	if filters.get("period") in ["Monthly","Quarterly","Half-Yearly","Yearly"]:
 		query_details += 'SUM(t1.volume), SUM(t1.total)'
 
 	if filters.get("period") == 'Daily':
-		# # dy = get_period_date_ranges(filters,filters.get('period'), fiscal_year=None, year_start_date=None)
-		# group = get_group_by(filters)
-		# dy = frappe.db.sql('''select sum(t1.volume) as vol from `tabMilk Entry` as t1 where date between '{0}' and '{1}' group by dcs_id '''.format(filters.get('from_date'),filters.get('to_date')),as_dict=1)
-		# print('dyyyyyyyyyyyyyyyyyyyyyy',dy)
-		# dte = frappe.db.sql('''select sum(t1.total) as tot from `tabMilk Entry` as t1 where date between '{0}' and '{1}' group by dcs_id '''.format(filters.get('from_date'),filters.get('to_date')),as_dict=1)
-		# # for k in dy:
-		# query_details += '{0}, {1},'.format(dy,dte)
-		# print('group $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',query_details)
-		query_details += 'SUM(t1.volume), SUM(t1.total)'	
+	# 	# dy = get_period_date_ranges(filters,filters.get('period'), fiscal_year=None, year_start_date=None)
+		
+		group = get_group_by(filters)
+		# if name == 'row1':
+		if not filters.get('group_by'):
+			query_details += '''(select sum(me.volume) from `tabMilk Entry` as me where (me.date between date('{0}') and date('{1}'))) as qty, 
+								(select sum(me.total) from `tabMilk Entry` as me where (me.date between date('{0}') and date('{1}'))) as amt'''.format(filters.get('from_date'),filters.get('to_date'))	
+			
+		
+		elif filters.get('group_by') in ["dcs","member","shift"]:
+			
+				
+			query_details += '''(select sum(me.volume) from `tabMilk Entry` as me where me.date between date('{0}') and date('{1}') and me.{2} = t1.{2} group by me.{2}) as qty, 
+								(select sum(me.total) from `tabMilk Entry` as me where (me.date between date('{0}') and date('{1}')) and me.{2} = t1.{2} group by me.{2}) as amt'''.format(filters.get('from_date'),filters.get('to_date'),group)
+
+			
+
 	return pwc, query_details
+
+# def data1_query(filters,trans):
+# 	# obct = get_query(name)
+	
+# 	query_details = ''
+# 	pwc = []
+# 	print('fiscal year filter*****************************************',filters.get("fiscal_year"))
+# 	bet_dates = get_period_date_ranges(filters,filters.get("period"), filters.get("fiscal_year"))
+# 	print('bet dates%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',bet_dates)
+
+# 	trans_date = 'date'
+
+# 	if filters.get("period") in ["Monthly","Quarterly","Half-Yearly"]:
+# 		for dt in bet_dates:
+# 			get_period_wise_columns(dt, filters.get("period"), pwc)
+# 			query_details = get_period_wise_query(dt, trans_date, query_details)
+	
+# 	elif filters.get("period") == 'Daily':
+# 		for dt in bet_dates:
+# 			pwc+= [{
+# 				'label': dt[0]+" "+"(Total(Qty))",
+# 				'fieldname': dt[0]+"_"+"qty",
+# 				'fieldtype': 'Float',
+				
+# 			}]
+# 			pwc+=[{
+# 				'label': dt[0]+" "+"(Total(Amt))",
+# 				'fieldname': dt[0]+"_"+"amt",
+# 				'fieldtype': 'Currency',
+				
+# 			}]
+
+# 			query_details = get_day_wise_query(dt, trans_date, query_details)
+# 			print(query_details)
+
+# 	else:
+# 		pwc = [_(filters.get("fiscal_year")) + " ("+_("Qty") + "):Float:120",
+# 			_(filters.get("fiscal_year")) + " ("+ _("Amt") + "):Currency:120"]
+# 		query_details = " SUM(t1.volume), SUM(t1.total),"
+	
+
+# 	if filters.get("period") in ["Monthly","Quarterly","Half-Yearly"]:
+# 		query_details += 'SUM(t1.volume), SUM(t1.total)'
+
+# 	if filters.get("period") == 'Daily':
+# 		# group = get_group_by(filters)
+# 		# if not filters.get('group_by'):
+# 		query_details += '''(select sum(me.volume) from `tabMilk Entry` as me where (me.date between date('{0}') and date('{1}'))) as qty, 
+# 							(select sum(me.total) from `tabMilk Entry` as me where (me.date between date('{0}') and date('{1}'))) as amt'''.format(filters.get('from_date'),filters.get('to_date'))	
+		
+		
+# 		# elif filters.get('group_by') in ["dcs","member","shift"]:
+			
+				
+# 		# 	query_details += '''(select sum(me.volume) from `tabMilk Entry` as me where me.date between date('{0}') and date('{1}') and me.{2} = t1.{2} group by me.{2}) as qty, 
+# 		# 						(select sum(me.total) from `tabMilk Entry` as me where (me.date between date('{0}') and date('{1}')) and me.{2} = t1.{2} group by me.{2}) as amt'''.format(filters.get('from_date'),filters.get('to_date'),group)
+		
+# 	return pwc, query_details
+
 
 
 def get_period_wise_columns(bet_dates, period, pwc):
@@ -254,6 +369,8 @@ def get_period_wise_query(bet_dates, trans_date, query_details):
 	query_details += """SUM(IF(t1.%(trans_date)s BETWEEN '%(sd)s' AND '%(ed)s', t1.volume, NULL)),
 					SUM(IF(t1.%(trans_date)s BETWEEN '%(sd)s' AND '%(ed)s', t1.total, NULL)),
 				""" % {"trans_date": trans_date, "sd": bet_dates[0],"ed": bet_dates[1]}
+	
+	print('query period WISE*****************************************',query_details)
 	return query_details
 
 def get_day_wise_query(bet_dates, trans_date, query_details):
@@ -261,8 +378,12 @@ def get_day_wise_query(bet_dates, trans_date, query_details):
 	query_details +=  """SUM(IF(t1.%(trans_date)s='%(sd)s',t1.volume,NULL)),
 						SUM(IF(t1.%(trans_date)s='%(sd)s',t1.total,NULL)),
 				""" %{"trans_date": trans_date, "sd": bet_dates[0]}
-	print('query*****************************************',trans_date)
+	print('query DAY WISE*****************************************',query_details)
 	return query_details
+
+def daterange_find(date1, date2):
+    for n in range(int ((date2 - date1).days)+1):
+        yield date1 + timedelta(n)
 
 @frappe.whitelist(allow_guest=True)
 def get_period_date_ranges(filters,period, fiscal_year=None, year_start_date=None):
@@ -273,6 +394,7 @@ def get_period_date_ranges(filters,period, fiscal_year=None, year_start_date=Non
 
 		year_start_date, year_end_date = frappe.db.get_value("Fiscal Year",
 			fiscal_year, ["year_start_date", "year_end_date"])
+		
 	
 
 	# increment = {
@@ -360,17 +482,21 @@ def get_group_by(filters):
 	sel_col = ''
 	# ind = conditions["columns"].index(conditions["grbc"][0])
 
-	# if filters.get("group_by") == 'Item':
-	# 	sel_col = 't2.item_code'
+	if filters.get("group_by") == '':
+		sel_col = ''
 	if filters.get("group_by") == 'dcs':
-		sel_col = 't1.dcs_id'
+		sel_col = 'dcs_id'
 	elif filters.get("group_by") == 'member':
-		sel_col = 't1.member'
+		sel_col = 'member'
 	elif filters.get("group_by") == 'shift':
-		sel_col = 't1.shift'
+		sel_col = 'shift'
 
 
 	return sel_col
+
+
+def get_query(name):
+	return name
 
 
 
