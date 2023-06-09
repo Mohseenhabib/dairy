@@ -109,7 +109,8 @@ def get_data(filters, conditions):
 			da +=  """SUM(IF(t1.date='{0}',t1.volume,NULL)),
 						SUM(IF(t1.date='{0}',t1.total,NULL)),
 				""" .format(q[0])
-			
+			print('daaaaaadaaaaaaaaaaaaadaaaaaa',da)
+
 		if filters.get('period') != 'Daily':
 			print('daily daily daily daily daily daily daily')
 			data1 = frappe.db.sql(""" select %s from `tabMilk Entry` t1
@@ -121,13 +122,11 @@ def get_data(filters, conditions):
 						year_start_date, year_end_date),as_list=1)
 			
 
-		elif filters.get('group_by') != 'All' and filters.get('based_on') != 'Milk Type':
-			
+		# elif filters.get('group_by') != 'All' and filters.get('based_on') != 'milk_type':
+		# else:	
+		if filters.get('based_on') == 'milk_type':
 			print('elif elif elif elif elif elif elif elif elif elif elif elif')
 			trans = "Milk Entry"
-			# period_cols, period_select = data1_query(filters, trans)
-			# query_details =  conditions["based_on_select"] + period_select
-			# print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&",bet_dates[0])
 			data1 = frappe.db.sql(""" select t1.milk_type, {0}(select sum(me.volume) from `tabMilk Entry` as me where (me.date between date('{1}') and date('{2}'))) as qty, 
 								(select sum(me.total) from `tabMilk Entry` as me where (me.date between date('{1}') and date('{2}'))) as amt from `tabMilk Entry` t1
 					where  t1.company = '{3}' and t1.date between '{1}' and '{2}' and
@@ -139,23 +138,28 @@ def get_data(filters, conditions):
 
 
 
-		# elif filters.get('based_on') == 'DCS':
-		# 	data1 = frappe.db.sql(""" select t1.dcs_id, {0}(select sum(me.volume) from `tabMilk Entry` as me where (me.date between date('{1}') and date('{2}'))) as qty, 
-		# 							(select sum(me.total) from `tabMilk Entry` as me where (me.date between date('{1}') and date('{2}'))) as amt from `tabMilk Entry` t1
-		# 				where  t1.company = '{3}' and t1.date between '{1}' and '{2}' and
-		# 				t1.docstatus = 1 {4} {5} 
-		# 				group by {6}
-		# 			""" .format(da,filters.get('from_date'),filters.get('to_date'),filters.get("company"),conditions.get("addl_tables_relational_cond"), cond, conditions["group_by"]),as_list=1)
+		if filters.get('based_on') == 'dcs' and filters.get('group_by') != "":
+			data1 = frappe.db.sql(""" select t1.dcs_id, {0}(select sum(me.volume) from `tabMilk Entry` as me where (me.date between date('{1}') and date('{2}'))) as qty, 
+									(select sum(me.total) from `tabMilk Entry` as me where (me.date between date('{1}') and date('{2}'))) as amt from `tabMilk Entry` t1
+						where  t1.company = '{3}' and t1.date between '{1}' and '{2}' and
+						t1.docstatus = 1 {4} {5} 
+						group by {6}
+					""" .format(da,filters.get('from_date'),filters.get('to_date'),filters.get("company"),conditions.get("addl_tables_relational_cond"), cond, conditions["group_by"]),as_list=1)
 
-
-		else:
-			print('elseeeeeeeeeeee!!!!!!!!!!!@@@@@@@@@@@#########$$$$$%%%%%%%%%%^^^^^')
-			data1 = frappe.db.sql(""" select t1.dcs_id,t1.milk_type, {0}(select sum(me.volume) from `tabMilk Entry` as me where (me.date between date('{1}') and date('{2}') and me.{6} = t1.{6} group by me.{6}))) as qty, 
-								(select sum(me.total) from `tabMilk Entry` as me where (me.date between date('{1}') and date('{2}') and me.{6} = t1.{6} group by me.{6}))) as amt from `tabMilk Entry` t1
-					where  t1.company = '{3}' and t1.date between '{1}' and '{2}' and
-					t1.docstatus = 1 {4} {5} 
+			print('for dcs ****************************************',""" select t1.dcs_id, {0}(select sum(me.volume) from `tabMilk Entry` as me where (me.date between date('{1}') and date('{2}'))) as qty, 
+									(select sum(me.total) from `tabMilk Entry` as me where (me.date between date('{1}') and date('{2}'))) as amt from `tabMilk Entry` t1
+						where  t1.company = '{3}' and t1.date between '{1}' and '{2}' and
+						t1.docstatus = 1 {4} {5} 
+						group by {6}
+					""".format(da,filters.get('from_date'),filters.get('to_date'),filters.get("company"),conditions.get("addl_tables_relational_cond"), cond, conditions["group_by"]))
+		# else:
+		# 	print('elseeeeeeeeeeee!!!!!!!!!!!@@@@@@@@@@@#########$$$$$%%%%%%%%%%^^^^^')
+		# 	data1 = frappe.db.sql(""" select t1.dcs_id,t1.milk_type, {0}(select sum(me.volume) from `tabMilk Entry` as me where (me.date between date('{1}') and date('{2}') and me.{6} = t1.{6} group by me.{6}))) as qty, 
+		# 						(select sum(me.total) from `tabMilk Entry` as me where (me.date between date('{1}') and date('{2}') and me.{6} = t1.{6} group by me.{6}))) as amt from `tabMilk Entry` t1
+		# 			where  t1.company = '{3}' and t1.date between '{1}' and '{2}' and
+		# 			t1.docstatus = 1 {4} {5} 
 					
-				""" .format(da,filters.get('from_date'),filters.get('to_date'),filters.get("company"),conditions.get("addl_tables_relational_cond"), cond,"t1.dcs_id"),as_list=1)
+		# 		""" .format(da,filters.get('from_date'),filters.get('to_date'),filters.get("company"),conditions.get("addl_tables_relational_cond"), cond,"t1.dcs_id"),as_list=1)
 		
 		
 		# print('query details-------------------*******************')
@@ -173,7 +177,8 @@ def get_data(filters, conditions):
 					(sel_col,  conditions["trans"],
 						"%s", posting_date, "%s", "%s", conditions["group_by"], "%s", conditions.get("addl_tables_relational_cond"), cond),
 					(filters.get("company"), year_start_date, year_end_date, data1[d][0]), as_list=1)
-			
+			print('row**************************************************',row)
+
 			for i in range(len(row)):
 				des = ['' for q in range(len(conditions["columns"]))]
 
