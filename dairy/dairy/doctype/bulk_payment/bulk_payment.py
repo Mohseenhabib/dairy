@@ -62,7 +62,7 @@ class BulkPayment(Document):
 			x =[]
 			x.append("N")
 			x.append("           ")
-			x.append("'"+str(d.bank_account_no))
+			x.append(str(d.bank_account_no))
 			x.append(d.paid_amount)
 			x.append(d.party_name)
 			x.append("           ")
