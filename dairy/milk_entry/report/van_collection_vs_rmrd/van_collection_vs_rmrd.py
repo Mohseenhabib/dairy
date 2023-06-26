@@ -341,7 +341,9 @@ def get_data(filters, conditions):
 
 	posting_date = 't1.date'
 	if conditions.get('trans') in ['RMRD Lines']:
+		print(' date &&&&&&&&&&&&&&&&&&&&&&&',posting_date)
 		posting_date = 't1.date'
+
 		if filters.period_based_on:
 			posting_date = 't1.'+filters.period_based_on
 
@@ -364,11 +366,18 @@ def get_data(filters, conditions):
 		else:
 			inc = 1
 		data1 = frappe.db.sql(""" select %s from `tab%s` t1
-					where t1.company = %s and %s between %s and %s and %s is not null and
-					t1.docstatus = 1 %s %s
+					where t1.company = %s and %s between %s and %s and %s is not null %s %s
 					group by %s""" % (query_details,  conditions["trans"],  "%s",
 					posting_date, "%s", "%s",base_on_name, conditions.get("addl_tables_relational_cond"), cond, conditions["group_by"]), (filters.get("company"),
 					year_start_date, year_end_date),as_list=1)
+
+		print('@@@@@@@@@@@@@@@@@@',""" select %s from `tab%s` t1
+					where t1.company = %s and %s between %s and %s and %s is not null %s %s
+					group by %s""" % (query_details,  conditions["trans"],  "%s",
+					posting_date, "%s", "%s",base_on_name, conditions.get("addl_tables_relational_cond"), cond, conditions["group_by"]), (filters.get("company"),
+					year_start_date, year_end_date))
+
+		print('@@@@@@@@@@@@@@@@@@@@@@@@2',conditions["trans"])
 
 
 		for d in range(len(data1)):
@@ -380,7 +389,7 @@ def get_data(filters, conditions):
 	# 		#to get distinct value of col specified by group_by in filter
 			row = frappe.db.sql("""select DISTINCT(%s) from `tab%s` t1
 						where t1.company = %s and %s between %s and %s and %s is not null
-						and t1.docstatus = 1 and %s = %s %s %s
+						and %s = %s %s %s
 					""" %
 					(sel_col,  conditions["trans"],
 						"%s", posting_date, "%s", "%s",base_on_name, conditions["group_by"], "%s", conditions.get("addl_tables_relational_cond"), cond),
@@ -392,7 +401,7 @@ def get_data(filters, conditions):
 	# 			#get data for group_by filter
 				row1 = frappe.db.sql(""" select %s , %s from `tab%s` t1
 							where t1.company = %s and %s between %s and %s and %s is not null
-							and t1.docstatus = 1 and %s = %s and %s = %s %s %s
+							and %s = %s and %s = %s %s %s
 						""" %
 						(sel_col, conditions["period_wise_select"], conditions["trans"],
 							"%s", posting_date, "%s","%s",base_on_name, sel_col,
@@ -408,13 +417,23 @@ def get_data(filters, conditions):
 				data.append(des)
 	else:
 		data = frappe.db.sql(""" select %s from `tab%s` t1
+					where t1.company = %s and %s between %s and %s and  %s is not null
+					%s %s
+					group by %s
+					""" %
+				(query_details, conditions["trans"],
+					"%s", posting_date, "%s", "%s",base_on_name, cond, conditions.get("addl_tables_relational_cond", ""), conditions["group_by"]),
+				(filters.get("company"), year_start_date, year_end_date), as_list=1)
+		
+
+		print('RRRRRRRRRRRRRRRRRRRR------------data',""" select %s from `tab%s` t1
 					where t1.company = %s and %s between %s and %s and  %s is not null and
 					t1.docstatus = 1 %s %s
 					group by %s
 					""" %
 				(query_details, conditions["trans"],
 					"%s", posting_date, "%s", "%s",base_on_name, cond, conditions.get("addl_tables_relational_cond", ""), conditions["group_by"]),
-				(filters.get("company"), year_start_date, year_end_date), as_list=1)
+				(filters.get("company"), year_start_date, year_end_date))
 
 	return data
 
