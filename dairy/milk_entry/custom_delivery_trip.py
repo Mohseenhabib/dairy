@@ -110,7 +110,7 @@ def get_jinja_data_si_item(del_note):
 	for itm in dist_itm:
 		obj = frappe.get_doc("Item",itm[0])
 		if len(obj.crate) == 0:
-			res2 = frappe.db.sql(""" select distinct(s.item_code),s.item_name,s.batch_no,s.stock_uom,sum(s.stock_qty) as stock_qty,
+			res2 = frappe.db.sql(""" select s.item_code,s.item_name,s.batch_no,s.stock_uom,sum(s.stock_qty) as stock_qty,
 									cs.voucher,cs.crate_issue,cs.crate_return
 									from `tabSales Invoice Item` as s
 									join `tabCrate Summary` as cs
@@ -125,7 +125,7 @@ def get_jinja_data_si_item(del_note):
 
 		else:
 			
-			res2 = frappe.db.sql(""" select distinct(s.item_code),s.item_name,s.batch_no,s.stock_uom,sum(s.stock_qty) as stock_qty,
+			res2 = frappe.db.sql(""" select s.item_code,s.item_name,s.batch_no,s.stock_uom,sum(s.stock_qty) as stock_qty,
 									cs.voucher,cs.crate_issue,cs.crate_return
 									from `tabSales Invoice Item` as s
 									join `tabCrate Summary` as cs
