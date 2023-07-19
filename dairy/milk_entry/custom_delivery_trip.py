@@ -115,8 +115,6 @@ def get_jinja_data_si_item(del_note):
 									from `tabSales Invoice Item` as s
 									join `tabCrate Summary` as cs
 									on s.parent = cs.voucher
-									join `tabCrate Count Child` as ccc
-									on s.item_code = ccc.item_code
 									where s.parent = %(name)s and s.item_code = %(item_code)s""",
 								{'name':del_note,'item_code':obj.item_code}, as_dict=True)
 
@@ -130,8 +128,6 @@ def get_jinja_data_si_item(del_note):
 									from `tabSales Invoice Item` as s
 									join `tabCrate Summary` as cs
 									on s.parent = cs.voucher
-									join `tabCrate Count Child` as ccc
-									on s.item_code = ccc.item_code
 									where s.parent = %(name)s and s.item_code = %(item_code)s""",
 								{'name':del_note,'item_code':obj.item_code}, as_dict=True)
 			print('else--------------------------------',res2)
