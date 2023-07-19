@@ -31,6 +31,7 @@ def get_jinja_data_del_note(doc):
 def get_jinja_data_si(doc):
 	res = frappe.db.sql("""
 	select distinct(sales_invoice) from `tabGate Pass Item` where parent = %(name)s """, {"name": doc.name}, as_dict=True)
+	print('get_jinja_data_si---------------------------')
 	return res
 
 @frappe.whitelist()
@@ -46,9 +47,10 @@ def del_note_details(del_note):
 def si_note_details(del_note):
 	res = frappe.db.sql("""
 	select 
-		name,customer_name,route
+		name,customer,customer_name,route
 	from 
 		`tabSales Invoice` where name = %(name)s """, {"name": del_note}, as_dict=True)
+	print('si_note_details------------------------------')
 	return res
 
 @frappe.whitelist()
@@ -87,36 +89,48 @@ def get_jinja_data_del_note_item(del_note):
 
 @frappe.whitelist()
 def get_jinja_data_si_item(del_note):
-	print('del note^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',del_note)
-	
+	# ic = []	
+	print('------------------------------------------------------del note')
 	res = frappe.db.sql("""
 	select 
-		A.item_code,A.item_name,A.batch_no,A.stock_uom,A.stock_qty,B.free_qty,B.outgoing_count,B.incoming_count,B.crate_type
+		distinct(A.item_code),A.item_name,A.batch_no,A.stock_uom,A.stock_qty,B.free_qty,B.outgoing_count,B.incoming_count,B.crate_type,
+		     C.voucher,C.crate_issue,C.crate_return
 	from 
 		`tabSales Invoice Item` A
-	right outer Join `tabCrate Count Child` B
-	on A.parent = B.parent
+	Join `tabCrate Count Child` B
+	on A.item_code = B.item_code
+	join `tabCrate Summary` C
+	on A.parent = C.voucher
 	where 
 		A.parent = %(name)s and B.parent = %(name)s and A.is_free_item = 0 """, {"name": del_note}, as_dict=True)
-	print("&&&&&&&&&&&&&&&&&&&&",res)
-	dist_itm = frappe.db.sql(""" select distinct(item_code) from `tabSales Invoice Item` where parent = %(name)s """,
+	print('res--------------------------------------',res)
+	dist_itm = frappe.db.sql(""" select distinct(item_code) from `tabSales Invoice Item`  where parent = %(name)s """,
 							 {'name':del_note})
 	
-	print('dist_itm^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',dist_itm)
 	for itm in dist_itm:
 		obj = frappe.get_doc("Item",itm[0])
 		if len(obj.crate) == 0:
-			res2 = frappe.db.sql(""" select item_code,item_name,batch_no,stock_uom,sum(stock_qty) as stock_qty
-									from `tabSales Invoice Item` where parent = %(name)s and item_code = %(item_code)s""",
+			res2 = frappe.db.sql(""" select s.item_code,s.item_name,s.batch_no,s.stock_uom,sum(s.stock_qty) as stock_qty,
+									cs.voucher,cs.crate_issue,cs.crate_return
+									from `tabSales Invoice Item` as s
+									join `tabCrate Summary` as cs
+									on s.parent = cs.voucher
+									where s.parent = %(name)s and s.item_code = %(item_code)s""",
 								{'name':del_note,'item_code':obj.item_code}, as_dict=True)
 
 			for i in range(0, len(res2)):
 				res.append(res2[i])
-		else:
-			res2 = frappe.db.sql(""" select item_code,item_name,batch_no,stock_uom,sum(stock_qty) as stock_qty
-									from `tabSales Invoice Item` where parent = %(name)s and item_code = %(item_code)s""",
-								{'name':del_note,'item_code':obj.item_code}, as_dict=True)
 
+		else:
+			
+			res2 = frappe.db.sql(""" select s.item_code,s.item_name,s.batch_no,s.stock_uom,sum(s.stock_qty) as stock_qty,
+									cs.voucher,cs.crate_issue,cs.crate_return
+									from `tabSales Invoice Item` as s
+									join `tabCrate Summary` as cs
+									on s.parent = cs.voucher
+									where s.parent = %(name)s and s.item_code = %(item_code)s""",
+								{'name':del_note,'item_code':obj.item_code}, as_dict=True)
+			print('else--------------------------------',res2)
 			for i in range(0, len(res2)):
 				res.append(res2[i])
 			
