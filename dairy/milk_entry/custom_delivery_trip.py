@@ -227,7 +227,7 @@ def si_note_total(del_note):
 								sum(qty)
 								ELSE 0
 								END as crate_qty from `tabSales Invoice Item` 
-								  where parent = %(name)s """,{'name':del_note},as_dict=True)
+								  where parent = %(name)s and uom = "Crate" """,{'name':del_note},as_dict=True)
 	res["crate_qty"] = crate_qty[0]["crate_qty"]
 
 	f_res.append(res)
