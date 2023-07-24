@@ -4,6 +4,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe import _
+from itertools import zip_longest
 
 
 def execute(filters=None):
@@ -117,40 +118,151 @@ def get_data(filters):
     # print("======")
     conditions = get_conditions(filters)
 
-    query = """ select name,dcs,cow_milk_vol,buf_milk_vol,mix_milk_vol,cow_milk_cans,buf_milk_cans,
-    			mix_milk_cans,cow_milk_sam,buf_milk_sam,mix_milk_sam,time,parent from `tabVan Collection Items` """
+    vci = frappe.get_all('Van Collection Items',{'van_collection':filters.get('parent')},['name'])
+    
+    query = """ select vci.name,vci.dcs,vci.cow_milk_vol,vci.buf_milk_vol,vci.mix_milk_vol,vci.cow_milk_cans,vci.buf_milk_cans,
+    			        vci.mix_milk_cans,vci.time,vci.van_collection ,mr.sample_lines,(case
+                        when sl.milk_type = 'Cow' then 'cow_milk_sam'
+                        when sl.milk_type = 'Buffalo' then 'buf_milk_sam'
+                        when sl.milk_type = 'Mix' then 'mix_milk_sam' 
+                        else "" end) as sm
+                        from `tabVan Collection Items` as vci
+                        join `tabMulti Row Milk Sample` as mr on mr.parent = vci.name
+                        join `tabSample lines` as sl on mr.sample_lines = sl.name 
+                        {conditions}  group by sl.milk_type,mr.sample_lines""".format(conditions = conditions)
 
-    print("====query",query+conditions)
-    q_data = frappe.db.sql(query+conditions)
+   
+    print('conditions=============',conditions)
+    # print('query and conditions===========================',query+conditions)
+    q_data = frappe.db.sql(query,as_dict=1)
+    print("====query",q_data)
     data = []
+    sams = []
+    samlines =  {
+        'cow_milk_sam':[],
+        'buf_milk_sam':[],
+        'mix_milk_sam':[]
+    }
     for q in q_data:
-        row = {
-            "name": q[0],
-            "dcs_id": q[1],
-            "cow_milk_vol": q[2],
-            "buf_milk_vol": q[3],
-            "mix_milk_vol": q[4],
-            "cow_milk_cans": q[5],
-            "buf_milk_cans": q[6],
-            "mix_milk_cans": q[7],
-            "cow_milk_sam": q[8],
-            "buf_milk_sam": q[9],
-            "mix_milk_sam":q[10],
-            "time":q[11],
-            "van_col":q[12]
-        }
-        print("======row",row)
-        data.append(row)
-		
+        
+        samlines.update({
+            "name": q.get('name'),
+            "dcs_id": q.get('dcs'),
+            "cow_milk_vol": q.get('cow_milk_vol'),
+            "buf_milk_vol": q.get('buf_milk_vol'),
+            "mix_milk_vol": q.get('mix_milk_vol'),
+            "cow_milk_cans": q.get('cow_milk_cans'),
+            "buf_milk_cans": q.get('buf_milk_cans'),
+            "mix_milk_cans": q.get('mix_milk_cans'),
+            "time":q.get('time'),
+            "van_col":q.get('van_collection')
+        })
+        
+        if q.get('sm')== 'cow_milk_sam':
+            if q.get('sm') in samlines:
+                temp_list = samlines[q.get('sm')]
+                temp_list.append(q.get('sample_lines'))
+                samlines.update({
+                    q.get('sm'): temp_list
+                })
+        if q.get('sm')== 'buf_milk_sam':
+            if q.get('sm') in samlines:
+                temp_list = samlines[q.get('sm')]
+                temp_list.append(q.get('sample_lines'))
+                samlines.update({
+                    q.get('sm'): temp_list
+                })
+        if q.get('sm')== 'mix_milk_sam':
+           if q.get('sm') in samlines:
+                temp_list = samlines[q.get('sm')]
+                temp_list.append(q.get('sample_lines'))
+                samlines.update({
+                    q.get('sm'): temp_list
+                })
+        if samlines not in sams:
+            sams.append(samlines)
+        
+        
+    print('samsssssssssssssssssssssssssssssss',sams)
+    if sams:
+        for r in sams:
+            
+            cms = []
+            bms = []
+            mms = []
+            if r.get('cow_milk_sam'):
+                cms = r.get('cow_milk_sam')
+            if r.get('buf_milk_sam'):
+                bms = r.get('buf_milk_sam')
+            if r.get('mix_milk_sam'):
+                mms = r.get('mix_milk_sam')
+
+            max_length = max(len(cms), len(bms), len(mms))
+
+            d = [[cms[i] if i < len(cms) else "", bms[i] if i < len(bms) else "", mms[i] if i < len(mms) else ""] for i in range(max_length)]
+
+            
+
+            if d:
+                for k in d:
+                    fd = {}
+                    # print('ssssssssssssssssssssssss',s,s+1,s+2)
+                    fd.update({
+                            "name": q.get('name'),
+                            "dcs_id": q.get('dcs'),
+                            "cow_milk_vol": q.get('cow_milk_vol'),
+                            "buf_milk_vol": q.get('buf_milk_vol'),
+                            "mix_milk_vol": q.get('mix_milk_vol'),
+                            "cow_milk_cans": q.get('cow_milk_cans'),
+                            "buf_milk_cans": q.get('buf_milk_cans'),
+                            "mix_milk_cans": q.get('mix_milk_cans'),
+                            "cow_milk_sam": k[0],
+                            "buf_milk_sam": k[1],
+                            "mix_milk_sam": k[2],
+                            "time":q.get('time'),
+                            "van_col":q.get('van_collection'),
+                            }
+
+                    )
+                    print('fd-------------------------',fd) 
+            # if fd not in data:  
+                    data.append(fd)
+
+
+                
+            
+
+        #     if row not in data:
+        #         data.append(row)
+                    # if dict_sam[r][1]:
+                        
+                    #     for bs in dict_sam[r][1]:
+                    #         row = {
+    
+                    #             "buf_milk_sam": bs
+                    #         }
+                    #         if row not in data:
+                    #             data.append(row)
+                    # if dict_sam[r][2]:
+                    #     for ms in dict_sam[r][2]:
+                    #         row = {
+    
+                    #             "mix_milk_sam": ms
+                    #         }
+                    #         if row not in data:
+                    #             data.append(row)
+                # print("======row",row)
+                
+	
     return data
 
 
 def get_conditions(filters):
-	print("=====filters",filters)
-	if filters:
-		query = """      """
-		if filters.get('parent'):
-		    query += """ where  parent = '%s' """%filters.parent
+    print("=====filters",filters)
+    query = """      """
+    if filters:
+        if filters.get('parent'):
+            query += """ where  vci.van_collection = '%s' """%filters.parent
 # 		if filters.get('dcs'):
 # 		    query += """ and  dcs_id = '%s'  """%filters.dcs
 # 		if filters.get('member'):
@@ -161,5 +273,5 @@ def get_conditions(filters):
 # 		    query += """ and  shift = '%s' """%filters.shift
 # 		if filters.get('milk_type') != 'All':
 # 		    query += """ and  milk_type = '%s' """%filters.milk_type
-		
-		return query
+        
+    return query

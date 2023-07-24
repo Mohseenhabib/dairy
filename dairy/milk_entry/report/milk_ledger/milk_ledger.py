@@ -25,91 +25,92 @@ def execute(filters=None):
 		data.append(opening_row)
 
 	# actual_qty = stock_value = 0
+	print('item details-----------------------',item_details)
 
 	for sle in sl_entries:
 		
-			
-		item_detail = item_details[sle.item_code]
+		if sle.item_code in item_details:	
+			item_detail = item_details[sle.item_code]
 
-		sle.update(item_detail)
+			sle.update(item_detail)
 
-		if filters.get("batch_no"):
-			actual_qty += flt(sle.actual_qty, precision)
-			# stock_value += sle.stock_value_difference
+			if filters.get("batch_no"):
+				actual_qty += flt(sle.actual_qty, precision)
+				# stock_value += sle.stock_value_difference
 
-			if sle.voucher_type == 'Stock Reconciliation' and not sle.actual_qty:
-				actual_qty = sle.qty_after_transaction
-				# stock_value = sle.stock_value
+				if sle.voucher_type == 'Stock Reconciliation' and not sle.actual_qty:
+					actual_qty = sle.qty_after_transaction
+					# stock_value = sle.stock_value
 
-			sle.update({
-				"qty_after_transaction": abs(actual_qty)
-				# "stock_value": stock_value
-			})
-		a = max(sle.mle_act_qty, 0)
-		b =  min(sle.mle_act_qty, 0)
-		sle.update({
-			"in_wt": abs(a),
-			"out_wt": abs(b)
-		})
-		e = max(sle.fat, 0)
-		f = min(sle.fat, 0)
-		sle.update({
-			"in_fat": abs(e),
-			"out_fat": abs(f)
-		})
-		c =  max(sle.snf, 0)
-		d = min(sle.snf, 0)
-		sle.update({
-			"in_snf": abs(c),
-			"out_snf": abs(d)
-		})
-		
-		h =  max(sle.sle_act_qty ,0)
-		i = min(sle.sle_act_qty,0)
-		sle.update({
-			"in_qty": abs(h),
-			"out_qty": abs(i)
-		})
-		if sle.voucher_type == 'Purchase Receipt':
-			purchase = frappe.db.get_value('Purchase Receipt',{'name':sle.voucher_no},['shift'])
-			sle.update({
-				"shift":purchase
-			})
-
-		if sle.voucher_type == 'Stock Entry':
-			van_shift= frappe.db.get_value('Van Collection Items',{'gate_pass':sle.voucher_no},['shift'])
-			if van_shift:
 				sle.update({
-					"shift":van_shift
+					"qty_after_transaction": abs(actual_qty)
+					# "stock_value": stock_value
 				})
+			a = max(sle.mle_act_qty, 0)
+			b =  min(sle.mle_act_qty, 0)
+			sle.update({
+				"in_wt": abs(a),
+				"out_wt": abs(b)
+			})
+			e = max(sle.fat, 0)
+			f = min(sle.fat, 0)
+			sle.update({
+				"in_fat": abs(e),
+				"out_fat": abs(f)
+			})
+			c =  max(sle.snf, 0)
+			d = min(sle.snf, 0)
+			sle.update({
+				"in_snf": abs(c),
+				"out_snf": abs(d)
+			})
+			
+			h =  max(sle.sle_act_qty ,0)
+			i = min(sle.sle_act_qty,0)
+			sle.update({
+				"in_qty": abs(h),
+				"out_qty": abs(i)
+			})
+			if sle.voucher_type == 'Purchase Receipt':
+				purchase = frappe.db.get_value('Purchase Receipt',{'name':sle.voucher_no},['shift'])
+				sle.update({
+					"shift":purchase
+				})
+
+			if sle.voucher_type == 'Stock Entry':
+				van_shift= frappe.db.get_value('Van Collection Items',{'gate_pass':sle.voucher_no},['shift'])
+				if van_shift:
+					sle.update({
+						"shift":van_shift
+					})
+					
+				rmrd_shift= frappe.db.get_all('RMRD Lines',{'stock_entry':sle.voucher_no},['shift'])
+				if rmrd_shift:
+					sle.update({
+						"shift":rmrd_shift
+					})
+
+			if sle.voucher_type == 'Purchase Invoice':
+				p_invoice = frappe.db.get_value('Purchase Invoice',{'name':sle.voucher_no},['shift'])
+				sle.update({
+					"shift":p_invoice
+				})	
 				
-			rmrd_shift= frappe.db.get_all('RMRD Lines',{'stock_entry':sle.voucher_no},['shift'])
-			if rmrd_shift:
+			if sle.voucher_type == 'Sales Invoice':
+				s_invoice = frappe.db.get_value('Sales Invoice',{'name':sle.voucher_no},['shift'])
 				sle.update({
-					"shift":rmrd_shift
+					"shift":s_invoice
 				})
 
-		if sle.voucher_type == 'Purchase Invoice':
-			p_invoice = frappe.db.get_value('Purchase Invoice',{'name':sle.voucher_no},['shift'])
-			sle.update({
-				"shift":p_invoice
-			})	
-			
-		if sle.voucher_type == 'Sales Invoice':
-			s_invoice = frappe.db.get_value('Sales Invoice',{'name':sle.voucher_no},['shift'])
-			sle.update({
-				"shift":s_invoice
-			})
-
-		if sle.voucher_type == 'Delivery Note':
-			d_note = frappe.db.get_value('Delivery Note',{'name':sle.voucher_no},['shift'])
-			sle.update({
-				"shift":d_note
-			})
-	
-		data.append(sle)
-		if include_uom:
-			conversion_factors.append(item_detail.conversion_factor)
+			if sle.voucher_type == 'Delivery Note':
+				d_note = frappe.db.get_value('Delivery Note',{'name':sle.voucher_no},['shift'])
+				sle.update({
+					"shift":d_note
+				})
+		
+			data.append(sle)
+			if include_uom:
+				conversion_factors.append(item_detail.conversion_factor)
 
 	update_included_uom_in_report(columns, data, include_uom, conversion_factors)
 	return columns, data
@@ -181,12 +182,14 @@ def get_stock_ledger_entries(filters, items):
 		FROM
 			`tabMilk Ledger Entry` as mle
 		join `tabStock Ledger Entry` as sle
+		join  `tabItem` as item
 		WHERE
 			mle.company = %(company)s
 				AND mle.posting_date BETWEEN %(from_date)s AND %(to_date)s
 				{sle_conditions}
 				{item_conditions_sql} and sle.warehouse = mle.warehouse and sle.item_code = mle.item_code and sle.posting_date = mle.posting_date 
 				and  sle.voucher_no = mle.voucher_no
+			    and item.milk_ledger = 1
 		ORDER BY
 			mle.posting_date asc, mle.posting_time asc, mle.creation asc
 		""".format(sle_conditions=get_sle_conditions(filters), item_conditions_sql=item_conditions_sql),
@@ -208,15 +211,23 @@ def get_items(filters):
 
 	items = []
 	if conditions:
-		items = frappe.db.sql_list("""select name from `tabItem` item where {}"""
+		items = frappe.db.sql_list("""select name from `tabItem` item where {} and item.milk_ledger=1"""
 			.format(" and ".join(conditions)), filters)
+	# print('items********************************',items)
 	return items
 
 
 def get_item_details(items, sl_entries, include_uom):
 	item_details = {}
+
+	item = frappe.db.get_all('Item' , {'milk_ledger' : 1},['name'])
+	if item:
+		items = list(set([d.name for d in item]))
+	print('item------------------------------',item)
+	
 	if not items:
 		items = list(set([d.item_code for d in sl_entries]))
+		print('item------------------------------3333333333333',items)
 
 	if not items:
 		return item_details
@@ -226,17 +237,30 @@ def get_item_details(items, sl_entries, include_uom):
 		cf_field = ", ucd.conversion_factor"
 		cf_join = "left join `tabUOM Conversion Detail` ucd on ucd.parent=item.name and ucd.uom=%s" \
 			% frappe.db.escape(include_uom)
+		
+
+	# print('query-----------------------------',"""
+	# 	select
+	# 		item.name, item.item_name, item.description, item.item_group, item.brand, item.stock_uom {cf_field},item.milk_ledger
+	# 	from
+	# 		`tabItem` item
+	# 		{cf_join}
+	# 	where
+	# 		item.name in ({item_codes}) and item.milk_ledger = 1
+	# """.format(cf_field=cf_field, cf_join=cf_join, item_codes=','.join(['%s'] *len(items))), items)
+
 
 	res = frappe.db.sql("""
 		select
-			item.name, item.item_name, item.description, item.item_group, item.brand, item.stock_uom {cf_field}
+			item.name, item.item_name, item.description, item.item_group, item.brand, item.stock_uom {cf_field},item.milk_ledger
 		from
 			`tabItem` item
 			{cf_join}
 		where
-			item.name in ({item_codes})
+			item.name in ({item_codes}) and item.milk_ledger = 1
 	""".format(cf_field=cf_field, cf_join=cf_join, item_codes=','.join(['%s'] *len(items))), items, as_dict=1)
-
+	print('res-----------------------------------',)
+	
 	for item in res:
 		item_details.setdefault(item.name, item)
 
