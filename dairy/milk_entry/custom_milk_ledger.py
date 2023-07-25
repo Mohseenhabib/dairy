@@ -29,88 +29,87 @@ def execute(filters=None):
 
 	for sle in sl_entries:
 		
+		item_detail = item_details[sle.item_code]
+
+		sle.update(item_detail)
+
+		if filters.get("batch_no"):
+			actual_qty += flt(sle.actual_qty, precision)
+			# stock_value += sle.stock_value_difference
+
+			if sle.voucher_type == 'Stock Reconciliation' and not sle.actual_qty:
+				actual_qty = sle.qty_after_transaction
+				# stock_value = sle.stock_value
+
+			sle.update({
+				"qty_after_transaction": abs(actual_qty)
+				# "stock_value": stock_value
+			})
+		a = max(sle.mle_act_qty, 0)
+		b =  min(sle.mle_act_qty, 0)
+		sle.update({
+			"in_wt": abs(a),
+			"out_wt": abs(b)
+		})
+		e = max(sle.fat, 0)
+		f = min(sle.fat, 0)
+		sle.update({
+			"in_fat": abs(e),
+			"out_fat": abs(f)
+		})
+		c =  max(sle.snf, 0)
+		d = min(sle.snf, 0)
+		sle.update({
+			"in_snf": abs(c),
+			"out_snf": abs(d)
+		})
 		
-			item_detail = item_details[sle.item_code]
+		h =  max(sle.sle_act_qty ,0)
+		i = min(sle.sle_act_qty,0)
+		sle.update({
+			"in_qty": abs(h),
+			"out_qty": abs(i)
+		})
+		if sle.voucher_type == 'Purchase Receipt':
+			purchase = frappe.db.get_value('Purchase Receipt',{'name':sle.voucher_no},['shift'])
+			sle.update({
+				"shift":purchase
+			})
 
-			sle.update(item_detail)
-
-			if filters.get("batch_no"):
-				actual_qty += flt(sle.actual_qty, precision)
-				# stock_value += sle.stock_value_difference
-
-				if sle.voucher_type == 'Stock Reconciliation' and not sle.actual_qty:
-					actual_qty = sle.qty_after_transaction
-					# stock_value = sle.stock_value
-
+		if sle.voucher_type == 'Stock Entry':
+			van_shift= frappe.db.get_value('Van Collection Items',{'gate_pass':sle.voucher_no},['shift'])
+			if van_shift:
 				sle.update({
-					"qty_after_transaction": abs(actual_qty)
-					# "stock_value": stock_value
+					"shift":van_shift
 				})
-			a = max(sle.mle_act_qty, 0)
-			b =  min(sle.mle_act_qty, 0)
-			sle.update({
-				"in_wt": abs(a),
-				"out_wt": abs(b)
-			})
-			e = max(sle.fat, 0)
-			f = min(sle.fat, 0)
-			sle.update({
-				"in_fat": abs(e),
-				"out_fat": abs(f)
-			})
-			c =  max(sle.snf, 0)
-			d = min(sle.snf, 0)
-			sle.update({
-				"in_snf": abs(c),
-				"out_snf": abs(d)
-			})
-			
-			h =  max(sle.sle_act_qty ,0)
-			i = min(sle.sle_act_qty,0)
-			sle.update({
-				"in_qty": abs(h),
-				"out_qty": abs(i)
-			})
-			if sle.voucher_type == 'Purchase Receipt':
-				purchase = frappe.db.get_value('Purchase Receipt',{'name':sle.voucher_no},['shift'])
-				sle.update({
-					"shift":purchase
-				})
-
-			if sle.voucher_type == 'Stock Entry':
-				van_shift= frappe.db.get_value('Van Collection Items',{'gate_pass':sle.voucher_no},['shift'])
-				if van_shift:
-					sle.update({
-						"shift":van_shift
-					})
-					
-				rmrd_shift= frappe.db.get_all('RMRD Lines',{'stock_entry':sle.voucher_no},['shift'])
-				if rmrd_shift:
-					sle.update({
-						"shift":rmrd_shift
-					})
-
-			if sle.voucher_type == 'Purchase Invoice':
-				p_invoice = frappe.db.get_value('Purchase Invoice',{'name':sle.voucher_no},['shift'])
-				sle.update({
-					"shift":p_invoice
-				})	
 				
-			if sle.voucher_type == 'Sales Invoice':
-				s_invoice = frappe.db.get_value('Sales Invoice',{'name':sle.voucher_no},['shift'])
+			rmrd_shift= frappe.db.get_all('RMRD Lines',{'stock_entry':sle.voucher_no},['shift'])
+			if rmrd_shift:
 				sle.update({
-					"shift":s_invoice
+					"shift":rmrd_shift
 				})
 
-			if sle.voucher_type == 'Delivery Note':
-				d_note = frappe.db.get_value('Delivery Note',{'name':sle.voucher_no},['shift'])
-				sle.update({
-					"shift":d_note
-				})
-		
-			data.append(sle)
-			if include_uom:
-				conversion_factors.append(item_detail.conversion_factor)
+		if sle.voucher_type == 'Purchase Invoice':
+			p_invoice = frappe.db.get_value('Purchase Invoice',{'name':sle.voucher_no},['shift'])
+			sle.update({
+				"shift":p_invoice
+			})	
+			
+		if sle.voucher_type == 'Sales Invoice':
+			s_invoice = frappe.db.get_value('Sales Invoice',{'name':sle.voucher_no},['shift'])
+			sle.update({
+				"shift":s_invoice
+			})
+
+		if sle.voucher_type == 'Delivery Note':
+			d_note = frappe.db.get_value('Delivery Note',{'name':sle.voucher_no},['shift'])
+			sle.update({
+				"shift":d_note
+			})
+	
+		data.append(sle)
+		if include_uom:
+			conversion_factors.append(item_detail.conversion_factor)
 
 	update_included_uom_in_report(columns, data, include_uom, conversion_factors)
 	return columns, data
