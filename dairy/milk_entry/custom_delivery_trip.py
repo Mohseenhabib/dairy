@@ -109,30 +109,81 @@ def get_jinja_data_si_item(del_note):
 	
 	for itm in dist_itm:
 		obj = frappe.get_doc("Item",itm[0])
-		if len(obj.crate) == 0:
-			res2 = frappe.db.sql(""" select s.item_code,s.item_name,s.batch_no,s.stock_uom,sum(s.stock_qty) as stock_qty,
-									cs.voucher,cs.crate_issue,cs.crate_return
-									from `tabSales Invoice Item` as s
-									join `tabCrate Summary` as cs
-									on s.parent = cs.voucher
-									where s.parent = %(name)s and s.item_code = %(item_code)s""",
-								{'name':del_note,'item_code':obj.item_code}, as_dict=True)
+		# if len(obj.crate) == 0:
+		res2 = frappe.db.sql(""" select s.name ,s.item_code,s.item_name,s.warehouse,s.batch_no,s.uom,sum(s.stock_qty) as stock_qty,
+								s.parent,
+								Case
+								WHEN s.uom = "Crate"
+								THEN	
+								s.qty
+								ELSE 0
+								END as crate_issue,Case WHEN s.uom ="Crate" and si.is_return=1
+								THEN	
+								s.qty
+								ELSE 0
+								END as crate_return
+								from `tabSales Invoice Item` as s Join
+								`tabSales Invoice` si On si.name=s.parent
+								where s.parent = %(name)s and s.item_code = %(item_code)s and is_free_item = 0""",
+							{'name':del_note,'item_code':obj.item_code}, as_dict=True)
 
-			for i in range(0, len(res2)):
-				res.append(res2[i])
+		for i in res2:
+			# if len(obj.crate) == 0:
+			crate_details = frappe.db.sql(""" select 
+									crate_quantity,crate_type 
+								from 
+									`tabCrate` 
+								where 
+									parent = %(item_code)s and warehouse = %(warehouse)s limit 1 """,
+									{'item_code':obj.item_code,'warehouse':i.get("warehouse")},as_dict=1)
+			if len(crate_details)>0:
+				print(i)
+				i.update({
+					"crate_type":crate_details[0].get("crate_type")
+				})
+			free_qty_list = frappe.db.sql(""" select 
+							sum(stock_qty) as qty
+						from 
+							`tabSales Invoice Item` 
+						where
+							is_free_item = 1 and warehouse = %(warehouse)s and item_code = %(item_code)s and parent = %(doc_name)s and batch_no = %(batch_no)s""",
+							{'warehouse':i.get("warehouse"), 'item_code': obj.item_code,'doc_name': i.get("name"), 'batch_no': i.get("batch_no")},as_dict=1)
+			if len(free_qty_list)>0:
+				if free_qty_list[0].get("qty"):
+					i.update({
+						"free_qty":free_qty_list[0].get("qty")
+					})
+				else:
+					i.update({
+						"free_qty":0.0
+					})
 
-		else:
+			res.append(i)
+
+		
+
+		# else:
 			
-			res2 = frappe.db.sql(""" select s.item_code,s.item_name,s.batch_no,s.stock_uom,sum(s.stock_qty) as stock_qty,
-									cs.voucher,cs.crate_issue,cs.crate_return
-									from `tabSales Invoice Item` as s
-									join `tabCrate Summary` as cs
-									on s.parent = cs.voucher
-									where s.parent = %(name)s and s.item_code = %(item_code)s""",
-								{'name':del_note,'item_code':obj.item_code}, as_dict=True)
-			print('else--------------------------------',res2)
-			for i in range(0, len(res2)):
-				res.append(res2[i])
+		# 	res2 = frappe.db.sql(""" select s.item_code,s.item_name,s.batch_no,s.uom,sum(s.stock_qty) as stock_qty,
+		# 							s.parent,
+		# 							Case
+		# 							WHEN s.uom = "Crate"
+		# 							THEN	
+		# 							s.qty
+		# 							ELSE 0
+		# 							END as crate_issue,Case WHEN s.uom ="Crate" and si.is_return=1
+		# 							THEN	
+		# 							s.qty
+		# 							ELSE 0
+		# 							END as crate_return
+		# 							from `tabSales Invoice Item` as s Join
+		# 							`tabSales Invoice` si On si.name=s.parent
+		# 							where s.parent = %(name)s and s.item_code = %(item_code)s""",
+		# 						{'name':del_note,'item_code':obj.item_code}, as_dict=True)
+		# 	print('else--------------------------------',res2)
+		# 	for i in range(0, len(res2)):
+		# 		print(i)
+		# 		res.append(res2[i])
 			
 	return res
 
@@ -170,8 +221,13 @@ def si_note_total(del_note):
 								 where parent = %(name)s and is_free_item = 1""",{'name':del_note},as_dict=True)
 	res["fre_qty"] = free_qty[0]["fre_qty"]
 
-	crate_qty = frappe.db.sql(""" select sum(outgoing_count) as crate_qty from `tabCrate Count Child` 
-								  where parent = %(name)s """,{'name':del_note},as_dict=True)
+	crate_qty = frappe.db.sql(""" select Case
+								WHEN uom = "Crate"
+								THEN	
+								sum(qty)
+								ELSE 0
+								END as crate_qty from `tabSales Invoice Item` 
+								  where parent = %(name)s and uom = "Crate" """,{'name':del_note},as_dict=True)
 	res["crate_qty"] = crate_qty[0]["crate_qty"]
 
 	f_res.append(res)
