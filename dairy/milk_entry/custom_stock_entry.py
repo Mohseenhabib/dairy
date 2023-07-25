@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 import json
-from dairy.milk_entry.report.milk_ledger.milk_ledger import get_columns, get_item_details, get_items, get_opening_balance, get_stock_ledger_entries
+from dairy.milk_entry.custom_milk_ledger import get_columns, get_item_details, get_items, get_opening_balance, get_stock_ledger_entries
+# from dairy.milk_entry.custom_milk_ledger import get_columns, get_item_details, get_items, get_opening_balance, get_stock_ledger_entries
 from erpnext.stock.utils import update_included_uom_in_report
 import frappe
 from frappe import _
