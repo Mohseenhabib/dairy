@@ -100,55 +100,55 @@ def exec(filters=None):
 
 
     for sle in sl_entries:
-        
-        item_detail = item_details[sle.item_code]
+        if sle.item_code in item_details:	
+            item_detail = item_details[sle.item_code]
 
-        sle.update(item_detail)
+            sle.update(item_detail)
 
-        if filters.get("batch_no"):
-            actual_qty += flt(sle.actual_qty, precision)
-            # stock_value += sle.stock_value_difference
+            if filters.get("batch_no"):
+                actual_qty += flt(sle.actual_qty, precision)
+                # stock_value += sle.stock_value_difference
 
-            if sle.voucher_type == 'Stock Reconciliation' and not sle.actual_qty:
-                actual_qty = sle.qty_after_transaction
-                # stock_value = sle.stock_value
+                if sle.voucher_type == 'Stock Reconciliation' and not sle.actual_qty:
+                    actual_qty = sle.qty_after_transaction
+                    # stock_value = sle.stock_value
 
+                sle.update({
+                    "qty_after_transaction": abs(actual_qty)
+                    # "stock_value": stock_value
+                })
+            a = max(sle.mle_act_qty, 0)
+            b =  min(sle.mle_act_qty, 0)
             sle.update({
-                "qty_after_transaction": abs(actual_qty)
-                # "stock_value": stock_value
+                "in_wt": abs(a),
+                "out_wt": abs(b)
             })
-        a = max(sle.mle_act_qty, 0)
-        b =  min(sle.mle_act_qty, 0)
-        sle.update({
-            "in_wt": abs(a),
-            "out_wt": abs(b)
-        })
-        e = max(sle.fat, 0)
-        f = min(sle.fat, 0)
-        sle.update({
-            "in_fat": abs(e),
-            "out_fat": abs(f)
-        })
-        c =  max(sle.snf, 0)
-        d = min(sle.snf, 0)
-        sle.update({
-            "in_snf": abs(c),
-            "out_snf": abs(d)
-        })
-        
-        h =  max(sle.sle_act_qty ,0)
-        i = min(sle.sle_act_qty,0)
-        sle.update({
-            "in_qty": abs(h),
-            "out_qty": abs(i)
-        })
-        
+            e = max(sle.fat, 0)
+            f = min(sle.fat, 0)
+            sle.update({
+                "in_fat": abs(e),
+                "out_fat": abs(f)
+            })
+            c =  max(sle.snf, 0)
+            d = min(sle.snf, 0)
+            sle.update({
+                "in_snf": abs(c),
+                "out_snf": abs(d)
+            })
+            
+            h =  max(sle.sle_act_qty ,0)
+            i = min(sle.sle_act_qty,0)
+            sle.update({
+                "in_qty": abs(h),
+                "out_qty": abs(i)
+            })
+            
 
-        data.append(sle)
-        # print('data*************************8',sle)
+            data.append(sle)
+            # print('data*************************8',sle)
 
-        if include_uom:
-            conversion_factors.append(item_detail.conversion_factor)
+            if include_uom:
+                conversion_factors.append(item_detail.conversion_factor)
 
     update_included_uom_in_report(columns, data, include_uom, conversion_factors)
     return data
