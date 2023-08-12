@@ -37,8 +37,7 @@ class CrateReconciliation(Document):
 			})
 
 
-	# def 
-
+	
 	def calculate_total_count(self):
 		total_outgoing = 0.0
 		total_incoming = 0.0
@@ -55,7 +54,6 @@ class CrateReconciliation(Document):
 		self.total_damaged =total_damage
 		self.difference = total_outgoing - total_incoming
 		self.db_update()
-		# self.save(ignore_permissions=True)
 
 	def on_submit(self):
 		for i in self.delivery_info:
@@ -75,6 +73,24 @@ class CrateReconciliation(Document):
 				si = frappe.get_doc("Sales Invoice", i.sales_invoice)
 				si.crate_reconcilation_done = 1
 				si.db_update()
+			doc=frappe.new_doc("Crate Log")
+			doc.crate_type=i.crate_type
+			val=frappe.db.get_value("Crate Log",{"customer":i.customer},["name","crate_balance"],order_by="creation desc")
+			doc.route=i.route
+			doc.date=self.date
+			doc.customer=i.customer
+			if val:
+				doc.crate_opening=val[1]
+				doc.crate_issue=i.outgoing
+				doc.crate_return=abs(i.incoming)
+				doc.crate_balance=val[1]-i.outgoing+i.incoming
+			doc.voucher_type="Crate Reconciliation"
+			doc.voucher=self.name
+			doc.company=self.company
+			doc.save(ignore_permissions=True)
+			doc.submit()
+
+
 	def on_cancel(self):
 		for i in self.delivery_info:
 			if i.delivery_note:
@@ -168,38 +184,6 @@ def make_delivery_note(source_name, target_doc=None, ignore_permissions=False):
 	}, target_doc,set_item_in_sales_invoice)
 	return doclist
 
-# @frappe.whitelist()
-# def make_gate_pass(source_name, target_doc=None, ignore_permissions=False):
-# 	def set_item_in_sales_invoice(source, target):
-# 		del_note = frappe.get_doc(source)
-# 		crate_recl = frappe.get_doc(target)
-# 		for i in del_note.crate	:
-# 			out_count = i.outgoing_count if i.outgoing_count else 0
-# 			in_count = i.incoming_count if i.incoming_count else 0
-# 			dam_count = i.damaged_count if i.damaged_count else 0
-# 			vehicle_name = None
-# 			if del_note.route:
-# 				route_doc = frappe.get_doc("Route Master",del_note.route)
-# 				vehicle_name = route_doc.vehicle
-# 			crate_recl.append("delivery_info",{
-# 				"delivery_date": del_note.date,
-# 				"gate_pass": del_note.name,
-# 				"transporter": del_note.transporter,
-# 				"route": del_note.route,
-# 				"crate_type": i.crate_type,
-# 				"vehicle": vehicle_name,
-# 				"outgoing": out_count,
-# 				"incoming": in_count,
-# 				"damaged": dam_count,
-# 				"difference": out_count - in_count
-# 			})
-#
-# 	doclist = get_mapped_doc("Gate Pass", source_name, {
-# 		"Gate Pass": {
-# 			"doctype": "Crate Reconciliation",
-# 		}
-# 	}, target_doc,set_item_in_sales_invoice)
-# 	return doclist
 
 @frappe.whitelist()
 def make_crate_log(source_name, target_doc=None, ignore_permissions=False):
