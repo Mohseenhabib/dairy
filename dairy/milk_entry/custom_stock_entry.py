@@ -63,7 +63,7 @@ def before_save(self,method):
                     s.snf_per = (ml.get("fat_after_transaction")/ml.get("qty_after_transaction"))*100
                     s.fat = ((s.qty*flt(s.fat_per))/100) * flt(item.weight_per_unit)
                     s.snf = ((s.qty*flt(s.snf_per))/100) * flt(item.weight_per_unit)
-            else:
+            if (len(ml)) ==1:
                 ml = ml[0]
                 if flt(ml.get("qty_after_transaction"))>0:
                     s.fat_per = (ml.get("fat_after_transaction")/ml.get("qty_after_transaction"))*100
