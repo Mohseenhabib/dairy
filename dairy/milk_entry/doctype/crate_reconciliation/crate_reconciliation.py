@@ -83,7 +83,7 @@ class CrateReconciliation(Document):
 				doc.crate_opening=val[1]
 				doc.crate_issue=i.outgoing
 				doc.crate_return=abs(i.incoming)
-				doc.crate_balance=val[1]-i.outgoing+i.incoming
+				doc.crate_balance=val[1]+i.outgoing-i.incoming
 			doc.voucher_type="Crate Reconciliation"
 			doc.voucher=self.name
 			doc.company=self.company
