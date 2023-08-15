@@ -296,6 +296,8 @@ jinja = {
         "dairy.milk_entry.custom_delivery_trip.del_note_details",
          "dairy.milk_entry.custom_delivery_trip.si_note_details",
         "dairy.milk_entry.custom_delivery_trip.total_supp_qty_based_on_itm_grp",
+        "dairy.milk_entry.custom_delivery_trip.get_crate_bal",
+        "dairy.milk_entry.custom_delivery_trip.get_crate_gate"
 	]
 }
 

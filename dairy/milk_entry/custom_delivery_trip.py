@@ -88,7 +88,7 @@ def get_jinja_data_del_note_item(del_note):
 	return res
 
 @frappe.whitelist()
-def get_jinja_data_si_item(del_note):
+def get_jinja_data_si_item(del_note,gate_pass):
 	# ic = []	
 	print('------------------------------------------------------del note')
 	res = frappe.db.sql("""
@@ -110,7 +110,7 @@ def get_jinja_data_si_item(del_note):
 	for itm in dist_itm:
 		obj = frappe.get_doc("Item",itm[0])
 		# if len(obj.crate) == 0:
-		res2 = frappe.db.sql(""" select s.name ,s.item_code,s.item_name,s.warehouse,s.batch_no,s.uom,sum(s.stock_qty) as stock_qty,
+		res2 = frappe.db.sql(""" select s.name,si.customer,s.item_code,s.item_name,s.warehouse,s.batch_no,s.uom,sum(s.stock_qty) as stock_qty,
 								s.parent,
 								Case
 								WHEN s.uom = "Crate"
@@ -129,6 +129,7 @@ def get_jinja_data_si_item(del_note):
 
 		for i in res2:
 			# if len(obj.crate) == 0:
+
 			crate_details = frappe.db.sql(""" select 
 									crate_quantity,crate_type 
 								from 
@@ -157,7 +158,15 @@ def get_jinja_data_si_item(del_note):
 					i.update({
 						"free_qty":0.0
 					})
-
+			gate_pass=frappe.get_doc("Gate Pass",gate_pass)
+			cratelog=frappe.db.get_value("Crate Log",{"creation":["<=",gate_pass.creation],"customer":i.get("customer"),"crate_type":i.crate_type},["name"],order_by="creation asc")
+			if cratelog:
+				bal=frappe.get_doc("Crate Log",cratelog)
+				i.update({
+					"crate_issue":bal.crate_return,
+					"crate_return":bal.crate_issue,
+					"crate_bal":bal.crate_balance
+				})
 			res.append(i)
 
 		
@@ -185,6 +194,42 @@ def get_jinja_data_si_item(del_note):
 		# 		print(i)
 		# 		res.append(res2[i])
 			
+	return res
+
+@frappe.whitelist()
+def get_crate_bal(gate_pass):
+	res=[]
+	gate_pass=frappe.get_doc("Gate Pass",gate_pass)
+	for j in  gate_pass.crate_summary:
+		if j.voucher:
+			party = frappe.get_doc("Sales Invoice",j.voucher)
+			j.update({"customer_name":party.customer_name})
+			cratelog=frappe.db.get_value("Crate Log",{"creation":["<=",gate_pass.creation],"customer":party.get("customer")},["name"],order_by="creation asc")
+			if cratelog:
+				bal=frappe.get_doc("Crate Log",cratelog)
+				j.update({
+					
+					"crate_bal":bal.crate_balance
+				})
+			res.append(j)
+	return res
+
+@frappe.whitelist()
+def get_crate_gate(gate_pass):
+	res=[]
+	gate_pass=frappe.get_doc("Gate Pass",gate_pass)
+	for j in  gate_pass.merge_item:
+		x={"creation":["<=",gate_pass.creation],"customer":gate_pass.customer}
+		if j.crate_type:
+			x.update({"crate_type":j.crate_type})
+		cratelog=frappe.db.get_value("Crate Log",x,["name"],order_by="creation asc")
+		if cratelog:
+			bal=frappe.get_doc("Crate Log",cratelog)
+			j.update({
+				
+				"crate_bal":bal.crate_balance
+			})
+		res.append(j)
 	return res
 
 @frappe.whitelist()
