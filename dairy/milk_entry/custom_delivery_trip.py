@@ -163,8 +163,6 @@ def get_jinja_data_si_item(del_note,gate_pass):
 			if cratelog:
 				bal=frappe.get_doc("Crate Log",cratelog)
 				i.update({
-					"crate_issue":bal.crate_return,
-					"crate_return":bal.crate_issue,
 					"crate_bal":bal.crate_balance
 				})
 			res.append(i)
