@@ -159,9 +159,11 @@ def get_jinja_data_si_item(del_note,gate_pass):
 						"free_qty":0.0
 					})
 			gate_pass=frappe.get_doc("Gate Pass",gate_pass)
-			cratelog=frappe.db.get_value("Crate Log",{"creation":["<=",gate_pass.creation],"customer":i.get("customer"),"crate_type":i.crate_type},["name"],order_by="creation asc")
+			print("$$$$$$$$$$$$$$$$$$$$$$$32333333",gate_pass.creation)
+			cratelog=frappe.db.get_value("Crate Log",{"creation":["<=",gate_pass.creation],"customer":i.get("customer"),"crate_type":i.crate_type},["name"],order_by="creation desc")
 			if cratelog:
 				bal=frappe.get_doc("Crate Log",cratelog)
+				print("&&&&&&&&&&&&&&&&&&&&&&&&&6666666",bal.name)
 				i.update({
 					"crate_bal":bal.crate_balance
 				})
@@ -202,11 +204,10 @@ def get_crate_bal(gate_pass):
 		if j.voucher:
 			party = frappe.get_doc("Sales Invoice",j.voucher)
 			j.update({"customer_name":party.customer_name})
-			cratelog=frappe.db.get_value("Crate Log",{"creation":["<=",gate_pass.creation],"customer":party.get("customer")},["name"],order_by="creation asc")
+			cratelog=frappe.db.get_value("Crate Log",{"creation":["<=",gate_pass.creation],"customer":party.get("customer")},["name"],order_by="creation desc")
 			if cratelog:
 				bal=frappe.get_doc("Crate Log",cratelog)
 				j.update({
-					
 					"crate_bal":bal.crate_balance
 				})
 			res.append(j)
@@ -220,7 +221,7 @@ def get_crate_gate(gate_pass):
 		x={"creation":["<=",gate_pass.creation],"customer":gate_pass.customer}
 		if j.crate_type:
 			x.update({"crate_type":j.crate_type})
-		cratelog=frappe.db.get_value("Crate Log",x,["name"],order_by="creation asc")
+		cratelog=frappe.db.get_value("Crate Log",x,["name"],order_by="creation desc")
 		if cratelog:
 			bal=frappe.get_doc("Crate Log",cratelog)
 			j.update({
