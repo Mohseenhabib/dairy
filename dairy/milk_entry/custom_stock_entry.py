@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+import datetime
 import json
 from dairy.milk_entry.custom_milk_ledger import get_columns, get_item_details, get_items, get_opening_balance, get_stock_ledger_entries
 # from dairy.milk_entry.custom_milk_ledger import get_columns, get_item_details, get_items, get_opening_balance, get_stock_ledger_entries
@@ -7,7 +8,7 @@ import frappe
 from frappe import _
 from frappe.model.mapper import get_mapped_doc
 from frappe.utils import flt,cint, cstr, getdate
-from frappe.utils.data import today
+from frappe.utils.data import get_time, today
 
 def milk_ledger_stock_entry(self,method):
     if not self.get("__islocal"):
@@ -251,3 +252,16 @@ def add_scrap_item(work_order,stock_entry_type):
         for i in doc.fg_item_scrap:
             items.append({"item":i.item,"qty":i.qty})
     return items
+
+
+
+@frappe.whitelist()
+def set_date():
+    shift=frappe.db.get_all("Shift Type",{"docstatus":0},["name"])
+    for kj in shift:
+        doc=frappe.get_doc("Shift Type",kj.name)
+        combined_datetime = datetime.datetime.combine(getdate(today()),get_time("23:59:59"))
+        doc.last_sync_of_checkin=combined_datetime
+        doc.save(ignore_permissions=True)
+
+
