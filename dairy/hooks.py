@@ -254,6 +254,10 @@ scheduler_events = {
 # # 	"monthly": [
 # # 		"dairy.tasks.monthly"
 # # 	]
+    "cron":{
+        "10 0 * * *": [
+        "dairy.milk_entry.custom_stock_entry.set_date"
+    ]}
  }
 
 # Testing
