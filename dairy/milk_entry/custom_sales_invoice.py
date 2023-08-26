@@ -67,6 +67,7 @@ def before_submit(self,method):
 
 @frappe.whitelist()
 def calculate_crate(obj,method=None):
+    print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$",)
     if not obj.get("__islocal") and obj.crate_cal_done != "Done" and obj.is_return==0:
         doc_name = obj.name
         if doc_name:
@@ -280,10 +281,10 @@ def calculate_crate_save(name):
                                                     from 
                                                         `tabSales Invoice Item` 
                                                     where 
-                                                        item_code= %(item_code)s """,{'item_code':dist_itm[i]}))
+                                                        item_code= %(item_code)s and parent=%(parent)s """,{'item_code':dist_itm[i],"parent":doc.name}))
             
 
-
+            print('Batch no^^^^^^^^^^^^^^^^^^^^^^^^^^345556',dist_warehouse)
             for j in range(0,len(dist_warehouse)):
                 print('Batch no^^^^^^^^^^^^^^^^^^^^^^^^^^',dist_warehouse)
                 if has_batch_no == 1:
@@ -294,6 +295,7 @@ def calculate_crate_save(name):
                                                             where 
                                                             warehouse = %(warehouse)s and item_code = %(item_code)s and parent = %(doc_name)s """,
                                                             {'warehouse':dist_warehouse[j],'item_code':dist_itm[i],'doc_name':doc_name}))
+                    print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&",dist_batch_no)
                     for k in range(0, len(dist_batch_no)):
                         print('total qty&&&&&&&&&&&&&&&&&&&&&&',dist_batch_no)
                         total_qty = frappe.db.sql(""" select 
@@ -305,6 +307,8 @@ def calculate_crate_save(name):
                                                             {'warehouse':dist_warehouse[j],'item_code':dist_itm[i],'doc_name':doc_name,'batch_no':dist_batch_no[k]})
                         print('total qty@@@@@@@@@@@@@@@@@@@@@@@',total_qty)
                         free_qty = 0
+                        print('ttl qty**********************************',dist_warehouse[j],dist_itm[i])
+
                         free_qty_list = frappe.db.sql(""" select 
                                                                 sum(stock_qty) 
                                                             from 
@@ -317,7 +321,7 @@ def calculate_crate_save(name):
 
                         ttl_qty = str(total_qty[0][0])
                         print('ttl &&&&&&&&&&&&&&&&&&&&&',ttl_qty)
-                        if ttl_qty != "None":
+                        if flt(ttl_qty)>0:
                             print('ttl qty**********************************',dist_warehouse[j],dist_itm[i])
                             crate_details = frappe.db.sql(""" select 
                                                                     crate_quantity,crate_type 
@@ -589,25 +593,29 @@ def set_fat_and_snf_rate(obj,method):
                     res.snf_clr_amount = res.snf_clr * query[0].snf_clr_rate
 
 @frappe.whitelist()
-def get_party_bal(customer):
-	cust_name =customer
-	doctype = "Customer"
-	loyalty_program = None
+def get_party_bal(customer,company):
+    cust_name =customer
+    doctype = "Customer"
+    loyalty_program = None
 
-	party_bal = get_dashboard_info(doctype, cust_name, loyalty_program)
+    party_bal = get_dashboard_info(doctype, cust_name, loyalty_program)
 
-	if cust_name and party_bal:
-		return party_bal[0]['total_unpaid']
+    if cust_name and party_bal:
+        for j in party_bal:
+            if company==j.get("company"):
+                return j.get("total_unpaid")
 
 
 
 @frappe.whitelist()
-def get_party_bal(self,method):
-	cust_name =self.customer
-	doctype = "Customer"
-	loyalty_program = None
+def get_party_bal_det(self,method):
+    cust_name =self.customer
+    doctype = "Customer"
+    loyalty_program = None
 
-	party_bal = get_dashboard_info(doctype, cust_name, loyalty_program)
-
-	if cust_name and party_bal:
-		self.party_balance=party_bal[0]['total_unpaid']
+    party_bal = get_dashboard_info(doctype, cust_name, loyalty_program)
+    print("***************",party_bal)
+    if cust_name and party_bal:
+        for j in party_bal:
+            if self.company==j.get("company"):
+                self.party_balance=j.get("total_unpaid")

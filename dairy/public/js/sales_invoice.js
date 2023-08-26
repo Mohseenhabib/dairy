@@ -63,7 +63,8 @@ frappe.ui.form.on("Sales Invoice", {
 		frappe.call({
 			method:'dairy.milk_entry.custom_sales_invoice.get_party_bal',
             args:{
-                customer:frm.doc.customer
+                customer:frm.doc.customer,
+                company:frm.doc.company
             },
 			callback: function(r) {
 				if (r.message){
