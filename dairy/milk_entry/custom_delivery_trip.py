@@ -31,7 +31,6 @@ def get_jinja_data_del_note(doc):
 def get_jinja_data_si(doc):
 	res = frappe.db.sql("""
 	select distinct(sales_invoice) from `tabGate Pass Item` where parent = %(name)s """, {"name": doc.name}, as_dict=True)
-	print('get_jinja_data_si---------------------------')
 	return res
 
 @frappe.whitelist()
@@ -50,7 +49,6 @@ def si_note_details(del_note):
 		name,customer,customer_name,route
 	from 
 		`tabSales Invoice` where name = %(name)s """, {"name": del_note}, as_dict=True)
-	print('si_note_details------------------------------')
 	return res
 
 @frappe.whitelist()
@@ -89,26 +87,12 @@ def get_jinja_data_del_note_item(del_note):
 
 @frappe.whitelist()
 def get_jinja_data_si_item(del_note,gate_pass):
-	# ic = []	
-	print('------------------------------------------------------del note')
-	res = frappe.db.sql("""
-	select 
-		distinct(A.item_code),A.item_name,A.batch_no,A.stock_uom,A.stock_qty,B.free_qty,B.outgoing_count,B.incoming_count,B.crate_type,
-		     C.voucher,C.crate_issue,C.crate_return
-	from 
-		`tabSales Invoice Item` A
-	Join `tabCrate Count Child` B
-	on A.item_code = B.item_code
-	join `tabCrate Summary` C
-	on A.parent = C.voucher
-	where 
-		A.parent = %(name)s and B.parent = %(name)s and A.is_free_item = 0 """, {"name": del_note}, as_dict=True)
-	print('res--------------------------------------',res)
-	dist_itm = frappe.db.sql(""" select distinct(item_code) from `tabSales Invoice Item`  where parent = %(name)s """,
-							 {'name':del_note})
 	
+	res=[]
+	dist_itm = frappe.db.sql(""" select distinct(item_code) as it from `tabSales Invoice Item`  where parent = %(name)s """,
+							 {'name':del_note},as_dict=1)
 	for itm in dist_itm:
-		obj = frappe.get_doc("Item",itm[0])
+		obj = frappe.get_doc("Item",itm.get("it"))
 		# if len(obj.crate) == 0:
 		res2 = frappe.db.sql(""" select s.name,si.customer,s.item_code,s.item_name,s.warehouse,s.batch_no,s.uom,sum(s.stock_qty) as stock_qty,
 								s.parent,
@@ -126,9 +110,9 @@ def get_jinja_data_si_item(del_note,gate_pass):
 								`tabSales Invoice` si On si.name=s.parent
 								where s.parent = %(name)s and s.item_code = %(item_code)s and is_free_item = 0""",
 							{'name':del_note,'item_code':obj.item_code}, as_dict=True)
+		
 
 		for i in res2:
-			# if len(obj.crate) == 0:
 
 			crate_details = frappe.db.sql(""" select 
 									crate_quantity,crate_type 
@@ -138,7 +122,6 @@ def get_jinja_data_si_item(del_note,gate_pass):
 									parent = %(item_code)s and warehouse = %(warehouse)s limit 1 """,
 									{'item_code':obj.item_code,'warehouse':i.get("warehouse")},as_dict=1)
 			if len(crate_details)>0:
-				print(i)
 				i.update({
 					"crate_type":crate_details[0].get("crate_type")
 				})
@@ -159,41 +142,14 @@ def get_jinja_data_si_item(del_note,gate_pass):
 						"free_qty":0.0
 					})
 			gate_pass=frappe.get_doc("Gate Pass",gate_pass)
-			print("$$$$$$$$$$$$$$$$$$$$$$$32333333",gate_pass.creation)
 			cratelog=frappe.db.get_value("Crate Log",{"creation":["<=",gate_pass.creation],"customer":i.get("customer"),"crate_type":i.crate_type},["name"],order_by="creation desc")
 			if cratelog:
 				bal=frappe.get_doc("Crate Log",cratelog)
-				print("&&&&&&&&&&&&&&&&&&&&&&&&&6666666",bal.name)
 				i.update({
 					"crate_bal":bal.crate_balance
 				})
 			res.append(i)
 
-		
-
-		# else:
-			
-		# 	res2 = frappe.db.sql(""" select s.item_code,s.item_name,s.batch_no,s.uom,sum(s.stock_qty) as stock_qty,
-		# 							s.parent,
-		# 							Case
-		# 							WHEN s.uom = "Crate"
-		# 							THEN	
-		# 							s.qty
-		# 							ELSE 0
-		# 							END as crate_issue,Case WHEN s.uom ="Crate" and si.is_return=1
-		# 							THEN	
-		# 							s.qty
-		# 							ELSE 0
-		# 							END as crate_return
-		# 							from `tabSales Invoice Item` as s Join
-		# 							`tabSales Invoice` si On si.name=s.parent
-		# 							where s.parent = %(name)s and s.item_code = %(item_code)s""",
-		# 						{'name':del_note,'item_code':obj.item_code}, as_dict=True)
-		# 	print('else--------------------------------',res2)
-		# 	for i in range(0, len(res2)):
-		# 		print(i)
-		# 		res.append(res2[i])
-			
 	return res
 
 @frappe.whitelist()
@@ -258,7 +214,7 @@ def si_note_total(del_note):
 
 	supp_qty = frappe.db.sql(""" select sum(stock_qty) as stock_qty  from `tabSales Invoice Item` 
 								 where parent = %(name)s and is_free_item = 0""",{'name':del_note},as_dict=True)
-	print("$$$$$$$$$$",supp_qty[0]["stock_qty"])
+	# print("$$$$$$$$$$",supp_qty[0]["stock_qty"])
 	res["stock_qty"] = supp_qty[0]["stock_qty"]
 
 	free_qty = frappe.db.sql(""" select sum(stock_qty) as fre_qty from `tabSales Invoice Item` 
@@ -291,13 +247,10 @@ def total_supp_qty_based_on_itm_grp(gate_pass):
 
 @frappe.whitelist()
 def warehouse_address(warehouse):
-	print("&&&&&&&&&&&&&&&&&&&&&")
 	lst = []
 	org_warehouse = warehouse
-	print("*************************",org_warehouse)
 	address =  frappe.db.sql(""" select address_line_1, address_line_2, city, state, pin, phone_no, mobile_no 
 	 				from `tabWarehouse` where name = '{0}' """.format(org_warehouse),as_dict=True)
-	print("*******************",address)
 	if address:
 		add = ''
 		for f in ['address_line_1', 'address_line_2', 'city', 'state', 'pin']:
@@ -309,7 +262,6 @@ def warehouse_address(warehouse):
 			if address[0][f]:
 				cont += address[0][f] + "  "
 		lst.append(cont)
-		print("**********************************",lst)
 		return lst
 
 
