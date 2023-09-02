@@ -173,10 +173,12 @@ doc_events = {
     },
     "Sales Invoice": {
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
-        "before_submit": "dairy.milk_entry.custom_sales_invoice.before_submit",
+        "before_submit": ["dairy.milk_entry.custom_sales_invoice.before_submit",
+                          ],
         "before_save":["dairy.milk_entry.custom_sales_invoice.get_party_bal_det",
-                       "dairy.milk_entry.custom_sales_invoice.calculate_crate"],
-        "after_insert": "dairy.milk_entry.custom_sales_invoice.calculate_crate"
+                    #    "dairy.milk_entry.custom_sales_invoice.calculate_crate"
+                       ],
+        # "after_insert": "dairy.milk_entry.custom_sales_invoice.calculate_crate"
     },
     "Stock Entry":{
         "after_insert": ["dairy.milk_entry.doctype.van_collection.van_collection.change_van_collection_status",

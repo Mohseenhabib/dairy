@@ -23,23 +23,13 @@ frappe.ui.form.on("Sales Invoice", {
                 }
             };
         });
-         if(!frm.doc.__islocal && frm.doc.docstatus==0 && frm.doc.is_return==0){
-        frm.add_custom_button(__("Calculate Crate"),function(){
-        frm.call({
-            method:"dairy.milk_entry.custom_sales_invoice.calculate_crate_save",
-            args: {
-                    name:frm.doc.name
-                  },
-            callback: function(r)
-                {
-                    frm.set_value("crate_count",r.message)
-                   frm.refresh_fields("crate_count")
-                   frm.save()
-                }
-            });
-        })
-    }
-         
+    },
+    after_save:function(frm){
+        if(frm.doc.custom_crate_calculate==0){
+            frm.set_value("custom_crate_calculate",1)
+            frm.refresh_field("custom_crate_calculate")
+            frm.save()
+        }
     },
     before_submit:function(frm){
         frm.call({
@@ -85,7 +75,7 @@ frappe.ui.form.on("Sales Invoice", {
             console.log("Rate of stock uom",a)
             frm.refresh_field("rate_of_stock_uom")
         });
-        if(!frm.doc.__islocal){
+        if(!frm.doc.__islocal && !frm.doc.is_return){
         frm.call({
             method:"dairy.milk_entry.custom_sales_invoice.calculate_crate_save",
             args: {
