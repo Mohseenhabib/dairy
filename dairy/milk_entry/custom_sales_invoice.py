@@ -17,7 +17,7 @@ def before_submit(self,method):
                         qty+=i.stock_qty
                         aqty=(qty/(k.crate_quantity*(1+item.crate_overage/100)))
                         crate.db_set("outgoing_count",aqty)
-                        crate.db_swt("qty",qty)
+                        crate.db_set("qty",qty)
 
 
     if frappe.db.get_single_value("Dairy Settings", "crate_reconciliation_based_on") == "Sales Invoice":
