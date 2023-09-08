@@ -184,7 +184,7 @@ doc_events = {
         "after_insert": ["dairy.milk_entry.doctype.van_collection.van_collection.change_van_collection_status",
                          "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry"],
         "before_save":[ "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry",
-                        "dairy.milk_entry.custom_stock_entry.before_save"
+                        # "dairy.milk_entry.custom_stock_entry.before_save"
         ],
         "before_submit": "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry",
         # "on_submit": "dairy.milk_entry.custom_stock_entry.on_submit",
