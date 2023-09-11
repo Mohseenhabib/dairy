@@ -31,24 +31,24 @@ frappe.ui.form.on("Sales Invoice", {
             frm.save()
         }
     },
-    before_submit:function(frm){
-        frm.call({
-            method:"dairy.milk_entry.custom_sales_invoice.calculate_crate_save",
-            args: {
-                    name:frm.doc.name
-                  },
-            callback: function(r)
-                {
-                    // $.each(r.message, function(index, row)
-                    // {   
+    // before_submit:function(frm){
+    //     frm.call({
+    //         method:"dairy.milk_entry.custom_sales_invoice.calculate_crate_save",
+    //         args: {
+    //                 name:frm.doc.name
+    //               },
+    //         callback: function(r)
+    //             {
+    //                 // $.each(r.message, function(index, row)
+    //                 // {   
                        
-                    // });
-                    frm.set_value("crate_count",r.message)
-                   frm.refresh_fields("crate_count")
-                //    frm.save()
-                }
-            });
-    },
+    //                 // });
+    //                 frm.set_value("crate_count",r.message)
+    //                frm.refresh_fields("crate_count")
+    //             //    frm.save()
+    //             }
+    //         });
+    // },
     update_party_balance: function(frm){
 		frappe.call({
 			method:'dairy.milk_entry.custom_sales_invoice.get_party_bal',
