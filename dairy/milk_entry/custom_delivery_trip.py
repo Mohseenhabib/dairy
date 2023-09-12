@@ -113,7 +113,12 @@ def get_jinja_data_si_item(del_note,gate_pass):
 		
 
 		for i in res2:
-
+			if not i.crate_issue:
+				item=frappe.get_doc("Item",i.item_code)
+				for k in item.crate:
+					if k.warehouse==i.warehouse:
+						if (i.stock_qty/k.crate_quantity) >1:
+							i.update({"crate_issue":int(i.stock_qty/k.crate_quantity)})
 			crate_details = frappe.db.sql(""" select 
 									crate_quantity,crate_type 
 								from 
@@ -214,21 +219,37 @@ def si_note_total(del_note):
 
 	supp_qty = frappe.db.sql(""" select sum(stock_qty) as stock_qty  from `tabSales Invoice Item` 
 								 where parent = %(name)s and is_free_item = 0""",{'name':del_note},as_dict=True)
-	# print("$$$$$$$$$$",supp_qty[0]["stock_qty"])
 	res["stock_qty"] = supp_qty[0]["stock_qty"]
 
 	free_qty = frappe.db.sql(""" select sum(stock_qty) as fre_qty from `tabSales Invoice Item` 
 								 where parent = %(name)s and is_free_item = 1""",{'name':del_note},as_dict=True)
 	res["fre_qty"] = free_qty[0]["fre_qty"]
 
-	crate_qty = frappe.db.sql(""" select Case
+	crate_qty = frappe.db.sql(""" select item_code,warehouse,sum(stock_qty) as stock_qty,Case
 								WHEN uom = "Crate"
 								THEN	
-								sum(qty)
+								qty
 								ELSE 0
 								END as crate_qty from `tabSales Invoice Item` 
-								  where parent = %(name)s and uom = "Crate" """,{'name':del_note},as_dict=True)
-	res["crate_qty"] = crate_qty[0]["crate_qty"]
+								  where parent = %(name)s """,{'name':del_note},as_dict=True)
+	x=[]
+	for i in crate_qty:
+		if i.crate_qty==0:
+		
+			item=frappe.get_doc("Item",i.item_code)
+			for k in item.crate:
+				if k.warehouse==i.warehouse:
+					if (i.stock_qty/k.crate_quantity) >1:
+						x.append(int(i.stock_qty/k.crate_quantity))
+		else:
+			x.append(i.crate_qty)
+
+	if len(x)>1:
+		res["crate_qty"] = sum(x)
+	if len(x)==1:
+		res["crate_qty"] = x[0]
+
+
 
 	f_res.append(res)
 	return f_res
