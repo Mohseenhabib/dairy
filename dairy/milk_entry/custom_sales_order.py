@@ -14,8 +14,10 @@ def before_submit(sales, method):
     for k in sales.items:
         price_list=frappe.db.get_value("Item Price",{"item_code":k.item_code,"price_list":sales.selling_price_list},["price_list_rate"])
         if price_list:
-            if price_list*(k.stock_qty/k.qty) !=k.rate:
-                frappe.throw("You can't save Invoice because Orf Rate Not Match In Row '{0}'".format(k.idx))
+            itemd=frappe.get_doc("Item",k.item_code)
+            if itemd.custom_disable_validation_for_price==0:
+                if price_list*(k.stock_qty/k.qty) !=k.rate:
+                    frappe.throw("You can't save Invoice because Orf Rate Not Match In Row '{0}'".format(k.idx))
     if frappe.db.get_single_value("Dairy Settings", "leakage_calculated_on") == "Sales Order":
         if frappe.db.get_single_value("Dairy Settings", "leakage_percentage") and frappe.db.get_single_value("Dairy Settings", "leakage_qty"):
             leakage_perc = float(frappe.db.get_single_value("Dairy Settings", "leakage_percentage"))
