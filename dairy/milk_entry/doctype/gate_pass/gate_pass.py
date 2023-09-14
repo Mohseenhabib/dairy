@@ -375,8 +375,6 @@ class GatePass(Document):
 		
 		
 		if frappe.db.get_single_value("Dairy Settings", "crate_reconciliation_based_on") == "Sales Invoice":
-			
-			
 			invoice = frappe.db.sql(""" select distinct(sales_invoice)
 										from `tabGate Pass Item`
 										where parent = %(name)s""",{'name':sales.name},as_dict=1)
@@ -665,6 +663,35 @@ def make_sales_invoice(source_name, target_doc=None, skip_item_mapping=False):
 			}
 		},
 		"Sales Invoice Item": {
+			"doctype": "Gate Pass Item",
+			"field_map": [
+				["stock_qty", 'qty'],
+				["description","description"],
+				["item_code", "item_code"],
+				["stock_uom", "uom"],
+				["sales_invoice_item","name"],
+				["is_free_item", "is_free_item"],
+				["weight_per_unit","weight_per_unit"],
+				["total_weight","total_weight"]
+			]
+		}
+	}, target_doc)
+
+	return doclist
+
+
+@frappe.whitelist()
+def make_sales_order(source_name, target_doc=None, skip_item_mapping=False):
+	print('make_sales_order^^^^^^^^^^^^',source_name, target_doc)
+	doclist = get_mapped_doc("Sales Order", source_name, {
+		"Sales Order": {
+			"doctype": "Gate Pass",
+			"validation": {
+				"docstatus": ["=", 1]
+				# "material_request_type": ["=", "Purchase"]
+			}
+		},
+		"Sales Order Item": {
 			"doctype": "Gate Pass Item",
 			"field_map": [
 				["stock_qty", 'qty'],
