@@ -50,6 +50,10 @@ class GatePass(Document):
 
 		frappe.db.sql("delete from `tabCrate Summary` where parent = %(name)s", {'name': sales.name})
 		frappe.db.commit()
+		
+		sales.crate_summary=[]
+		sales.leakage_item=[]
+		sales.no_crate_invoice=[]
 
 		
 
@@ -378,6 +382,10 @@ class GatePass(Document):
 			invoice = frappe.db.sql(""" select distinct(sales_invoice)
 										from `tabGate Pass Item`
 										where parent = %(name)s""",{'name':sales.name},as_dict=1)
+			no_crate_inv=[]
+			crate_inv=[]
+			for inv in invoice:
+				no_crate_inv.append(inv.get("sales_invoice"))
 
 			for inv in invoice:
 				si=frappe.get_doc("Sales Invoice",inv.get("sales_invoice"))
@@ -385,14 +393,12 @@ class GatePass(Document):
 													from `tabGate Pass Item` 
 													where parent = '{0}' and sales_invoice = '{1}'""".format(sales.name,inv.get("sales_invoice")))
 				
-				for crate in dist_cratetype:
+				for crate in dist_cratetype:		
 					dist_warehouse = frappe.db.sql(""" select distinct(warehouse) 
 														from `tabGate Pass Item` 
 														where parent = %(name)s and crate_type = %(crate_type)s """,
 														{'name': sales.name,'crate_type':crate})
-
 					for warehouse in dist_warehouse:
-
 						sums = frappe.db.sql(""" select 
 													sum(out_crate) as crate, sum(in_crate) as crate_ret, sum(damaged_crate) as damaged_crate
 												from 
@@ -444,7 +450,7 @@ class GatePass(Document):
 								"crate_return": sums[0]['crate_ret'],
 								"crate_balance": openning[0]['crate_balance'] +(sums[0]['crate'] - sums[0]['crate_ret'])
 							})
-
+							crate_inv.append(si.name)
 						else:
 							log.crate_opening = int(0)
 							log.crate_balance = int(0) + (sums[0]['crate'] - sums[0]['crate_ret'])
@@ -456,10 +462,17 @@ class GatePass(Document):
 								"crate_return": sums[0]['crate_ret'],
 								"crate_balance": int(0) +(sums[0]['crate'] -sums[0]['crate_ret'])
 							})
-						# del_note.db_update()
+							crate_inv.append(si.name)
+
 						log.save()
 						log.submit()
-						
+			frappe.db.sql("delete from `tabNo Crate Invoice` where parent = %(name)s", {'name': sales.name})
+			frappe.db.commit()
+			for kj in no_crate_inv:
+				if kj not in crate_inv:
+					sales.append("no_crate_invoice",{
+						"invoice_no":kj
+					})	
 				
 
 	def after_insert(self):
