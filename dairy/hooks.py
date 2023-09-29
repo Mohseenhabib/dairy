@@ -173,16 +173,18 @@ doc_events = {
     },
     "Sales Invoice": {
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
-        "before_submit": "dairy.milk_entry.custom_sales_invoice.before_submit",
-        "before_save":"dairy.milk_entry.custom_sales_invoice.get_party_bal"
+        "before_submit": ["dairy.milk_entry.custom_sales_invoice.before_submit",
+                          ],
+        "before_save":["dairy.milk_entry.custom_sales_invoice.get_party_bal_det",
+                    #    "dairy.milk_entry.custom_sales_invoice.calculate_crate"
+                       ],
         # "after_insert": "dairy.milk_entry.custom_sales_invoice.calculate_crate"
-        # "before_save": "dairy.milk_entry.custom_sales_invoice.calculate_crate_save"
     },
     "Stock Entry":{
         "after_insert": ["dairy.milk_entry.doctype.van_collection.van_collection.change_van_collection_status",
                          "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry"],
-        "before_save":[ "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry",
-                        "dairy.milk_entry.custom_stock_entry.before_save"
+        "before_save":[ "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry"
+                        # "dairy.milk_entry.custom_stock_entry.before_save"
         ],
         "before_submit": "dairy.milk_entry.custom_stock_entry.milk_ledger_stock_entry",
         # "on_submit": "dairy.milk_entry.custom_stock_entry.on_submit",
@@ -254,6 +256,10 @@ scheduler_events = {
 # # 	"monthly": [
 # # 		"dairy.tasks.monthly"
 # # 	]
+    "cron":{
+        "10 0 * * *": [
+        "dairy.milk_entry.custom_stock_entry.set_date"
+    ]}
  }
 
 # Testing
@@ -296,6 +302,8 @@ jinja = {
         "dairy.milk_entry.custom_delivery_trip.del_note_details",
          "dairy.milk_entry.custom_delivery_trip.si_note_details",
         "dairy.milk_entry.custom_delivery_trip.total_supp_qty_based_on_itm_grp",
+        "dairy.milk_entry.custom_delivery_trip.get_crate_bal",
+        "dairy.milk_entry.custom_delivery_trip.get_crate_gate"
 	]
 }
 

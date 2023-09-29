@@ -568,7 +568,7 @@
    "fieldname": "crate_reconciliation_based_on",
    "fieldtype": "Select",
    "label": "Crate Reconciliation Based on",
-   "options": "Delivery Note\nGate Pass\nSales Invoice"
+   "options": "Delivery Note\nGate Pass\nSales Invoice\nSales Order"
   },
   {
    "fieldname": "column_break_91",
@@ -694,7 +694,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-05-05 12:47:17.079020",
+ "modified": "2023-09-03 22:25:01.669488",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Dairy Settings",

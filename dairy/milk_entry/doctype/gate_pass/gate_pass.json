@@ -35,6 +35,7 @@
   "leakage_item",
   "crate_summary_details_section",
   "crate_summary",
+  "no_crate_invoice",
   "section_break_23",
   "crate_reconcilation_done",
   "gate_crate_cal_done",
@@ -115,6 +116,7 @@
    "fieldtype": "Table",
    "ignore_user_permissions": 1,
    "label": "Gate Pass Item",
+   "no_copy": 1,
    "options": "Gate Pass Item"
   },
   {
@@ -299,11 +301,19 @@
    "label": "Naming Series",
    "options": "DD.-.MM.-.YYYY.##",
    "reqd": 1
+  },
+  {
+   "fieldname": "no_crate_invoice",
+   "fieldtype": "Table",
+   "label": "No Crate Invoice",
+   "no_copy": 1,
+   "options": "No Crate Invoice",
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-03-25 17:55:08.867200",
+ "modified": "2023-09-23 13:18:23.064161",
  "modified_by": "Administrator",
  "module": "Milk Entry",
  "name": "Gate Pass",
