@@ -22,11 +22,17 @@ class RMRDLines(Document):
 		g_buf_item = frappe.db.get_single_value("Dairy Settings", "buf_pro")
 		g_mix_item = frappe.db.get_single_value("Dairy Settings", "mix_pro")
 
-		g_cow_weight,g_cow_name = frappe.db.get_value('Item',g_cow_item,['weight_per_unit','item_name'])
+		g_cow_weight = frappe.db.get_value('Item',g_cow_item,['weight_per_unit','item_name'])
 
-		g_buf_weight,g_buf_name = frappe.db.get_value('Item',g_buf_item,['weight_per_unit','item_name'])
+		g_cow_name = frappe.db.get_value('Item',g_cow_item,['item_name'])
 
-		g_mix_weight,g_mix_name = frappe.db.get_value('Item',g_mix_item,['weight_per_unit','item_name'])
+		g_buf_weight = frappe.db.get_value('Item',g_buf_item,['weight_per_unit','item_name'])
+
+		g_buf_name = frappe.db.get_value('Item',g_buf_item,['item_name'])
+
+		g_mix_weight = frappe.db.get_value('Item',g_mix_item,['weight_per_unit','item_name'])
+
+		g_mix_name =  frappe.db.get_value('Item',g_mix_item,['item_name'])
 
 		a = []
 		a.append(g_cow_weight)
