@@ -46,11 +46,11 @@ frappe.ui.form.on('Gate Pass', {
 			frappe.db.get_doc('Dairy Settings').then(t => {
 			if(t.crate_reconciliation_based_on=="Delivery Note" || t.crate_reconciliation_based_on=="Gate Pass"){
 				frm.add_custom_button(__('Delivery Note'),
-					function() {
+					()  => {
 						erpnext.utils.map_current_doc({
 							method: "dairy.milk_entry.doctype.gate_pass.gate_pass.make_delivery_note",
 							source_doctype: "Delivery Note",
-							target: me.frm,
+							target: frm,
 							setters: {
 							route: frm.doc.route || undefined,
 							shift: frm.doc.shift || undefined,
@@ -77,11 +77,11 @@ frappe.ui.form.on('Gate Pass', {
 				frappe.db.get_doc('Dairy Settings').then(t => {
 					if(t.crate_reconciliation_based_on=="Sales Invoice" || t.crate_reconciliation_based_on=="Gate Pass"){
 					frm.add_custom_button(__('Sales Invoice'),
-					function() {
+					() => {
 						erpnext.utils.map_current_doc({
 							method: "dairy.milk_entry.doctype.gate_pass.gate_pass.make_sales_invoice",
 							source_doctype: "Sales Invoice",
-							target: me.frm,
+							target: frm,
 							setters: {
 							route: frm.doc.route || undefined,
 							delivery_shift: frm.doc.shift || undefined,
