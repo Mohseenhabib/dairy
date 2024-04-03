@@ -113,7 +113,7 @@ frappe.ui.form.on('Gate Pass', {
 						erpnext.utils.map_current_doc({
 							method: "dairy.milk_entry.doctype.gate_pass.gate_pass.make_sales_order",
 							source_doctype: "Sales Order",
-							target: me.frm,
+							target: frm,
 							setters: {
 							route: frm.doc.route || undefined,
 							delivery_shift: frm.doc.shift || undefined,
