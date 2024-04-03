@@ -109,7 +109,7 @@ frappe.ui.form.on('Gate Pass', {
 				frappe.db.get_doc('Dairy Settings').then(t => {
 					if(t.crate_reconciliation_based_on=="Sales Order" || t.crate_reconciliation_based_on=="Gate Pass"){
 					frm.add_custom_button(__('Sales Order'),
-					function() {
+					() => {
 						erpnext.utils.map_current_doc({
 							method: "dairy.milk_entry.doctype.gate_pass.gate_pass.make_sales_order",
 							source_doctype: "Sales Order",
