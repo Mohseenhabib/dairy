@@ -149,22 +149,15 @@ after_install = "dairy.install.after_install"
 
 doc_events = {
     "Delivery Note": {
-        # "before_insert": "dairy.milk_entry.custom_delivery_note.calculate_crate_after_insert",
-        # "before_save": "dairy.milk_entry.custom_delivery_note.calculate_crate_after_insert",
-        "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
         "before_submit": ["dairy.milk_entry.custom_delivery_note.before_submit",
                           "dairy.milk_entry.custom_delivery_note.after_save"],
-        # "on_submit": "dairy.milk_entry.custom_delivery_note.on_submit",
         "after_insert": ["dairy.milk_entry.custom_delivery_note.calculate_crate",
                          "dairy.milk_entry.custom_delivery_note.after_save"],
         "before_save": ["dairy.milk_entry.custom_delivery_note.calculate_crate",
                         "dairy.milk_entry.custom_delivery_note.after_save",
-                        # "dairy.milk_entry.custom_delivery_note.set_fat_and_snf_rate"
                         ],
-        # "on_cancel": "dairy.milk_entry.custom_delivery_note.cancel_milk_stock_ledger"
     },
     "Sales Order": {
-        "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
         "before_submit":"dairy.milk_entry.custom_sales_order.before_submit",
          "before_save":"dairy.milk_entry.custom_sales_order.get_party_bal"
     },
@@ -172,7 +165,6 @@ doc_events = {
         "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
     },
     "Sales Invoice": {
-        "validate": "dairy.milk_entry.custom_delivery_note.route_validation",
         "before_submit": ["dairy.milk_entry.custom_sales_invoice.before_submit",
                           ],
         "before_save":["dairy.milk_entry.custom_sales_invoice.get_party_bal_det",

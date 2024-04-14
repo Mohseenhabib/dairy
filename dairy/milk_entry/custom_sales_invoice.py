@@ -253,8 +253,8 @@ def calculate_crate_save(name):
 
 
 @frappe.whitelist()
-def route_validation(obj, method):
-    doc = frappe.get_doc(obj)
+def route_validation(doc, method):
+    # doc = frappe.get_doc(obj)
     item_code_lst = ['0000']
     for i in doc.items:
         item_code_lst.append(i.item_code)
