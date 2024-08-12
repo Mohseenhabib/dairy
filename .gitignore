@@ -4,3 +4,4 @@
 *.swp
 tags
 dairy/docs/current
+node_modules/
