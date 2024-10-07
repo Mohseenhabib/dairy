@@ -19,12 +19,6 @@ app_license = "Dexciss"
 # include js, css files in header of desk.html
 # app_include_css = "/assets/dairy/css/dairy.css"
 
-
-
-# -----------------------quick entry temporay removed  -sid----------------------
-app_include_js = "/assets/js/vehicle.min.js"
-
-
 fixtures = fixtures = [
 		{"dt":"Custom Field", "filters": [["name", "in",(
             "BOM-standard_fat" ,
