@@ -95,6 +95,8 @@ frappe.ui.form.on('Dairy Settings', {
                 doc: frm.doc,
                 method: 'custom_po',
                 callback: function(r) {
+                    console.log(r);
+                    frappe.show_alert("Invoice creation started in the background. Check RQ Job page for status.")
             }
         })
         });

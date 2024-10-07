@@ -18,7 +18,7 @@ class DairySettings(Document):
 
 	@frappe.whitelist()
 	def custom_po(self):
-		frappe.enqueue(
+		return frappe.enqueue(
 			method="dairy.milk_entry.doctype.dairy_settings.dairy_settings.custom_payment",
 			queue="long",
 			timeout=40000
