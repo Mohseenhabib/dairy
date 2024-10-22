@@ -884,7 +884,7 @@
    "name": "Item-gst_hsn_code",
    "no_copy": 0,
    "non_negative": 0,
-   "options": "GST HSN Code",
+   "options": null,
    "owner": "Administrator",
    "permlevel": 0,
    "precision": "",
